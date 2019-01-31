@@ -4,7 +4,7 @@
 * @Author: 29505
 * @Date:   2019-01-28 20:59:01
 * @Last Modified by:   29505
-* @Last Modified time: 2019-01-31 18:44:47
+* @Last Modified time: 2019-01-31 18:48:40
 * @Email: 295054118@whut.edu.cn
 */ /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
@@ -986,83 +986,83 @@ module e203_subsys_top(
   );
 
 
-  sirv_aon_top u_sirv_aon_top(
-    .pc_rtvec                (pc_rtvec),
+  // sirv_aon_top u_sirv_aon_top(
+  //   .pc_rtvec                (pc_rtvec),
 
-    .jtagpwd_iso             (),// Currently not used
-    .inspect_mode            (inspect_mode     ), 
-    .inspect_pc_29b          (inspect_pc_29b   ), 
-    .inspect_por_rst         (inspect_por_rst  ), 
-    .inspect_32k_clk         (inspect_32k_clk  ), 
-    .inspect_dbg_irq         (inspect_dbg_irq  ),
+  //   .jtagpwd_iso             (),// Currently not used
+  //   .inspect_mode            (inspect_mode     ), 
+  //   .inspect_pc_29b          (inspect_pc_29b   ), 
+  //   .inspect_por_rst         (inspect_por_rst  ), 
+  //   .inspect_32k_clk         (inspect_32k_clk  ), 
+  //   .inspect_dbg_irq         (inspect_dbg_irq  ),
 
-    .i_icb_cmd_valid         (aon_icb_cmd_valid),
-    .i_icb_cmd_ready         (aon_icb_cmd_ready),
-    .i_icb_cmd_addr          (aon_icb_cmd_addr ),
-    .i_icb_cmd_read          (aon_icb_cmd_read ),
-    .i_icb_cmd_wdata         (aon_icb_cmd_wdata),
+  //   .i_icb_cmd_valid         (aon_icb_cmd_valid),
+  //   .i_icb_cmd_ready         (aon_icb_cmd_ready),
+  //   .i_icb_cmd_addr          (aon_icb_cmd_addr ),
+  //   .i_icb_cmd_read          (aon_icb_cmd_read ),
+  //   .i_icb_cmd_wdata         (aon_icb_cmd_wdata),
     
-    .i_icb_rsp_valid         (aon_icb_rsp_valid),
-    .i_icb_rsp_ready         (aon_icb_rsp_ready),
-    .i_icb_rsp_rdata         (aon_icb_rsp_rdata),
+  //   .i_icb_rsp_valid         (aon_icb_rsp_valid),
+  //   .i_icb_rsp_ready         (aon_icb_rsp_ready),
+  //   .i_icb_rsp_rdata         (aon_icb_rsp_rdata),
 
-    .aon_wdg_irq             (aon_wdg_irq_a     ),      
-    .aon_rtc_irq             (aon_rtc_irq_a     ),
-    .aon_rtcToggle           (aon_rtcToggle_a   ),
+  //   .aon_wdg_irq             (aon_wdg_irq_a     ),      
+  //   .aon_rtc_irq             (aon_rtc_irq_a     ),
+  //   .aon_rtcToggle           (aon_rtcToggle_a   ),
 
-    .test_mode               (test_mode           ),
-    .test_iso_override       (test_iso_override   ),
+  //   .test_mode               (test_mode           ),
+  //   .test_iso_override       (test_iso_override   ),
 
-    .lfextclk        (lfextclk),
-    .lfxoscen        (lfxoscen),
+  //   .lfextclk        (lfextclk),
+  //   .lfxoscen        (lfxoscen),
 
-    .io_pads_aon_erst_n_i_ival        (io_pads_aon_erst_n_i_ival       ), 
-    .io_pads_aon_erst_n_o_oval        (io_pads_aon_erst_n_o_oval       ),
-    .io_pads_aon_erst_n_o_oe          (io_pads_aon_erst_n_o_oe         ),
-    .io_pads_aon_erst_n_o_ie          (io_pads_aon_erst_n_o_ie         ),
-    .io_pads_aon_erst_n_o_pue         (io_pads_aon_erst_n_o_pue        ),
-    .io_pads_aon_erst_n_o_ds          (io_pads_aon_erst_n_o_ds         ),
-    .io_pads_aon_pmu_vddpaden_i_ival  (io_pads_aon_pmu_vddpaden_i_ival ),
-    .io_pads_aon_pmu_vddpaden_o_oval  (io_pads_aon_pmu_vddpaden_o_oval ),
-    .io_pads_aon_pmu_vddpaden_o_oe    (io_pads_aon_pmu_vddpaden_o_oe   ),
-    .io_pads_aon_pmu_vddpaden_o_ie    (io_pads_aon_pmu_vddpaden_o_ie   ),
-    .io_pads_aon_pmu_vddpaden_o_pue   (io_pads_aon_pmu_vddpaden_o_pue  ),
-    .io_pads_aon_pmu_vddpaden_o_ds    (io_pads_aon_pmu_vddpaden_o_ds   ),
-    .io_pads_aon_pmu_dwakeup_n_i_ival (io_pads_aon_pmu_dwakeup_n_i_ival),
-    .io_pads_aon_pmu_dwakeup_n_o_oval (io_pads_aon_pmu_dwakeup_n_o_oval),
-    .io_pads_aon_pmu_dwakeup_n_o_oe   (io_pads_aon_pmu_dwakeup_n_o_oe  ),
-    .io_pads_aon_pmu_dwakeup_n_o_ie   (io_pads_aon_pmu_dwakeup_n_o_ie  ),
-    .io_pads_aon_pmu_dwakeup_n_o_pue  (io_pads_aon_pmu_dwakeup_n_o_pue ),
-    .io_pads_aon_pmu_dwakeup_n_o_ds   (io_pads_aon_pmu_dwakeup_n_o_ds  ),
+  //   .io_pads_aon_erst_n_i_ival        (io_pads_aon_erst_n_i_ival       ), 
+  //   .io_pads_aon_erst_n_o_oval        (io_pads_aon_erst_n_o_oval       ),
+  //   .io_pads_aon_erst_n_o_oe          (io_pads_aon_erst_n_o_oe         ),
+  //   .io_pads_aon_erst_n_o_ie          (io_pads_aon_erst_n_o_ie         ),
+  //   .io_pads_aon_erst_n_o_pue         (io_pads_aon_erst_n_o_pue        ),
+  //   .io_pads_aon_erst_n_o_ds          (io_pads_aon_erst_n_o_ds         ),
+  //   .io_pads_aon_pmu_vddpaden_i_ival  (io_pads_aon_pmu_vddpaden_i_ival ),
+  //   .io_pads_aon_pmu_vddpaden_o_oval  (io_pads_aon_pmu_vddpaden_o_oval ),
+  //   .io_pads_aon_pmu_vddpaden_o_oe    (io_pads_aon_pmu_vddpaden_o_oe   ),
+  //   .io_pads_aon_pmu_vddpaden_o_ie    (io_pads_aon_pmu_vddpaden_o_ie   ),
+  //   .io_pads_aon_pmu_vddpaden_o_pue   (io_pads_aon_pmu_vddpaden_o_pue  ),
+  //   .io_pads_aon_pmu_vddpaden_o_ds    (io_pads_aon_pmu_vddpaden_o_ds   ),
+  //   .io_pads_aon_pmu_dwakeup_n_i_ival (io_pads_aon_pmu_dwakeup_n_i_ival),
+  //   .io_pads_aon_pmu_dwakeup_n_o_oval (io_pads_aon_pmu_dwakeup_n_o_oval),
+  //   .io_pads_aon_pmu_dwakeup_n_o_oe   (io_pads_aon_pmu_dwakeup_n_o_oe  ),
+  //   .io_pads_aon_pmu_dwakeup_n_o_ie   (io_pads_aon_pmu_dwakeup_n_o_ie  ),
+  //   .io_pads_aon_pmu_dwakeup_n_o_pue  (io_pads_aon_pmu_dwakeup_n_o_pue ),
+  //   .io_pads_aon_pmu_dwakeup_n_o_ds   (io_pads_aon_pmu_dwakeup_n_o_ds  ),
 
-    .io_pads_aon_pmu_padrst_i_ival    (io_pads_aon_pmu_padrst_i_ival ),
-    .io_pads_aon_pmu_padrst_o_oval    (io_pads_aon_pmu_padrst_o_oval ),
-    .io_pads_aon_pmu_padrst_o_oe      (io_pads_aon_pmu_padrst_o_oe   ),
-    .io_pads_aon_pmu_padrst_o_ie      (io_pads_aon_pmu_padrst_o_ie   ),
-    .io_pads_aon_pmu_padrst_o_pue     (io_pads_aon_pmu_padrst_o_pue  ),
-    .io_pads_aon_pmu_padrst_o_ds      (io_pads_aon_pmu_padrst_o_ds   ),
+  //   .io_pads_aon_pmu_padrst_i_ival    (io_pads_aon_pmu_padrst_i_ival ),
+  //   .io_pads_aon_pmu_padrst_o_oval    (io_pads_aon_pmu_padrst_o_oval ),
+  //   .io_pads_aon_pmu_padrst_o_oe      (io_pads_aon_pmu_padrst_o_oe   ),
+  //   .io_pads_aon_pmu_padrst_o_ie      (io_pads_aon_pmu_padrst_o_ie   ),
+  //   .io_pads_aon_pmu_padrst_o_pue     (io_pads_aon_pmu_padrst_o_pue  ),
+  //   .io_pads_aon_pmu_padrst_o_ds      (io_pads_aon_pmu_padrst_o_ds   ),
 
-    .io_pads_jtagpwd_n_i_ival       (1'b1),// Currently not used
-    .io_pads_jtagpwd_n_o_oval       (),
-    .io_pads_jtagpwd_n_o_oe         (),
-    .io_pads_jtagpwd_n_o_ie         (),
-    .io_pads_jtagpwd_n_o_pue        (),
-    .io_pads_jtagpwd_n_o_ds         (),
+  //   .io_pads_jtagpwd_n_i_ival       (1'b1),// Currently not used
+  //   .io_pads_jtagpwd_n_o_oval       (),
+  //   .io_pads_jtagpwd_n_o_oe         (),
+  //   .io_pads_jtagpwd_n_o_ie         (),
+  //   .io_pads_jtagpwd_n_o_pue        (),
+  //   .io_pads_jtagpwd_n_o_ds         (),
 
-    .io_pads_bootrom_n_i_ival       (io_pads_bootrom_n_i_ival),
-    .io_pads_bootrom_n_o_oval       (io_pads_bootrom_n_o_oval),
-    .io_pads_bootrom_n_o_oe         (io_pads_bootrom_n_o_oe  ),
-    .io_pads_bootrom_n_o_ie         (io_pads_bootrom_n_o_ie  ),
-    .io_pads_bootrom_n_o_pue        (io_pads_bootrom_n_o_pue ),
-    .io_pads_bootrom_n_o_ds         (io_pads_bootrom_n_o_ds  ),
+  //   .io_pads_bootrom_n_i_ival       (io_pads_bootrom_n_i_ival),
+  //   .io_pads_bootrom_n_o_oval       (io_pads_bootrom_n_o_oval),
+  //   .io_pads_bootrom_n_o_oe         (io_pads_bootrom_n_o_oe  ),
+  //   .io_pads_bootrom_n_o_ie         (io_pads_bootrom_n_o_ie  ),
+  //   .io_pads_bootrom_n_o_pue        (io_pads_bootrom_n_o_pue ),
+  //   .io_pads_bootrom_n_o_ds         (io_pads_bootrom_n_o_ds  ),
 
-    .io_pads_dbgmode0_n_i_ival       (io_pads_dbgmode0_n_i_ival),
-    .io_pads_dbgmode1_n_i_ival       (io_pads_dbgmode1_n_i_ival),
-    .io_pads_dbgmode2_n_i_ival       (io_pads_dbgmode2_n_i_ival),
+  //   .io_pads_dbgmode0_n_i_ival       (io_pads_dbgmode0_n_i_ival),
+  //   .io_pads_dbgmode1_n_i_ival       (io_pads_dbgmode1_n_i_ival),
+  //   .io_pads_dbgmode2_n_i_ival       (io_pads_dbgmode2_n_i_ival),
 
-    .hfclkrst      (hfclkrst),
-    .corerst       (corerst)
-  );
+  //   .hfclkrst      (hfclkrst),
+  //   .corerst       (corerst)
+  // );
 
 
 endmodule

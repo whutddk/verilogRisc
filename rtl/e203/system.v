@@ -4,7 +4,7 @@
 * @Author: 29505
 * @Date:   2019-01-28 20:59:31
 * @Last Modified by:   29505
-* @Last Modified time: 2019-01-31 11:38:54
+* @Last Modified time: 2019-01-31 18:46:50
 * @Email: 295054118@whut.edu.cn
 *///////////////////////////////////////////////////////////////////////////////////
 // Company:   
@@ -275,32 +275,32 @@ module system
   // wire dut_io_pads_gpio_31_o_ie;
   // wire dut_io_pads_gpio_31_o_pue;
   // wire dut_io_pads_gpio_31_o_ds;
-  wire dut_io_pads_qspi_sck_o_oval;
-  wire dut_io_pads_qspi_dq_0_i_ival;
-  wire dut_io_pads_qspi_dq_0_o_oval;
-  wire dut_io_pads_qspi_dq_0_o_oe;
-  wire dut_io_pads_qspi_dq_0_o_ie;
-  wire dut_io_pads_qspi_dq_0_o_pue;
-  wire dut_io_pads_qspi_dq_0_o_ds;
-  wire dut_io_pads_qspi_dq_1_i_ival;
-  wire dut_io_pads_qspi_dq_1_o_oval;
-  wire dut_io_pads_qspi_dq_1_o_oe;
-  wire dut_io_pads_qspi_dq_1_o_ie;
-  wire dut_io_pads_qspi_dq_1_o_pue;
-  wire dut_io_pads_qspi_dq_1_o_ds;
-  wire dut_io_pads_qspi_dq_2_i_ival;
-  wire dut_io_pads_qspi_dq_2_o_oval;
-  wire dut_io_pads_qspi_dq_2_o_oe;
-  wire dut_io_pads_qspi_dq_2_o_ie;
-  wire dut_io_pads_qspi_dq_2_o_pue;
-  wire dut_io_pads_qspi_dq_2_o_ds;
-  wire dut_io_pads_qspi_dq_3_i_ival;
-  wire dut_io_pads_qspi_dq_3_o_oval;
-  wire dut_io_pads_qspi_dq_3_o_oe;
-  wire dut_io_pads_qspi_dq_3_o_ie;
-  wire dut_io_pads_qspi_dq_3_o_pue;
-  wire dut_io_pads_qspi_dq_3_o_ds;
-  wire dut_io_pads_qspi_cs_0_o_oval;
+  // wire dut_io_pads_qspi_sck_o_oval;
+  // wire dut_io_pads_qspi_dq_0_i_ival;
+  // wire dut_io_pads_qspi_dq_0_o_oval;
+  // wire dut_io_pads_qspi_dq_0_o_oe;
+  // wire dut_io_pads_qspi_dq_0_o_ie;
+  // wire dut_io_pads_qspi_dq_0_o_pue;
+  // wire dut_io_pads_qspi_dq_0_o_ds;
+  // wire dut_io_pads_qspi_dq_1_i_ival;
+  // wire dut_io_pads_qspi_dq_1_o_oval;
+  // wire dut_io_pads_qspi_dq_1_o_oe;
+  // wire dut_io_pads_qspi_dq_1_o_ie;
+  // wire dut_io_pads_qspi_dq_1_o_pue;
+  // wire dut_io_pads_qspi_dq_1_o_ds;
+  // wire dut_io_pads_qspi_dq_2_i_ival;
+  // wire dut_io_pads_qspi_dq_2_o_oval;
+  // wire dut_io_pads_qspi_dq_2_o_oe;
+  // wire dut_io_pads_qspi_dq_2_o_ie;
+  // wire dut_io_pads_qspi_dq_2_o_pue;
+  // wire dut_io_pads_qspi_dq_2_o_ds;
+  // wire dut_io_pads_qspi_dq_3_i_ival;
+  // wire dut_io_pads_qspi_dq_3_o_oval;
+  // wire dut_io_pads_qspi_dq_3_o_oe;
+  // wire dut_io_pads_qspi_dq_3_o_ie;
+  // wire dut_io_pads_qspi_dq_3_o_pue;
+  // wire dut_io_pads_qspi_dq_3_o_ds;
+  // wire dut_io_pads_qspi_cs_0_o_oval;
   wire dut_io_pads_aon_erst_n_i_ival;
   wire dut_io_pads_aon_pmu_dwakeup_n_i_ival;
   wire dut_io_pads_aon_pmu_vddpaden_o_oval;
@@ -1217,32 +1217,32 @@ module system
     // .io_pads_gpio_31_o_ie(dut_io_pads_gpio_31_o_ie),
     // .io_pads_gpio_31_o_pue(dut_io_pads_gpio_31_o_pue),
     // .io_pads_gpio_31_o_ds(dut_io_pads_gpio_31_o_ds),
-    .io_pads_qspi_sck_o_oval(dut_io_pads_qspi_sck_o_oval),
-    .io_pads_qspi_dq_0_i_ival(dut_io_pads_qspi_dq_0_i_ival),
-    .io_pads_qspi_dq_0_o_oval(dut_io_pads_qspi_dq_0_o_oval),
-    .io_pads_qspi_dq_0_o_oe(dut_io_pads_qspi_dq_0_o_oe),
-    .io_pads_qspi_dq_0_o_ie(dut_io_pads_qspi_dq_0_o_ie),
-    .io_pads_qspi_dq_0_o_pue(dut_io_pads_qspi_dq_0_o_pue),
-    .io_pads_qspi_dq_0_o_ds(dut_io_pads_qspi_dq_0_o_ds),
-    .io_pads_qspi_dq_1_i_ival(dut_io_pads_qspi_dq_1_i_ival),
-    .io_pads_qspi_dq_1_o_oval(dut_io_pads_qspi_dq_1_o_oval),
-    .io_pads_qspi_dq_1_o_oe(dut_io_pads_qspi_dq_1_o_oe),
-    .io_pads_qspi_dq_1_o_ie(dut_io_pads_qspi_dq_1_o_ie),
-    .io_pads_qspi_dq_1_o_pue(dut_io_pads_qspi_dq_1_o_pue),
-    .io_pads_qspi_dq_1_o_ds(dut_io_pads_qspi_dq_1_o_ds),
-    .io_pads_qspi_dq_2_i_ival(dut_io_pads_qspi_dq_2_i_ival),
-    .io_pads_qspi_dq_2_o_oval(dut_io_pads_qspi_dq_2_o_oval),
-    .io_pads_qspi_dq_2_o_oe(dut_io_pads_qspi_dq_2_o_oe),
-    .io_pads_qspi_dq_2_o_ie(dut_io_pads_qspi_dq_2_o_ie),
-    .io_pads_qspi_dq_2_o_pue(dut_io_pads_qspi_dq_2_o_pue),
-    .io_pads_qspi_dq_2_o_ds(dut_io_pads_qspi_dq_2_o_ds),
-    .io_pads_qspi_dq_3_i_ival(dut_io_pads_qspi_dq_3_i_ival),
-    .io_pads_qspi_dq_3_o_oval(dut_io_pads_qspi_dq_3_o_oval),
-    .io_pads_qspi_dq_3_o_oe(dut_io_pads_qspi_dq_3_o_oe),
-    .io_pads_qspi_dq_3_o_ie(dut_io_pads_qspi_dq_3_o_ie),
-    .io_pads_qspi_dq_3_o_pue(dut_io_pads_qspi_dq_3_o_pue),
-    .io_pads_qspi_dq_3_o_ds(dut_io_pads_qspi_dq_3_o_ds),
-    .io_pads_qspi_cs_0_o_oval(dut_io_pads_qspi_cs_0_o_oval),
+    // .io_pads_qspi_sck_o_oval(dut_io_pads_qspi_sck_o_oval),
+    // .io_pads_qspi_dq_0_i_ival(dut_io_pads_qspi_dq_0_i_ival),
+    // .io_pads_qspi_dq_0_o_oval(dut_io_pads_qspi_dq_0_o_oval),
+    // .io_pads_qspi_dq_0_o_oe(dut_io_pads_qspi_dq_0_o_oe),
+    // .io_pads_qspi_dq_0_o_ie(dut_io_pads_qspi_dq_0_o_ie),
+    // .io_pads_qspi_dq_0_o_pue(dut_io_pads_qspi_dq_0_o_pue),
+    // .io_pads_qspi_dq_0_o_ds(dut_io_pads_qspi_dq_0_o_ds),
+    // .io_pads_qspi_dq_1_i_ival(dut_io_pads_qspi_dq_1_i_ival),
+    // .io_pads_qspi_dq_1_o_oval(dut_io_pads_qspi_dq_1_o_oval),
+    // .io_pads_qspi_dq_1_o_oe(dut_io_pads_qspi_dq_1_o_oe),
+    // .io_pads_qspi_dq_1_o_ie(dut_io_pads_qspi_dq_1_o_ie),
+    // .io_pads_qspi_dq_1_o_pue(dut_io_pads_qspi_dq_1_o_pue),
+    // .io_pads_qspi_dq_1_o_ds(dut_io_pads_qspi_dq_1_o_ds),
+    // .io_pads_qspi_dq_2_i_ival(dut_io_pads_qspi_dq_2_i_ival),
+    // .io_pads_qspi_dq_2_o_oval(dut_io_pads_qspi_dq_2_o_oval),
+    // .io_pads_qspi_dq_2_o_oe(dut_io_pads_qspi_dq_2_o_oe),
+    // .io_pads_qspi_dq_2_o_ie(dut_io_pads_qspi_dq_2_o_ie),
+    // .io_pads_qspi_dq_2_o_pue(dut_io_pads_qspi_dq_2_o_pue),
+    // .io_pads_qspi_dq_2_o_ds(dut_io_pads_qspi_dq_2_o_ds),
+    // .io_pads_qspi_dq_3_i_ival(dut_io_pads_qspi_dq_3_i_ival),
+    // .io_pads_qspi_dq_3_o_oval(dut_io_pads_qspi_dq_3_o_oval),
+    // .io_pads_qspi_dq_3_o_oe(dut_io_pads_qspi_dq_3_o_oe),
+    // .io_pads_qspi_dq_3_o_ie(dut_io_pads_qspi_dq_3_o_ie),
+    // .io_pads_qspi_dq_3_o_pue(dut_io_pads_qspi_dq_3_o_pue),
+    // .io_pads_qspi_dq_3_o_ds(dut_io_pads_qspi_dq_3_o_ds),
+    // .io_pads_qspi_cs_0_o_oval(dut_io_pads_qspi_cs_0_o_oval),
        // Note: this is the real SoC top level reset signal
     .io_pads_aon_erst_n_i_ival(ck_rst),
     .io_pads_aon_pmu_dwakeup_n_i_ival(dut_io_pads_aon_pmu_dwakeup_n_i_ival),
