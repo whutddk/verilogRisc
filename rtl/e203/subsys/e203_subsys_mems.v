@@ -1,4 +1,12 @@
- /*                                                                      
+/*
+* @File Name: e203_subsys_mems.v
+* @File Path: K:\work\dark+PRJ\e200_opensource\rtl\e203\subsys\e203_subsys_mems.v
+* @Author: 29505
+* @Date:   2019-01-28 20:59:01
+* @Last Modified by:   29505
+* @Last Modified time: 2019-01-31 14:18:40
+* @Email: 295054118@whut.edu.cn
+*/ /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
  Licensed under the Apache License, Version 2.0 (the "License");         
@@ -69,16 +77,16 @@ module e203_subsys_mems(
 
 
     //////////////////////////////////////////////////////////
-  output                         otp_ro_icb_cmd_valid,
-  input                          otp_ro_icb_cmd_ready,
-  output [`E203_ADDR_SIZE-1:0]   otp_ro_icb_cmd_addr, 
-  output                         otp_ro_icb_cmd_read, 
-  output [`E203_XLEN-1:0]        otp_ro_icb_cmd_wdata,
-  //
-  input                          otp_ro_icb_rsp_valid,
-  output                         otp_ro_icb_rsp_ready,
-  input                          otp_ro_icb_rsp_err,
-  input  [`E203_XLEN-1:0]        otp_ro_icb_rsp_rdata,
+  // output                         otp_ro_icb_cmd_valid,
+  // input                          otp_ro_icb_cmd_ready,
+  // output [`E203_ADDR_SIZE-1:0]   otp_ro_icb_cmd_addr, 
+  // output                         otp_ro_icb_cmd_read, 
+  // output [`E203_XLEN-1:0]        otp_ro_icb_cmd_wdata,
+  // //
+  // input                          otp_ro_icb_rsp_valid,
+  // output                         otp_ro_icb_rsp_ready,
+  // input                          otp_ro_icb_rsp_err,
+  // input  [`E203_XLEN-1:0]        otp_ro_icb_rsp_rdata,
 
     //////////////////////////////////////////////////////////
   output                         dm_icb_cmd_valid,
@@ -131,7 +139,7 @@ module e203_subsys_mems(
   //  * QSPI0-RO  : 0x2000 0000 -- 0x3FFF FFFF
   //  * SysMem    : 0x8000 0000 -- 0xFFFF FFFF
 
-  sirv_icb1to8_bus # (
+  sirv_icb1to7_bus # (
   .ICB_FIFO_DP        (2),// We add a ping-pong buffer here to cut down the timing path
   .ICB_FIFO_CUT_READY (1),// We configure it to cut down the back-pressure ready signal
   .AW                   (32),
@@ -231,25 +239,25 @@ module e203_subsys_mems(
     .o1_icb_rsp_rdata  (mrom_icb_rsp_rdata),
 
   //  * OTP-RO    
-    .o2_icb_enable     (1'b1),
+    // .o2_icb_enable     (1'b1),
 
-    .o2_icb_cmd_valid  (otp_ro_icb_cmd_valid),
-    .o2_icb_cmd_ready  (otp_ro_icb_cmd_ready),
-    .o2_icb_cmd_addr   (otp_ro_icb_cmd_addr ),
-    .o2_icb_cmd_read   (otp_ro_icb_cmd_read ),
-    .o2_icb_cmd_wdata  (otp_ro_icb_cmd_wdata),
-    .o2_icb_cmd_wmask  (),
-    .o2_icb_cmd_lock   (),
-    .o2_icb_cmd_excl   (),
-    .o2_icb_cmd_size   (),
-    .o2_icb_cmd_burst  (),
-    .o2_icb_cmd_beat   (),
+    // .o2_icb_cmd_valid  (otp_ro_icb_cmd_valid),
+    // .o2_icb_cmd_ready  (otp_ro_icb_cmd_ready),
+    // .o2_icb_cmd_addr   (otp_ro_icb_cmd_addr ),
+    // .o2_icb_cmd_read   (otp_ro_icb_cmd_read ),
+    // .o2_icb_cmd_wdata  (otp_ro_icb_cmd_wdata),
+    // .o2_icb_cmd_wmask  (),
+    // .o2_icb_cmd_lock   (),
+    // .o2_icb_cmd_excl   (),
+    // .o2_icb_cmd_size   (),
+    // .o2_icb_cmd_burst  (),
+    // .o2_icb_cmd_beat   (),
     
-    .o2_icb_rsp_valid  (otp_ro_icb_rsp_valid),
-    .o2_icb_rsp_ready  (otp_ro_icb_rsp_ready),
-    .o2_icb_rsp_err    (otp_ro_icb_rsp_err),
-    .o2_icb_rsp_excl_ok(1'b0  ),
-    .o2_icb_rsp_rdata  (otp_ro_icb_rsp_rdata),
+    // .o2_icb_rsp_valid  (otp_ro_icb_rsp_valid),
+    // .o2_icb_rsp_ready  (otp_ro_icb_rsp_ready),
+    // .o2_icb_rsp_err    (otp_ro_icb_rsp_err),
+    // .o2_icb_rsp_excl_ok(1'b0  ),
+    // .o2_icb_rsp_rdata  (otp_ro_icb_rsp_rdata),
 
 
   //  * QSPI0-RO  

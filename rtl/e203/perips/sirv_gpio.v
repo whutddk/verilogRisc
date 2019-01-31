@@ -1,4 +1,13 @@
- /*                                                                      
+/*
+* @File Name: sirv_gpio.v
+* @File Path: K:\work\dark+PRJ\e200_opensource\rtl\e203\perips\sirv_gpio.v
+* @Author: 29505
+* @Date:   2019-01-28 20:59:01
+* @Last Modified by:   29505
+* @Last Modified time: 2019-01-31 11:53:26
+* @Email: 295054118@whut.edu.cn
+*/ 
+/*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
  Licensed under the Apache License, Version 2.0 (the "License");         

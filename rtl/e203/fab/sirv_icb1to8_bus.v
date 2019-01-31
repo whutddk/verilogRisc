@@ -1,4 +1,12 @@
- /*                                                                      
+/*
+* @File Name: sirv_icb1to8_bus.v
+* @File Path: K:\work\dark+PRJ\e200_opensource\rtl\e203\fab\sirv_icb1to8_bus.v
+* @Author: 29505
+* @Date:   2019-01-28 20:59:01
+* @Last Modified by:   29505
+* @Last Modified time: 2019-01-31 14:16:56
+* @Email: 295054118@whut.edu.cn
+*/ /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
  Licensed under the Apache License, Version 2.0 (the "License");         
@@ -26,7 +34,7 @@
 // ====================================================================
 
 
-module sirv_icb1to8_bus # (
+module sirv_icb1to7_bus # (
   parameter ICB_FIFO_DP = 0, // This is to optionally add the pipeline stage for ICB bus
                              //   if the depth is 0, then means pass through, not add pipeline
                              //   if the depth is 2, then means added one ping-pong buffer stage
@@ -64,7 +72,7 @@ module sirv_icb1to8_bus # (
 
   input                          o0_icb_enable,
   input                          o1_icb_enable,
-  input                          o2_icb_enable,
+  // input                          o2_icb_enable,
   input                          o3_icb_enable,
   input                          o4_icb_enable,
   input                          o5_icb_enable,
@@ -125,23 +133,23 @@ module sirv_icb1to8_bus # (
   input                          o1_icb_rsp_excl_ok,
   input  [        DW-1:0]        o1_icb_rsp_rdata,
 
-  output                         o2_icb_cmd_valid,
-  input                          o2_icb_cmd_ready,
-  output [             AW-1:0]   o2_icb_cmd_addr, 
-  output                         o2_icb_cmd_read, 
-  output [2-1:0]                 o2_icb_cmd_burst,
-  output [2-1:0]                 o2_icb_cmd_beat,
-  output [        DW-1:0]        o2_icb_cmd_wdata,
-  output [        DW/8-1:0]      o2_icb_cmd_wmask,
-  output                         o2_icb_cmd_lock,
-  output                         o2_icb_cmd_excl,
-  output [1:0]                   o2_icb_cmd_size,
+  // output                         o2_icb_cmd_valid,
+  // input                          o2_icb_cmd_ready,
+  // output [             AW-1:0]   o2_icb_cmd_addr, 
+  // output                         o2_icb_cmd_read, 
+  // output [2-1:0]                 o2_icb_cmd_burst,
+  // output [2-1:0]                 o2_icb_cmd_beat,
+  // output [        DW-1:0]        o2_icb_cmd_wdata,
+  // output [        DW/8-1:0]      o2_icb_cmd_wmask,
+  // output                         o2_icb_cmd_lock,
+  // output                         o2_icb_cmd_excl,
+  // output [1:0]                   o2_icb_cmd_size,
   
-  input                          o2_icb_rsp_valid,
-  output                         o2_icb_rsp_ready,
-  input                          o2_icb_rsp_err  ,
-  input                          o2_icb_rsp_excl_ok,
-  input  [        DW-1:0]        o2_icb_rsp_rdata,
+  // input                          o2_icb_rsp_valid,
+  // output                         o2_icb_rsp_ready,
+  // input                          o2_icb_rsp_err  ,
+  // input                          o2_icb_rsp_excl_ok,
+  // input  [        DW-1:0]        o2_icb_rsp_rdata,
 
   output                         o3_icb_cmd_valid,
   input                          o3_icb_cmd_ready,
@@ -313,7 +321,7 @@ module sirv_icb1to8_bus # (
 
 
   localparam BASE_REGION_MSB = (AW-1);
-  localparam SPLT_I_NUM = 9;
+  localparam SPLT_I_NUM = 8;
 
   wire                         deft_icb_cmd_valid;
   wire                         deft_icb_cmd_ready;
@@ -355,7 +363,7 @@ module sirv_icb1to8_bus # (
   assign {
                              o0_icb_cmd_valid
                            , o1_icb_cmd_valid
-                           , o2_icb_cmd_valid
+                           // , o2_icb_cmd_valid
                            , o3_icb_cmd_valid
                            , o4_icb_cmd_valid
                            , o5_icb_cmd_valid
@@ -367,7 +375,7 @@ module sirv_icb1to8_bus # (
   assign {
                              o0_icb_cmd_addr
                            , o1_icb_cmd_addr
-                           , o2_icb_cmd_addr
+                           // , o2_icb_cmd_addr
                            , o3_icb_cmd_addr
                            , o4_icb_cmd_addr
                            , o5_icb_cmd_addr
@@ -379,7 +387,7 @@ module sirv_icb1to8_bus # (
   assign {
                              o0_icb_cmd_read
                            , o1_icb_cmd_read
-                           , o2_icb_cmd_read
+                           // , o2_icb_cmd_read
                            , o3_icb_cmd_read
                            , o4_icb_cmd_read
                            , o5_icb_cmd_read
@@ -391,7 +399,7 @@ module sirv_icb1to8_bus # (
   assign {
                              o0_icb_cmd_burst
                            , o1_icb_cmd_burst
-                           , o2_icb_cmd_burst
+                           // , o2_icb_cmd_burst
                            , o3_icb_cmd_burst
                            , o4_icb_cmd_burst
                            , o5_icb_cmd_burst
@@ -403,7 +411,7 @@ module sirv_icb1to8_bus # (
   assign {
                              o0_icb_cmd_beat
                            , o1_icb_cmd_beat
-                           , o2_icb_cmd_beat
+                           // , o2_icb_cmd_beat
                            , o3_icb_cmd_beat
                            , o4_icb_cmd_beat
                            , o5_icb_cmd_beat
@@ -415,7 +423,7 @@ module sirv_icb1to8_bus # (
   assign {
                              o0_icb_cmd_wdata
                            , o1_icb_cmd_wdata
-                           , o2_icb_cmd_wdata
+                           // , o2_icb_cmd_wdata
                            , o3_icb_cmd_wdata
                            , o4_icb_cmd_wdata
                            , o5_icb_cmd_wdata
@@ -427,7 +435,7 @@ module sirv_icb1to8_bus # (
   assign {
                              o0_icb_cmd_wmask
                            , o1_icb_cmd_wmask
-                           , o2_icb_cmd_wmask
+                           // , o2_icb_cmd_wmask
                            , o3_icb_cmd_wmask
                            , o4_icb_cmd_wmask
                            , o5_icb_cmd_wmask
@@ -439,7 +447,7 @@ module sirv_icb1to8_bus # (
   assign {
                              o0_icb_cmd_lock
                            , o1_icb_cmd_lock
-                           , o2_icb_cmd_lock
+                           // , o2_icb_cmd_lock
                            , o3_icb_cmd_lock
                            , o4_icb_cmd_lock
                            , o5_icb_cmd_lock
@@ -451,7 +459,7 @@ module sirv_icb1to8_bus # (
   assign {
                              o0_icb_cmd_excl
                            , o1_icb_cmd_excl
-                           , o2_icb_cmd_excl
+                           // , o2_icb_cmd_excl
                            , o3_icb_cmd_excl
                            , o4_icb_cmd_excl
                            , o5_icb_cmd_excl
@@ -463,7 +471,7 @@ module sirv_icb1to8_bus # (
   assign {
                              o0_icb_cmd_size
                            , o1_icb_cmd_size
-                           , o2_icb_cmd_size
+                           // , o2_icb_cmd_size
                            , o3_icb_cmd_size
                            , o4_icb_cmd_size
                            , o5_icb_cmd_size
@@ -475,7 +483,7 @@ module sirv_icb1to8_bus # (
   assign splt_bus_icb_cmd_ready = {
                              o0_icb_cmd_ready
                            , o1_icb_cmd_ready
-                           , o2_icb_cmd_ready
+                           // , o2_icb_cmd_ready
                            , o3_icb_cmd_ready
                            , o4_icb_cmd_ready
                            , o5_icb_cmd_ready
@@ -488,7 +496,7 @@ module sirv_icb1to8_bus # (
   assign splt_bus_icb_rsp_valid = {
                              o0_icb_rsp_valid
                            , o1_icb_rsp_valid
-                           , o2_icb_rsp_valid
+                           // , o2_icb_rsp_valid
                            , o3_icb_rsp_valid
                            , o4_icb_rsp_valid
                            , o5_icb_rsp_valid
@@ -500,7 +508,7 @@ module sirv_icb1to8_bus # (
   assign splt_bus_icb_rsp_err = {
                              o0_icb_rsp_err
                            , o1_icb_rsp_err
-                           , o2_icb_rsp_err
+                           // , o2_icb_rsp_err
                            , o3_icb_rsp_err
                            , o4_icb_rsp_err
                            , o5_icb_rsp_err
@@ -512,7 +520,7 @@ module sirv_icb1to8_bus # (
   assign splt_bus_icb_rsp_excl_ok = {
                              o0_icb_rsp_excl_ok
                            , o1_icb_rsp_excl_ok
-                           , o2_icb_rsp_excl_ok
+                           // , o2_icb_rsp_excl_ok
                            , o3_icb_rsp_excl_ok
                            , o4_icb_rsp_excl_ok
                            , o5_icb_rsp_excl_ok
@@ -524,7 +532,7 @@ module sirv_icb1to8_bus # (
   assign splt_bus_icb_rsp_rdata = {
                              o0_icb_rsp_rdata
                            , o1_icb_rsp_rdata
-                           , o2_icb_rsp_rdata
+                           // , o2_icb_rsp_rdata
                            , o3_icb_rsp_rdata
                            , o4_icb_rsp_rdata
                            , o5_icb_rsp_rdata
@@ -536,7 +544,7 @@ module sirv_icb1to8_bus # (
   assign {
                              o0_icb_rsp_ready
                            , o1_icb_rsp_ready
-                           , o2_icb_rsp_ready
+                           // , o2_icb_rsp_ready
                            , o3_icb_rsp_ready
                            , o4_icb_rsp_ready
                            , o5_icb_rsp_ready
@@ -553,9 +561,9 @@ module sirv_icb1to8_bus # (
                      ==  O1_BASE_ADDR [BASE_REGION_MSB:O1_BASE_REGION_LSB] 
                     ) & o1_icb_enable; 
                      
-  wire icb_cmd_o2 = buf_icb_cmd_valid & (buf_icb_cmd_addr     [BASE_REGION_MSB:O2_BASE_REGION_LSB]
-                     ==  O2_BASE_ADDR [BASE_REGION_MSB:O2_BASE_REGION_LSB] 
-                    ) & o2_icb_enable;
+  // wire icb_cmd_o2 = buf_icb_cmd_valid & (buf_icb_cmd_addr     [BASE_REGION_MSB:O2_BASE_REGION_LSB]
+  //                    ==  O2_BASE_ADDR [BASE_REGION_MSB:O2_BASE_REGION_LSB] 
+  //                   ) & o2_icb_enable;
 
   wire icb_cmd_o3 = buf_icb_cmd_valid & (buf_icb_cmd_addr     [BASE_REGION_MSB:O3_BASE_REGION_LSB]
                      ==  O3_BASE_ADDR [BASE_REGION_MSB:O3_BASE_REGION_LSB] 
@@ -579,7 +587,7 @@ module sirv_icb1to8_bus # (
 
   wire icb_cmd_deft = (~icb_cmd_o0)
                     & (~icb_cmd_o1)
-                    & (~icb_cmd_o2)
+                    // & (~icb_cmd_o2)
                     & (~icb_cmd_o3)
                     & (~icb_cmd_o4)
                     & (~icb_cmd_o5)
@@ -591,7 +599,7 @@ module sirv_icb1to8_bus # (
       {
                       icb_cmd_o0
                     , icb_cmd_o1
-                    , icb_cmd_o2
+                    // , icb_cmd_o2
                     , icb_cmd_o3
                     , icb_cmd_o4
                     , icb_cmd_o5
