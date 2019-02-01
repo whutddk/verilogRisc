@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-01-31 17:35:43
 // Last Modified by:   29505
-// Last Modified time: 2019-02-01 17:40:16
+// Last Modified time: 2019-02-01 21:01:06
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_subsys_main.v  
 // Module Name:  
@@ -19,7 +19,8 @@
 // Revision  
 // Additional Comments:   
 // 
-///////////////////////////////////////////////////////////////////////////////////*
+//////////////////////////////////////////////////////////////////////////////////
+/*
 * @File Name: e203_subsys_main.v
 * @File Path: K:\work\dark+PRJ\e200_opensource\rtl\e203\subsys\e203_subsys_main.v
 * @Author: 29505
@@ -27,7 +28,9 @@
 * @Last Modified by:   29505
 * @Last Modified time: 2019-01-31 18:42:10
 * @Email: 295054118@whut.edu.cn
-*/ /*                                                                      
+*/ 
+
+/*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
  Licensed under the Apache License, Version 2.0 (the "License");         
@@ -59,80 +62,80 @@
 
 
 module e203_subsys_main(
-  output core_csr_clk,
+  // output core_csr_clk,
 
   output hfxoscen,// The signal to enable the crystal pad generated clock
 
-  output inspect_pc_29b       ,
-  output inspect_dbg_irq      ,
+  // output inspect_pc_29b       ,
+  // output inspect_dbg_irq      ,
 
-  input  inspect_mode, 
-  input  inspect_por_rst, 
-  input  inspect_32k_clk, 
-  input  inspect_jtag_clk,
+  // input  inspect_mode, 
+  // input  inspect_por_rst, 
+  // input  inspect_32k_clk, 
+  // input  inspect_jtag_clk,
 
   input  [`E203_PC_SIZE-1:0] pc_rtvec,
   ///////////////////////////////////////
   // With the interface to debug module 
   //
     // The interface with commit stage
-  output  [`E203_PC_SIZE-1:0] cmt_dpc,
-  output  cmt_dpc_ena,
+  // output  [`E203_PC_SIZE-1:0] cmt_dpc,
+  // output  cmt_dpc_ena,
 
-  output  [3-1:0] cmt_dcause,
-  output  cmt_dcause_ena,
+  // output  [3-1:0] cmt_dcause,
+  // output  cmt_dcause_ena,
 
-  input   dbg_irq_a,
-  output  dbg_irq_r,
+  // input   dbg_irq_a,
+  // output  dbg_irq_r,
 
     // The interface with CSR control 
-  output  wr_dcsr_ena    ,
-  output  wr_dpc_ena     ,
-  output  wr_dscratch_ena,
+  // output  wr_dcsr_ena    ,
+  // output  wr_dpc_ena     ,
+  // output  wr_dscratch_ena,
 
 
 
-  output  [32-1:0] wr_csr_nxt    ,
+  // output  [32-1:0] wr_csr_nxt    ,
 
   input  [32-1:0] dcsr_r    ,
   input  [`E203_PC_SIZE-1:0] dpc_r     ,
   input  [32-1:0] dscratch_r,
 
-  input  dbg_mode,
-  input  dbg_halt_r,
-  input  dbg_step_r,
-  input  dbg_ebreakm_r,
-  input  dbg_stopcycle,
+  // input  dbg_mode,
+  // input  dbg_halt_r,
+  // input  dbg_step_r,
+  // input  dbg_ebreakm_r,
+  // input  dbg_stopcycle,
 
 
   ///////////////////////////////////////
   input  [`E203_HART_ID_W-1:0] core_mhartid,  
     
-  input  aon_wdg_irq_a,
-  input  aon_rtc_irq_a,
-  input  aon_rtcToggle_a,
+  // input  aon_wdg_irq_a,
+  // input  aon_rtc_irq_a,
+  // input  aon_rtcToggle_a,
 
-  output                         aon_icb_cmd_valid,
-  input                          aon_icb_cmd_ready,
-  output [`E203_ADDR_SIZE-1:0]   aon_icb_cmd_addr, 
-  output                         aon_icb_cmd_read, 
-  output [`E203_XLEN-1:0]        aon_icb_cmd_wdata,
-  //
-  input                          aon_icb_rsp_valid,
-  output                         aon_icb_rsp_ready,
-  input                          aon_icb_rsp_err,
-  input  [`E203_XLEN-1:0]        aon_icb_rsp_rdata,
+  // output                         aon_icb_cmd_valid,
+  // input                          aon_icb_cmd_ready,
+  // output [`E203_ADDR_SIZE-1:0]   aon_icb_cmd_addr, 
+  // output                         aon_icb_cmd_read, 
+  // output [`E203_XLEN-1:0]        aon_icb_cmd_wdata,
+  // //
+  // input                          aon_icb_rsp_valid,
+  // output                         aon_icb_rsp_ready,
+  // input                          aon_icb_rsp_err,
+  // input  [`E203_XLEN-1:0]        aon_icb_rsp_rdata,
 
       //////////////////////////////////////////////////////////
-  output                         dm_icb_cmd_valid,
-  input                          dm_icb_cmd_ready,
-  output [`E203_ADDR_SIZE-1:0]   dm_icb_cmd_addr, 
-  output                         dm_icb_cmd_read, 
-  output [`E203_XLEN-1:0]        dm_icb_cmd_wdata,
-  //
-  input                          dm_icb_rsp_valid,
-  output                         dm_icb_rsp_ready,
-  input  [`E203_XLEN-1:0]        dm_icb_rsp_rdata,
+  // output                         dm_icb_cmd_valid,
+  // input                          dm_icb_cmd_ready,
+  // output [`E203_ADDR_SIZE-1:0]   dm_icb_cmd_addr, 
+  // output                         dm_icb_cmd_read, 
+  // output [`E203_XLEN-1:0]        dm_icb_cmd_wdata,
+  // //
+  // input                          dm_icb_rsp_valid,
+  // output                         dm_icb_rsp_ready,
+  // input  [`E203_XLEN-1:0]        dm_icb_rsp_rdata,
 
   // input  io_pads_gpio_0_i_ival,
   // output io_pads_gpio_0_o_oval,
@@ -471,341 +474,341 @@ module e203_subsys_main(
   );
 
  wire [31:0] inspect_pc;
- wire inspect_mem_cmd_valid;
- wire inspect_mem_cmd_ready;
- wire inspect_mem_rsp_valid;
- wire inspect_mem_rsp_ready;
+ // wire inspect_mem_cmd_valid;
+ // wire inspect_mem_cmd_ready;
+ // wire inspect_mem_rsp_valid;
+ // wire inspect_mem_rsp_ready;
  wire inspect_core_clk;
  wire inspect_pll_clk;
  wire inspect_16m_clk;
 
- assign inspect_pc_29b = inspect_pc[29];
+ // assign inspect_pc_29b = inspect_pc[29];
 
- wire  gpio_0_o_oval ;
- wire  gpio_0_o_oe   ;
- wire  gpio_0_o_ie   ;
- wire  gpio_0_o_pue  ;
- wire  gpio_0_o_ds   ;
- wire  gpio_1_o_oval ;
- wire  gpio_1_o_oe   ;
- wire  gpio_1_o_ie   ;
- wire  gpio_1_o_pue  ;
- wire  gpio_1_o_ds   ;
- wire  gpio_2_o_oval ;
- wire  gpio_2_o_oe   ;
- wire  gpio_2_o_ie   ;
- wire  gpio_2_o_pue  ;
- wire  gpio_2_o_ds   ;
- wire  gpio_3_o_oval ;
- wire  gpio_3_o_oe   ;
- wire  gpio_3_o_ie   ;
- wire  gpio_3_o_pue  ;
- wire  gpio_3_o_ds   ;
- wire  gpio_4_o_oval ;
- wire  gpio_4_o_oe   ;
- wire  gpio_4_o_ie   ;
- wire  gpio_4_o_pue  ;
- wire  gpio_4_o_ds   ;
- wire  gpio_5_o_oval ;
- wire  gpio_5_o_oe   ;
- wire  gpio_5_o_ie   ;
- wire  gpio_5_o_pue  ;
- wire  gpio_5_o_ds   ;
- wire  gpio_6_o_oval ;
- wire  gpio_6_o_oe   ;
- wire  gpio_6_o_ie   ;
- wire  gpio_6_o_pue  ;
- wire  gpio_6_o_ds   ;
- wire  gpio_7_o_oval ;
- wire  gpio_7_o_oe   ;
- wire  gpio_7_o_ie   ;
- wire  gpio_7_o_pue  ;
- wire  gpio_7_o_ds   ;
- wire  gpio_8_o_oval ;
- wire  gpio_8_o_oe   ;
- wire  gpio_8_o_ie   ;
- wire  gpio_8_o_pue  ;
- wire  gpio_8_o_ds   ;
- wire  gpio_9_o_oval ;
- wire  gpio_9_o_oe   ;
- wire  gpio_9_o_ie   ;
- wire  gpio_9_o_pue  ;
- wire  gpio_9_o_ds   ;
- wire  gpio_10_o_oval;
- wire  gpio_10_o_oe  ;
- wire  gpio_10_o_ie  ;
- wire  gpio_10_o_pue ;
- wire  gpio_10_o_ds  ;
- wire  gpio_11_o_oval;
- wire  gpio_11_o_oe  ;
- wire  gpio_11_o_ie  ;
- wire  gpio_11_o_pue ;
- wire  gpio_11_o_ds  ;
- wire  gpio_12_o_oval;
- wire  gpio_12_o_oe  ;
- wire  gpio_12_o_ie  ;
- wire  gpio_12_o_pue ;
- wire  gpio_12_o_ds  ;
- wire  gpio_13_o_oval;
- wire  gpio_13_o_oe  ;
- wire  gpio_13_o_ie  ;
- wire  gpio_13_o_pue ;
- wire  gpio_13_o_ds  ;
- wire  gpio_14_o_oval;
- wire  gpio_14_o_oe  ;
- wire  gpio_14_o_ie  ;
- wire  gpio_14_o_pue ;
- wire  gpio_14_o_ds  ;
- wire  gpio_15_o_oval;
- wire  gpio_15_o_oe  ;
- wire  gpio_15_o_ie  ;
- wire  gpio_15_o_pue ;
- wire  gpio_15_o_ds  ;
- wire  gpio_16_o_oval;
- wire  gpio_16_o_oe  ;
- wire  gpio_16_o_ie  ;
- wire  gpio_16_o_pue ;
- wire  gpio_16_o_ds  ;
- wire  gpio_17_o_oval;
- wire  gpio_17_o_oe  ;
- wire  gpio_17_o_ie  ;
- wire  gpio_17_o_pue ;
- wire  gpio_17_o_ds  ;
- wire  gpio_18_o_oval;
- wire  gpio_18_o_oe  ;
- wire  gpio_18_o_ie  ;
- wire  gpio_18_o_pue ;
- wire  gpio_18_o_ds  ;
- wire  gpio_19_o_oval;
- wire  gpio_19_o_oe  ;
- wire  gpio_19_o_ie  ;
- wire  gpio_19_o_pue ;
- wire  gpio_19_o_ds  ;
- wire  gpio_20_o_oval;
- wire  gpio_20_o_oe  ;
- wire  gpio_20_o_ie  ;
- wire  gpio_20_o_pue ;
- wire  gpio_20_o_ds  ;
- wire  gpio_21_o_oval;
- wire  gpio_21_o_oe  ;
- wire  gpio_21_o_ie  ;
- wire  gpio_21_o_pue ;
- wire  gpio_21_o_ds  ;
- wire  gpio_22_o_oval;
- wire  gpio_22_o_oe  ;
- wire  gpio_22_o_ie  ;
- wire  gpio_22_o_pue ;
- wire  gpio_22_o_ds  ;
- wire  gpio_23_o_oval;
- wire  gpio_23_o_oe  ;
- wire  gpio_23_o_ie  ;
- wire  gpio_23_o_pue ;
- wire  gpio_23_o_ds  ;
- wire  gpio_24_o_oval;
- wire  gpio_24_o_oe  ;
- wire  gpio_24_o_ie  ;
- wire  gpio_24_o_pue ;
- wire  gpio_24_o_ds  ;
- wire  gpio_25_o_oval;
- wire  gpio_25_o_oe  ;
- wire  gpio_25_o_ie  ;
- wire  gpio_25_o_pue ;
- wire  gpio_25_o_ds  ;
- wire  gpio_26_o_oval;
- wire  gpio_26_o_oe  ;
- wire  gpio_26_o_ie  ;
- wire  gpio_26_o_pue ;
- wire  gpio_26_o_ds  ;
- wire  gpio_27_o_oval;
- wire  gpio_27_o_oe  ;
- wire  gpio_27_o_ie  ;
- wire  gpio_27_o_pue ;
- wire  gpio_27_o_ds  ;
- wire  gpio_28_o_oval;
- wire  gpio_28_o_oe  ;
- wire  gpio_28_o_ie  ;
- wire  gpio_28_o_pue ;
- wire  gpio_28_o_ds  ;
- wire  gpio_29_o_oval;
- wire  gpio_29_o_oe  ;
- wire  gpio_29_o_ie  ;
- wire  gpio_29_o_pue ;
- wire  gpio_29_o_ds  ;
- wire  gpio_30_o_oval;
- wire  gpio_30_o_oe  ;
- wire  gpio_30_o_ie  ;
- wire  gpio_30_o_pue ;
- wire  gpio_30_o_ds  ;
- wire  gpio_31_o_oval;
- wire  gpio_31_o_oe  ;
- wire  gpio_31_o_ie  ;
- wire  gpio_31_o_pue ;
- wire  gpio_31_o_ds  ;
+ // wire  gpio_0_o_oval ;
+ // wire  gpio_0_o_oe   ;
+ // wire  gpio_0_o_ie   ;
+ // wire  gpio_0_o_pue  ;
+ // wire  gpio_0_o_ds   ;
+ // wire  gpio_1_o_oval ;
+ // wire  gpio_1_o_oe   ;
+ // wire  gpio_1_o_ie   ;
+ // wire  gpio_1_o_pue  ;
+ // wire  gpio_1_o_ds   ;
+ // wire  gpio_2_o_oval ;
+ // wire  gpio_2_o_oe   ;
+ // wire  gpio_2_o_ie   ;
+ // wire  gpio_2_o_pue  ;
+ // wire  gpio_2_o_ds   ;
+ // wire  gpio_3_o_oval ;
+ // wire  gpio_3_o_oe   ;
+ // wire  gpio_3_o_ie   ;
+ // wire  gpio_3_o_pue  ;
+ // wire  gpio_3_o_ds   ;
+ // wire  gpio_4_o_oval ;
+ // wire  gpio_4_o_oe   ;
+ // wire  gpio_4_o_ie   ;
+ // wire  gpio_4_o_pue  ;
+ // wire  gpio_4_o_ds   ;
+ // wire  gpio_5_o_oval ;
+ // wire  gpio_5_o_oe   ;
+ // wire  gpio_5_o_ie   ;
+ // wire  gpio_5_o_pue  ;
+ // wire  gpio_5_o_ds   ;
+ // wire  gpio_6_o_oval ;
+ // wire  gpio_6_o_oe   ;
+ // wire  gpio_6_o_ie   ;
+ // wire  gpio_6_o_pue  ;
+ // wire  gpio_6_o_ds   ;
+ // wire  gpio_7_o_oval ;
+ // wire  gpio_7_o_oe   ;
+ // wire  gpio_7_o_ie   ;
+ // wire  gpio_7_o_pue  ;
+ // wire  gpio_7_o_ds   ;
+ // wire  gpio_8_o_oval ;
+ // wire  gpio_8_o_oe   ;
+ // wire  gpio_8_o_ie   ;
+ // wire  gpio_8_o_pue  ;
+ // wire  gpio_8_o_ds   ;
+ // wire  gpio_9_o_oval ;
+ // wire  gpio_9_o_oe   ;
+ // wire  gpio_9_o_ie   ;
+ // wire  gpio_9_o_pue  ;
+ // wire  gpio_9_o_ds   ;
+ // wire  gpio_10_o_oval;
+ // wire  gpio_10_o_oe  ;
+ // wire  gpio_10_o_ie  ;
+ // wire  gpio_10_o_pue ;
+ // wire  gpio_10_o_ds  ;
+ // wire  gpio_11_o_oval;
+ // wire  gpio_11_o_oe  ;
+ // wire  gpio_11_o_ie  ;
+ // wire  gpio_11_o_pue ;
+ // wire  gpio_11_o_ds  ;
+ // wire  gpio_12_o_oval;
+ // wire  gpio_12_o_oe  ;
+ // wire  gpio_12_o_ie  ;
+ // wire  gpio_12_o_pue ;
+ // wire  gpio_12_o_ds  ;
+ // wire  gpio_13_o_oval;
+ // wire  gpio_13_o_oe  ;
+ // wire  gpio_13_o_ie  ;
+ // wire  gpio_13_o_pue ;
+ // wire  gpio_13_o_ds  ;
+ // wire  gpio_14_o_oval;
+ // wire  gpio_14_o_oe  ;
+ // wire  gpio_14_o_ie  ;
+ // wire  gpio_14_o_pue ;
+ // wire  gpio_14_o_ds  ;
+ // wire  gpio_15_o_oval;
+ // wire  gpio_15_o_oe  ;
+ // wire  gpio_15_o_ie  ;
+ // wire  gpio_15_o_pue ;
+ // wire  gpio_15_o_ds  ;
+ // wire  gpio_16_o_oval;
+ // wire  gpio_16_o_oe  ;
+ // wire  gpio_16_o_ie  ;
+ // wire  gpio_16_o_pue ;
+ // wire  gpio_16_o_ds  ;
+ // wire  gpio_17_o_oval;
+ // wire  gpio_17_o_oe  ;
+ // wire  gpio_17_o_ie  ;
+ // wire  gpio_17_o_pue ;
+ // wire  gpio_17_o_ds  ;
+ // wire  gpio_18_o_oval;
+ // wire  gpio_18_o_oe  ;
+ // wire  gpio_18_o_ie  ;
+ // wire  gpio_18_o_pue ;
+ // wire  gpio_18_o_ds  ;
+ // wire  gpio_19_o_oval;
+ // wire  gpio_19_o_oe  ;
+ // wire  gpio_19_o_ie  ;
+ // wire  gpio_19_o_pue ;
+ // wire  gpio_19_o_ds  ;
+ // wire  gpio_20_o_oval;
+ // wire  gpio_20_o_oe  ;
+ // wire  gpio_20_o_ie  ;
+ // wire  gpio_20_o_pue ;
+ // wire  gpio_20_o_ds  ;
+ // wire  gpio_21_o_oval;
+ // wire  gpio_21_o_oe  ;
+ // wire  gpio_21_o_ie  ;
+ // wire  gpio_21_o_pue ;
+ // wire  gpio_21_o_ds  ;
+ // wire  gpio_22_o_oval;
+ // wire  gpio_22_o_oe  ;
+ // wire  gpio_22_o_ie  ;
+ // wire  gpio_22_o_pue ;
+ // wire  gpio_22_o_ds  ;
+ // wire  gpio_23_o_oval;
+ // wire  gpio_23_o_oe  ;
+ // wire  gpio_23_o_ie  ;
+ // wire  gpio_23_o_pue ;
+ // wire  gpio_23_o_ds  ;
+ // wire  gpio_24_o_oval;
+ // wire  gpio_24_o_oe  ;
+ // wire  gpio_24_o_ie  ;
+ // wire  gpio_24_o_pue ;
+ // wire  gpio_24_o_ds  ;
+ // wire  gpio_25_o_oval;
+ // wire  gpio_25_o_oe  ;
+ // wire  gpio_25_o_ie  ;
+ // wire  gpio_25_o_pue ;
+ // wire  gpio_25_o_ds  ;
+ // wire  gpio_26_o_oval;
+ // wire  gpio_26_o_oe  ;
+ // wire  gpio_26_o_ie  ;
+ // wire  gpio_26_o_pue ;
+ // wire  gpio_26_o_ds  ;
+ // wire  gpio_27_o_oval;
+ // wire  gpio_27_o_oe  ;
+ // wire  gpio_27_o_ie  ;
+ // wire  gpio_27_o_pue ;
+ // wire  gpio_27_o_ds  ;
+ // wire  gpio_28_o_oval;
+ // wire  gpio_28_o_oe  ;
+ // wire  gpio_28_o_ie  ;
+ // wire  gpio_28_o_pue ;
+ // wire  gpio_28_o_ds  ;
+ // wire  gpio_29_o_oval;
+ // wire  gpio_29_o_oe  ;
+ // wire  gpio_29_o_ie  ;
+ // wire  gpio_29_o_pue ;
+ // wire  gpio_29_o_ds  ;
+ // wire  gpio_30_o_oval;
+ // wire  gpio_30_o_oe  ;
+ // wire  gpio_30_o_ie  ;
+ // wire  gpio_30_o_pue ;
+ // wire  gpio_30_o_ds  ;
+ // wire  gpio_31_o_oval;
+ // wire  gpio_31_o_oe  ;
+ // wire  gpio_31_o_ie  ;
+ // wire  gpio_31_o_pue ;
+ // wire  gpio_31_o_ds  ;
 
 
     // The GPIO are reused for inspect mode, in which the GPIO
   //   is forced to be an output
- assign  io_pads_gpio_0_o_oval    = inspect_mode ? inspect_pc[0] : gpio_0_o_oval;
- assign  io_pads_gpio_0_o_oe      = inspect_mode ? 1'b1          : gpio_0_o_oe;
- assign  io_pads_gpio_0_o_ie      = inspect_mode ? 1'b0          : gpio_0_o_ie;
- assign  io_pads_gpio_0_o_pue     = inspect_mode ? 1'b0          : gpio_0_o_pue;
- assign  io_pads_gpio_0_o_ds      = inspect_mode ? 1'b1          : gpio_0_o_ds;
- assign  io_pads_gpio_1_o_oval    = inspect_mode ? inspect_pc[1] : gpio_1_o_oval;
- assign  io_pads_gpio_1_o_oe      = inspect_mode ? 1'b1          : gpio_1_o_oe;
- assign  io_pads_gpio_1_o_ie      = inspect_mode ? 1'b0          : gpio_1_o_ie;
- assign  io_pads_gpio_1_o_pue     = inspect_mode ? 1'b0          : gpio_1_o_pue;
- assign  io_pads_gpio_1_o_ds      = inspect_mode ? 1'b1          : gpio_1_o_ds;
- assign  io_pads_gpio_2_o_oval    = inspect_mode ? inspect_pc[2] : gpio_2_o_oval;
- assign  io_pads_gpio_2_o_oe      = inspect_mode ? 1'b1          : gpio_2_o_oe;
- assign  io_pads_gpio_2_o_ie      = inspect_mode ? 1'b0          : gpio_2_o_ie;
- assign  io_pads_gpio_2_o_pue     = inspect_mode ? 1'b0          : gpio_2_o_pue;
- assign  io_pads_gpio_2_o_ds      = inspect_mode ? 1'b1          : gpio_2_o_ds;
- assign  io_pads_gpio_3_o_oval    = inspect_mode ? inspect_pc[3] : gpio_3_o_oval;
- assign  io_pads_gpio_3_o_oe      = inspect_mode ? 1'b1          : gpio_3_o_oe;
- assign  io_pads_gpio_3_o_ie      = inspect_mode ? 1'b0          : gpio_3_o_ie;
- assign  io_pads_gpio_3_o_pue     = inspect_mode ? 1'b0          : gpio_3_o_pue;
- assign  io_pads_gpio_3_o_ds      = inspect_mode ? 1'b1          : gpio_3_o_ds;
- assign  io_pads_gpio_4_o_oval    = inspect_mode ? inspect_pc[4] : gpio_4_o_oval;
- assign  io_pads_gpio_4_o_oe      = inspect_mode ? 1'b1          : gpio_4_o_oe;
- assign  io_pads_gpio_4_o_ie      = inspect_mode ? 1'b0          : gpio_4_o_ie;
- assign  io_pads_gpio_4_o_pue     = inspect_mode ? 1'b0          : gpio_4_o_pue;
- assign  io_pads_gpio_4_o_ds      = inspect_mode ? 1'b1          : gpio_4_o_ds;
- assign  io_pads_gpio_5_o_oval    = inspect_mode ? inspect_pc[5] : gpio_5_o_oval;
- assign  io_pads_gpio_5_o_oe      = inspect_mode ? 1'b1          : gpio_5_o_oe;
- assign  io_pads_gpio_5_o_ie      = inspect_mode ? 1'b0          : gpio_5_o_ie;
- assign  io_pads_gpio_5_o_pue     = inspect_mode ? 1'b0          : gpio_5_o_pue;
- assign  io_pads_gpio_5_o_ds      = inspect_mode ? 1'b1          : gpio_5_o_ds;
- assign  io_pads_gpio_6_o_oval    = inspect_mode ? inspect_pc[6] : gpio_6_o_oval;
- assign  io_pads_gpio_6_o_oe      = inspect_mode ? 1'b1          : gpio_6_o_oe;
- assign  io_pads_gpio_6_o_ie      = inspect_mode ? 1'b0          : gpio_6_o_ie;
- assign  io_pads_gpio_6_o_pue     = inspect_mode ? 1'b0          : gpio_6_o_pue;
- assign  io_pads_gpio_6_o_ds      = inspect_mode ? 1'b1          : gpio_6_o_ds;
- assign  io_pads_gpio_7_o_oval    = inspect_mode ? inspect_pc[7] : gpio_7_o_oval;
- assign  io_pads_gpio_7_o_oe      = inspect_mode ? 1'b1          : gpio_7_o_oe;
- assign  io_pads_gpio_7_o_ie      = inspect_mode ? 1'b0          : gpio_7_o_ie;
- assign  io_pads_gpio_7_o_pue     = inspect_mode ? 1'b0          : gpio_7_o_pue;
- assign  io_pads_gpio_7_o_ds      = inspect_mode ? 1'b1          : gpio_7_o_ds;
- assign  io_pads_gpio_8_o_oval    = inspect_mode ? inspect_pc[8] : gpio_8_o_oval;
- assign  io_pads_gpio_8_o_oe      = inspect_mode ? 1'b1          : gpio_8_o_oe;
- assign  io_pads_gpio_8_o_ie      = inspect_mode ? 1'b0          : gpio_8_o_ie;
- assign  io_pads_gpio_8_o_pue     = inspect_mode ? 1'b0          : gpio_8_o_pue;
- assign  io_pads_gpio_8_o_ds      = inspect_mode ? 1'b1          : gpio_8_o_ds;
- assign  io_pads_gpio_9_o_oval    = inspect_mode ? inspect_pc[9] : gpio_9_o_oval;
- assign  io_pads_gpio_9_o_oe      = inspect_mode ? 1'b1          : gpio_9_o_oe;
- assign  io_pads_gpio_9_o_ie      = inspect_mode ? 1'b0          : gpio_9_o_ie;
- assign  io_pads_gpio_9_o_pue     = inspect_mode ? 1'b0          : gpio_9_o_pue;
- assign  io_pads_gpio_9_o_ds      = inspect_mode ? 1'b1          : gpio_9_o_ds;
- assign  io_pads_gpio_10_o_oval   = inspect_mode ? inspect_pc[10]: gpio_10_o_oval;
- assign  io_pads_gpio_10_o_oe     = inspect_mode ? 1'b1          : gpio_10_o_oe;
- assign  io_pads_gpio_10_o_ie     = inspect_mode ? 1'b0          : gpio_10_o_ie;
- assign  io_pads_gpio_10_o_pue    = inspect_mode ? 1'b0          : gpio_10_o_pue;
- assign  io_pads_gpio_10_o_ds     = inspect_mode ? 1'b1          : gpio_10_o_ds;
- assign  io_pads_gpio_11_o_oval   = inspect_mode ? inspect_pc[11]: gpio_11_o_oval;
- assign  io_pads_gpio_11_o_oe     = inspect_mode ? 1'b1          : gpio_11_o_oe;
- assign  io_pads_gpio_11_o_ie     = inspect_mode ? 1'b0          : gpio_11_o_ie;
- assign  io_pads_gpio_11_o_pue    = inspect_mode ? 1'b0          : gpio_11_o_pue;
- assign  io_pads_gpio_11_o_ds     = inspect_mode ? 1'b1          : gpio_11_o_ds;
- assign  io_pads_gpio_12_o_oval   = inspect_mode ? inspect_pc[12]: gpio_12_o_oval;
- assign  io_pads_gpio_12_o_oe     = inspect_mode ? 1'b1          : gpio_12_o_oe;
- assign  io_pads_gpio_12_o_ie     = inspect_mode ? 1'b0          : gpio_12_o_ie;
- assign  io_pads_gpio_12_o_pue    = inspect_mode ? 1'b0          : gpio_12_o_pue;
- assign  io_pads_gpio_12_o_ds     = inspect_mode ? 1'b1          : gpio_12_o_ds;
- assign  io_pads_gpio_13_o_oval   = inspect_mode ? inspect_pc[13]: gpio_13_o_oval;
- assign  io_pads_gpio_13_o_oe     = inspect_mode ? 1'b1          : gpio_13_o_oe;
- assign  io_pads_gpio_13_o_ie     = inspect_mode ? 1'b0          : gpio_13_o_ie;
- assign  io_pads_gpio_13_o_pue    = inspect_mode ? 1'b0          : gpio_13_o_pue;
- assign  io_pads_gpio_13_o_ds     = inspect_mode ? 1'b1          : gpio_13_o_ds;
- assign  io_pads_gpio_14_o_oval   = inspect_mode ? inspect_pc[14]: gpio_14_o_oval;
- assign  io_pads_gpio_14_o_oe     = inspect_mode ? 1'b1          : gpio_14_o_oe;
- assign  io_pads_gpio_14_o_ie     = inspect_mode ? 1'b0          : gpio_14_o_ie;
- assign  io_pads_gpio_14_o_pue    = inspect_mode ? 1'b0          : gpio_14_o_pue;
- assign  io_pads_gpio_14_o_ds     = inspect_mode ? 1'b1          : gpio_14_o_ds;
- assign  io_pads_gpio_15_o_oval   = inspect_mode ? inspect_pc[15]: gpio_15_o_oval;
- assign  io_pads_gpio_15_o_oe     = inspect_mode ? 1'b1          : gpio_15_o_oe;
- assign  io_pads_gpio_15_o_ie     = inspect_mode ? 1'b0          : gpio_15_o_ie;
- assign  io_pads_gpio_15_o_pue    = inspect_mode ? 1'b0          : gpio_15_o_pue;
- assign  io_pads_gpio_15_o_ds     = inspect_mode ? 1'b1          : gpio_15_o_ds;
- assign  io_pads_gpio_16_o_oval   = inspect_mode ? inspect_pc[16]: gpio_16_o_oval;
- assign  io_pads_gpio_16_o_oe     = inspect_mode ? 1'b1          : gpio_16_o_oe;
- assign  io_pads_gpio_16_o_ie     = inspect_mode ? 1'b0          : gpio_16_o_ie;
- assign  io_pads_gpio_16_o_pue    = inspect_mode ? 1'b0          : gpio_16_o_pue;
- assign  io_pads_gpio_16_o_ds     = inspect_mode ? 1'b1          : gpio_16_o_ds;
- assign  io_pads_gpio_17_o_oval   = inspect_mode ? inspect_pc[17]: gpio_17_o_oval;
- assign  io_pads_gpio_17_o_oe     = inspect_mode ? 1'b1          : gpio_17_o_oe;
- assign  io_pads_gpio_17_o_ie     = inspect_mode ? 1'b0          : gpio_17_o_ie;
- assign  io_pads_gpio_17_o_pue    = inspect_mode ? 1'b0          : gpio_17_o_pue;
- assign  io_pads_gpio_17_o_ds     = inspect_mode ? 1'b1          : gpio_17_o_ds;
- assign  io_pads_gpio_18_o_oval   = inspect_mode ? inspect_pc[18]: gpio_18_o_oval;
- assign  io_pads_gpio_18_o_oe     = inspect_mode ? 1'b1          : gpio_18_o_oe;
- assign  io_pads_gpio_18_o_ie     = inspect_mode ? 1'b0          : gpio_18_o_ie;
- assign  io_pads_gpio_18_o_pue    = inspect_mode ? 1'b0          : gpio_18_o_pue;
- assign  io_pads_gpio_18_o_ds     = inspect_mode ? 1'b1          : gpio_18_o_ds;
- assign  io_pads_gpio_19_o_oval   = inspect_mode ? inspect_pc[19]: gpio_19_o_oval;
- assign  io_pads_gpio_19_o_oe     = inspect_mode ? 1'b1          : gpio_19_o_oe;
- assign  io_pads_gpio_19_o_ie     = inspect_mode ? 1'b0          : gpio_19_o_ie;
- assign  io_pads_gpio_19_o_pue    = inspect_mode ? 1'b0          : gpio_19_o_pue;
- assign  io_pads_gpio_19_o_ds     = inspect_mode ? 1'b1          : gpio_19_o_ds;
- assign  io_pads_gpio_20_o_oval   = inspect_mode ? inspect_pc[20]: gpio_20_o_oval;
- assign  io_pads_gpio_20_o_oe     = inspect_mode ? 1'b1          : gpio_20_o_oe;
- assign  io_pads_gpio_20_o_ie     = inspect_mode ? 1'b0          : gpio_20_o_ie;
- assign  io_pads_gpio_20_o_pue    = inspect_mode ? 1'b0          : gpio_20_o_pue;
- assign  io_pads_gpio_20_o_ds     = inspect_mode ? 1'b1          : gpio_20_o_ds;
- assign  io_pads_gpio_21_o_oval   = inspect_mode ? inspect_pc[21]: gpio_21_o_oval;
- assign  io_pads_gpio_21_o_oe     = inspect_mode ? 1'b1          : gpio_21_o_oe;
- assign  io_pads_gpio_21_o_ie     = inspect_mode ? 1'b0          : gpio_21_o_ie;
- assign  io_pads_gpio_21_o_pue    = inspect_mode ? 1'b0          : gpio_21_o_pue;
- assign  io_pads_gpio_21_o_ds     = inspect_mode ? 1'b1          : gpio_21_o_ds;
+ // assign  io_pads_gpio_0_o_oval    = inspect_mode ? inspect_pc[0] : gpio_0_o_oval;
+ // assign  io_pads_gpio_0_o_oe      = inspect_mode ? 1'b1          : gpio_0_o_oe;
+ // assign  io_pads_gpio_0_o_ie      = inspect_mode ? 1'b0          : gpio_0_o_ie;
+ // assign  io_pads_gpio_0_o_pue     = inspect_mode ? 1'b0          : gpio_0_o_pue;
+ // assign  io_pads_gpio_0_o_ds      = inspect_mode ? 1'b1          : gpio_0_o_ds;
+ // assign  io_pads_gpio_1_o_oval    = inspect_mode ? inspect_pc[1] : gpio_1_o_oval;
+ // assign  io_pads_gpio_1_o_oe      = inspect_mode ? 1'b1          : gpio_1_o_oe;
+ // assign  io_pads_gpio_1_o_ie      = inspect_mode ? 1'b0          : gpio_1_o_ie;
+ // assign  io_pads_gpio_1_o_pue     = inspect_mode ? 1'b0          : gpio_1_o_pue;
+ // assign  io_pads_gpio_1_o_ds      = inspect_mode ? 1'b1          : gpio_1_o_ds;
+ // assign  io_pads_gpio_2_o_oval    = inspect_mode ? inspect_pc[2] : gpio_2_o_oval;
+ // assign  io_pads_gpio_2_o_oe      = inspect_mode ? 1'b1          : gpio_2_o_oe;
+ // assign  io_pads_gpio_2_o_ie      = inspect_mode ? 1'b0          : gpio_2_o_ie;
+ // assign  io_pads_gpio_2_o_pue     = inspect_mode ? 1'b0          : gpio_2_o_pue;
+ // assign  io_pads_gpio_2_o_ds      = inspect_mode ? 1'b1          : gpio_2_o_ds;
+ // assign  io_pads_gpio_3_o_oval    = inspect_mode ? inspect_pc[3] : gpio_3_o_oval;
+ // assign  io_pads_gpio_3_o_oe      = inspect_mode ? 1'b1          : gpio_3_o_oe;
+ // assign  io_pads_gpio_3_o_ie      = inspect_mode ? 1'b0          : gpio_3_o_ie;
+ // assign  io_pads_gpio_3_o_pue     = inspect_mode ? 1'b0          : gpio_3_o_pue;
+ // assign  io_pads_gpio_3_o_ds      = inspect_mode ? 1'b1          : gpio_3_o_ds;
+ // assign  io_pads_gpio_4_o_oval    = inspect_mode ? inspect_pc[4] : gpio_4_o_oval;
+ // assign  io_pads_gpio_4_o_oe      = inspect_mode ? 1'b1          : gpio_4_o_oe;
+ // assign  io_pads_gpio_4_o_ie      = inspect_mode ? 1'b0          : gpio_4_o_ie;
+ // assign  io_pads_gpio_4_o_pue     = inspect_mode ? 1'b0          : gpio_4_o_pue;
+ // assign  io_pads_gpio_4_o_ds      = inspect_mode ? 1'b1          : gpio_4_o_ds;
+ // assign  io_pads_gpio_5_o_oval    = inspect_mode ? inspect_pc[5] : gpio_5_o_oval;
+ // assign  io_pads_gpio_5_o_oe      = inspect_mode ? 1'b1          : gpio_5_o_oe;
+ // assign  io_pads_gpio_5_o_ie      = inspect_mode ? 1'b0          : gpio_5_o_ie;
+ // assign  io_pads_gpio_5_o_pue     = inspect_mode ? 1'b0          : gpio_5_o_pue;
+ // assign  io_pads_gpio_5_o_ds      = inspect_mode ? 1'b1          : gpio_5_o_ds;
+ // assign  io_pads_gpio_6_o_oval    = inspect_mode ? inspect_pc[6] : gpio_6_o_oval;
+ // assign  io_pads_gpio_6_o_oe      = inspect_mode ? 1'b1          : gpio_6_o_oe;
+ // assign  io_pads_gpio_6_o_ie      = inspect_mode ? 1'b0          : gpio_6_o_ie;
+ // assign  io_pads_gpio_6_o_pue     = inspect_mode ? 1'b0          : gpio_6_o_pue;
+ // assign  io_pads_gpio_6_o_ds      = inspect_mode ? 1'b1          : gpio_6_o_ds;
+ // assign  io_pads_gpio_7_o_oval    = inspect_mode ? inspect_pc[7] : gpio_7_o_oval;
+ // assign  io_pads_gpio_7_o_oe      = inspect_mode ? 1'b1          : gpio_7_o_oe;
+ // assign  io_pads_gpio_7_o_ie      = inspect_mode ? 1'b0          : gpio_7_o_ie;
+ // assign  io_pads_gpio_7_o_pue     = inspect_mode ? 1'b0          : gpio_7_o_pue;
+ // assign  io_pads_gpio_7_o_ds      = inspect_mode ? 1'b1          : gpio_7_o_ds;
+ // assign  io_pads_gpio_8_o_oval    = inspect_mode ? inspect_pc[8] : gpio_8_o_oval;
+ // assign  io_pads_gpio_8_o_oe      = inspect_mode ? 1'b1          : gpio_8_o_oe;
+ // assign  io_pads_gpio_8_o_ie      = inspect_mode ? 1'b0          : gpio_8_o_ie;
+ // assign  io_pads_gpio_8_o_pue     = inspect_mode ? 1'b0          : gpio_8_o_pue;
+ // assign  io_pads_gpio_8_o_ds      = inspect_mode ? 1'b1          : gpio_8_o_ds;
+ // assign  io_pads_gpio_9_o_oval    = inspect_mode ? inspect_pc[9] : gpio_9_o_oval;
+ // assign  io_pads_gpio_9_o_oe      = inspect_mode ? 1'b1          : gpio_9_o_oe;
+ // assign  io_pads_gpio_9_o_ie      = inspect_mode ? 1'b0          : gpio_9_o_ie;
+ // assign  io_pads_gpio_9_o_pue     = inspect_mode ? 1'b0          : gpio_9_o_pue;
+ // assign  io_pads_gpio_9_o_ds      = inspect_mode ? 1'b1          : gpio_9_o_ds;
+ // assign  io_pads_gpio_10_o_oval   = inspect_mode ? inspect_pc[10]: gpio_10_o_oval;
+ // assign  io_pads_gpio_10_o_oe     = inspect_mode ? 1'b1          : gpio_10_o_oe;
+ // assign  io_pads_gpio_10_o_ie     = inspect_mode ? 1'b0          : gpio_10_o_ie;
+ // assign  io_pads_gpio_10_o_pue    = inspect_mode ? 1'b0          : gpio_10_o_pue;
+ // assign  io_pads_gpio_10_o_ds     = inspect_mode ? 1'b1          : gpio_10_o_ds;
+ // assign  io_pads_gpio_11_o_oval   = inspect_mode ? inspect_pc[11]: gpio_11_o_oval;
+ // assign  io_pads_gpio_11_o_oe     = inspect_mode ? 1'b1          : gpio_11_o_oe;
+ // assign  io_pads_gpio_11_o_ie     = inspect_mode ? 1'b0          : gpio_11_o_ie;
+ // assign  io_pads_gpio_11_o_pue    = inspect_mode ? 1'b0          : gpio_11_o_pue;
+ // assign  io_pads_gpio_11_o_ds     = inspect_mode ? 1'b1          : gpio_11_o_ds;
+ // assign  io_pads_gpio_12_o_oval   = inspect_mode ? inspect_pc[12]: gpio_12_o_oval;
+ // assign  io_pads_gpio_12_o_oe     = inspect_mode ? 1'b1          : gpio_12_o_oe;
+ // assign  io_pads_gpio_12_o_ie     = inspect_mode ? 1'b0          : gpio_12_o_ie;
+ // assign  io_pads_gpio_12_o_pue    = inspect_mode ? 1'b0          : gpio_12_o_pue;
+ // assign  io_pads_gpio_12_o_ds     = inspect_mode ? 1'b1          : gpio_12_o_ds;
+ // assign  io_pads_gpio_13_o_oval   = inspect_mode ? inspect_pc[13]: gpio_13_o_oval;
+ // assign  io_pads_gpio_13_o_oe     = inspect_mode ? 1'b1          : gpio_13_o_oe;
+ // assign  io_pads_gpio_13_o_ie     = inspect_mode ? 1'b0          : gpio_13_o_ie;
+ // assign  io_pads_gpio_13_o_pue    = inspect_mode ? 1'b0          : gpio_13_o_pue;
+ // assign  io_pads_gpio_13_o_ds     = inspect_mode ? 1'b1          : gpio_13_o_ds;
+ // assign  io_pads_gpio_14_o_oval   = inspect_mode ? inspect_pc[14]: gpio_14_o_oval;
+ // assign  io_pads_gpio_14_o_oe     = inspect_mode ? 1'b1          : gpio_14_o_oe;
+ // assign  io_pads_gpio_14_o_ie     = inspect_mode ? 1'b0          : gpio_14_o_ie;
+ // assign  io_pads_gpio_14_o_pue    = inspect_mode ? 1'b0          : gpio_14_o_pue;
+ // assign  io_pads_gpio_14_o_ds     = inspect_mode ? 1'b1          : gpio_14_o_ds;
+ // assign  io_pads_gpio_15_o_oval   = inspect_mode ? inspect_pc[15]: gpio_15_o_oval;
+ // assign  io_pads_gpio_15_o_oe     = inspect_mode ? 1'b1          : gpio_15_o_oe;
+ // assign  io_pads_gpio_15_o_ie     = inspect_mode ? 1'b0          : gpio_15_o_ie;
+ // assign  io_pads_gpio_15_o_pue    = inspect_mode ? 1'b0          : gpio_15_o_pue;
+ // assign  io_pads_gpio_15_o_ds     = inspect_mode ? 1'b1          : gpio_15_o_ds;
+ // assign  io_pads_gpio_16_o_oval   = inspect_mode ? inspect_pc[16]: gpio_16_o_oval;
+ // assign  io_pads_gpio_16_o_oe     = inspect_mode ? 1'b1          : gpio_16_o_oe;
+ // assign  io_pads_gpio_16_o_ie     = inspect_mode ? 1'b0          : gpio_16_o_ie;
+ // assign  io_pads_gpio_16_o_pue    = inspect_mode ? 1'b0          : gpio_16_o_pue;
+ // assign  io_pads_gpio_16_o_ds     = inspect_mode ? 1'b1          : gpio_16_o_ds;
+ // assign  io_pads_gpio_17_o_oval   = inspect_mode ? inspect_pc[17]: gpio_17_o_oval;
+ // assign  io_pads_gpio_17_o_oe     = inspect_mode ? 1'b1          : gpio_17_o_oe;
+ // assign  io_pads_gpio_17_o_ie     = inspect_mode ? 1'b0          : gpio_17_o_ie;
+ // assign  io_pads_gpio_17_o_pue    = inspect_mode ? 1'b0          : gpio_17_o_pue;
+ // assign  io_pads_gpio_17_o_ds     = inspect_mode ? 1'b1          : gpio_17_o_ds;
+ // assign  io_pads_gpio_18_o_oval   = inspect_mode ? inspect_pc[18]: gpio_18_o_oval;
+ // assign  io_pads_gpio_18_o_oe     = inspect_mode ? 1'b1          : gpio_18_o_oe;
+ // assign  io_pads_gpio_18_o_ie     = inspect_mode ? 1'b0          : gpio_18_o_ie;
+ // assign  io_pads_gpio_18_o_pue    = inspect_mode ? 1'b0          : gpio_18_o_pue;
+ // assign  io_pads_gpio_18_o_ds     = inspect_mode ? 1'b1          : gpio_18_o_ds;
+ // assign  io_pads_gpio_19_o_oval   = inspect_mode ? inspect_pc[19]: gpio_19_o_oval;
+ // assign  io_pads_gpio_19_o_oe     = inspect_mode ? 1'b1          : gpio_19_o_oe;
+ // assign  io_pads_gpio_19_o_ie     = inspect_mode ? 1'b0          : gpio_19_o_ie;
+ // assign  io_pads_gpio_19_o_pue    = inspect_mode ? 1'b0          : gpio_19_o_pue;
+ // assign  io_pads_gpio_19_o_ds     = inspect_mode ? 1'b1          : gpio_19_o_ds;
+ // assign  io_pads_gpio_20_o_oval   = inspect_mode ? inspect_pc[20]: gpio_20_o_oval;
+ // assign  io_pads_gpio_20_o_oe     = inspect_mode ? 1'b1          : gpio_20_o_oe;
+ // assign  io_pads_gpio_20_o_ie     = inspect_mode ? 1'b0          : gpio_20_o_ie;
+ // assign  io_pads_gpio_20_o_pue    = inspect_mode ? 1'b0          : gpio_20_o_pue;
+ // assign  io_pads_gpio_20_o_ds     = inspect_mode ? 1'b1          : gpio_20_o_ds;
+ // assign  io_pads_gpio_21_o_oval   = inspect_mode ? inspect_pc[21]: gpio_21_o_oval;
+ // assign  io_pads_gpio_21_o_oe     = inspect_mode ? 1'b1          : gpio_21_o_oe;
+ // assign  io_pads_gpio_21_o_ie     = inspect_mode ? 1'b0          : gpio_21_o_ie;
+ // assign  io_pads_gpio_21_o_pue    = inspect_mode ? 1'b0          : gpio_21_o_pue;
+ // assign  io_pads_gpio_21_o_ds     = inspect_mode ? 1'b1          : gpio_21_o_ds;
 
- assign  io_pads_gpio_22_o_oval   = inspect_mode ? inspect_mem_cmd_valid : gpio_22_o_oval;
- assign  io_pads_gpio_22_o_oe     = inspect_mode ? 1'b1                  : gpio_22_o_oe;
- assign  io_pads_gpio_22_o_ie     = inspect_mode ? 1'b0                  : gpio_22_o_ie;
- assign  io_pads_gpio_22_o_pue    = inspect_mode ? 1'b0                  : gpio_22_o_pue;
- assign  io_pads_gpio_22_o_ds     = inspect_mode ? 1'b1                  : gpio_22_o_ds;
- assign  io_pads_gpio_23_o_oval   = inspect_mode ? inspect_mem_cmd_ready : gpio_23_o_oval;
- assign  io_pads_gpio_23_o_oe     = inspect_mode ? 1'b1                  : gpio_23_o_oe;
- assign  io_pads_gpio_23_o_ie     = inspect_mode ? 1'b0                  : gpio_23_o_ie;
- assign  io_pads_gpio_23_o_pue    = inspect_mode ? 1'b0                  : gpio_23_o_pue;
- assign  io_pads_gpio_23_o_ds     = inspect_mode ? 1'b1                  : gpio_23_o_ds;
- assign  io_pads_gpio_24_o_oval   = inspect_mode ? inspect_mem_rsp_valid : gpio_24_o_oval;
- assign  io_pads_gpio_24_o_oe     = inspect_mode ? 1'b1                  : gpio_24_o_oe;
- assign  io_pads_gpio_24_o_ie     = inspect_mode ? 1'b0                  : gpio_24_o_ie;
- assign  io_pads_gpio_24_o_pue    = inspect_mode ? 1'b0                  : gpio_24_o_pue;
- assign  io_pads_gpio_24_o_ds     = inspect_mode ? 1'b1                  : gpio_24_o_ds;
- assign  io_pads_gpio_25_o_oval   = inspect_mode ? inspect_mem_rsp_ready : gpio_25_o_oval;
- assign  io_pads_gpio_25_o_oe     = inspect_mode ? 1'b1                  : gpio_25_o_oe;
- assign  io_pads_gpio_25_o_ie     = inspect_mode ? 1'b0                  : gpio_25_o_ie;
- assign  io_pads_gpio_25_o_pue    = inspect_mode ? 1'b0                  : gpio_25_o_pue;
- assign  io_pads_gpio_25_o_ds     = inspect_mode ? 1'b1                  : gpio_25_o_ds;
- assign  io_pads_gpio_26_o_oval   = inspect_mode ? inspect_jtag_clk      : gpio_26_o_oval;
- assign  io_pads_gpio_26_o_oe     = inspect_mode ? 1'b1                  : gpio_26_o_oe;
- assign  io_pads_gpio_26_o_ie     = inspect_mode ? 1'b0                  : gpio_26_o_ie;
- assign  io_pads_gpio_26_o_pue    = inspect_mode ? 1'b0                  : gpio_26_o_pue;
- assign  io_pads_gpio_26_o_ds     = inspect_mode ? 1'b1                  : gpio_26_o_ds;
- assign  io_pads_gpio_27_o_oval   = inspect_mode ? inspect_core_clk      : gpio_27_o_oval;
- assign  io_pads_gpio_27_o_oe     = inspect_mode ? 1'b1                  : gpio_27_o_oe;
- assign  io_pads_gpio_27_o_ie     = inspect_mode ? 1'b0                  : gpio_27_o_ie;
- assign  io_pads_gpio_27_o_pue    = inspect_mode ? 1'b0                  : gpio_27_o_pue;
- assign  io_pads_gpio_27_o_ds     = inspect_mode ? 1'b1                  : gpio_27_o_ds;
- assign  io_pads_gpio_28_o_oval   = inspect_mode ? inspect_por_rst       : gpio_28_o_oval;
- assign  io_pads_gpio_28_o_oe     = inspect_mode ? 1'b1                  : gpio_28_o_oe;
- assign  io_pads_gpio_28_o_ie     = inspect_mode ? 1'b0                  : gpio_28_o_ie;
- assign  io_pads_gpio_28_o_pue    = inspect_mode ? 1'b0                  : gpio_28_o_pue;
- assign  io_pads_gpio_28_o_ds     = inspect_mode ? 1'b1                  : gpio_28_o_ds;
- assign  io_pads_gpio_29_o_oval   = inspect_mode ? inspect_32k_clk       : gpio_29_o_oval;
- assign  io_pads_gpio_29_o_oe     = inspect_mode ? 1'b1                  : gpio_29_o_oe;
- assign  io_pads_gpio_29_o_ie     = inspect_mode ? 1'b0                  : gpio_29_o_ie;
- assign  io_pads_gpio_29_o_pue    = inspect_mode ? 1'b0                  : gpio_29_o_pue;
- assign  io_pads_gpio_29_o_ds     = inspect_mode ? 1'b1                  : gpio_29_o_ds;
- assign  io_pads_gpio_30_o_oval   = inspect_mode ? inspect_16m_clk       : gpio_30_o_oval;
- assign  io_pads_gpio_30_o_oe     = inspect_mode ? 1'b1                  : gpio_30_o_oe;
- assign  io_pads_gpio_30_o_ie     = inspect_mode ? 1'b0                  : gpio_30_o_ie;
- assign  io_pads_gpio_30_o_pue    = inspect_mode ? 1'b0                  : gpio_30_o_pue;
- assign  io_pads_gpio_30_o_ds     = inspect_mode ? 1'b1                  : gpio_30_o_ds;
- assign  io_pads_gpio_31_o_oval   = inspect_mode ? inspect_pll_clk       : gpio_31_o_oval;
- assign  io_pads_gpio_31_o_oe     = inspect_mode ? 1'b1                  : gpio_31_o_oe;
- assign  io_pads_gpio_31_o_ie     = inspect_mode ? 1'b0                  : gpio_31_o_ie;
- assign  io_pads_gpio_31_o_pue    = inspect_mode ? 1'b0                  : gpio_31_o_pue;
- assign  io_pads_gpio_31_o_ds     = inspect_mode ? 1'b1                  : gpio_31_o_ds;
+ // assign  io_pads_gpio_22_o_oval   = inspect_mode ? inspect_mem_cmd_valid : gpio_22_o_oval;
+ // assign  io_pads_gpio_22_o_oe     = inspect_mode ? 1'b1                  : gpio_22_o_oe;
+ // assign  io_pads_gpio_22_o_ie     = inspect_mode ? 1'b0                  : gpio_22_o_ie;
+ // assign  io_pads_gpio_22_o_pue    = inspect_mode ? 1'b0                  : gpio_22_o_pue;
+ // assign  io_pads_gpio_22_o_ds     = inspect_mode ? 1'b1                  : gpio_22_o_ds;
+ // assign  io_pads_gpio_23_o_oval   = inspect_mode ? inspect_mem_cmd_ready : gpio_23_o_oval;
+ // assign  io_pads_gpio_23_o_oe     = inspect_mode ? 1'b1                  : gpio_23_o_oe;
+ // assign  io_pads_gpio_23_o_ie     = inspect_mode ? 1'b0                  : gpio_23_o_ie;
+ // assign  io_pads_gpio_23_o_pue    = inspect_mode ? 1'b0                  : gpio_23_o_pue;
+ // assign  io_pads_gpio_23_o_ds     = inspect_mode ? 1'b1                  : gpio_23_o_ds;
+ // assign  io_pads_gpio_24_o_oval   = inspect_mode ? inspect_mem_rsp_valid : gpio_24_o_oval;
+ // assign  io_pads_gpio_24_o_oe     = inspect_mode ? 1'b1                  : gpio_24_o_oe;
+ // assign  io_pads_gpio_24_o_ie     = inspect_mode ? 1'b0                  : gpio_24_o_ie;
+ // assign  io_pads_gpio_24_o_pue    = inspect_mode ? 1'b0                  : gpio_24_o_pue;
+ // assign  io_pads_gpio_24_o_ds     = inspect_mode ? 1'b1                  : gpio_24_o_ds;
+ // assign  io_pads_gpio_25_o_oval   = inspect_mode ? inspect_mem_rsp_ready : gpio_25_o_oval;
+ // assign  io_pads_gpio_25_o_oe     = inspect_mode ? 1'b1                  : gpio_25_o_oe;
+ // assign  io_pads_gpio_25_o_ie     = inspect_mode ? 1'b0                  : gpio_25_o_ie;
+ // assign  io_pads_gpio_25_o_pue    = inspect_mode ? 1'b0                  : gpio_25_o_pue;
+ // assign  io_pads_gpio_25_o_ds     = inspect_mode ? 1'b1                  : gpio_25_o_ds;
+ // assign  io_pads_gpio_26_o_oval   = inspect_mode ? inspect_jtag_clk      : gpio_26_o_oval;
+ // assign  io_pads_gpio_26_o_oe     = inspect_mode ? 1'b1                  : gpio_26_o_oe;
+ // assign  io_pads_gpio_26_o_ie     = inspect_mode ? 1'b0                  : gpio_26_o_ie;
+ // assign  io_pads_gpio_26_o_pue    = inspect_mode ? 1'b0                  : gpio_26_o_pue;
+ // assign  io_pads_gpio_26_o_ds     = inspect_mode ? 1'b1                  : gpio_26_o_ds;
+ // assign  io_pads_gpio_27_o_oval   = inspect_mode ? inspect_core_clk      : gpio_27_o_oval;
+ // assign  io_pads_gpio_27_o_oe     = inspect_mode ? 1'b1                  : gpio_27_o_oe;
+ // assign  io_pads_gpio_27_o_ie     = inspect_mode ? 1'b0                  : gpio_27_o_ie;
+ // assign  io_pads_gpio_27_o_pue    = inspect_mode ? 1'b0                  : gpio_27_o_pue;
+ // assign  io_pads_gpio_27_o_ds     = inspect_mode ? 1'b1                  : gpio_27_o_ds;
+ // assign  io_pads_gpio_28_o_oval   = inspect_mode ? inspect_por_rst       : gpio_28_o_oval;
+ // assign  io_pads_gpio_28_o_oe     = inspect_mode ? 1'b1                  : gpio_28_o_oe;
+ // assign  io_pads_gpio_28_o_ie     = inspect_mode ? 1'b0                  : gpio_28_o_ie;
+ // assign  io_pads_gpio_28_o_pue    = inspect_mode ? 1'b0                  : gpio_28_o_pue;
+ // assign  io_pads_gpio_28_o_ds     = inspect_mode ? 1'b1                  : gpio_28_o_ds;
+ // assign  io_pads_gpio_29_o_oval   = inspect_mode ? inspect_32k_clk       : gpio_29_o_oval;
+ // assign  io_pads_gpio_29_o_oe     = inspect_mode ? 1'b1                  : gpio_29_o_oe;
+ // assign  io_pads_gpio_29_o_ie     = inspect_mode ? 1'b0                  : gpio_29_o_ie;
+ // assign  io_pads_gpio_29_o_pue    = inspect_mode ? 1'b0                  : gpio_29_o_pue;
+ // assign  io_pads_gpio_29_o_ds     = inspect_mode ? 1'b1                  : gpio_29_o_ds;
+ // assign  io_pads_gpio_30_o_oval   = inspect_mode ? inspect_16m_clk       : gpio_30_o_oval;
+ // assign  io_pads_gpio_30_o_oe     = inspect_mode ? 1'b1                  : gpio_30_o_oe;
+ // assign  io_pads_gpio_30_o_ie     = inspect_mode ? 1'b0                  : gpio_30_o_ie;
+ // assign  io_pads_gpio_30_o_pue    = inspect_mode ? 1'b0                  : gpio_30_o_pue;
+ // assign  io_pads_gpio_30_o_ds     = inspect_mode ? 1'b1                  : gpio_30_o_ds;
+ // assign  io_pads_gpio_31_o_oval   = inspect_mode ? inspect_pll_clk       : gpio_31_o_oval;
+ // assign  io_pads_gpio_31_o_oe     = inspect_mode ? 1'b1                  : gpio_31_o_oe;
+ // assign  io_pads_gpio_31_o_ie     = inspect_mode ? 1'b0                  : gpio_31_o_ie;
+ // assign  io_pads_gpio_31_o_pue    = inspect_mode ? 1'b0                  : gpio_31_o_pue;
+ // assign  io_pads_gpio_31_o_ds     = inspect_mode ? 1'b1                  : gpio_31_o_ds;
 
 
   
@@ -820,14 +823,14 @@ module e203_subsys_main(
 
   wire main_rst_n = ~main_rst;
 
-  wire pllbypass ;
-  wire pll_RESET ;
-  wire pll_ASLEEP ;
-  wire [1:0]  pll_OD;
-  wire [7:0]  pll_M;
-  wire [4:0]  pll_N;
-  wire plloutdivby1;
-  wire [5:0] plloutdiv;
+  // wire pllbypass ;
+  // wire pll_RESET ;
+  // wire pll_ASLEEP ;
+  // wire [1:0]  pll_OD;
+  // wire [7:0]  pll_M;
+  // wire [4:0]  pll_N;
+  // wire plloutdivby1;
+  // wire [5:0] plloutdiv;
 
   // e203_subsys_hclkgen u_e203_subsys_hclkgen(
   //   .test_mode   (test_mode),
@@ -928,17 +931,17 @@ assign hfclk = hfextclk;
   // assign fio_icb_rsp_rdata    = sysfio_icb_rsp_rdata;
   // `endif//}
 
-  wire                         mem_icb_cmd_valid;
-  wire                         mem_icb_cmd_ready;
-  wire [`E203_ADDR_SIZE-1:0]   mem_icb_cmd_addr; 
-  wire                         mem_icb_cmd_read; 
-  wire [`E203_XLEN-1:0]        mem_icb_cmd_wdata;
-  wire [`E203_XLEN/8-1:0]      mem_icb_cmd_wmask;
+  // wire                         mem_icb_cmd_valid;
+  // wire                         mem_icb_cmd_ready;
+  // wire [`E203_ADDR_SIZE-1:0]   mem_icb_cmd_addr; 
+  // wire                         mem_icb_cmd_read; 
+  // wire [`E203_XLEN-1:0]        mem_icb_cmd_wdata;
+  // wire [`E203_XLEN/8-1:0]      mem_icb_cmd_wmask;
   
-  wire                         mem_icb_rsp_valid;
-  wire                         mem_icb_rsp_ready;
-  wire                         mem_icb_rsp_err  ;
-  wire [`E203_XLEN-1:0]        mem_icb_rsp_rdata;
+  // wire                         mem_icb_rsp_valid;
+  // wire                         mem_icb_rsp_ready;
+  // wire                         mem_icb_rsp_err  ;
+  // wire [`E203_XLEN-1:0]        mem_icb_rsp_rdata;
 
   wire  plic_ext_irq;
   wire  clint_sft_irq;
@@ -954,14 +957,14 @@ assign hfclk = hfextclk;
   e203_cpu_top u_e203_cpu_top(
 
   .inspect_pc               (inspect_pc), 
-  .inspect_dbg_irq          (inspect_dbg_irq      ),
-  .inspect_mem_cmd_valid    (inspect_mem_cmd_valid), 
-  .inspect_mem_cmd_ready    (inspect_mem_cmd_ready), 
-  .inspect_mem_rsp_valid    (inspect_mem_rsp_valid),
-  .inspect_mem_rsp_ready    (inspect_mem_rsp_ready),
+  .inspect_dbg_irq          (),
+  // .inspect_mem_cmd_valid    (inspect_mem_cmd_valid), 
+  // .inspect_mem_cmd_ready    (inspect_mem_cmd_ready), 
+  // .inspect_mem_rsp_valid    (inspect_mem_rsp_valid),
+  // .inspect_mem_rsp_ready    (inspect_mem_rsp_ready),
   .inspect_core_clk         (inspect_core_clk),
 
-  .core_csr_clk          (core_csr_clk      ),
+  // .core_csr_clk          (core_csr_clk      ),
 
 
         
@@ -975,34 +978,34 @@ assign hfclk = hfextclk;
     
     .core_wfi        (core_wfi),
 
-    .dbg_irq_r       (dbg_irq_r      ),
+    .dbg_irq_r       (),
 
-    .cmt_dpc         (cmt_dpc        ),
-    .cmt_dpc_ena     (cmt_dpc_ena    ),
-    .cmt_dcause      (cmt_dcause     ),
-    .cmt_dcause_ena  (cmt_dcause_ena ),
+    .cmt_dpc         (     ),
+    .cmt_dpc_ena     (   ),
+    .cmt_dcause      (),
+    .cmt_dcause_ena  (),
 
-    .wr_dcsr_ena     (wr_dcsr_ena    ),
-    .wr_dpc_ena      (wr_dpc_ena     ),
-    .wr_dscratch_ena (wr_dscratch_ena),
+    .wr_dcsr_ena     ( ),
+    .wr_dpc_ena      (),
+    .wr_dscratch_ena (),
 
 
 
                                      
-    .wr_csr_nxt      (wr_csr_nxt    ),
+    .wr_csr_nxt      (),
                                      
-    .dcsr_r          (dcsr_r         ),
-    .dpc_r           (dpc_r          ),
-    .dscratch_r      (dscratch_r     ),
+    .dcsr_r          (32'b0),
+    .dpc_r           ({`E203_PC_SIZE{0}}),
+    .dscratch_r      (32'b0),
 
-    .dbg_mode        (dbg_mode),
-    .dbg_halt_r      (dbg_halt_r),
-    .dbg_step_r      (dbg_step_r),
-    .dbg_ebreakm_r   (dbg_ebreakm_r),
-    .dbg_stopcycle   (dbg_stopcycle),
+    .dbg_mode        (1'b0),
+    .dbg_halt_r      (1'b0),
+    .dbg_step_r      (1'b0),
+    .dbg_ebreakm_r   (1'b0),
+    .dbg_stopcycle   (1'b0),
 
     .core_mhartid            (core_mhartid),  
-    .dbg_irq_a               (dbg_irq_a),
+    .dbg_irq_a               (1'b0),
     .ext_irq_a               (plic_ext_irq),
     .sft_irq_a               (clint_sft_irq),
     .tmr_irq_a               (clint_tmr_irq),
@@ -1174,8 +1177,8 @@ assign hfclk = hfextclk;
 
     .plic_ext_irq           (plic_ext_irq),
 
-    .wdg_irq_a              (aon_wdg_irq_a),
-    .rtc_irq_a              (aon_rtc_irq_a),
+    // .wdg_irq_a              (aon_wdg_irq_a),
+    // .rtc_irq_a              (aon_rtc_irq_a),
 
     // .qspi0_irq              (qspi0_irq  ), 
     // .qspi1_irq              (qspi1_irq  ),
@@ -1238,29 +1241,29 @@ assign hfclk = hfextclk;
     .rst_n                  (per_rst_n) 
   );
 
-// e203_subsys_clint u_e203_subsys_clint(
-//     .tm_stop                 (tm_stop),
+e203_subsys_clint u_e203_subsys_clint(
+    .tm_stop                 (tm_stop),
 
-//     .clint_icb_cmd_valid     (clint_icb_cmd_valid),
-//     .clint_icb_cmd_ready     (clint_icb_cmd_ready),
-//     .clint_icb_cmd_addr      (clint_icb_cmd_addr ),
-//     .clint_icb_cmd_read      (clint_icb_cmd_read ),
-//     .clint_icb_cmd_wdata     (clint_icb_cmd_wdata),
-//     .clint_icb_cmd_wmask     (clint_icb_cmd_wmask),
+    .clint_icb_cmd_valid     (clint_icb_cmd_valid),
+    .clint_icb_cmd_ready     (clint_icb_cmd_ready),
+    .clint_icb_cmd_addr      (clint_icb_cmd_addr ),
+    .clint_icb_cmd_read      (clint_icb_cmd_read ),
+    .clint_icb_cmd_wdata     (clint_icb_cmd_wdata),
+    .clint_icb_cmd_wmask     (clint_icb_cmd_wmask),
     
-//     .clint_icb_rsp_valid     (clint_icb_rsp_valid),
-//     .clint_icb_rsp_ready     (clint_icb_rsp_ready),
-//     .clint_icb_rsp_err       (clint_icb_rsp_err  ),
-//     .clint_icb_rsp_rdata     (clint_icb_rsp_rdata),
+    .clint_icb_rsp_valid     (clint_icb_rsp_valid),
+    .clint_icb_rsp_ready     (clint_icb_rsp_ready),
+    .clint_icb_rsp_err       (clint_icb_rsp_err  ),
+    .clint_icb_rsp_rdata     (clint_icb_rsp_rdata),
 
-//     .clint_tmr_irq           (clint_tmr_irq),
-//     .clint_sft_irq           (clint_sft_irq),
+    .clint_tmr_irq           (clint_tmr_irq),
+    .clint_sft_irq           (clint_sft_irq),
 
-//     .aon_rtcToggle_a         (aon_rtcToggle_a),
+    .aon_rtcToggle_a         (1'b0),
 
-//     .clk           (hfclk  ),
-//     .rst_n         (per_rst_n) 
-//   );
+    .clk           (hfclk  ),
+    .rst_n         (per_rst_n) 
+  );
 
   
   // wire                     qspi0_ro_icb_cmd_valid;

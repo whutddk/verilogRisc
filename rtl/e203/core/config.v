@@ -1,4 +1,26 @@
- /*                                                                      
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-01-28 20:59:01
+// Last Modified by:   29505
+// Last Modified time: 2019-02-01 18:07:14
+// Email: 295054118@whut.edu.cn
+// Design Name: config.v  
+// Module Name:  
+// Project Name:    
+// Target Devices:    
+// Tool Versions:    
+// Description:    
+// 
+// Dependencies:    
+// 
+// Revision:   
+// Revision  
+// Additional Comments:   
+// 
+////////////////////////////////////////////////////////////////////////////////// 
+/*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
  Licensed under the Apache License, Version 2.0 (the "License");         
@@ -76,8 +98,8 @@
 `define E203_CFG_DTCM_ADDR_BASE   `E203_CFG_ADDR_SIZE'h9000_0000 
 
  //   * PPI       : 0x1000 0000 -- 0x1FFF FFFF
-`define E203_CFG_PPI_ADDR_BASE  `E203_CFG_ADDR_SIZE'h1000_0000
-    `define E203_CFG_PPI_BASE_REGION  `E203_CFG_ADDR_SIZE-1:`E203_CFG_ADDR_SIZE-4
+// `define E203_CFG_PPI_ADDR_BASE  `E203_CFG_ADDR_SIZE'h1000_0000
+//     `define E203_CFG_PPI_BASE_REGION  `E203_CFG_ADDR_SIZE-1:`E203_CFG_ADDR_SIZE-4
 
   //  * CLINT     : 0x0200 0000 -- 0x0200 FFFF
   //  * PLIC      : 0x0C00 0000 -- 0x0CFF FFFF
@@ -86,8 +108,8 @@
 `define E203_CFG_PLIC_ADDR_BASE  `E203_CFG_ADDR_SIZE'h0C00_0000
     `define E203_CFG_PLIC_BASE_REGION  `E203_CFG_ADDR_SIZE-1:`E203_CFG_ADDR_SIZE-8
 
-`define E203_CFG_FIO_ADDR_BASE  `E203_CFG_ADDR_SIZE'hf000_0000 
-    `define E203_CFG_FIO_BASE_REGION  `E203_CFG_ADDR_SIZE-1:`E203_CFG_ADDR_SIZE-4
+// `define E203_CFG_FIO_ADDR_BASE  `E203_CFG_ADDR_SIZE'hf000_0000 
+//     `define E203_CFG_FIO_BASE_REGION  `E203_CFG_ADDR_SIZE-1:`E203_CFG_ADDR_SIZE-4
 
 
 

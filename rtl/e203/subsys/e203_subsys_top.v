@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-01-31 16:01:05
 // Last Modified by:   29505
-// Last Modified time: 2019-02-01 17:37:52
+// Last Modified time: 2019-02-01 20:58:11
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_subsys_top.v  
 // Module Name:  
@@ -436,39 +436,39 @@ module e203_subsys_top(
   // output  io_pads_qspi_cs_0_o_pue,
   // output  io_pads_qspi_cs_0_o_ds,
 
-  input   io_pads_jtag_TCK_i_ival,
-  output  io_pads_jtag_TCK_o_oval,
-  output  io_pads_jtag_TCK_o_oe,
-  output  io_pads_jtag_TCK_o_ie,
-  output  io_pads_jtag_TCK_o_pue,
-  output  io_pads_jtag_TCK_o_ds,
-  input   io_pads_jtag_TMS_i_ival,
-  output  io_pads_jtag_TMS_o_oval,
-  output  io_pads_jtag_TMS_o_oe,
-  output  io_pads_jtag_TMS_o_ie,
-  output  io_pads_jtag_TMS_o_pue,
-  output  io_pads_jtag_TMS_o_ds,
-  input   io_pads_jtag_TDI_i_ival,
-  output  io_pads_jtag_TDI_o_oval,
-  output  io_pads_jtag_TDI_o_oe,
-  output  io_pads_jtag_TDI_o_ie,
-  output  io_pads_jtag_TDI_o_pue,
-  output  io_pads_jtag_TDI_o_ds,
-  input   io_pads_jtag_TDO_i_ival,
-  output  io_pads_jtag_TDO_o_oval,
-  output  io_pads_jtag_TDO_o_oe,
-  output  io_pads_jtag_TDO_o_ie,
-  output  io_pads_jtag_TDO_o_pue,
-  output  io_pads_jtag_TDO_o_ds,
-  input   io_pads_jtag_TRST_n_i_ival,
-  output  io_pads_jtag_TRST_n_o_oval,
-  output  io_pads_jtag_TRST_n_o_oe,
-  output  io_pads_jtag_TRST_n_o_ie,
-  output  io_pads_jtag_TRST_n_o_pue,
-  output  io_pads_jtag_TRST_n_o_ds,
+  // input   io_pads_jtag_TCK_i_ival,
+  // output  io_pads_jtag_TCK_o_oval,
+  // output  io_pads_jtag_TCK_o_oe,
+  // output  io_pads_jtag_TCK_o_ie,
+  // output  io_pads_jtag_TCK_o_pue,
+  // output  io_pads_jtag_TCK_o_ds,
+  // input   io_pads_jtag_TMS_i_ival,
+  // output  io_pads_jtag_TMS_o_oval,
+  // output  io_pads_jtag_TMS_o_oe,
+  // output  io_pads_jtag_TMS_o_ie,
+  // output  io_pads_jtag_TMS_o_pue,
+  // output  io_pads_jtag_TMS_o_ds,
+  // input   io_pads_jtag_TDI_i_ival,
+  // output  io_pads_jtag_TDI_o_oval,
+  // output  io_pads_jtag_TDI_o_oe,
+  // output  io_pads_jtag_TDI_o_ie,
+  // output  io_pads_jtag_TDI_o_pue,
+  // output  io_pads_jtag_TDI_o_ds,
+  // input   io_pads_jtag_TDO_i_ival,
+  // output  io_pads_jtag_TDO_o_oval,
+  // output  io_pads_jtag_TDO_o_oe,
+  // output  io_pads_jtag_TDO_o_ie,
+  // output  io_pads_jtag_TDO_o_pue,
+  // output  io_pads_jtag_TDO_o_ds,
+  // input   io_pads_jtag_TRST_n_i_ival,
+  // output  io_pads_jtag_TRST_n_o_oval,
+  // output  io_pads_jtag_TRST_n_o_oe,
+  // output  io_pads_jtag_TRST_n_o_ie,
+  // output  io_pads_jtag_TRST_n_o_pue,
+  // output  io_pads_jtag_TRST_n_o_ds,
 
   input  test_iso_override,
-  input  test_mode 
+  // input  test_mode 
   );
 
   wire hfclk;// The PLL generated high-speed clock 
@@ -476,56 +476,56 @@ module e203_subsys_top(
   wire corerst;
 
   ///////////////////////////////////////
-  wire [`E203_HART_NUM-1:0] dbg_irq;
+  // wire [`E203_HART_NUM-1:0] dbg_irq;
 
-  wire  [`E203_PC_SIZE-1:0] cmt_dpc;
-  wire  cmt_dpc_ena;
+  // wire  [`E203_PC_SIZE-1:0] cmt_dpc;
+  // wire  cmt_dpc_ena;
 
-  wire  [3-1:0] cmt_dcause;
-  wire  cmt_dcause_ena;
+  // wire  [3-1:0] cmt_dcause;
+  // wire  cmt_dcause_ena;
 
-  wire  dbg_irq_r;
+  // wire  dbg_irq_r;
 
-  wire  wr_dcsr_ena;
-  wire  wr_dpc_ena ;
-  wire  wr_dscratch_ena;
+  // wire  wr_dcsr_ena;
+  // wire  wr_dpc_ena ;
+  // wire  wr_dscratch_ena;
 
-  wire  [32-1:0] wr_csr_nxt;
-
-
-
-  wire  [32-1:0] dcsr_r    ;
-  wire  [`E203_PC_SIZE-1:0] dpc_r     ;
-  wire  [32-1:0] dscratch_r;
-
-  wire  dbg_mode;
-  wire  dbg_halt_r;
-  wire  dbg_step_r;
-  wire  dbg_ebreakm_r;
-  wire  dbg_stopcycle;
-
-  wire  inspect_mode; 
-  wire  inspect_por_rst; 
-  wire  inspect_32k_clk; 
-  wire  inspect_pc_29b; 
-  wire  inspect_dbg_irq;
-  wire  inspect_jtag_clk;
-  wire  core_csr_clk;
+  // wire  [32-1:0] wr_csr_nxt;
 
 
-  wire                          dm_icb_cmd_valid;
-  wire                          dm_icb_cmd_ready;
-  wire  [`E203_ADDR_SIZE-1:0]   dm_icb_cmd_addr; 
-  wire                          dm_icb_cmd_read; 
-  wire  [`E203_XLEN-1:0]        dm_icb_cmd_wdata;
-  //
-  wire                          dm_icb_rsp_valid;
-  wire                          dm_icb_rsp_ready;
-  wire  [`E203_XLEN-1:0]        dm_icb_rsp_rdata;
 
-  wire  aon_wdg_irq_a   ;
-  wire  aon_rtc_irq_a   ;
-  wire  aon_rtcToggle_a ;
+  // wire  [32-1:0] dcsr_r    ;
+  // wire  [`E203_PC_SIZE-1:0] dpc_r     ;
+  // wire  [32-1:0] dscratch_r;
+
+  // wire  dbg_mode;
+  // wire  dbg_halt_r;
+  // wire  dbg_step_r;
+  // wire  dbg_ebreakm_r;
+  // wire  dbg_stopcycle;
+
+  // wire  inspect_mode; 
+  // wire  inspect_por_rst; 
+  // wire  inspect_32k_clk; 
+  // wire  inspect_pc_29b; 
+  // wire  inspect_dbg_irq;
+  // wire  inspect_jtag_clk;
+  // wire  core_csr_clk;
+
+
+  // wire                          dm_icb_cmd_valid;
+  // wire                          dm_icb_cmd_ready;
+  // wire  [`E203_ADDR_SIZE-1:0]   dm_icb_cmd_addr; 
+  // wire                          dm_icb_cmd_read; 
+  // wire  [`E203_XLEN-1:0]        dm_icb_cmd_wdata;
+  // //
+  // wire                          dm_icb_rsp_valid;
+  // wire                          dm_icb_rsp_ready;
+  // wire  [`E203_XLEN-1:0]        dm_icb_rsp_rdata;
+
+  // wire  aon_wdg_irq_a   ;
+  // wire  aon_rtc_irq_a   ;
+  // wire  aon_rtcToggle_a ;
 
   // wire                          aon_icb_cmd_valid;
   // wire                          aon_icb_cmd_ready;
@@ -546,71 +546,71 @@ module e203_subsys_top(
   e203_subsys_main  u_e203_subsys_main(
     .pc_rtvec        (pc_rtvec),
 
-    .inspect_mode    (inspect_mode    ), 
-    .inspect_por_rst (inspect_por_rst), 
-    .inspect_32k_clk (inspect_32k_clk), 
-    .inspect_pc_29b  (inspect_pc_29b  ), 
-    .inspect_dbg_irq (inspect_dbg_irq ),
-    .inspect_jtag_clk(inspect_jtag_clk),
-    .core_csr_clk    (core_csr_clk    ),
+    // .inspect_mode    (inspect_mode    ), 
+    // .inspect_por_rst (inspect_por_rst), 
+    // .inspect_32k_clk (inspect_32k_clk), 
+    // .inspect_pc_29b  (inspect_pc_29b  ), 
+    // .inspect_dbg_irq (inspect_dbg_irq ),
+    // .inspect_jtag_clk(inspect_jtag_clk),
+    // .core_csr_clk    (core_csr_clk    ),
 
     .hfextclk        (hfextclk),
     .hfxoscen        (hfxoscen),
 
 
-    .dbg_irq_r       (dbg_irq_r      ),
+    // .dbg_irq_r       (dbg_irq_r      ),
 
-    .cmt_dpc         (cmt_dpc        ),
-    .cmt_dpc_ena     (cmt_dpc_ena    ),
-    .cmt_dcause      (cmt_dcause     ),
-    .cmt_dcause_ena  (cmt_dcause_ena ),
+    // .cmt_dpc         (cmt_dpc        ),
+    // .cmt_dpc_ena     (cmt_dpc_ena    ),
+    // .cmt_dcause      (cmt_dcause     ),
+    // .cmt_dcause_ena  (cmt_dcause_ena ),
 
-    .wr_dcsr_ena     (wr_dcsr_ena    ),
-    .wr_dpc_ena      (wr_dpc_ena     ),
-    .wr_dscratch_ena (wr_dscratch_ena),
+    // .wr_dcsr_ena     (wr_dcsr_ena    ),
+    // .wr_dpc_ena      (wr_dpc_ena     ),
+    // .wr_dscratch_ena (wr_dscratch_ena),
                                      
-    .wr_csr_nxt      (wr_csr_nxt     ),
+    // .wr_csr_nxt      (wr_csr_nxt     ),
                                      
 
 
-    .dcsr_r          (dcsr_r         ),
-    .dpc_r           (dpc_r          ),
-    .dscratch_r      (dscratch_r     ),
+    // .dcsr_r          (dcsr_r         ),
+    // .dpc_r           (dpc_r          ),
+    // .dscratch_r      (dscratch_r     ),
 
-    .dbg_mode        (dbg_mode),
-    .dbg_halt_r      (dbg_halt_r),
-    .dbg_step_r      (dbg_step_r),
-    .dbg_ebreakm_r   (dbg_ebreakm_r),
-    .dbg_stopcycle   (dbg_stopcycle),
+    // .dbg_mode        (dbg_mode),
+    // .dbg_halt_r      (dbg_halt_r),
+    // .dbg_step_r      (dbg_step_r),
+    // .dbg_ebreakm_r   (dbg_ebreakm_r),
+    // .dbg_stopcycle   (dbg_stopcycle),
 
 
     .core_mhartid            (core_mhartid),  
-    .dbg_irq_a               (dbg_irq[0]),
+    // .dbg_irq_a               (dbg_irq[0]),
     
-    .aon_wdg_irq_a           (aon_wdg_irq_a     ),      
-    .aon_rtc_irq_a           (aon_rtc_irq_a     ),
-    .aon_rtcToggle_a         (aon_rtcToggle_a   ),
+    // .aon_wdg_irq_a           (aon_wdg_irq_a     ),      
+    // .aon_rtc_irq_a           (aon_rtc_irq_a     ),
+    // .aon_rtcToggle_a         (aon_rtcToggle_a   ),
                              
-    .aon_icb_cmd_valid       (aon_icb_cmd_valid ),
-    .aon_icb_cmd_ready       (aon_icb_cmd_ready ),
-    .aon_icb_cmd_addr        (aon_icb_cmd_addr  ),
-    .aon_icb_cmd_read        (aon_icb_cmd_read  ),
-    .aon_icb_cmd_wdata       (aon_icb_cmd_wdata ),
+    // .aon_icb_cmd_valid       (aon_icb_cmd_valid ),
+    // .aon_icb_cmd_ready       (aon_icb_cmd_ready ),
+    // .aon_icb_cmd_addr        (aon_icb_cmd_addr  ),
+    // .aon_icb_cmd_read        (aon_icb_cmd_read  ),
+    // .aon_icb_cmd_wdata       (aon_icb_cmd_wdata ),
                             
-    .aon_icb_rsp_valid       (aon_icb_rsp_valid ),
-    .aon_icb_rsp_ready       (aon_icb_rsp_ready ),
-    .aon_icb_rsp_err         (1'b0   ),
-    .aon_icb_rsp_rdata       (aon_icb_rsp_rdata ),
+    // .aon_icb_rsp_valid       (aon_icb_rsp_valid ),
+    // .aon_icb_rsp_ready       (aon_icb_rsp_ready ),
+    // .aon_icb_rsp_err         (1'b0   ),
+    // .aon_icb_rsp_rdata       (aon_icb_rsp_rdata ),
 
-    .dm_icb_cmd_valid         (dm_icb_cmd_valid),
-    .dm_icb_cmd_ready         (dm_icb_cmd_ready),
-    .dm_icb_cmd_addr          (dm_icb_cmd_addr ),
-    .dm_icb_cmd_read          (dm_icb_cmd_read ),
-    .dm_icb_cmd_wdata         (dm_icb_cmd_wdata),
+    // .dm_icb_cmd_valid         (dm_icb_cmd_valid),
+    // .dm_icb_cmd_ready         (dm_icb_cmd_ready),
+    // .dm_icb_cmd_addr          (dm_icb_cmd_addr ),
+    // .dm_icb_cmd_read          (dm_icb_cmd_read ),
+    // .dm_icb_cmd_wdata         (dm_icb_cmd_wdata),
     
-    .dm_icb_rsp_valid         (dm_icb_rsp_valid),
-    .dm_icb_rsp_ready         (dm_icb_rsp_ready),
-    .dm_icb_rsp_rdata         (dm_icb_rsp_rdata),
+    // .dm_icb_rsp_valid         (dm_icb_rsp_valid),
+    // .dm_icb_rsp_ready         (dm_icb_rsp_ready),
+    // .dm_icb_rsp_rdata         (dm_icb_rsp_rdata),
 
     // .io_pads_gpio_0_i_ival           (io_pads_gpio_0_i_ival),
     // .io_pads_gpio_0_o_oval           (io_pads_gpio_0_o_oval),
@@ -917,94 +917,94 @@ module e203_subsys_top(
 
 
 
-  sirv_debug_module # (
-    `ifdef E203_DEBUG_HAS_JTAG //{
-      .SUPPORT_JTAG_DTM (1),
-    `else//}{
-      .SUPPORT_JTAG_DTM (0),
-    `endif//}
-      .ASYNC_FF_LEVELS (`E203_ASYNC_FF_LEVELS),
-      .HART_NUM (`E203_HART_NUM),
-      .PC_SIZE  (`E203_PC_SIZE),
-      .HART_ID_W(`E203_HART_ID_W) 
-    ) u_sirv_debug_module(
-    .inspect_jtag_clk    (inspect_jtag_clk),
+  // sirv_debug_module # (
+  //   `ifdef E203_DEBUG_HAS_JTAG //{
+  //     .SUPPORT_JTAG_DTM (1),
+  //   `else//}{
+  //     .SUPPORT_JTAG_DTM (0),
+  //   `endif//}
+  //     .ASYNC_FF_LEVELS (`E203_ASYNC_FF_LEVELS),
+  //     .HART_NUM (`E203_HART_NUM),
+  //     .PC_SIZE  (`E203_PC_SIZE),
+  //     .HART_ID_W(`E203_HART_ID_W) 
+  //   ) u_sirv_debug_module(
+  //   .inspect_jtag_clk    (inspect_jtag_clk),
 
-    .test_mode       (test_mode ),
-    .core_csr_clk    (core_csr_clk),
+  //   .test_mode       (test_mode ),
+  //   .core_csr_clk    (core_csr_clk),
 
-    .dbg_irq_r       (dbg_irq_r      ),
+  //   .dbg_irq_r       (dbg_irq_r      ),
 
-    .cmt_dpc         (cmt_dpc        ),
-    .cmt_dpc_ena     (cmt_dpc_ena    ),
-    .cmt_dcause      (cmt_dcause     ),
-    .cmt_dcause_ena  (cmt_dcause_ena ),
+  //   .cmt_dpc         (cmt_dpc        ),
+  //   .cmt_dpc_ena     (cmt_dpc_ena    ),
+  //   .cmt_dcause      (cmt_dcause     ),
+  //   .cmt_dcause_ena  (cmt_dcause_ena ),
 
-    .wr_dcsr_ena     (wr_dcsr_ena    ),
-    .wr_dpc_ena      (wr_dpc_ena     ),
-    .wr_dscratch_ena (wr_dscratch_ena),
+  //   .wr_dcsr_ena     (wr_dcsr_ena    ),
+  //   .wr_dpc_ena      (wr_dpc_ena     ),
+  //   .wr_dscratch_ena (wr_dscratch_ena),
                                      
-    .wr_csr_nxt      (wr_csr_nxt     ),
+  //   .wr_csr_nxt      (wr_csr_nxt     ),
                                      
 
-    .dcsr_r          (dcsr_r         ),
-    .dpc_r           (dpc_r          ),
-    .dscratch_r      (dscratch_r     ),
+  //   .dcsr_r          (dcsr_r         ),
+  //   .dpc_r           (dpc_r          ),
+  //   .dscratch_r      (dscratch_r     ),
 
-    .dbg_mode        (dbg_mode),
-    .dbg_halt_r      (dbg_halt_r),
-    .dbg_step_r      (dbg_step_r),
-    .dbg_ebreakm_r   (dbg_ebreakm_r),
-    .dbg_stopcycle   (dbg_stopcycle),
+  //   .dbg_mode        (dbg_mode),
+  //   .dbg_halt_r      (dbg_halt_r),
+  //   .dbg_step_r      (dbg_step_r),
+  //   .dbg_ebreakm_r   (dbg_ebreakm_r),
+  //   .dbg_stopcycle   (dbg_stopcycle),
 
-    .io_pads_jtag_TCK_i_ival     (io_pads_jtag_TCK_i_ival    ),
-    .io_pads_jtag_TCK_o_oval     (io_pads_jtag_TCK_o_oval    ),
-    .io_pads_jtag_TCK_o_oe       (io_pads_jtag_TCK_o_oe      ),
-    .io_pads_jtag_TCK_o_ie       (io_pads_jtag_TCK_o_ie      ),
-    .io_pads_jtag_TCK_o_pue      (io_pads_jtag_TCK_o_pue     ),
-    .io_pads_jtag_TCK_o_ds       (io_pads_jtag_TCK_o_ds      ),
-    .io_pads_jtag_TMS_i_ival     (io_pads_jtag_TMS_i_ival    ),
-    .io_pads_jtag_TMS_o_oval     (io_pads_jtag_TMS_o_oval    ),
-    .io_pads_jtag_TMS_o_oe       (io_pads_jtag_TMS_o_oe      ),
-    .io_pads_jtag_TMS_o_ie       (io_pads_jtag_TMS_o_ie      ),
-    .io_pads_jtag_TMS_o_pue      (io_pads_jtag_TMS_o_pue     ),
-    .io_pads_jtag_TMS_o_ds       (io_pads_jtag_TMS_o_ds      ),
-    .io_pads_jtag_TDI_i_ival     (io_pads_jtag_TDI_i_ival    ),
-    .io_pads_jtag_TDI_o_oval     (io_pads_jtag_TDI_o_oval    ),
-    .io_pads_jtag_TDI_o_oe       (io_pads_jtag_TDI_o_oe      ),
-    .io_pads_jtag_TDI_o_ie       (io_pads_jtag_TDI_o_ie      ),
-    .io_pads_jtag_TDI_o_pue      (io_pads_jtag_TDI_o_pue     ),
-    .io_pads_jtag_TDI_o_ds       (io_pads_jtag_TDI_o_ds      ),
-    .io_pads_jtag_TDO_i_ival     (io_pads_jtag_TDO_i_ival    ),
-    .io_pads_jtag_TDO_o_oval     (io_pads_jtag_TDO_o_oval    ),
-    .io_pads_jtag_TDO_o_oe       (io_pads_jtag_TDO_o_oe      ),
-    .io_pads_jtag_TDO_o_ie       (io_pads_jtag_TDO_o_ie      ),
-    .io_pads_jtag_TDO_o_pue      (io_pads_jtag_TDO_o_pue     ),
-    .io_pads_jtag_TDO_o_ds       (io_pads_jtag_TDO_o_ds      ),
-    .io_pads_jtag_TRST_n_i_ival  (io_pads_jtag_TRST_n_i_ival ),
-    .io_pads_jtag_TRST_n_o_oval  (io_pads_jtag_TRST_n_o_oval ),
-    .io_pads_jtag_TRST_n_o_oe    (io_pads_jtag_TRST_n_o_oe   ),
-    .io_pads_jtag_TRST_n_o_ie    (io_pads_jtag_TRST_n_o_ie   ),
-    .io_pads_jtag_TRST_n_o_pue   (io_pads_jtag_TRST_n_o_pue  ),
-    .io_pads_jtag_TRST_n_o_ds    (io_pads_jtag_TRST_n_o_ds   ),
+  //   .io_pads_jtag_TCK_i_ival     (io_pads_jtag_TCK_i_ival    ),
+  //   .io_pads_jtag_TCK_o_oval     (io_pads_jtag_TCK_o_oval    ),
+  //   .io_pads_jtag_TCK_o_oe       (io_pads_jtag_TCK_o_oe      ),
+  //   .io_pads_jtag_TCK_o_ie       (io_pads_jtag_TCK_o_ie      ),
+  //   .io_pads_jtag_TCK_o_pue      (io_pads_jtag_TCK_o_pue     ),
+  //   .io_pads_jtag_TCK_o_ds       (io_pads_jtag_TCK_o_ds      ),
+  //   .io_pads_jtag_TMS_i_ival     (io_pads_jtag_TMS_i_ival    ),
+  //   .io_pads_jtag_TMS_o_oval     (io_pads_jtag_TMS_o_oval    ),
+  //   .io_pads_jtag_TMS_o_oe       (io_pads_jtag_TMS_o_oe      ),
+  //   .io_pads_jtag_TMS_o_ie       (io_pads_jtag_TMS_o_ie      ),
+  //   .io_pads_jtag_TMS_o_pue      (io_pads_jtag_TMS_o_pue     ),
+  //   .io_pads_jtag_TMS_o_ds       (io_pads_jtag_TMS_o_ds      ),
+  //   .io_pads_jtag_TDI_i_ival     (io_pads_jtag_TDI_i_ival    ),
+  //   .io_pads_jtag_TDI_o_oval     (io_pads_jtag_TDI_o_oval    ),
+  //   .io_pads_jtag_TDI_o_oe       (io_pads_jtag_TDI_o_oe      ),
+  //   .io_pads_jtag_TDI_o_ie       (io_pads_jtag_TDI_o_ie      ),
+  //   .io_pads_jtag_TDI_o_pue      (io_pads_jtag_TDI_o_pue     ),
+  //   .io_pads_jtag_TDI_o_ds       (io_pads_jtag_TDI_o_ds      ),
+  //   .io_pads_jtag_TDO_i_ival     (io_pads_jtag_TDO_i_ival    ),
+  //   .io_pads_jtag_TDO_o_oval     (io_pads_jtag_TDO_o_oval    ),
+  //   .io_pads_jtag_TDO_o_oe       (io_pads_jtag_TDO_o_oe      ),
+  //   .io_pads_jtag_TDO_o_ie       (io_pads_jtag_TDO_o_ie      ),
+  //   .io_pads_jtag_TDO_o_pue      (io_pads_jtag_TDO_o_pue     ),
+  //   .io_pads_jtag_TDO_o_ds       (io_pads_jtag_TDO_o_ds      ),
+  //   .io_pads_jtag_TRST_n_i_ival  (io_pads_jtag_TRST_n_i_ival ),
+  //   .io_pads_jtag_TRST_n_o_oval  (io_pads_jtag_TRST_n_o_oval ),
+  //   .io_pads_jtag_TRST_n_o_oe    (io_pads_jtag_TRST_n_o_oe   ),
+  //   .io_pads_jtag_TRST_n_o_ie    (io_pads_jtag_TRST_n_o_ie   ),
+  //   .io_pads_jtag_TRST_n_o_pue   (io_pads_jtag_TRST_n_o_pue  ),
+  //   .io_pads_jtag_TRST_n_o_ds    (io_pads_jtag_TRST_n_o_ds   ),
 
-    .i_icb_cmd_valid         (dm_icb_cmd_valid),
-    .i_icb_cmd_ready         (dm_icb_cmd_ready),
-    .i_icb_cmd_addr          (dm_icb_cmd_addr[11:0] ),
-    .i_icb_cmd_read          (dm_icb_cmd_read ),
-    .i_icb_cmd_wdata         (dm_icb_cmd_wdata),
+    // .i_icb_cmd_valid         (dm_icb_cmd_valid),
+    // .i_icb_cmd_ready         (dm_icb_cmd_ready),
+    // .i_icb_cmd_addr          (dm_icb_cmd_addr[11:0] ),
+    // .i_icb_cmd_read          (dm_icb_cmd_read ),
+    // .i_icb_cmd_wdata         (dm_icb_cmd_wdata),
     
-    .i_icb_rsp_valid         (dm_icb_rsp_valid),
-    .i_icb_rsp_ready         (dm_icb_rsp_ready),
-    .i_icb_rsp_rdata         (dm_icb_rsp_rdata),
+    // .i_icb_rsp_valid         (dm_icb_rsp_valid),
+    // .i_icb_rsp_ready         (dm_icb_rsp_ready),
+    // .i_icb_rsp_rdata         (dm_icb_rsp_rdata),
 
-    .o_dbg_irq               (dbg_irq),
-    .o_ndreset               (),
-    .o_fullreset             (),
+  //   .o_dbg_irq               (dbg_irq),
+  //   .o_ndreset               (),
+  //   .o_fullreset             (),
 
-    .hfclk           (hfclk),
-    .corerst         (corerst) 
-  );
+  //   .hfclk           (hfclk),
+  //   .corerst         (corerst) 
+  // );
 
 
   // sirv_aon_top u_sirv_aon_top(

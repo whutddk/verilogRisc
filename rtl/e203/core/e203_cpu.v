@@ -1,10 +1,10 @@
 
 //////////////////////////////////////////////////////////////////////////////////
-// Company:    
+// Company:     
 // Engineer: 29505
 // Create Date: 2019-01-28 20:59:01
 // Last Modified by:   29505
-// Last Modified time: 2019-02-01 17:40:52
+// Last Modified time: 2019-02-01 20:40:43
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_cpu.v  
 // Module Name:  
@@ -19,7 +19,9 @@
 // Revision  
 // Additional Comments:   
 // 
-////////////////////////////////////////////////////////////////////////////////// /*                                                                      
+////////////////////////////////////////////////////////////////////////////////// 
+
+/*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
  Licensed under the Apache License, Version 2.0 (the "License");         
@@ -53,10 +55,10 @@ module e203_cpu #(
 )(
   output [`E203_PC_SIZE-1:0] inspect_pc,
   output inspect_dbg_irq      ,
-  output inspect_mem_cmd_valid,
-  output inspect_mem_cmd_ready,
-  output inspect_mem_rsp_valid,
-  output inspect_mem_rsp_ready,
+  // output inspect_mem_cmd_valid,
+  // output inspect_mem_cmd_ready,
+  // output inspect_mem_rsp_valid,
+  // output inspect_mem_rsp_ready,
   output inspect_core_clk          ,
   output core_csr_clk      ,
   `ifdef E203_HAS_ITCM
@@ -812,11 +814,11 @@ module e203_cpu #(
 
 
   assign inspect_dbg_irq       = dbg_irq_a;
-  assign inspect_mem_cmd_valid = mem_icb_cmd_valid;
-  assign inspect_mem_cmd_ready = mem_icb_cmd_ready;
-  assign inspect_mem_rsp_valid = mem_icb_rsp_valid;
-  assign inspect_mem_rsp_ready = mem_icb_rsp_ready;
+  // assign inspect_mem_cmd_valid = mem_icb_cmd_valid;
+  // assign inspect_mem_cmd_ready = mem_icb_cmd_ready;
+  // assign inspect_mem_rsp_valid = mem_icb_rsp_valid;
+  // assign inspect_mem_rsp_ready = mem_icb_rsp_ready;
   assign inspect_core_clk   = clk;
-  assign core_csr_clk       = clk_core_exu;
+  // assign core_csr_clk       = clk_core_exu;
 
 endmodule

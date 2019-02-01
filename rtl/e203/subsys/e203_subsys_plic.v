@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-01-31 16:01:05
+// Last Modified by:   29505
+// Last Modified time: 2019-02-01 21:00:12
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_subsys_plic.v  
+// Module Name:  
+// Project Name:    
+// Target Devices:    
+// Tool Versions:    
+// Description:    
+// 
+// Dependencies:    
+// 
+// Revision:   
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
 /*
 * @File Name: e203_subsys_plic.v
 * @File Path: K:\work\dark+PRJ\e200_opensource\rtl\e203\subsys\e203_subsys_plic.v
@@ -52,8 +74,8 @@ module e203_subsys_plic(
 
   output plic_ext_irq,
 
-  input  wdg_irq_a,
-  input  rtc_irq_a,
+  // input  wdg_irq_a,
+  // input  rtc_irq_a,
 
   // input  qspi0_irq, 
   // input  qspi1_irq,
@@ -118,31 +140,31 @@ module e203_subsys_plic(
 
   assign plic_icb_rsp_err     = 1'b0;
 
-  wire  wdg_irq_r;
-  wire  rtc_irq_r;
+  // wire  wdg_irq_r;
+  // wire  rtc_irq_r;
 
-  sirv_gnrl_sync # (
-  .DP(`E203_ASYNC_FF_LEVELS),
-  .DW(1)
-  ) u_rtc_irq_sync(
-      .din_a    (rtc_irq_a),
-      .dout     (rtc_irq_r),
-      .clk      (clk  ),
-      .rst_n    (rst_n) 
-  );
+  // sirv_gnrl_sync # (
+  // .DP(`E203_ASYNC_FF_LEVELS),
+  // .DW(1)
+  // ) u_rtc_irq_sync(
+  //     .din_a    (rtc_irq_a),
+  //     .dout     (rtc_irq_r),
+  //     .clk      (clk  ),
+  //     .rst_n    (rst_n) 
+  // );
 
-  sirv_gnrl_sync # (
-  .DP(`E203_ASYNC_FF_LEVELS),
-  .DW(1)
-  ) u_wdg_irq_sync(
-      .din_a    (wdg_irq_a),
-      .dout     (wdg_irq_r),
-      .clk      (clk  ),
-      .rst_n    (rst_n) 
-  );
+  // sirv_gnrl_sync # (
+  // .DP(`E203_ASYNC_FF_LEVELS),
+  // .DW(1)
+  // ) u_wdg_irq_sync(
+  //     .din_a    (wdg_irq_a),
+  //     .dout     (wdg_irq_r),
+  //     .clk      (clk  ),
+  //     .rst_n    (rst_n) 
+  // );
 
-  wire plic_irq_i_0  = wdg_irq_r;
-  wire plic_irq_i_1  = rtc_irq_r;
+  // wire plic_irq_i_0  = wdg_irq_r;
+  // wire plic_irq_i_1  = rtc_irq_r;
   // wire plic_irq_i_2  = uart0_irq;
   // wire plic_irq_i_3  = uart1_irq;
   // wire plic_irq_i_4  = qspi0_irq;
@@ -209,8 +231,8 @@ module e203_subsys_plic(
     .i_icb_rsp_ready (plic_icb_rsp_ready),
     .i_icb_rsp_rdata (plic_icb_rsp_rdata),
   
-    .io_devices_0_0  (plic_irq_i_0 ),
-    .io_devices_0_1  (plic_irq_i_1 ),
+    // .io_devices_0_0  (plic_irq_i_0 ),
+    // .io_devices_0_1  (plic_irq_i_1 ),
     // .io_devices_0_2  (plic_irq_i_2 ),
     // .io_devices_0_3  (plic_irq_i_3 ),
     // .io_devices_0_4  (plic_irq_i_4 ),

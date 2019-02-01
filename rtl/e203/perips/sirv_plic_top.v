@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-01-31 16:01:05
+// Last Modified by:   29505
+// Last Modified time: 2019-02-01 21:00:11
+// Email: 295054118@whut.edu.cn
+// Design Name: sirv_plic_top.v  
+// Module Name:  
+// Project Name:    
+// Target Devices:    
+// Tool Versions:    
+// Description:    
+// 
+// Dependencies:    
+// 
+// Revision:   
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
 /*
 * @File Name: sirv_plic_top.v
 * @File Path: K:\work\dark+PRJ\e200_opensource\rtl\e203\perips\sirv_plic_top.v
@@ -47,8 +69,8 @@ module sirv_plic_top(
   input                      i_icb_rsp_ready,
   output [32-1:0]            i_icb_rsp_rdata,
 
-  input   io_devices_0_0,
-  input   io_devices_0_1,
+  // input   io_devices_0_0,
+  // input   io_devices_0_1,
   // input   io_devices_0_2,
   // input   io_devices_0_3,
   // input   io_devices_0_4,
@@ -162,8 +184,8 @@ wire [PLIC_IRQ_NUM-1:0] plic_irq_i = {
                   // io_devices_0_4  ,
                   // io_devices_0_3  ,
                   // io_devices_0_2  ,
-                  io_devices_0_1  ,
-                  io_devices_0_0  ,
+                  // io_devices_0_1  ,
+                  // io_devices_0_0  ,
 
                   1'b0 };// The IRQ0 must be tied to zero
 

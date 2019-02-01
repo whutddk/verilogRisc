@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-01-28 20:59:01
 // Last Modified by:   29505
-// Last Modified time: 2019-02-01 17:39:40
+// Last Modified time: 2019-02-01 18:20:14
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_cpu_top.v  
 // Module Name:  
@@ -19,7 +19,9 @@
 // Revision  
 // Additional Comments:   
 // 
-////////////////////////////////////////////////////////////////////////////////// /*                                                                      
+////////////////////////////////////////////////////////////////////////////////// 
+
+/*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
  Licensed under the Apache License, Version 2.0 (the "License");         
@@ -51,10 +53,10 @@
 module e203_cpu_top(
   output [`E203_PC_SIZE-1:0] inspect_pc,
   output inspect_dbg_irq      ,
-  output inspect_mem_cmd_valid,
-  output inspect_mem_cmd_ready,
-  output inspect_mem_rsp_valid,
-  output inspect_mem_rsp_ready,
+  // output inspect_mem_cmd_valid,
+  // output inspect_mem_cmd_ready,
+  // output inspect_mem_rsp_valid,
+  // output inspect_mem_rsp_ready,
   output inspect_core_clk     ,
 
   output core_csr_clk         ,
@@ -322,18 +324,18 @@ module e203_cpu_top(
 
 `endif//}
 
-    assign ppi_icb_rsp_excl_ok   = 1'b0;
-    assign fio_icb_rsp_excl_ok   = 1'b0;
+    // assign ppi_icb_rsp_excl_ok   = 1'b0;
+    // assign fio_icb_rsp_excl_ok   = 1'b0;
     assign plic_icb_rsp_excl_ok  = 1'b0;
     assign clint_icb_rsp_excl_ok = 1'b0;
-    assign mem_icb_rsp_excl_ok   = 1'b0;
+    // assign mem_icb_rsp_excl_ok   = 1'b0;
 
 
     // `ifdef E203_HAS_PPI
     // assign ppi_icb_enable = 1'b1;
     // assign ppi_region_indic = `E203_PPI_ADDR_BASE;
     // `else
-    assign ppi_icb_enable = 1'b0;
+    // assign ppi_icb_enable = 1'b0;
     // `endif
 
     `ifdef E203_HAS_PLIC
@@ -353,23 +355,23 @@ module e203_cpu_top(
     // `ifdef E203_HAS_MEM_ITF
     // assign mem_icb_enable = 1'b1;
     // `else
-    assign mem_icb_enable = 1'b0;
+    // assign mem_icb_enable = 1'b0;
     // `endif
 
     // `ifdef E203_HAS_FIO
     // assign fio_icb_enable = 1'b1;
     // assign fio_region_indic = `E203_FIO_ADDR_BASE;
     // `else
-    assign fio_icb_enable = 1'b0;
+    // assign fio_icb_enable = 1'b0;
     // `endif
 
   e203_cpu #(.MASTER(1)) u_e203_cpu(
     .inspect_pc               (inspect_pc), 
     .inspect_dbg_irq          (inspect_dbg_irq      ),
-    .inspect_mem_cmd_valid    (inspect_mem_cmd_valid), 
-    .inspect_mem_cmd_ready    (inspect_mem_cmd_ready), 
-    .inspect_mem_rsp_valid    (inspect_mem_rsp_valid),
-    .inspect_mem_rsp_ready    (inspect_mem_rsp_ready),
+    // .inspect_mem_cmd_valid    (inspect_mem_cmd_valid), 
+    // .inspect_mem_cmd_ready    (inspect_mem_cmd_ready), 
+    // .inspect_mem_rsp_valid    (inspect_mem_rsp_valid),
+    // .inspect_mem_rsp_ready    (inspect_mem_rsp_ready),
     .inspect_core_clk         (inspect_core_clk     ),
 
 

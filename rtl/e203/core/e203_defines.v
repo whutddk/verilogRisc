@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-01-28 20:59:31
 // Last Modified by:   29505
-// Last Modified time: 2019-02-01 17:35:59
+// Last Modified time: 2019-02-01 18:07:24
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_defines.v  
 // Module Name:  
@@ -19,7 +19,8 @@
 // Revision  
 // Additional Comments:   
 // 
-////////////////////////////////////////////////////////////////////////////////// /*                                                                      
+////////////////////////////////////////////////////////////////////////////////// 
+/*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
  Licensed under the Apache License, Version 2.0 (the "License");         
@@ -117,14 +118,14 @@
     `endif//}
 `endif//}
 
-`define E203_PPI_ADDR_BASE    `E203_CFG_PPI_ADDR_BASE  
-`define E203_PPI_BASE_REGION  `E203_CFG_PPI_BASE_REGION
+// `define E203_PPI_ADDR_BASE    `E203_CFG_PPI_ADDR_BASE  
+// `define E203_PPI_BASE_REGION  `E203_CFG_PPI_BASE_REGION
 `define E203_CLINT_ADDR_BASE    `E203_CFG_CLINT_ADDR_BASE  
 `define E203_CLINT_BASE_REGION  `E203_CFG_CLINT_BASE_REGION
 `define E203_PLIC_ADDR_BASE    `E203_CFG_PLIC_ADDR_BASE  
 `define E203_PLIC_BASE_REGION  `E203_CFG_PLIC_BASE_REGION
-`define E203_FIO_ADDR_BASE    `E203_CFG_FIO_ADDR_BASE  
-`define E203_FIO_BASE_REGION  `E203_CFG_FIO_BASE_REGION
+// `define E203_FIO_ADDR_BASE    `E203_CFG_FIO_ADDR_BASE  
+// `define E203_FIO_BASE_REGION  `E203_CFG_FIO_BASE_REGION
                               
 `define E203_DTCM_ADDR_BASE   `E203_CFG_DTCM_ADDR_BASE 
 `define E203_ITCM_ADDR_BASE   `E203_CFG_ITCM_ADDR_BASE 
