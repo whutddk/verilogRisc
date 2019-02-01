@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-01-28 20:59:01
 // Last Modified by:   29505
-// Last Modified time: 2019-02-01 17:43:08
+// Last Modified time: 2019-02-01 18:04:04
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_biu.v  
 // Module Name:  
@@ -19,7 +19,8 @@
 // Revision  
 // Additional Comments:   
 // 
-////////////////////////////////////////////////////////////////////////////////// /*                                                                      
+////////////////////////////////////////////////////////////////////////////////// 
+/*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
  Licensed under the Apache License, Version 2.0 (the "License");         
@@ -245,7 +246,7 @@ module e203_biu(
   
   // The SPLT_NUM is the sum of following components
   //   * ppi, clint, plic, SystemITF, Fast-IO, IFU-err 
-      localparam BIU_SPLT_I_NUM_0 = 4;
+      localparam BIU_SPLT_I_NUM_0 = 3;
 
   // `ifdef E203_HAS_MEM_ITF //{
   //     localparam BIU_SPLT_I_NUM_1 = (BIU_SPLT_I_NUM_0 + 1);
@@ -840,8 +841,8 @@ module e203_biu(
                            // `endif//}
                            } = splt_bus_icb_rsp_ready;
 
-  wire buf_icb_cmd_ppi = ppi_icb_enable & (buf_icb_cmd_addr[`E203_PPI_BASE_REGION] ==  ppi_region_indic[`E203_PPI_BASE_REGION]);
-  wire buf_icb_sel_ppi = buf_icb_cmd_ppi & (~buf_icb_cmd_ifu);
+  // wire buf_icb_cmd_ppi = ppi_icb_enable & (buf_icb_cmd_addr[`E203_PPI_BASE_REGION] ==  ppi_region_indic[`E203_PPI_BASE_REGION]);
+  // wire buf_icb_sel_ppi = buf_icb_cmd_ppi & (~buf_icb_cmd_ifu);
 
   wire buf_icb_cmd_clint = clint_icb_enable & (buf_icb_cmd_addr[`E203_CLINT_BASE_REGION] ==  clint_region_indic[`E203_CLINT_BASE_REGION]);
   wire buf_icb_sel_clint = buf_icb_cmd_clint & (~buf_icb_cmd_ifu);
