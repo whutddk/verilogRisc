@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-01-31 16:01:05
 // Last Modified by:   29505
-// Last Modified time: 2019-02-01 20:58:11
+// Last Modified time: 2019-02-01 22:02:12
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_subsys_top.v  
 // Module Name:  
@@ -19,7 +19,9 @@
 // Revision  
 // Additional Comments:   
 // 
-///////////////////////////////////////////////////////////////////////////////////*
+//////////////////////////////////////////////////////////////////////////////////
+
+/*
 * @File Name: e203_subsys_top.v
 * @File Path: K:\work\dark+PRJ\e200_opensource\rtl\e203\subsys\e203_subsys_top.v
 * @Author: 29505
@@ -27,7 +29,9 @@
 * @Last Modified by:   29505
 * @Last Modified time: 2019-01-31 18:48:40
 * @Email: 295054118@whut.edu.cn
-*/ /*                                                                      
+*/ 
+
+/*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
  Licensed under the Apache License, Version 2.0 (the "License");         
@@ -60,54 +64,54 @@
 module e203_subsys_top(
   // This clock should comes from the crystal pad generated high speed clock (16MHz)
   input  hfextclk,
-  output hfxoscen,// The signal to enable the crystal pad generated clock
+  // output hfxoscen,// The signal to enable the crystal pad generated clock
 
   // This clock should comes from the crystal pad generated low speed clock (32.768KHz)
   input  lfextclk,
-  output lfxoscen,// The signal to enable the crystal pad generated clock
+  // output lfxoscen,// The signal to enable the crystal pad generated clock
 
-  input  io_pads_dbgmode0_n_i_ival,
+  // input  io_pads_dbgmode0_n_i_ival,
 
-  input  io_pads_dbgmode1_n_i_ival,
+  // input  io_pads_dbgmode1_n_i_ival,
 
-  input  io_pads_dbgmode2_n_i_ival,
-
-
-  input  io_pads_bootrom_n_i_ival,
-  output io_pads_bootrom_n_o_oval,
-  output io_pads_bootrom_n_o_oe,
-  output io_pads_bootrom_n_o_ie,
-  output io_pads_bootrom_n_o_pue,
-  output io_pads_bootrom_n_o_ds,
-
-  input  io_pads_aon_erst_n_i_ival,
-  output io_pads_aon_erst_n_o_oval,
-  output io_pads_aon_erst_n_o_oe,
-  output io_pads_aon_erst_n_o_ie,
-  output io_pads_aon_erst_n_o_pue,
-  output io_pads_aon_erst_n_o_ds,
-
-  input  io_pads_aon_pmu_dwakeup_n_i_ival,
-  output io_pads_aon_pmu_dwakeup_n_o_oval,
-  output io_pads_aon_pmu_dwakeup_n_o_oe,
-  output io_pads_aon_pmu_dwakeup_n_o_ie,
-  output io_pads_aon_pmu_dwakeup_n_o_pue,
-  output io_pads_aon_pmu_dwakeup_n_o_ds,
-  input  io_pads_aon_pmu_vddpaden_i_ival,
-  output io_pads_aon_pmu_vddpaden_o_oval,
-  output io_pads_aon_pmu_vddpaden_o_oe,
-  output io_pads_aon_pmu_vddpaden_o_ie,
-  output io_pads_aon_pmu_vddpaden_o_pue,
-  output io_pads_aon_pmu_vddpaden_o_ds,
-  input  io_pads_aon_pmu_padrst_i_ival,
-  output io_pads_aon_pmu_padrst_o_oval,
-  output io_pads_aon_pmu_padrst_o_oe,
-  output io_pads_aon_pmu_padrst_o_ie,
-  output io_pads_aon_pmu_padrst_o_pue,
-  output io_pads_aon_pmu_padrst_o_ds,
+  // input  io_pads_dbgmode2_n_i_ival,
 
 
-  input  [`E203_HART_ID_W-1:0] core_mhartid,  
+  // input  io_pads_bootrom_n_i_ival,
+  // output io_pads_bootrom_n_o_oval,
+  // output io_pads_bootrom_n_o_oe,
+  // output io_pads_bootrom_n_o_ie,
+  // output io_pads_bootrom_n_o_pue,
+  // output io_pads_bootrom_n_o_ds,
+
+  // input  io_pads_aon_erst_n_i_ival,
+  // output io_pads_aon_erst_n_o_oval,
+  // output io_pads_aon_erst_n_o_oe,
+  // output io_pads_aon_erst_n_o_ie,
+  // output io_pads_aon_erst_n_o_pue,
+  // output io_pads_aon_erst_n_o_ds,
+
+  // input  io_pads_aon_pmu_dwakeup_n_i_ival,
+  // output io_pads_aon_pmu_dwakeup_n_o_oval,
+  // output io_pads_aon_pmu_dwakeup_n_o_oe,
+  // output io_pads_aon_pmu_dwakeup_n_o_ie,
+  // output io_pads_aon_pmu_dwakeup_n_o_pue,
+  // output io_pads_aon_pmu_dwakeup_n_o_ds,
+  // input  io_pads_aon_pmu_vddpaden_i_ival,
+  // output io_pads_aon_pmu_vddpaden_o_oval,
+  // output io_pads_aon_pmu_vddpaden_o_oe,
+  // output io_pads_aon_pmu_vddpaden_o_ie,
+  // output io_pads_aon_pmu_vddpaden_o_pue,
+  // output io_pads_aon_pmu_vddpaden_o_ds,
+  // input  io_pads_aon_pmu_padrst_i_ival,
+  // output io_pads_aon_pmu_padrst_o_oval,
+  // output io_pads_aon_pmu_padrst_o_oe,
+  // output io_pads_aon_pmu_padrst_o_ie,
+  // output io_pads_aon_pmu_padrst_o_pue,
+  // output io_pads_aon_pmu_padrst_o_ds,
+
+
+  // input  [`E203_HART_ID_W-1:0] core_mhartid,  
     
   `ifdef E203_HAS_ITCM_EXTITF //{
   //////////////////////////////////////////////////////////////
@@ -467,7 +471,7 @@ module e203_subsys_top(
   // output  io_pads_jtag_TRST_n_o_pue,
   // output  io_pads_jtag_TRST_n_o_ds,
 
-  input  test_iso_override,
+  // input  test_iso_override,
   // input  test_mode 
   );
 
@@ -544,7 +548,7 @@ module e203_subsys_top(
 
 
   e203_subsys_main  u_e203_subsys_main(
-    .pc_rtvec        (pc_rtvec),
+    .pc_rtvec        ({`E203_PC_SIZE-1{1'b0}}),
 
     // .inspect_mode    (inspect_mode    ), 
     // .inspect_por_rst (inspect_por_rst), 
@@ -554,8 +558,8 @@ module e203_subsys_top(
     // .inspect_jtag_clk(inspect_jtag_clk),
     // .core_csr_clk    (core_csr_clk    ),
 
-    .hfextclk        (hfextclk),
-    .hfxoscen        (hfxoscen),
+    // .hfextclk        (hfextclk),
+    // .hfxoscen        (hfxoscen),
 
 
     // .dbg_irq_r       (dbg_irq_r      ),
@@ -584,7 +588,7 @@ module e203_subsys_top(
     // .dbg_stopcycle   (dbg_stopcycle),
 
 
-    .core_mhartid            (core_mhartid),  
+    // .core_mhartid            (core_mhartid),  
     // .dbg_irq_a               (dbg_irq[0]),
     
     // .aon_wdg_irq_a           (aon_wdg_irq_a     ),      
@@ -871,29 +875,29 @@ module e203_subsys_top(
   `endif//}
 
 
-    .sysper_icb_cmd_valid     (sysper_icb_cmd_valid),
-    .sysper_icb_cmd_ready     (sysper_icb_cmd_ready),
-    .sysper_icb_cmd_addr      (sysper_icb_cmd_addr ),
-    .sysper_icb_cmd_read      (sysper_icb_cmd_read ),
-    .sysper_icb_cmd_wdata     (sysper_icb_cmd_wdata),
-    .sysper_icb_cmd_wmask     (sysper_icb_cmd_wmask),
+    // .sysper_icb_cmd_valid     (sysper_icb_cmd_valid),
+    // .sysper_icb_cmd_ready     (sysper_icb_cmd_ready),
+    // .sysper_icb_cmd_addr      (sysper_icb_cmd_addr ),
+    // .sysper_icb_cmd_read      (sysper_icb_cmd_read ),
+    // .sysper_icb_cmd_wdata     (sysper_icb_cmd_wdata),
+    // .sysper_icb_cmd_wmask     (sysper_icb_cmd_wmask),
     
-    .sysper_icb_rsp_valid     (sysper_icb_rsp_valid),
-    .sysper_icb_rsp_ready     (sysper_icb_rsp_ready),
-    .sysper_icb_rsp_err       (sysper_icb_rsp_err  ),
-    .sysper_icb_rsp_rdata     (sysper_icb_rsp_rdata),
+    // .sysper_icb_rsp_valid     (sysper_icb_rsp_valid),
+    // .sysper_icb_rsp_ready     (sysper_icb_rsp_ready),
+    // .sysper_icb_rsp_err       (sysper_icb_rsp_err  ),
+    // .sysper_icb_rsp_rdata     (sysper_icb_rsp_rdata),
 
-    .sysfio_icb_cmd_valid     (sysfio_icb_cmd_valid),
-    .sysfio_icb_cmd_ready     (sysfio_icb_cmd_ready),
-    .sysfio_icb_cmd_addr      (sysfio_icb_cmd_addr ),
-    .sysfio_icb_cmd_read      (sysfio_icb_cmd_read ),
-    .sysfio_icb_cmd_wdata     (sysfio_icb_cmd_wdata),
-    .sysfio_icb_cmd_wmask     (sysfio_icb_cmd_wmask),
+    // .sysfio_icb_cmd_valid     (sysfio_icb_cmd_valid),
+    // .sysfio_icb_cmd_ready     (sysfio_icb_cmd_ready),
+    // .sysfio_icb_cmd_addr      (sysfio_icb_cmd_addr ),
+    // .sysfio_icb_cmd_read      (sysfio_icb_cmd_read ),
+    // .sysfio_icb_cmd_wdata     (sysfio_icb_cmd_wdata),
+    // .sysfio_icb_cmd_wmask     (sysfio_icb_cmd_wmask),
     
-    .sysfio_icb_rsp_valid     (sysfio_icb_rsp_valid),
-    .sysfio_icb_rsp_ready     (sysfio_icb_rsp_ready),
-    .sysfio_icb_rsp_err       (sysfio_icb_rsp_err  ),
-    .sysfio_icb_rsp_rdata     (sysfio_icb_rsp_rdata),
+    // .sysfio_icb_rsp_valid     (sysfio_icb_rsp_valid),
+    // .sysfio_icb_rsp_ready     (sysfio_icb_rsp_ready),
+    // .sysfio_icb_rsp_err       (sysfio_icb_rsp_err  ),
+    // .sysfio_icb_rsp_rdata     (sysfio_icb_rsp_rdata),
 
 
 
@@ -909,7 +913,7 @@ module e203_subsys_top(
     // .sysmem_icb_rsp_err    (sysmem_icb_rsp_err  ),
     // .sysmem_icb_rsp_rdata  (sysmem_icb_rsp_rdata),
 
-    .test_mode     (test_mode), 
+    // .test_mode     (test_mode), 
     .hfclk           (hfclk   ),
     .hfclkrst        (hfclkrst),
     .corerst       (corerst)

@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-01-31 16:01:05
 // Last Modified by:   29505
-// Last Modified time: 2019-02-01 17:32:44
+// Last Modified time: 2019-02-01 21:56:09
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_soc_top.v  
 // Module Name:  
@@ -19,7 +19,9 @@
 // Revision  
 // Additional Comments:   
 // 
-///////////////////////////////////////////////////////////////////////////////////*
+//////////////////////////////////////////////////////////////////////////////////
+
+/*
 * @File Name: e203_soc_top.v
 * @File Path: K:\work\dark+PRJ\e200_opensource\rtl\e203\soc\e203_soc_top.v
 * @Author: 29505
@@ -27,7 +29,9 @@
 * @Last Modified by:   29505
 * @Last Modified time: 2019-01-31 18:47:11
 * @Email: 295054118@whut.edu.cn
-*/ /*                                                                      
+*/ 
+
+/*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
  Licensed under the Apache License, Version 2.0 (the "License");         
@@ -49,25 +53,25 @@ module e203_soc_top(
 
     // This clock should comes from the crystal pad generated high speed clock (16MHz)
   input  hfextclk,
-  output hfxoscen,// The signal to enable the crystal pad generated clock
+  // output hfxoscen,// The signal to enable the crystal pad generated clock
 
   // This clock should comes from the crystal pad generated low speed clock (32.768KHz)
   input  lfextclk,
-  output lfxoscen,// The signal to enable the crystal pad generated clock
+  // output lfxoscen,// The signal to enable the crystal pad generated clock
 
 
   // The JTAG TCK is input, need to be pull-up
-  input   io_pads_jtag_TCK_i_ival,
+  // input   io_pads_jtag_TCK_i_ival,
 
   // The JTAG TMS is input, need to be pull-up
-  input   io_pads_jtag_TMS_i_ival,
+  // input   io_pads_jtag_TMS_i_ival,
 
   // The JTAG TDI is input, need to be pull-up
-  input   io_pads_jtag_TDI_i_ival,
+  // input   io_pads_jtag_TDI_i_ival,
 
   // The JTAG TDO is output have enable
-  output  io_pads_jtag_TDO_o_oval,
-  output  io_pads_jtag_TDO_o_oe,
+  // output  io_pads_jtag_TDO_o_oval,
+  // output  io_pads_jtag_TDO_o_oe,
 
   // The GPIO are all bidir pad have enables
   // input   io_pads_gpio_0_i_ival,
@@ -295,41 +299,37 @@ module e203_soc_top(
   // output  io_pads_qspi_dq_3_o_ds,
 
   // Erst is input need to be pull-up by default
-  input   io_pads_aon_erst_n_i_ival,
+  // input   io_pads_aon_erst_n_i_ival,
 
   // dbgmode are inputs need to be pull-up by default
-  input  io_pads_dbgmode0_n_i_ival,
-  input  io_pads_dbgmode1_n_i_ival,
-  input  io_pads_dbgmode2_n_i_ival,
+  // input  io_pads_dbgmode0_n_i_ival,
+  // input  io_pads_dbgmode1_n_i_ival,
+  // input  io_pads_dbgmode2_n_i_ival,
 
   // BootRom is input need to be pull-up by default
-  input  io_pads_bootrom_n_i_ival,
+  // input  io_pads_bootrom_n_i_ival,
 
 
   // dwakeup is input need to be pull-up by default
-  input  io_pads_aon_pmu_dwakeup_n_i_ival,
+  // input  io_pads_aon_pmu_dwakeup_n_i_ival,
 
       // PMU output is just output without enable
-  output io_pads_aon_pmu_padrst_o_oval,
-  output io_pads_aon_pmu_vddpaden_o_oval 
+  // output io_pads_aon_pmu_padrst_o_oval,
+  // output io_pads_aon_pmu_vddpaden_o_oval 
 );
 
 
  
- wire sysper_icb_cmd_valid;
- wire sysper_icb_cmd_ready;
+ // wire sysper_icb_cmd_valid;
+ // wire sysper_icb_cmd_ready;
 
- wire sysfio_icb_cmd_valid;
- wire sysfio_icb_cmd_ready;
+ // wire sysfio_icb_cmd_valid;
+ // wire sysfio_icb_cmd_ready;
 
- wire sysmem_icb_cmd_valid;
- wire sysmem_icb_cmd_ready;
+ // wire sysmem_icb_cmd_valid;
+ // wire sysmem_icb_cmd_ready;
 
  e203_subsys_top u_e203_subsys_top(
-    .core_mhartid      (1'b0),
-  
-
-
 
   `ifdef E203_HAS_ITCM_EXTITF //{
     .ext2itcm_icb_cmd_valid  (1'b0),
@@ -359,17 +359,17 @@ module e203_soc_top(
     .ext2dtcm_icb_rsp_rdata  (),
   `endif//}
 
-  .sysper_icb_cmd_valid (sysper_icb_cmd_valid),
-  .sysper_icb_cmd_ready (sysper_icb_cmd_ready),
-  .sysper_icb_cmd_read  (), 
-  .sysper_icb_cmd_addr  (), 
-  .sysper_icb_cmd_wdata (), 
-  .sysper_icb_cmd_wmask (), 
+  // .sysper_icb_cmd_valid (sysper_icb_cmd_valid),
+  // .sysper_icb_cmd_ready (sysper_icb_cmd_ready),
+  // .sysper_icb_cmd_read  (), 
+  // .sysper_icb_cmd_addr  (), 
+  // .sysper_icb_cmd_wdata (), 
+  // .sysper_icb_cmd_wmask (), 
   
-  .sysper_icb_rsp_valid (sysper_icb_cmd_valid),
-  .sysper_icb_rsp_ready (sysper_icb_cmd_ready),
-  .sysper_icb_rsp_err   (1'b0  ),
-  .sysper_icb_rsp_rdata (32'b0),
+  // .sysper_icb_rsp_valid (sysper_icb_cmd_valid),
+  // .sysper_icb_rsp_ready (sysper_icb_cmd_ready),
+  // .sysper_icb_rsp_err   (1'b0  ),
+  // .sysper_icb_rsp_rdata (32'b0),
 
 
   // .sysfio_icb_cmd_valid(sysfio_icb_cmd_valid),
@@ -396,43 +396,43 @@ module e203_soc_top(
   // .sysmem_icb_rsp_err  (1'b0  ),
   // .sysmem_icb_rsp_rdata(32'b0),
 
-  .io_pads_jtag_TCK_i_ival    (io_pads_jtag_TCK_i_ival    ),
-  .io_pads_jtag_TCK_o_oval    (),
-  .io_pads_jtag_TCK_o_oe      (),
-  .io_pads_jtag_TCK_o_ie      (),
-  .io_pads_jtag_TCK_o_pue     (),
-  .io_pads_jtag_TCK_o_ds      (),
+  // .io_pads_jtag_TCK_i_ival    (io_pads_jtag_TCK_i_ival    ),
+  // .io_pads_jtag_TCK_o_oval    (),
+  // .io_pads_jtag_TCK_o_oe      (),
+  // .io_pads_jtag_TCK_o_ie      (),
+  // .io_pads_jtag_TCK_o_pue     (),
+  // .io_pads_jtag_TCK_o_ds      (),
 
-  .io_pads_jtag_TMS_i_ival    (io_pads_jtag_TMS_i_ival    ),
-  .io_pads_jtag_TMS_o_oval    (),
-  .io_pads_jtag_TMS_o_oe      (),
-  .io_pads_jtag_TMS_o_ie      (),
-  .io_pads_jtag_TMS_o_pue     (),
-  .io_pads_jtag_TMS_o_ds      (),
+  // .io_pads_jtag_TMS_i_ival    (io_pads_jtag_TMS_i_ival    ),
+  // .io_pads_jtag_TMS_o_oval    (),
+  // .io_pads_jtag_TMS_o_oe      (),
+  // .io_pads_jtag_TMS_o_ie      (),
+  // .io_pads_jtag_TMS_o_pue     (),
+  // .io_pads_jtag_TMS_o_ds      (),
 
-  .io_pads_jtag_TDI_i_ival    (io_pads_jtag_TDI_i_ival    ),
-  .io_pads_jtag_TDI_o_oval    (),
-  .io_pads_jtag_TDI_o_oe      (),
-  .io_pads_jtag_TDI_o_ie      (),
-  .io_pads_jtag_TDI_o_pue     (),
-  .io_pads_jtag_TDI_o_ds      (),
+  // .io_pads_jtag_TDI_i_ival    (io_pads_jtag_TDI_i_ival    ),
+  // .io_pads_jtag_TDI_o_oval    (),
+  // .io_pads_jtag_TDI_o_oe      (),
+  // .io_pads_jtag_TDI_o_ie      (),
+  // .io_pads_jtag_TDI_o_pue     (),
+  // .io_pads_jtag_TDI_o_ds      (),
 
-  .io_pads_jtag_TDO_i_ival    (1'b1    ),
-  .io_pads_jtag_TDO_o_oval    (io_pads_jtag_TDO_o_oval    ),
-  .io_pads_jtag_TDO_o_oe      (io_pads_jtag_TDO_o_oe      ),
-  .io_pads_jtag_TDO_o_ie      (),
-  .io_pads_jtag_TDO_o_pue     (),
-  .io_pads_jtag_TDO_o_ds      (),
+  // .io_pads_jtag_TDO_i_ival    (1'b1    ),
+  // .io_pads_jtag_TDO_o_oval    (io_pads_jtag_TDO_o_oval    ),
+  // .io_pads_jtag_TDO_o_oe      (io_pads_jtag_TDO_o_oe      ),
+  // .io_pads_jtag_TDO_o_ie      (),
+  // .io_pads_jtag_TDO_o_pue     (),
+  // .io_pads_jtag_TDO_o_ds      (),
 
-  .io_pads_jtag_TRST_n_i_ival (1'b1 ),
-  .io_pads_jtag_TRST_n_o_oval (),
-  .io_pads_jtag_TRST_n_o_oe   (),
-  .io_pads_jtag_TRST_n_o_ie   (),
-  .io_pads_jtag_TRST_n_o_pue  (),
-  .io_pads_jtag_TRST_n_o_ds   (),
+  // .io_pads_jtag_TRST_n_i_ival (1'b1 ),
+  // .io_pads_jtag_TRST_n_o_oval (),
+  // .io_pads_jtag_TRST_n_o_oe   (),
+  // .io_pads_jtag_TRST_n_o_ie   (),
+  // .io_pads_jtag_TRST_n_o_pue  (),
+  // .io_pads_jtag_TRST_n_o_ds   (),
 
-  .test_mode(1'b0),
-  .test_iso_override(1'b0),
+  // .test_mode(1'b0),
+  // .test_iso_override(1'b0),
 
   // .io_pads_gpio_0_i_ival           (io_pads_gpio_0_i_ival & io_pads_gpio_0_o_ie),
   // .io_pads_gpio_0_o_oval           (io_pads_gpio_0_o_oval),
@@ -699,49 +699,49 @@ module e203_soc_top(
   // .io_pads_qspi_cs_0_o_ds     (),
 
     .hfextclk        (hfextclk),
-    .hfxoscen        (hfxoscen),
+    // .hfxoscen        (hfxoscen),
     .lfextclk        (lfextclk),
-    .lfxoscen        (lfxoscen),
+    // .lfxoscen        (lfxoscen),
 
-  .io_pads_aon_erst_n_i_ival        (io_pads_aon_erst_n_i_ival       ), 
-  .io_pads_aon_erst_n_o_oval        (),
-  .io_pads_aon_erst_n_o_oe          (),
-  .io_pads_aon_erst_n_o_ie          (),
-  .io_pads_aon_erst_n_o_pue         (),
-  .io_pads_aon_erst_n_o_ds          (),
-  .io_pads_aon_pmu_dwakeup_n_i_ival (io_pads_aon_pmu_dwakeup_n_i_ival),
-  .io_pads_aon_pmu_dwakeup_n_o_oval (),
-  .io_pads_aon_pmu_dwakeup_n_o_oe   (),
-  .io_pads_aon_pmu_dwakeup_n_o_ie   (),
-  .io_pads_aon_pmu_dwakeup_n_o_pue  (),
-  .io_pads_aon_pmu_dwakeup_n_o_ds   (),
-  .io_pads_aon_pmu_vddpaden_i_ival  (1'b1 ),
-  .io_pads_aon_pmu_vddpaden_o_oval  (io_pads_aon_pmu_vddpaden_o_oval ),
-  .io_pads_aon_pmu_vddpaden_o_oe    (),
-  .io_pads_aon_pmu_vddpaden_o_ie    (),
-  .io_pads_aon_pmu_vddpaden_o_pue   (),
-  .io_pads_aon_pmu_vddpaden_o_ds    (),
+  // .io_pads_aon_erst_n_i_ival        (io_pads_aon_erst_n_i_ival       ), 
+  // .io_pads_aon_erst_n_o_oval        (),
+  // .io_pads_aon_erst_n_o_oe          (),
+  // .io_pads_aon_erst_n_o_ie          (),
+  // .io_pads_aon_erst_n_o_pue         (),
+  // .io_pads_aon_erst_n_o_ds          (),
+  // .io_pads_aon_pmu_dwakeup_n_i_ival (io_pads_aon_pmu_dwakeup_n_i_ival),
+  // .io_pads_aon_pmu_dwakeup_n_o_oval (),
+  // .io_pads_aon_pmu_dwakeup_n_o_oe   (),
+  // .io_pads_aon_pmu_dwakeup_n_o_ie   (),
+  // .io_pads_aon_pmu_dwakeup_n_o_pue  (),
+  // .io_pads_aon_pmu_dwakeup_n_o_ds   (),
+  // .io_pads_aon_pmu_vddpaden_i_ival  (1'b1 ),
+  // .io_pads_aon_pmu_vddpaden_o_oval  (io_pads_aon_pmu_vddpaden_o_oval ),
+  // .io_pads_aon_pmu_vddpaden_o_oe    (),
+  // .io_pads_aon_pmu_vddpaden_o_ie    (),
+  // .io_pads_aon_pmu_vddpaden_o_pue   (),
+  // .io_pads_aon_pmu_vddpaden_o_ds    (),
 
   
-    .io_pads_aon_pmu_padrst_i_ival    (1'b1 ),
-    .io_pads_aon_pmu_padrst_o_oval    (io_pads_aon_pmu_padrst_o_oval ),
-    .io_pads_aon_pmu_padrst_o_oe      (),
-    .io_pads_aon_pmu_padrst_o_ie      (),
-    .io_pads_aon_pmu_padrst_o_pue     (),
-    .io_pads_aon_pmu_padrst_o_ds      (),
+  //   .io_pads_aon_pmu_padrst_i_ival    (1'b1 ),
+  //   .io_pads_aon_pmu_padrst_o_oval    (io_pads_aon_pmu_padrst_o_oval ),
+  //   .io_pads_aon_pmu_padrst_o_oe      (),
+  //   .io_pads_aon_pmu_padrst_o_ie      (),
+  //   .io_pads_aon_pmu_padrst_o_pue     (),
+  //   .io_pads_aon_pmu_padrst_o_ds      (),
 
-    .io_pads_bootrom_n_i_ival       (io_pads_bootrom_n_i_ival),
-    .io_pads_bootrom_n_o_oval       (),
-    .io_pads_bootrom_n_o_oe         (),
-    .io_pads_bootrom_n_o_ie         (),
-    .io_pads_bootrom_n_o_pue        (),
-    .io_pads_bootrom_n_o_ds         (),
+  //   .io_pads_bootrom_n_i_ival       (io_pads_bootrom_n_i_ival),
+  //   .io_pads_bootrom_n_o_oval       (),
+  //   .io_pads_bootrom_n_o_oe         (),
+  //   .io_pads_bootrom_n_o_ie         (),
+  //   .io_pads_bootrom_n_o_pue        (),
+  //   .io_pads_bootrom_n_o_ds         (),
 
-    .io_pads_dbgmode0_n_i_ival       (io_pads_dbgmode0_n_i_ival),
+  //   .io_pads_dbgmode0_n_i_ival       (io_pads_dbgmode0_n_i_ival),
 
-    .io_pads_dbgmode1_n_i_ival       (io_pads_dbgmode1_n_i_ival),
+  //   .io_pads_dbgmode1_n_i_ival       (io_pads_dbgmode1_n_i_ival),
 
-    .io_pads_dbgmode2_n_i_ival       (io_pads_dbgmode2_n_i_ival) 
+  //   .io_pads_dbgmode2_n_i_ival       (io_pads_dbgmode2_n_i_ival) 
 
 
   );

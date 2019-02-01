@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-01-31 17:35:43
 // Last Modified by:   29505
-// Last Modified time: 2019-02-01 21:01:06
+// Last Modified time: 2019-02-01 21:59:03
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_subsys_main.v  
 // Module Name:  
@@ -64,7 +64,7 @@
 module e203_subsys_main(
   // output core_csr_clk,
 
-  output hfxoscen,// The signal to enable the crystal pad generated clock
+  // output hfxoscen,// The signal to enable the crystal pad generated clock
 
   // output inspect_pc_29b       ,
   // output inspect_dbg_irq      ,
@@ -109,7 +109,7 @@ module e203_subsys_main(
 
 
   ///////////////////////////////////////
-  input  [`E203_HART_ID_W-1:0] core_mhartid,  
+  // input  [`E203_HART_ID_W-1:0] core_mhartid,  
     
   // input  aon_wdg_irq_a,
   // input  aon_rtc_irq_a,
@@ -464,7 +464,7 @@ module e203_subsys_main(
   // input  [`E203_XLEN-1:0]        sysmem_icb_rsp_rdata,
   // `endif//}
 
-  input  test_mode,
+  // input  test_mode,
 
   input  corerst, // The original async reset
   input  hfclkrst, // The original async reset
@@ -1004,7 +1004,7 @@ assign hfclk = hfextclk;
     .dbg_ebreakm_r   (1'b0),
     .dbg_stopcycle   (1'b0),
 
-    .core_mhartid            (core_mhartid),  
+    .core_mhartid            (1'b0),  
     .dbg_irq_a               (1'b0),
     .ext_irq_a               (plic_ext_irq),
     .sft_irq_a               (clint_sft_irq),
@@ -1099,7 +1099,7 @@ assign hfclk = hfextclk;
     // .mem_icb_rsp_err    (mem_icb_rsp_err  ),
     // .mem_icb_rsp_rdata  (mem_icb_rsp_rdata),
 
-    .test_mode     (test_mode), 
+    .test_mode     (1'b0), 
     .clk           (hfclk  ),
     .rst_n         (core_rst_n) 
   );
