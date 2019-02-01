@@ -1,4 +1,25 @@
-/*
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-01-31 17:35:43
+// Last Modified by:   29505
+// Last Modified time: 2019-02-01 17:40:16
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_subsys_main.v  
+// Module Name:  
+// Project Name:    
+// Target Devices:    
+// Tool Versions:    
+// Description:    
+// 
+// Dependencies:    
+// 
+// Revision:   
+// Revision  
+// Additional Comments:   
+// 
+///////////////////////////////////////////////////////////////////////////////////*
 * @File Name: e203_subsys_main.v
 * @File Path: K:\work\dark+PRJ\e200_opensource\rtl\e203\subsys\e203_subsys_main.v
 * @Author: 29505
@@ -387,58 +408,58 @@ module e203_subsys_main(
   // The ICB Interface to Private Peripheral Interface
   //
   //    * Bus cmd channel
-  output                         sysper_icb_cmd_valid,
-  input                          sysper_icb_cmd_ready,
-  output [`E203_ADDR_SIZE-1:0]   sysper_icb_cmd_addr, 
-  output                         sysper_icb_cmd_read, 
-  output [`E203_XLEN-1:0]        sysper_icb_cmd_wdata,
-  output [`E203_XLEN/8-1:0]      sysper_icb_cmd_wmask,
-  //
-  //    * Bus RSP channel
-  input                          sysper_icb_rsp_valid,
-  output                         sysper_icb_rsp_ready,
-  input                          sysper_icb_rsp_err  ,
-  input  [`E203_XLEN-1:0]        sysper_icb_rsp_rdata,
+  // output                         sysper_icb_cmd_valid,
+  // input                          sysper_icb_cmd_ready,
+  // output [`E203_ADDR_SIZE-1:0]   sysper_icb_cmd_addr, 
+  // output                         sysper_icb_cmd_read, 
+  // output [`E203_XLEN-1:0]        sysper_icb_cmd_wdata,
+  // output [`E203_XLEN/8-1:0]      sysper_icb_cmd_wmask,
+  // //
+  // //    * Bus RSP channel
+  // input                          sysper_icb_rsp_valid,
+  // output                         sysper_icb_rsp_ready,
+  // input                          sysper_icb_rsp_err  ,
+  // input  [`E203_XLEN-1:0]        sysper_icb_rsp_rdata,
 
-  `ifdef E203_HAS_FIO //{
-  //////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////
-  // The ICB Interface to Fast I/O
-  //
-  //    * Bus cmd channel
-  output                         sysfio_icb_cmd_valid,
-  input                          sysfio_icb_cmd_ready,
-  output [`E203_ADDR_SIZE-1:0]   sysfio_icb_cmd_addr, 
-  output                         sysfio_icb_cmd_read, 
-  output [`E203_XLEN-1:0]        sysfio_icb_cmd_wdata,
-  output [`E203_XLEN/8-1:0]      sysfio_icb_cmd_wmask,
-  //
-  //    * Bus RSP channel
-  input                          sysfio_icb_rsp_valid,
-  output                         sysfio_icb_rsp_ready,
-  input                          sysfio_icb_rsp_err  ,
-  input  [`E203_XLEN-1:0]        sysfio_icb_rsp_rdata,
-  `endif//}
+  // `ifdef E203_HAS_FIO //{
+  // //////////////////////////////////////////////////////////////
+  // //////////////////////////////////////////////////////////////
+  // // The ICB Interface to Fast I/O
+  // //
+  // //    * Bus cmd channel
+  // output                         sysfio_icb_cmd_valid,
+  // input                          sysfio_icb_cmd_ready,
+  // output [`E203_ADDR_SIZE-1:0]   sysfio_icb_cmd_addr, 
+  // output                         sysfio_icb_cmd_read, 
+  // output [`E203_XLEN-1:0]        sysfio_icb_cmd_wdata,
+  // output [`E203_XLEN/8-1:0]      sysfio_icb_cmd_wmask,
+  // //
+  // //    * Bus RSP channel
+  // input                          sysfio_icb_rsp_valid,
+  // output                         sysfio_icb_rsp_ready,
+  // input                          sysfio_icb_rsp_err  ,
+  // input  [`E203_XLEN-1:0]        sysfio_icb_rsp_rdata,
+  // `endif//}
 
-  `ifdef E203_HAS_MEM_ITF //{
-  //////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////
-  // The ICB Interface from Ifetch 
-  //
-  //    * Bus cmd channel
-  output                         sysmem_icb_cmd_valid,
-  input                          sysmem_icb_cmd_ready,
-  output [`E203_ADDR_SIZE-1:0]   sysmem_icb_cmd_addr, 
-  output                         sysmem_icb_cmd_read, 
-  output [`E203_XLEN-1:0]        sysmem_icb_cmd_wdata,
-  output [`E203_XLEN/8-1:0]      sysmem_icb_cmd_wmask,
-  //
-  //    * Bus RSP channel
-  input                          sysmem_icb_rsp_valid,
-  output                         sysmem_icb_rsp_ready,
-  input                          sysmem_icb_rsp_err  ,
-  input  [`E203_XLEN-1:0]        sysmem_icb_rsp_rdata,
-  `endif//}
+  // `ifdef E203_HAS_MEM_ITF //{
+  // //////////////////////////////////////////////////////////////
+  // //////////////////////////////////////////////////////////////
+  // // The ICB Interface from Ifetch 
+  // //
+  // //    * Bus cmd channel
+  // output                         sysmem_icb_cmd_valid,
+  // input                          sysmem_icb_cmd_ready,
+  // output [`E203_ADDR_SIZE-1:0]   sysmem_icb_cmd_addr, 
+  // output                         sysmem_icb_cmd_read, 
+  // output [`E203_XLEN-1:0]        sysmem_icb_cmd_wdata,
+  // output [`E203_XLEN/8-1:0]      sysmem_icb_cmd_wmask,
+  // //
+  // //    * Bus RSP channel
+  // input                          sysmem_icb_rsp_valid,
+  // output                         sysmem_icb_rsp_ready,
+  // input                          sysmem_icb_rsp_err  ,
+  // input  [`E203_XLEN-1:0]        sysmem_icb_rsp_rdata,
+  // `endif//}
 
   input  test_mode,
 
@@ -843,17 +864,17 @@ assign hfclk = hfextclk;
 
 
 
-  wire                         ppi_icb_cmd_valid;
-  wire                         ppi_icb_cmd_ready;
-  wire [`E203_ADDR_SIZE-1:0]   ppi_icb_cmd_addr; 
-  wire                         ppi_icb_cmd_read; 
-  wire [`E203_XLEN-1:0]        ppi_icb_cmd_wdata;
-  wire [`E203_XLEN/8-1:0]      ppi_icb_cmd_wmask;
+  // wire                         ppi_icb_cmd_valid;
+  // wire                         ppi_icb_cmd_ready;
+  // wire [`E203_ADDR_SIZE-1:0]   ppi_icb_cmd_addr; 
+  // wire                         ppi_icb_cmd_read; 
+  // wire [`E203_XLEN-1:0]        ppi_icb_cmd_wdata;
+  // wire [`E203_XLEN/8-1:0]      ppi_icb_cmd_wmask;
 
-  wire                         ppi_icb_rsp_valid;
-  wire                         ppi_icb_rsp_ready;
-  wire                         ppi_icb_rsp_err  ;
-  wire [`E203_XLEN-1:0]        ppi_icb_rsp_rdata;
+  // wire                         ppi_icb_rsp_valid;
+  // wire                         ppi_icb_rsp_ready;
+  // wire                         ppi_icb_rsp_err  ;
+  // wire [`E203_XLEN-1:0]        ppi_icb_rsp_rdata;
 
   
   wire                         clint_icb_cmd_valid;
@@ -881,31 +902,31 @@ assign hfclk = hfextclk;
   wire                         plic_icb_rsp_err  ;
   wire [`E203_XLEN-1:0]        plic_icb_rsp_rdata;
 
-  `ifdef E203_HAS_FIO //{
-  wire                         fio_icb_cmd_valid;
-  wire                         fio_icb_cmd_ready;
-  wire [`E203_ADDR_SIZE-1:0]   fio_icb_cmd_addr; 
-  wire                         fio_icb_cmd_read; 
-  wire [`E203_XLEN-1:0]        fio_icb_cmd_wdata;
-  wire [`E203_XLEN/8-1:0]      fio_icb_cmd_wmask;
+  // `ifdef E203_HAS_FIO //{
+  // wire                         fio_icb_cmd_valid;
+  // wire                         fio_icb_cmd_ready;
+  // wire [`E203_ADDR_SIZE-1:0]   fio_icb_cmd_addr; 
+  // wire                         fio_icb_cmd_read; 
+  // wire [`E203_XLEN-1:0]        fio_icb_cmd_wdata;
+  // wire [`E203_XLEN/8-1:0]      fio_icb_cmd_wmask;
 
-  wire                         fio_icb_rsp_valid;
-  wire                         fio_icb_rsp_ready;
-  wire                         fio_icb_rsp_err  ;
-  wire [`E203_XLEN-1:0]        fio_icb_rsp_rdata;
+  // wire                         fio_icb_rsp_valid;
+  // wire                         fio_icb_rsp_ready;
+  // wire                         fio_icb_rsp_err  ;
+  // wire [`E203_XLEN-1:0]        fio_icb_rsp_rdata;
 
-  assign sysfio_icb_cmd_valid = fio_icb_cmd_valid;
-  assign fio_icb_cmd_ready    = sysfio_icb_cmd_ready;
-  assign sysfio_icb_cmd_addr  = fio_icb_cmd_addr ; 
-  assign sysfio_icb_cmd_read  = fio_icb_cmd_read ; 
-  assign sysfio_icb_cmd_wdata = fio_icb_cmd_wdata;
-  assign sysfio_icb_cmd_wmask = fio_icb_cmd_wmask;
+  // assign sysfio_icb_cmd_valid = fio_icb_cmd_valid;
+  // assign fio_icb_cmd_ready    = sysfio_icb_cmd_ready;
+  // assign sysfio_icb_cmd_addr  = fio_icb_cmd_addr ; 
+  // assign sysfio_icb_cmd_read  = fio_icb_cmd_read ; 
+  // assign sysfio_icb_cmd_wdata = fio_icb_cmd_wdata;
+  // assign sysfio_icb_cmd_wmask = fio_icb_cmd_wmask;
                            
-  assign fio_icb_rsp_valid    = sysfio_icb_rsp_valid;
-  assign sysfio_icb_rsp_ready = fio_icb_rsp_ready;
-  assign fio_icb_rsp_err      = sysfio_icb_rsp_err  ;
-  assign fio_icb_rsp_rdata    = sysfio_icb_rsp_rdata;
-  `endif//}
+  // assign fio_icb_rsp_valid    = sysfio_icb_rsp_valid;
+  // assign sysfio_icb_rsp_ready = fio_icb_rsp_ready;
+  // assign fio_icb_rsp_err      = sysfio_icb_rsp_err  ;
+  // assign fio_icb_rsp_rdata    = sysfio_icb_rsp_rdata;
+  // `endif//}
 
   wire                         mem_icb_cmd_valid;
   wire                         mem_icb_cmd_ready;
@@ -1015,17 +1036,17 @@ assign hfclk = hfextclk;
   `endif//}
 
 
-    .ppi_icb_cmd_valid     (ppi_icb_cmd_valid),
-    .ppi_icb_cmd_ready     (ppi_icb_cmd_ready),
-    .ppi_icb_cmd_addr      (ppi_icb_cmd_addr ),
-    .ppi_icb_cmd_read      (ppi_icb_cmd_read ),
-    .ppi_icb_cmd_wdata     (ppi_icb_cmd_wdata),
-    .ppi_icb_cmd_wmask     (ppi_icb_cmd_wmask),
+    // .ppi_icb_cmd_valid     (ppi_icb_cmd_valid),
+    // .ppi_icb_cmd_ready     (ppi_icb_cmd_ready),
+    // .ppi_icb_cmd_addr      (ppi_icb_cmd_addr ),
+    // .ppi_icb_cmd_read      (ppi_icb_cmd_read ),
+    // .ppi_icb_cmd_wdata     (ppi_icb_cmd_wdata),
+    // .ppi_icb_cmd_wmask     (ppi_icb_cmd_wmask),
     
-    .ppi_icb_rsp_valid     (ppi_icb_rsp_valid),
-    .ppi_icb_rsp_ready     (ppi_icb_rsp_ready),
-    .ppi_icb_rsp_err       (ppi_icb_rsp_err  ),
-    .ppi_icb_rsp_rdata     (ppi_icb_rsp_rdata),
+    // .ppi_icb_rsp_valid     (ppi_icb_rsp_valid),
+    // .ppi_icb_rsp_ready     (ppi_icb_rsp_ready),
+    // .ppi_icb_rsp_err       (ppi_icb_rsp_err  ),
+    // .ppi_icb_rsp_rdata     (ppi_icb_rsp_rdata),
 
     .plic_icb_cmd_valid     (plic_icb_cmd_valid),
     .plic_icb_cmd_ready     (plic_icb_cmd_ready),
@@ -1051,29 +1072,29 @@ assign hfclk = hfextclk;
     .clint_icb_rsp_err       (clint_icb_rsp_err  ),
     .clint_icb_rsp_rdata     (clint_icb_rsp_rdata),
 
-    .fio_icb_cmd_valid     (fio_icb_cmd_valid),
-    .fio_icb_cmd_ready     (fio_icb_cmd_ready),
-    .fio_icb_cmd_addr      (fio_icb_cmd_addr ),
-    .fio_icb_cmd_read      (fio_icb_cmd_read ),
-    .fio_icb_cmd_wdata     (fio_icb_cmd_wdata),
-    .fio_icb_cmd_wmask     (fio_icb_cmd_wmask),
+    // .fio_icb_cmd_valid     (fio_icb_cmd_valid),
+    // .fio_icb_cmd_ready     (fio_icb_cmd_ready),
+    // .fio_icb_cmd_addr      (fio_icb_cmd_addr ),
+    // .fio_icb_cmd_read      (fio_icb_cmd_read ),
+    // .fio_icb_cmd_wdata     (fio_icb_cmd_wdata),
+    // .fio_icb_cmd_wmask     (fio_icb_cmd_wmask),
     
-    .fio_icb_rsp_valid     (fio_icb_rsp_valid),
-    .fio_icb_rsp_ready     (fio_icb_rsp_ready),
-    .fio_icb_rsp_err       (fio_icb_rsp_err  ),
-    .fio_icb_rsp_rdata     (fio_icb_rsp_rdata),
+    // .fio_icb_rsp_valid     (fio_icb_rsp_valid),
+    // .fio_icb_rsp_ready     (fio_icb_rsp_ready),
+    // .fio_icb_rsp_err       (fio_icb_rsp_err  ),
+    // .fio_icb_rsp_rdata     (fio_icb_rsp_rdata),
 
-    .mem_icb_cmd_valid  (mem_icb_cmd_valid),
-    .mem_icb_cmd_ready  (mem_icb_cmd_ready),
-    .mem_icb_cmd_addr   (mem_icb_cmd_addr ),
-    .mem_icb_cmd_read   (mem_icb_cmd_read ),
-    .mem_icb_cmd_wdata  (mem_icb_cmd_wdata),
-    .mem_icb_cmd_wmask  (mem_icb_cmd_wmask),
+    // .mem_icb_cmd_valid  (mem_icb_cmd_valid),
+    // .mem_icb_cmd_ready  (mem_icb_cmd_ready),
+    // .mem_icb_cmd_addr   (mem_icb_cmd_addr ),
+    // .mem_icb_cmd_read   (mem_icb_cmd_read ),
+    // .mem_icb_cmd_wdata  (mem_icb_cmd_wdata),
+    // .mem_icb_cmd_wmask  (mem_icb_cmd_wmask),
     
-    .mem_icb_rsp_valid  (mem_icb_rsp_valid),
-    .mem_icb_rsp_ready  (mem_icb_rsp_ready),
-    .mem_icb_rsp_err    (mem_icb_rsp_err  ),
-    .mem_icb_rsp_rdata  (mem_icb_rsp_rdata),
+    // .mem_icb_rsp_valid  (mem_icb_rsp_valid),
+    // .mem_icb_rsp_ready  (mem_icb_rsp_ready),
+    // .mem_icb_rsp_err    (mem_icb_rsp_err  ),
+    // .mem_icb_rsp_rdata  (mem_icb_rsp_rdata),
 
     .test_mode     (test_mode), 
     .clk           (hfclk  ),

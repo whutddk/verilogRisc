@@ -1,19 +1,11 @@
-/*
-* @File Name: system.v
-* @File Path: K:\work\dark+PRJ\e200_opensource\rtl\e203\system.v
-* @Author: 29505
-* @Date:   2019-01-28 20:59:31
-* @Last Modified by:   29505
-* @Last Modified time: 2019-01-31 18:46:50
-* @Email: 295054118@whut.edu.cn
-*///////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
 // Company:   
 // Engineer: Ruige_Lee
 // Create Date: 2019-01-24 08:57:00
-// Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-01-24 08:57:30
+// Last Modified by:   29505
+// Last Modified time: 2019-02-01 10:12:46
 // Email: 295054118@whut.edu.cn
-// Design Name:   
+// Design Name: system.v  
 // Module Name: system
 // Project Name:   
 // Target Devices:   
@@ -27,6 +19,7 @@
 // Additional Comments:  
 // 
 //////////////////////////////////////////////////////////////////////////////////
+
 `timescale 1ns/1ps
 
 module system

@@ -1,4 +1,25 @@
-/*
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-01-31 16:01:05
+// Last Modified by:   29505
+// Last Modified time: 2019-02-01 17:37:52
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_subsys_top.v  
+// Module Name:  
+// Project Name:    
+// Target Devices:    
+// Tool Versions:    
+// Description:    
+// 
+// Dependencies:    
+// 
+// Revision:   
+// Revision  
+// Additional Comments:   
+// 
+///////////////////////////////////////////////////////////////////////////////////*
 * @File Name: e203_subsys_top.v
 * @File Path: K:\work\dark+PRJ\e200_opensource\rtl\e203\subsys\e203_subsys_top.v
 * @Author: 29505
@@ -132,58 +153,58 @@ module e203_subsys_top(
   // The ICB Interface to Private Peripheral Interface
   //
   //    * Bus cmd channel
-  output                         sysper_icb_cmd_valid,
-  input                          sysper_icb_cmd_ready,
-  output [`E203_ADDR_SIZE-1:0]   sysper_icb_cmd_addr, 
-  output                         sysper_icb_cmd_read, 
-  output [`E203_XLEN-1:0]        sysper_icb_cmd_wdata,
-  output [`E203_XLEN/8-1:0]      sysper_icb_cmd_wmask,
-  //
-  //    * Bus RSP channel
-  input                          sysper_icb_rsp_valid,
-  output                         sysper_icb_rsp_ready,
-  input                          sysper_icb_rsp_err  ,
-  input  [`E203_XLEN-1:0]        sysper_icb_rsp_rdata,
+  // output                         sysper_icb_cmd_valid,
+  // input                          sysper_icb_cmd_ready,
+  // output [`E203_ADDR_SIZE-1:0]   sysper_icb_cmd_addr, 
+  // output                         sysper_icb_cmd_read, 
+  // output [`E203_XLEN-1:0]        sysper_icb_cmd_wdata,
+  // output [`E203_XLEN/8-1:0]      sysper_icb_cmd_wmask,
+  // //
+  // //    * Bus RSP channel
+  // input                          sysper_icb_rsp_valid,
+  // output                         sysper_icb_rsp_ready,
+  // input                          sysper_icb_rsp_err  ,
+  // input  [`E203_XLEN-1:0]        sysper_icb_rsp_rdata,
 
-  `ifdef E203_HAS_FIO //{
-  //////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////
-  // The ICB Interface to Fast I/O
-  //
-  //    * Bus cmd channel
-  output                         sysfio_icb_cmd_valid,
-  input                          sysfio_icb_cmd_ready,
-  output [`E203_ADDR_SIZE-1:0]   sysfio_icb_cmd_addr, 
-  output                         sysfio_icb_cmd_read, 
-  output [`E203_XLEN-1:0]        sysfio_icb_cmd_wdata,
-  output [`E203_XLEN/8-1:0]      sysfio_icb_cmd_wmask,
-  //
-  //    * Bus RSP channel
-  input                          sysfio_icb_rsp_valid,
-  output                         sysfio_icb_rsp_ready,
-  input                          sysfio_icb_rsp_err  ,
-  input  [`E203_XLEN-1:0]        sysfio_icb_rsp_rdata,
-  `endif//}
+  // `ifdef E203_HAS_FIO //{
+  // //////////////////////////////////////////////////////////////
+  // //////////////////////////////////////////////////////////////
+  // // The ICB Interface to Fast I/O
+  // //
+  // //    * Bus cmd channel
+  // output                         sysfio_icb_cmd_valid,
+  // input                          sysfio_icb_cmd_ready,
+  // output [`E203_ADDR_SIZE-1:0]   sysfio_icb_cmd_addr, 
+  // output                         sysfio_icb_cmd_read, 
+  // output [`E203_XLEN-1:0]        sysfio_icb_cmd_wdata,
+  // output [`E203_XLEN/8-1:0]      sysfio_icb_cmd_wmask,
+  // //
+  // //    * Bus RSP channel
+  // input                          sysfio_icb_rsp_valid,
+  // output                         sysfio_icb_rsp_ready,
+  // input                          sysfio_icb_rsp_err  ,
+  // input  [`E203_XLEN-1:0]        sysfio_icb_rsp_rdata,
+  // `endif//}
 
-  `ifdef E203_HAS_MEM_ITF //{
-  //////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////
-  // The ICB Interface from Ifetch 
-  //
-  //    * Bus cmd channel
-  output                         sysmem_icb_cmd_valid,
-  input                          sysmem_icb_cmd_ready,
-  output [`E203_ADDR_SIZE-1:0]   sysmem_icb_cmd_addr, 
-  output                         sysmem_icb_cmd_read, 
-  output [`E203_XLEN-1:0]        sysmem_icb_cmd_wdata,
-  output [`E203_XLEN/8-1:0]      sysmem_icb_cmd_wmask,
-  //
-  //    * Bus RSP channel
-  input                          sysmem_icb_rsp_valid,
-  output                         sysmem_icb_rsp_ready,
-  input                          sysmem_icb_rsp_err  ,
-  input  [`E203_XLEN-1:0]        sysmem_icb_rsp_rdata,
-  `endif//}
+  // `ifdef E203_HAS_MEM_ITF //{
+  // //////////////////////////////////////////////////////////////
+  // //////////////////////////////////////////////////////////////
+  // // The ICB Interface from Ifetch 
+  // //
+  // //    * Bus cmd channel
+  // output                         sysmem_icb_cmd_valid,
+  // input                          sysmem_icb_cmd_ready,
+  // output [`E203_ADDR_SIZE-1:0]   sysmem_icb_cmd_addr, 
+  // output                         sysmem_icb_cmd_read, 
+  // output [`E203_XLEN-1:0]        sysmem_icb_cmd_wdata,
+  // output [`E203_XLEN/8-1:0]      sysmem_icb_cmd_wmask,
+  // //
+  // //    * Bus RSP channel
+  // input                          sysmem_icb_rsp_valid,
+  // output                         sysmem_icb_rsp_ready,
+  // input                          sysmem_icb_rsp_err  ,
+  // input  [`E203_XLEN-1:0]        sysmem_icb_rsp_rdata,
+  // `endif//}
 
   // input  io_pads_gpio_0_i_ival,
   // output io_pads_gpio_0_o_oval,
@@ -876,17 +897,17 @@ module e203_subsys_top(
 
 
 
-    .sysmem_icb_cmd_valid  (sysmem_icb_cmd_valid),
-    .sysmem_icb_cmd_ready  (sysmem_icb_cmd_ready),
-    .sysmem_icb_cmd_addr   (sysmem_icb_cmd_addr ),
-    .sysmem_icb_cmd_read   (sysmem_icb_cmd_read ),
-    .sysmem_icb_cmd_wdata  (sysmem_icb_cmd_wdata),
-    .sysmem_icb_cmd_wmask  (sysmem_icb_cmd_wmask),
+    // .sysmem_icb_cmd_valid  (sysmem_icb_cmd_valid),
+    // .sysmem_icb_cmd_ready  (sysmem_icb_cmd_ready),
+    // .sysmem_icb_cmd_addr   (sysmem_icb_cmd_addr ),
+    // .sysmem_icb_cmd_read   (sysmem_icb_cmd_read ),
+    // .sysmem_icb_cmd_wdata  (sysmem_icb_cmd_wdata),
+    // .sysmem_icb_cmd_wmask  (sysmem_icb_cmd_wmask),
     
-    .sysmem_icb_rsp_valid  (sysmem_icb_rsp_valid),
-    .sysmem_icb_rsp_ready  (sysmem_icb_rsp_ready),
-    .sysmem_icb_rsp_err    (sysmem_icb_rsp_err  ),
-    .sysmem_icb_rsp_rdata  (sysmem_icb_rsp_rdata),
+    // .sysmem_icb_rsp_valid  (sysmem_icb_rsp_valid),
+    // .sysmem_icb_rsp_ready  (sysmem_icb_rsp_ready),
+    // .sysmem_icb_rsp_err    (sysmem_icb_rsp_err  ),
+    // .sysmem_icb_rsp_rdata  (sysmem_icb_rsp_rdata),
 
     .test_mode     (test_mode), 
     .hfclk           (hfclk   ),

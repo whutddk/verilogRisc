@@ -1,4 +1,25 @@
- /*                                                                      
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-01-28 20:59:01
+// Last Modified by:   29505
+// Last Modified time: 2019-02-01 17:43:08
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_biu.v  
+// Module Name:  
+// Project Name:    
+// Target Devices:    
+// Tool Versions:    
+// Description:    
+// 
+// Dependencies:    
+// 
+// Revision:   
+// Revision  
+// Additional Comments:   
+// 
+////////////////////////////////////////////////////////////////////////////////// /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
  Licensed under the Apache License, Version 2.0 (the "License");         
@@ -50,61 +71,61 @@ module e203_biu(
   output                         lsu2biu_icb_rsp_excl_ok,
   output [`E203_XLEN-1:0]        lsu2biu_icb_rsp_rdata,
 
-  `ifdef E203_HAS_MEM_ITF //{
-  //////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////
-  // the icb interface from ifetch 
-  //
-  //    * bus cmd channel
-  input                          ifu2biu_icb_cmd_valid,
-  output                         ifu2biu_icb_cmd_ready,
-  input  [`E203_ADDR_SIZE-1:0]   ifu2biu_icb_cmd_addr, 
-  input                          ifu2biu_icb_cmd_read, 
-  input  [`E203_XLEN-1:0]        ifu2biu_icb_cmd_wdata,
-  input  [`E203_XLEN/8-1:0]      ifu2biu_icb_cmd_wmask,
-  input  [1:0]                   ifu2biu_icb_cmd_burst,
-  input  [1:0]                   ifu2biu_icb_cmd_beat,
-  input                          ifu2biu_icb_cmd_lock,
-  input                          ifu2biu_icb_cmd_excl,
-  input  [1:0]                   ifu2biu_icb_cmd_size,
-  //
-  //    * bus rsp channel
-  output                         ifu2biu_icb_rsp_valid,
-  input                          ifu2biu_icb_rsp_ready,
-  output                         ifu2biu_icb_rsp_err  ,
-  output                         ifu2biu_icb_rsp_excl_ok,
-  output [`E203_XLEN-1:0]        ifu2biu_icb_rsp_rdata,
+  // `ifdef E203_HAS_MEM_ITF //{
+  // //////////////////////////////////////////////////////////////
+  // //////////////////////////////////////////////////////////////
+  // // the icb interface from ifetch 
+  // //
+  // //    * bus cmd channel
+  // input                          ifu2biu_icb_cmd_valid,
+  // output                         ifu2biu_icb_cmd_ready,
+  // input  [`E203_ADDR_SIZE-1:0]   ifu2biu_icb_cmd_addr, 
+  // input                          ifu2biu_icb_cmd_read, 
+  // input  [`E203_XLEN-1:0]        ifu2biu_icb_cmd_wdata,
+  // input  [`E203_XLEN/8-1:0]      ifu2biu_icb_cmd_wmask,
+  // input  [1:0]                   ifu2biu_icb_cmd_burst,
+  // input  [1:0]                   ifu2biu_icb_cmd_beat,
+  // input                          ifu2biu_icb_cmd_lock,
+  // input                          ifu2biu_icb_cmd_excl,
+  // input  [1:0]                   ifu2biu_icb_cmd_size,
+  // //
+  // //    * bus rsp channel
+  // output                         ifu2biu_icb_rsp_valid,
+  // input                          ifu2biu_icb_rsp_ready,
+  // output                         ifu2biu_icb_rsp_err  ,
+  // output                         ifu2biu_icb_rsp_excl_ok,
+  // output [`E203_XLEN-1:0]        ifu2biu_icb_rsp_rdata,
 
-  //output                         ifu2biu_replay,
-  `endif//}
+  // //output                         ifu2biu_replay,
+  // `endif//}
 
 
 
-  //////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////
-  // The ICB Interface to Private Peripheral Interface
-  //
-  input [`E203_ADDR_SIZE-1:0]    ppi_region_indic,
-  input                          ppi_icb_enable,
-  //    * Bus cmd channel
-  output                         ppi_icb_cmd_valid,
-  input                          ppi_icb_cmd_ready,
-  output [`E203_ADDR_SIZE-1:0]   ppi_icb_cmd_addr, 
-  output                         ppi_icb_cmd_read, 
-  output [`E203_XLEN-1:0]        ppi_icb_cmd_wdata,
-  output [`E203_XLEN/8-1:0]      ppi_icb_cmd_wmask,
-  output [1:0]                   ppi_icb_cmd_burst,
-  output [1:0]                   ppi_icb_cmd_beat,
-  output                         ppi_icb_cmd_lock,
-  output                         ppi_icb_cmd_excl,
-  output [1:0]                   ppi_icb_cmd_size,
-  //
-  //    * Bus RSP channel
-  input                          ppi_icb_rsp_valid,
-  output                         ppi_icb_rsp_ready,
-  input                          ppi_icb_rsp_err  ,
-  input                          ppi_icb_rsp_excl_ok,
-  input  [`E203_XLEN-1:0]        ppi_icb_rsp_rdata,
+  // //////////////////////////////////////////////////////////////
+  // //////////////////////////////////////////////////////////////
+  // // The ICB Interface to Private Peripheral Interface
+  // //
+  // input [`E203_ADDR_SIZE-1:0]    ppi_region_indic,
+  // input                          ppi_icb_enable,
+  // //    * Bus cmd channel
+  // output                         ppi_icb_cmd_valid,
+  // input                          ppi_icb_cmd_ready,
+  // output [`E203_ADDR_SIZE-1:0]   ppi_icb_cmd_addr, 
+  // output                         ppi_icb_cmd_read, 
+  // output [`E203_XLEN-1:0]        ppi_icb_cmd_wdata,
+  // output [`E203_XLEN/8-1:0]      ppi_icb_cmd_wmask,
+  // output [1:0]                   ppi_icb_cmd_burst,
+  // output [1:0]                   ppi_icb_cmd_beat,
+  // output                         ppi_icb_cmd_lock,
+  // output                         ppi_icb_cmd_excl,
+  // output [1:0]                   ppi_icb_cmd_size,
+  // //
+  // //    * Bus RSP channel
+  // input                          ppi_icb_rsp_valid,
+  // output                         ppi_icb_rsp_ready,
+  // input                          ppi_icb_rsp_err  ,
+  // input                          ppi_icb_rsp_excl_ok,
+  // input  [`E203_XLEN-1:0]        ppi_icb_rsp_rdata,
 
     //
   input [`E203_ADDR_SIZE-1:0]    clint_region_indic,
@@ -153,90 +174,90 @@ module e203_biu(
   input  [`E203_XLEN-1:0]        plic_icb_rsp_rdata,
 
 
-  `ifdef E203_HAS_FIO //{
+  // `ifdef E203_HAS_FIO //{
   //////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////
   // The ICB Interface to Fast I/O
-  input [`E203_ADDR_SIZE-1:0]    fio_region_indic,
-  input                          fio_icb_enable,
-  //
-  //    * Bus cmd channel
-  output                         fio_icb_cmd_valid,
-  input                          fio_icb_cmd_ready,
-  output [`E203_ADDR_SIZE-1:0]   fio_icb_cmd_addr, 
-  output                         fio_icb_cmd_read, 
-  output [`E203_XLEN-1:0]        fio_icb_cmd_wdata,
-  output [`E203_XLEN/8-1:0]      fio_icb_cmd_wmask,
-  output [1:0]                   fio_icb_cmd_burst,
-  output [1:0]                   fio_icb_cmd_beat,
-  output                         fio_icb_cmd_lock,
-  output                         fio_icb_cmd_excl,
-  output [1:0]                   fio_icb_cmd_size,
-  //
-  //    * Bus RSP channel
-  input                          fio_icb_rsp_valid,
-  output                         fio_icb_rsp_ready,
-  input                          fio_icb_rsp_err  ,
-  input                          fio_icb_rsp_excl_ok,
-  input  [`E203_XLEN-1:0]        fio_icb_rsp_rdata,
-  `endif//}
+  // input [`E203_ADDR_SIZE-1:0]    fio_region_indic,
+  // input                          fio_icb_enable,
+  // //
+  // //    * Bus cmd channel
+  // output                         fio_icb_cmd_valid,
+  // input                          fio_icb_cmd_ready,
+  // output [`E203_ADDR_SIZE-1:0]   fio_icb_cmd_addr, 
+  // output                         fio_icb_cmd_read, 
+  // output [`E203_XLEN-1:0]        fio_icb_cmd_wdata,
+  // output [`E203_XLEN/8-1:0]      fio_icb_cmd_wmask,
+  // output [1:0]                   fio_icb_cmd_burst,
+  // output [1:0]                   fio_icb_cmd_beat,
+  // output                         fio_icb_cmd_lock,
+  // output                         fio_icb_cmd_excl,
+  // output [1:0]                   fio_icb_cmd_size,
+  // //
+  // //    * Bus RSP channel
+  // input                          fio_icb_rsp_valid,
+  // output                         fio_icb_rsp_ready,
+  // input                          fio_icb_rsp_err  ,
+  // input                          fio_icb_rsp_excl_ok,
+  // input  [`E203_XLEN-1:0]        fio_icb_rsp_rdata,
+  // `endif//}
 
-  `ifdef E203_HAS_MEM_ITF //{
+  // `ifdef E203_HAS_MEM_ITF //{
   //////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////
   // The ICB Interface from Ifetch 
   //
-  input                          mem_icb_enable,
-  //    * Bus cmd channel
-  output                         mem_icb_cmd_valid,
-  input                          mem_icb_cmd_ready,
-  output [`E203_ADDR_SIZE-1:0]   mem_icb_cmd_addr, 
-  output                         mem_icb_cmd_read, 
-  output [`E203_XLEN-1:0]        mem_icb_cmd_wdata,
-  output [`E203_XLEN/8-1:0]      mem_icb_cmd_wmask,
-  output [1:0]                   mem_icb_cmd_burst,
-  output [1:0]                   mem_icb_cmd_beat,
-  output                         mem_icb_cmd_lock,
-  output                         mem_icb_cmd_excl,
-  output [1:0]                   mem_icb_cmd_size,
-  //
-  //    * Bus RSP channel
-  input                          mem_icb_rsp_valid,
-  output                         mem_icb_rsp_ready,
-  input                          mem_icb_rsp_err  ,
-  input                          mem_icb_rsp_excl_ok,
-  input  [`E203_XLEN-1:0]        mem_icb_rsp_rdata,
-  `endif//}
+  // input                          mem_icb_enable,
+  // //    * Bus cmd channel
+  // output                         mem_icb_cmd_valid,
+  // input                          mem_icb_cmd_ready,
+  // output [`E203_ADDR_SIZE-1:0]   mem_icb_cmd_addr, 
+  // output                         mem_icb_cmd_read, 
+  // output [`E203_XLEN-1:0]        mem_icb_cmd_wdata,
+  // output [`E203_XLEN/8-1:0]      mem_icb_cmd_wmask,
+  // output [1:0]                   mem_icb_cmd_burst,
+  // output [1:0]                   mem_icb_cmd_beat,
+  // output                         mem_icb_cmd_lock,
+  // output                         mem_icb_cmd_excl,
+  // output [1:0]                   mem_icb_cmd_size,
+  // //
+  // //    * Bus RSP channel
+  // input                          mem_icb_rsp_valid,
+  // output                         mem_icb_rsp_ready,
+  // input                          mem_icb_rsp_err  ,
+  // input                          mem_icb_rsp_excl_ok,
+  // input  [`E203_XLEN-1:0]        mem_icb_rsp_rdata,
+  // `endif//}
 
   input  clk,
   input  rst_n
   );
 
 
-  `ifdef E203_HAS_MEM_ITF //{
-      localparam BIU_ARBT_I_NUM = 2;
-      localparam BIU_ARBT_I_PTR_W = 1;
-  `else//}{
+  // `ifdef E203_HAS_MEM_ITF //{
+  //     localparam BIU_ARBT_I_NUM = 2;
+  //     localparam BIU_ARBT_I_PTR_W = 1;
+  // `else//}{
       localparam BIU_ARBT_I_NUM = 1;
       localparam BIU_ARBT_I_PTR_W = 1;
-  `endif//}
+  // `endif//}
 
   
   // The SPLT_NUM is the sum of following components
   //   * ppi, clint, plic, SystemITF, Fast-IO, IFU-err 
       localparam BIU_SPLT_I_NUM_0 = 4;
 
-  `ifdef E203_HAS_MEM_ITF //{
-      localparam BIU_SPLT_I_NUM_1 = (BIU_SPLT_I_NUM_0 + 1);
-  `else//}{
+  // `ifdef E203_HAS_MEM_ITF //{
+  //     localparam BIU_SPLT_I_NUM_1 = (BIU_SPLT_I_NUM_0 + 1);
+  // `else//}{
       localparam BIU_SPLT_I_NUM_1 = BIU_SPLT_I_NUM_0;
-  `endif//}
+  // `endif//}
 
-  `ifdef E203_HAS_FIO //{
-      localparam BIU_SPLT_I_NUM_2 = (BIU_SPLT_I_NUM_1 + 1);
-  `else//}{
+  // `ifdef E203_HAS_FIO //{
+  //     localparam BIU_SPLT_I_NUM_2 = (BIU_SPLT_I_NUM_1 + 1);
+  // `else//}{
       localparam BIU_SPLT_I_NUM_2 = BIU_SPLT_I_NUM_1;
-  `endif//}
+  // `endif//}
 
       localparam BIU_SPLT_I_NUM   = BIU_SPLT_I_NUM_2;
 
@@ -301,81 +322,81 @@ module e203_biu(
   assign arbt_bus_icb_cmd_valid =
       // The  LSU take higher priority
                            {
-                           `ifdef E203_HAS_MEM_ITF //{
-                             ifu2biu_icb_cmd_valid,
-                           `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           //   ifu2biu_icb_cmd_valid,
+                           // `endif//}
                              lsu2biu_icb_cmd_valid
                            } ;
 
   assign arbt_bus_icb_cmd_addr =
                            {
-                           `ifdef E203_HAS_MEM_ITF //{
-                             ifu2biu_icb_cmd_addr,
-                           `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           //   ifu2biu_icb_cmd_addr,
+                           // `endif//}
                              lsu2biu_icb_cmd_addr
                            } ;
 
   assign arbt_bus_icb_cmd_read =
                            {
-                           `ifdef E203_HAS_MEM_ITF //{
-                             ifu2biu_icb_cmd_read,
-                           `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           //   ifu2biu_icb_cmd_read,
+                           // `endif//}
                              lsu2biu_icb_cmd_read
                            } ;
 
   assign arbt_bus_icb_cmd_wdata =
                            {
-                           `ifdef E203_HAS_MEM_ITF //{
-                             ifu2biu_icb_cmd_wdata,
-                           `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           //   ifu2biu_icb_cmd_wdata,
+                           // `endif//}
                              lsu2biu_icb_cmd_wdata
                            } ;
 
   assign arbt_bus_icb_cmd_wmask =
                            {
-                           `ifdef E203_HAS_MEM_ITF //{
-                             ifu2biu_icb_cmd_wmask,
-                           `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           //   ifu2biu_icb_cmd_wmask,
+                           // `endif//}
                              lsu2biu_icb_cmd_wmask
                            } ;
                          
   assign arbt_bus_icb_cmd_burst =
                            {
-                           `ifdef E203_HAS_MEM_ITF //{
-                             ifu2biu_icb_cmd_burst,
-                           `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           //   ifu2biu_icb_cmd_burst,
+                           // `endif//}
                              lsu2biu_icb_cmd_burst
                            } ;
                          
   assign arbt_bus_icb_cmd_beat =
                            {
-                           `ifdef E203_HAS_MEM_ITF //{
-                             ifu2biu_icb_cmd_beat,
-                           `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           //   ifu2biu_icb_cmd_beat,
+                           // `endif//}
                              lsu2biu_icb_cmd_beat
                            } ;
                          
   assign arbt_bus_icb_cmd_lock =
                            {
-                           `ifdef E203_HAS_MEM_ITF //{
-                             ifu2biu_icb_cmd_lock,
-                           `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           //   ifu2biu_icb_cmd_lock,
+                           // `endif//}
                              lsu2biu_icb_cmd_lock
                            } ;
 
   assign arbt_bus_icb_cmd_excl =
                            {
-                           `ifdef E203_HAS_MEM_ITF //{
-                             ifu2biu_icb_cmd_excl,
-                           `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           //   ifu2biu_icb_cmd_excl,
+                           // `endif//}
                              lsu2biu_icb_cmd_excl
                            } ;
                            
   assign arbt_bus_icb_cmd_size =
                            {
-                           `ifdef E203_HAS_MEM_ITF //{
-                             ifu2biu_icb_cmd_size,
-                           `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           //   ifu2biu_icb_cmd_size,
+                           // `endif//}
                              lsu2biu_icb_cmd_size
                            } ;
 
@@ -383,52 +404,52 @@ module e203_biu(
  wire lsu2biu_icb_cmd_ifu = 1'b0;
  assign arbt_bus_icb_cmd_usr =
                            {
-                           `ifdef E203_HAS_MEM_ITF //{
-                             ifu2biu_icb_cmd_ifu,
-                           `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           //   ifu2biu_icb_cmd_ifu,
+                           // `endif//}
                              lsu2biu_icb_cmd_ifu
                            } ;
 
   assign                   {
-                           `ifdef E203_HAS_MEM_ITF //{
-                             ifu2biu_icb_cmd_ready,
-                           `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           //   ifu2biu_icb_cmd_ready,
+                           // `endif//}
                              lsu2biu_icb_cmd_ready
                            } = arbt_bus_icb_cmd_ready;
 
   //RSP Channel
   assign                   {
-                           `ifdef E203_HAS_MEM_ITF //{
-                             ifu2biu_icb_rsp_valid,
-                           `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           //   ifu2biu_icb_rsp_valid,
+                           // `endif//}
                              lsu2biu_icb_rsp_valid
                            } = arbt_bus_icb_rsp_valid;
 
   assign                   {
-                           `ifdef E203_HAS_MEM_ITF //{
-                             ifu2biu_icb_rsp_err,
-                           `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           //   ifu2biu_icb_rsp_err,
+                           // `endif//}
                              lsu2biu_icb_rsp_err
                            } = arbt_bus_icb_rsp_err;
 
   assign                   {
-                           `ifdef E203_HAS_MEM_ITF //{
-                             ifu2biu_icb_rsp_excl_ok,
-                           `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           //   ifu2biu_icb_rsp_excl_ok,
+                           // `endif//}
                              lsu2biu_icb_rsp_excl_ok
                            } = arbt_bus_icb_rsp_excl_ok;
                            
   assign                   {
-                           `ifdef E203_HAS_MEM_ITF //{
-                             ifu2biu_icb_rsp_rdata,
-                           `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           //   ifu2biu_icb_rsp_rdata,
+                           // `endif//}
                              lsu2biu_icb_rsp_rdata
                            } = arbt_bus_icb_rsp_rdata;
 
   assign arbt_bus_icb_rsp_ready = {
-                           `ifdef E203_HAS_MEM_ITF //{
-                             ifu2biu_icb_rsp_ready,
-                           `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           //   ifu2biu_icb_rsp_ready,
+                           // `endif//}
                              lsu2biu_icb_rsp_ready
                            };
 
@@ -612,211 +633,211 @@ module e203_biu(
   //CMD Channel
   assign {
                              ifuerr_icb_cmd_valid
-                           , ppi_icb_cmd_valid
+                           // , ppi_icb_cmd_valid
                            , clint_icb_cmd_valid
                            , plic_icb_cmd_valid
-                           `ifdef E203_HAS_FIO //{
-                           , fio_icb_cmd_valid
-                           `endif//}
-                           `ifdef E203_HAS_MEM_ITF //{
-                           , mem_icb_cmd_valid
-                           `endif//}
+                           // `ifdef E203_HAS_FIO //{
+                           // , fio_icb_cmd_valid
+                           // `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           // , mem_icb_cmd_valid
+                           // `endif//}
                            } = splt_bus_icb_cmd_valid;
 
   assign {
                              ifuerr_icb_cmd_addr
-                           , ppi_icb_cmd_addr
+                           // , ppi_icb_cmd_addr
                            , clint_icb_cmd_addr
                            , plic_icb_cmd_addr
-                           `ifdef E203_HAS_FIO //{
-                           , fio_icb_cmd_addr
-                           `endif//}
-                           `ifdef E203_HAS_MEM_ITF //{
-                           , mem_icb_cmd_addr
-                           `endif//}
+                           // `ifdef E203_HAS_FIO //{
+                           // , fio_icb_cmd_addr
+                           // `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           // , mem_icb_cmd_addr
+                           // `endif//}
                            } = splt_bus_icb_cmd_addr;
 
   assign {
                              ifuerr_icb_cmd_read
-                           , ppi_icb_cmd_read
+                           // , ppi_icb_cmd_read
                            , clint_icb_cmd_read
                            , plic_icb_cmd_read
-                           `ifdef E203_HAS_FIO //{
-                           , fio_icb_cmd_read
-                           `endif//}
-                           `ifdef E203_HAS_MEM_ITF //{
-                           , mem_icb_cmd_read
-                           `endif//}
+                           // `ifdef E203_HAS_FIO //{
+                           // , fio_icb_cmd_read
+                           // `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           // , mem_icb_cmd_read
+                           // `endif//}
                            } = splt_bus_icb_cmd_read;
 
   assign {
                              ifuerr_icb_cmd_wdata
-                           , ppi_icb_cmd_wdata
+                           // , ppi_icb_cmd_wdata
                            , clint_icb_cmd_wdata
                            , plic_icb_cmd_wdata
-                           `ifdef E203_HAS_FIO //{
-                           , fio_icb_cmd_wdata
-                           `endif//}
-                           `ifdef E203_HAS_MEM_ITF //{
-                           , mem_icb_cmd_wdata
-                           `endif//}
+                           // `ifdef E203_HAS_FIO //{
+                           // , fio_icb_cmd_wdata
+                           // `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           // , mem_icb_cmd_wdata
+                           // `endif//}
                            } = splt_bus_icb_cmd_wdata;
 
   assign {
                              ifuerr_icb_cmd_wmask
-                           , ppi_icb_cmd_wmask
+                           // , ppi_icb_cmd_wmask
                            , clint_icb_cmd_wmask
                            , plic_icb_cmd_wmask
-                           `ifdef E203_HAS_FIO //{
-                           , fio_icb_cmd_wmask
-                           `endif//}
-                           `ifdef E203_HAS_MEM_ITF //{
-                           , mem_icb_cmd_wmask
-                           `endif//}
+                           // `ifdef E203_HAS_FIO //{
+                           // , fio_icb_cmd_wmask
+                           // `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           // , mem_icb_cmd_wmask
+                           // `endif//}
                            } = splt_bus_icb_cmd_wmask;
                          
   assign {
                              ifuerr_icb_cmd_burst
-                           , ppi_icb_cmd_burst
+                           // , ppi_icb_cmd_burst
                            , clint_icb_cmd_burst
                            , plic_icb_cmd_burst
-                           `ifdef E203_HAS_FIO //{
-                           , fio_icb_cmd_burst
-                           `endif//}
-                           `ifdef E203_HAS_MEM_ITF //{
-                           , mem_icb_cmd_burst
-                           `endif//}
+                           // `ifdef E203_HAS_FIO //{
+                           // , fio_icb_cmd_burst
+                           // `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           // , mem_icb_cmd_burst
+                           // `endif//}
                            } = splt_bus_icb_cmd_burst;
                          
   assign {
                              ifuerr_icb_cmd_beat
-                           , ppi_icb_cmd_beat
+                           // , ppi_icb_cmd_beat
                            , clint_icb_cmd_beat
                            , plic_icb_cmd_beat
-                           `ifdef E203_HAS_FIO //{
-                           , fio_icb_cmd_beat
-                           `endif//}
-                           `ifdef E203_HAS_MEM_ITF //{
-                           , mem_icb_cmd_beat
-                           `endif//}
+                           // `ifdef E203_HAS_FIO //{
+                           // , fio_icb_cmd_beat
+                           // `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           // , mem_icb_cmd_beat
+                           // `endif//}
                            } = splt_bus_icb_cmd_beat;
                          
   assign {
                              ifuerr_icb_cmd_lock
-                           , ppi_icb_cmd_lock
+                           // , ppi_icb_cmd_lock
                            , clint_icb_cmd_lock
                            , plic_icb_cmd_lock
-                           `ifdef E203_HAS_FIO //{
-                           , fio_icb_cmd_lock
-                           `endif//}
-                           `ifdef E203_HAS_MEM_ITF //{
-                           , mem_icb_cmd_lock
-                           `endif//}
+                           // `ifdef E203_HAS_FIO //{
+                           // , fio_icb_cmd_lock
+                           // `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           // , mem_icb_cmd_lock
+                           // `endif//}
                            } = splt_bus_icb_cmd_lock;
 
   assign {
                              ifuerr_icb_cmd_excl
-                           , ppi_icb_cmd_excl
+                           // , ppi_icb_cmd_excl
                            , clint_icb_cmd_excl
                            , plic_icb_cmd_excl
-                           `ifdef E203_HAS_FIO //{
-                           , fio_icb_cmd_excl
-                           `endif//}
-                           `ifdef E203_HAS_MEM_ITF //{
-                           , mem_icb_cmd_excl
-                           `endif//}
+                           // `ifdef E203_HAS_FIO //{
+                           // , fio_icb_cmd_excl
+                           // `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           // , mem_icb_cmd_excl
+                           // `endif//}
                            } = splt_bus_icb_cmd_excl;
                            
   assign {
                              ifuerr_icb_cmd_size
-                           , ppi_icb_cmd_size
+                           // , ppi_icb_cmd_size
                            , clint_icb_cmd_size
                            , plic_icb_cmd_size
-                           `ifdef E203_HAS_FIO //{
-                           , fio_icb_cmd_size
-                           `endif//}
-                           `ifdef E203_HAS_MEM_ITF //{
-                           , mem_icb_cmd_size
-                           `endif//}
+                           // `ifdef E203_HAS_FIO //{
+                           // , fio_icb_cmd_size
+                           // `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           // , mem_icb_cmd_size
+                           // `endif//}
                            } = splt_bus_icb_cmd_size;
 
   assign splt_bus_icb_cmd_ready = {
                              ifuerr_icb_cmd_ready
-                           , ppi_icb_cmd_ready
+                           // , ppi_icb_cmd_ready
                            , clint_icb_cmd_ready
                            , plic_icb_cmd_ready
-                           `ifdef E203_HAS_FIO //{
-                           , fio_icb_cmd_ready
-                           `endif//}
-                           `ifdef E203_HAS_MEM_ITF //{
-                           , mem_icb_cmd_ready
-                           `endif//}
+                           // `ifdef E203_HAS_FIO //{
+                           // , fio_icb_cmd_ready
+                           // `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           // , mem_icb_cmd_ready
+                           // `endif//}
                            };
 
   //RSP Channel
   assign splt_bus_icb_rsp_valid = {
                              ifuerr_icb_rsp_valid
-                           , ppi_icb_rsp_valid
+                           // , ppi_icb_rsp_valid
                            , clint_icb_rsp_valid
                            , plic_icb_rsp_valid
-                           `ifdef E203_HAS_FIO //{
-                           , fio_icb_rsp_valid
-                           `endif//}
-                           `ifdef E203_HAS_MEM_ITF //{
-                           , mem_icb_rsp_valid
-                           `endif//}
+                           // `ifdef E203_HAS_FIO //{
+                           // , fio_icb_rsp_valid
+                           // `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           // , mem_icb_rsp_valid
+                           // `endif//}
                            };
 
   assign splt_bus_icb_rsp_err = {
                              ifuerr_icb_rsp_err
-                           , ppi_icb_rsp_err
+                           // , ppi_icb_rsp_err
                            , clint_icb_rsp_err
                            , plic_icb_rsp_err
-                           `ifdef E203_HAS_FIO //{
-                           , fio_icb_rsp_err
-                           `endif//}
-                           `ifdef E203_HAS_MEM_ITF //{
-                           , mem_icb_rsp_err
-                           `endif//}
+                           // `ifdef E203_HAS_FIO //{
+                           // , fio_icb_rsp_err
+                           // `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           // , mem_icb_rsp_err
+                           // `endif//}
                            };
 
   assign splt_bus_icb_rsp_excl_ok = {
                              ifuerr_icb_rsp_excl_ok
-                           , ppi_icb_rsp_excl_ok
+                           // , ppi_icb_rsp_excl_ok
                            , clint_icb_rsp_excl_ok
                            , plic_icb_rsp_excl_ok
-                           `ifdef E203_HAS_FIO //{
-                           , fio_icb_rsp_excl_ok
-                           `endif//}
-                           `ifdef E203_HAS_MEM_ITF //{
-                           , mem_icb_rsp_excl_ok
-                           `endif//}
+                           // `ifdef E203_HAS_FIO //{
+                           // , fio_icb_rsp_excl_ok
+                           // `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           // , mem_icb_rsp_excl_ok
+                           // `endif//}
                            };
 
   assign splt_bus_icb_rsp_rdata = {
                              ifuerr_icb_rsp_rdata
-                           , ppi_icb_rsp_rdata
+                           // , ppi_icb_rsp_rdata
                            , clint_icb_rsp_rdata
                            , plic_icb_rsp_rdata
-                           `ifdef E203_HAS_FIO //{
-                           , fio_icb_rsp_rdata
-                           `endif//}
-                           `ifdef E203_HAS_MEM_ITF //{
-                           , mem_icb_rsp_rdata
-                           `endif//}
+                           // `ifdef E203_HAS_FIO //{
+                           // , fio_icb_rsp_rdata
+                           // `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           // , mem_icb_rsp_rdata
+                           // `endif//}
                            };
 
   assign {
                              ifuerr_icb_rsp_ready
-                           , ppi_icb_rsp_ready
+                           // , ppi_icb_rsp_ready
                            , clint_icb_rsp_ready
                            , plic_icb_rsp_ready
-                           `ifdef E203_HAS_FIO //{
-                           , fio_icb_rsp_ready
-                           `endif//}
-                           `ifdef E203_HAS_MEM_ITF //{
-                           , mem_icb_rsp_ready
-                           `endif//}
+                           // `ifdef E203_HAS_FIO //{
+                           // , fio_icb_rsp_ready
+                           // `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           // , mem_icb_rsp_ready
+                           // `endif//}
                            } = splt_bus_icb_rsp_ready;
 
   wire buf_icb_cmd_ppi = ppi_icb_enable & (buf_icb_cmd_addr[`E203_PPI_BASE_REGION] ==  ppi_region_indic[`E203_PPI_BASE_REGION]);
@@ -828,44 +849,44 @@ module e203_biu(
   wire buf_icb_cmd_plic = plic_icb_enable & (buf_icb_cmd_addr[`E203_PLIC_BASE_REGION] ==  plic_region_indic[`E203_PLIC_BASE_REGION]);
   wire buf_icb_sel_plic = buf_icb_cmd_plic & (~buf_icb_cmd_ifu);
 
-  `ifdef E203_HAS_FIO //{
-  wire buf_icb_cmd_fio = fio_icb_enable & (buf_icb_cmd_addr[`E203_FIO_BASE_REGION] ==  fio_region_indic[`E203_FIO_BASE_REGION]);
-  wire buf_icb_sel_fio = buf_icb_cmd_fio & (~buf_icb_cmd_ifu);
-  `endif//}
+  // `ifdef E203_HAS_FIO //{
+  // wire buf_icb_cmd_fio = fio_icb_enable & (buf_icb_cmd_addr[`E203_FIO_BASE_REGION] ==  fio_region_indic[`E203_FIO_BASE_REGION]);
+  // wire buf_icb_sel_fio = buf_icb_cmd_fio & (~buf_icb_cmd_ifu);
+  // `endif//}
 
   wire buf_icb_sel_ifuerr =(
-                            buf_icb_cmd_ppi 
-                          | buf_icb_cmd_clint 
+                            // buf_icb_cmd_ppi 
+                           buf_icb_cmd_clint 
                           | buf_icb_cmd_plic
-                           `ifdef E203_HAS_FIO //{
-                          | buf_icb_cmd_fio
-                           `endif//}
+                          //  `ifdef E203_HAS_FIO //{
+                          // | buf_icb_cmd_fio
+                          //  `endif//}
                            ) & buf_icb_cmd_ifu;
 
-  `ifdef E203_HAS_MEM_ITF //{
-  wire buf_icb_sel_mem = mem_icb_enable 
-                             & (~buf_icb_sel_ifuerr)
-                             & (~buf_icb_sel_ppi)
-                             & (~buf_icb_sel_clint)
-                             & (~buf_icb_sel_plic)
-                          `ifdef E203_HAS_FIO //{
-                             & (~buf_icb_sel_fio)
-                          `endif//}
-                             ;
-  `endif//}
+  // `ifdef E203_HAS_MEM_ITF //{
+  // wire buf_icb_sel_mem = mem_icb_enable 
+  //                            & (~buf_icb_sel_ifuerr)
+  //                            & (~buf_icb_sel_ppi)
+  //                            & (~buf_icb_sel_clint)
+  //                            & (~buf_icb_sel_plic)
+  //                         `ifdef E203_HAS_FIO //{
+  //                            & (~buf_icb_sel_fio)
+  //                         `endif//}
+  //                            ;
+  // `endif//}
 
   wire [BIU_SPLT_I_NUM-1:0] buf_icb_splt_indic = 
       {
                              buf_icb_sel_ifuerr
-                           , buf_icb_sel_ppi
+                           // , buf_icb_sel_ppi
                            , buf_icb_sel_clint
                            , buf_icb_sel_plic
-                           `ifdef E203_HAS_FIO //{
-                           , buf_icb_sel_fio
-                           `endif//}
-                           `ifdef E203_HAS_MEM_ITF //{
-                           , buf_icb_sel_mem
-                           `endif//}
+                           // `ifdef E203_HAS_FIO //{
+                           // , buf_icb_sel_fio
+                           // `endif//}
+                           // `ifdef E203_HAS_MEM_ITF //{
+                           // , buf_icb_sel_mem
+                           // `endif//}
       };
 
   sirv_gnrl_icb_splt # (

@@ -1,4 +1,25 @@
-/*
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-01-31 16:01:05
+// Last Modified by:   29505
+// Last Modified time: 2019-02-01 17:32:44
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_soc_top.v  
+// Module Name:  
+// Project Name:    
+// Target Devices:    
+// Tool Versions:    
+// Description:    
+// 
+// Dependencies:    
+// 
+// Revision:   
+// Revision  
+// Additional Comments:   
+// 
+///////////////////////////////////////////////////////////////////////////////////*
 * @File Name: e203_soc_top.v
 * @File Path: K:\work\dark+PRJ\e200_opensource\rtl\e203\soc\e203_soc_top.v
 * @Author: 29505
@@ -351,29 +372,29 @@ module e203_soc_top(
   .sysper_icb_rsp_rdata (32'b0),
 
 
-  .sysfio_icb_cmd_valid(sysfio_icb_cmd_valid),
-  .sysfio_icb_cmd_ready(sysfio_icb_cmd_ready),
-  .sysfio_icb_cmd_read (), 
-  .sysfio_icb_cmd_addr (), 
-  .sysfio_icb_cmd_wdata(), 
-  .sysfio_icb_cmd_wmask(), 
+  // .sysfio_icb_cmd_valid(sysfio_icb_cmd_valid),
+  // .sysfio_icb_cmd_ready(sysfio_icb_cmd_ready),
+  // .sysfio_icb_cmd_read (), 
+  // .sysfio_icb_cmd_addr (), 
+  // .sysfio_icb_cmd_wdata(), 
+  // .sysfio_icb_cmd_wmask(), 
    
-  .sysfio_icb_rsp_valid(sysfio_icb_cmd_valid),
-  .sysfio_icb_rsp_ready(sysfio_icb_cmd_ready),
-  .sysfio_icb_rsp_err  (1'b0  ),
-  .sysfio_icb_rsp_rdata(32'b0),
+  // .sysfio_icb_rsp_valid(sysfio_icb_cmd_valid),
+  // .sysfio_icb_rsp_ready(sysfio_icb_cmd_ready),
+  // .sysfio_icb_rsp_err  (1'b0  ),
+  // .sysfio_icb_rsp_rdata(32'b0),
 
-  .sysmem_icb_cmd_valid(sysmem_icb_cmd_valid),
-  .sysmem_icb_cmd_ready(sysmem_icb_cmd_ready),
-  .sysmem_icb_cmd_read (), 
-  .sysmem_icb_cmd_addr (), 
-  .sysmem_icb_cmd_wdata(), 
-  .sysmem_icb_cmd_wmask(), 
+  // .sysmem_icb_cmd_valid(sysmem_icb_cmd_valid),
+  // .sysmem_icb_cmd_ready(sysmem_icb_cmd_ready),
+  // .sysmem_icb_cmd_read (), 
+  // .sysmem_icb_cmd_addr (), 
+  // .sysmem_icb_cmd_wdata(), 
+  // .sysmem_icb_cmd_wmask(), 
 
-  .sysmem_icb_rsp_valid(sysmem_icb_cmd_valid),
-  .sysmem_icb_rsp_ready(sysmem_icb_cmd_ready),
-  .sysmem_icb_rsp_err  (1'b0  ),
-  .sysmem_icb_rsp_rdata(32'b0),
+  // .sysmem_icb_rsp_valid(sysmem_icb_cmd_valid),
+  // .sysmem_icb_rsp_ready(sysmem_icb_cmd_ready),
+  // .sysmem_icb_rsp_err  (1'b0  ),
+  // .sysmem_icb_rsp_rdata(32'b0),
 
   .io_pads_jtag_TCK_i_ival    (io_pads_jtag_TCK_i_ival    ),
   .io_pads_jtag_TCK_o_oval    (),
