@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-01-31 16:01:05
 // Last Modified by:   29505
-// Last Modified time: 2019-02-01 22:02:12
+// Last Modified time: 2019-02-01 22:09:40
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_subsys_top.v  
 // Module Name:  
@@ -113,43 +113,43 @@ module e203_subsys_top(
 
   // input  [`E203_HART_ID_W-1:0] core_mhartid,  
     
-  `ifdef E203_HAS_ITCM_EXTITF //{
-  //////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////
-  // External-agent ICB to ITCM
-  //    * Bus cmd channel
-  input                          ext2itcm_icb_cmd_valid,
-  output                         ext2itcm_icb_cmd_ready,
-  input  [`E203_ITCM_ADDR_WIDTH-1:0]   ext2itcm_icb_cmd_addr, 
-  input                          ext2itcm_icb_cmd_read, 
-  input  [`E203_XLEN-1:0]        ext2itcm_icb_cmd_wdata,
-  input  [`E203_XLEN/8-1:0]      ext2itcm_icb_cmd_wmask,
-  //
-  //    * Bus RSP channel
-  output                         ext2itcm_icb_rsp_valid,
-  input                          ext2itcm_icb_rsp_ready,
-  output                         ext2itcm_icb_rsp_err  ,
-  output [`E203_XLEN-1:0]        ext2itcm_icb_rsp_rdata,
-  `endif//}
+  // `ifdef E203_HAS_ITCM_EXTITF //{
+  // //////////////////////////////////////////////////////////////
+  // //////////////////////////////////////////////////////////////
+  // // External-agent ICB to ITCM
+  // //    * Bus cmd channel
+  // input                          ext2itcm_icb_cmd_valid,
+  // output                         ext2itcm_icb_cmd_ready,
+  // input  [`E203_ITCM_ADDR_WIDTH-1:0]   ext2itcm_icb_cmd_addr, 
+  // input                          ext2itcm_icb_cmd_read, 
+  // input  [`E203_XLEN-1:0]        ext2itcm_icb_cmd_wdata,
+  // input  [`E203_XLEN/8-1:0]      ext2itcm_icb_cmd_wmask,
+  // //
+  // //    * Bus RSP channel
+  // output                         ext2itcm_icb_rsp_valid,
+  // input                          ext2itcm_icb_rsp_ready,
+  // output                         ext2itcm_icb_rsp_err  ,
+  // output [`E203_XLEN-1:0]        ext2itcm_icb_rsp_rdata,
+  // `endif//}
 
-  `ifdef E203_HAS_DTCM_EXTITF //{
-  //////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////
-  // External-agent ICB to DTCM
-  //    * Bus cmd channel
-  input                          ext2dtcm_icb_cmd_valid,
-  output                         ext2dtcm_icb_cmd_ready,
-  input  [`E203_DTCM_ADDR_WIDTH-1:0]   ext2dtcm_icb_cmd_addr, 
-  input                          ext2dtcm_icb_cmd_read, 
-  input  [`E203_XLEN-1:0]        ext2dtcm_icb_cmd_wdata,
-  input  [`E203_XLEN/8-1:0]      ext2dtcm_icb_cmd_wmask,
-  //
-  //    * Bus RSP channel
-  output                         ext2dtcm_icb_rsp_valid,
-  input                          ext2dtcm_icb_rsp_ready,
-  output                         ext2dtcm_icb_rsp_err  ,
-  output [`E203_XLEN-1:0]        ext2dtcm_icb_rsp_rdata,
-  `endif//}
+  // `ifdef E203_HAS_DTCM_EXTITF //{
+  // //////////////////////////////////////////////////////////////
+  // //////////////////////////////////////////////////////////////
+  // // External-agent ICB to DTCM
+  // //    * Bus cmd channel
+  // input                          ext2dtcm_icb_cmd_valid,
+  // output                         ext2dtcm_icb_cmd_ready,
+  // input  [`E203_DTCM_ADDR_WIDTH-1:0]   ext2dtcm_icb_cmd_addr, 
+  // input                          ext2dtcm_icb_cmd_read, 
+  // input  [`E203_XLEN-1:0]        ext2dtcm_icb_cmd_wdata,
+  // input  [`E203_XLEN/8-1:0]      ext2dtcm_icb_cmd_wmask,
+  // //
+  // //    * Bus RSP channel
+  // output                         ext2dtcm_icb_rsp_valid,
+  // input                          ext2dtcm_icb_rsp_ready,
+  // output                         ext2dtcm_icb_rsp_err  ,
+  // output [`E203_XLEN-1:0]        ext2dtcm_icb_rsp_rdata,
+  // `endif//}
 
   
   //////////////////////////////////////////////////////////////
@@ -846,33 +846,33 @@ module e203_subsys_top(
     // .io_pads_qspi_cs_0_o_pue    (io_pads_qspi_cs_0_o_pue    ),
     // .io_pads_qspi_cs_0_o_ds     (io_pads_qspi_cs_0_o_ds     ),
 
-  `ifdef E203_HAS_ITCM_EXTITF //{
-    .ext2itcm_icb_cmd_valid  (ext2itcm_icb_cmd_valid),
-    .ext2itcm_icb_cmd_ready  (ext2itcm_icb_cmd_ready),
-    .ext2itcm_icb_cmd_addr   (ext2itcm_icb_cmd_addr ),
-    .ext2itcm_icb_cmd_read   (ext2itcm_icb_cmd_read ),
-    .ext2itcm_icb_cmd_wdata  (ext2itcm_icb_cmd_wdata),
-    .ext2itcm_icb_cmd_wmask  (ext2itcm_icb_cmd_wmask),
+  // `ifdef E203_HAS_ITCM_EXTITF //{
+  //   .ext2itcm_icb_cmd_valid  (ext2itcm_icb_cmd_valid),
+  //   .ext2itcm_icb_cmd_ready  (ext2itcm_icb_cmd_ready),
+  //   .ext2itcm_icb_cmd_addr   (ext2itcm_icb_cmd_addr ),
+  //   .ext2itcm_icb_cmd_read   (ext2itcm_icb_cmd_read ),
+  //   .ext2itcm_icb_cmd_wdata  (ext2itcm_icb_cmd_wdata),
+  //   .ext2itcm_icb_cmd_wmask  (ext2itcm_icb_cmd_wmask),
     
-    .ext2itcm_icb_rsp_valid  (ext2itcm_icb_rsp_valid),
-    .ext2itcm_icb_rsp_ready  (ext2itcm_icb_rsp_ready),
-    .ext2itcm_icb_rsp_err    (ext2itcm_icb_rsp_err  ),
-    .ext2itcm_icb_rsp_rdata  (ext2itcm_icb_rsp_rdata),
-  `endif//}
+  //   .ext2itcm_icb_rsp_valid  (ext2itcm_icb_rsp_valid),
+  //   .ext2itcm_icb_rsp_ready  (ext2itcm_icb_rsp_ready),
+  //   .ext2itcm_icb_rsp_err    (ext2itcm_icb_rsp_err  ),
+  //   .ext2itcm_icb_rsp_rdata  (ext2itcm_icb_rsp_rdata),
+  // `endif//}
 
-  `ifdef E203_HAS_DTCM_EXTITF //{
-    .ext2dtcm_icb_cmd_valid  (ext2dtcm_icb_cmd_valid),
-    .ext2dtcm_icb_cmd_ready  (ext2dtcm_icb_cmd_ready),
-    .ext2dtcm_icb_cmd_addr   (ext2dtcm_icb_cmd_addr ),
-    .ext2dtcm_icb_cmd_read   (ext2dtcm_icb_cmd_read ),
-    .ext2dtcm_icb_cmd_wdata  (ext2dtcm_icb_cmd_wdata),
-    .ext2dtcm_icb_cmd_wmask  (ext2dtcm_icb_cmd_wmask),
+  // `ifdef E203_HAS_DTCM_EXTITF //{
+  //   .ext2dtcm_icb_cmd_valid  (ext2dtcm_icb_cmd_valid),
+  //   .ext2dtcm_icb_cmd_ready  (ext2dtcm_icb_cmd_ready),
+  //   .ext2dtcm_icb_cmd_addr   (ext2dtcm_icb_cmd_addr ),
+  //   .ext2dtcm_icb_cmd_read   (ext2dtcm_icb_cmd_read ),
+  //   .ext2dtcm_icb_cmd_wdata  (ext2dtcm_icb_cmd_wdata),
+  //   .ext2dtcm_icb_cmd_wmask  (ext2dtcm_icb_cmd_wmask),
     
-    .ext2dtcm_icb_rsp_valid  (ext2dtcm_icb_rsp_valid),
-    .ext2dtcm_icb_rsp_ready  (ext2dtcm_icb_rsp_ready),
-    .ext2dtcm_icb_rsp_err    (ext2dtcm_icb_rsp_err  ),
-    .ext2dtcm_icb_rsp_rdata  (ext2dtcm_icb_rsp_rdata),
-  `endif//}
+  //   .ext2dtcm_icb_rsp_valid  (ext2dtcm_icb_rsp_valid),
+  //   .ext2dtcm_icb_rsp_ready  (ext2dtcm_icb_rsp_ready),
+  //   .ext2dtcm_icb_rsp_err    (ext2dtcm_icb_rsp_err  ),
+  //   .ext2dtcm_icb_rsp_rdata  (ext2dtcm_icb_rsp_rdata),
+  // `endif//}
 
 
     // .sysper_icb_cmd_valid     (sysper_icb_cmd_valid),

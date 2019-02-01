@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-01-31 17:35:43
 // Last Modified by:   29505
-// Last Modified time: 2019-02-01 21:59:03
+// Last Modified time: 2019-02-01 22:12:12
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_subsys_main.v  
 // Module Name:  
@@ -367,43 +367,43 @@ module e203_subsys_main(
   // output  io_pads_qspi_cs_0_o_pue,
   // output  io_pads_qspi_cs_0_o_ds,
 
-  `ifdef E203_HAS_ITCM_EXTITF //{
-  //////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////
-  // External-agent ICB to ITCM
-  //    * Bus cmd channel
-  input                          ext2itcm_icb_cmd_valid,
-  output                         ext2itcm_icb_cmd_ready,
-  input  [`E203_ITCM_ADDR_WIDTH-1:0]   ext2itcm_icb_cmd_addr, 
-  input                          ext2itcm_icb_cmd_read, 
-  input  [`E203_XLEN-1:0]        ext2itcm_icb_cmd_wdata,
-  input  [`E203_XLEN/8-1:0]      ext2itcm_icb_cmd_wmask,
-  //
-  //    * Bus RSP channel
-  output                         ext2itcm_icb_rsp_valid,
-  input                          ext2itcm_icb_rsp_ready,
-  output                         ext2itcm_icb_rsp_err  ,
-  output [`E203_XLEN-1:0]        ext2itcm_icb_rsp_rdata,
-  `endif//}
+  // `ifdef E203_HAS_ITCM_EXTITF //{
+  // //////////////////////////////////////////////////////////////
+  // //////////////////////////////////////////////////////////////
+  // // External-agent ICB to ITCM
+  // //    * Bus cmd channel
+  // input                          ext2itcm_icb_cmd_valid,
+  // output                         ext2itcm_icb_cmd_ready,
+  // input  [`E203_ITCM_ADDR_WIDTH-1:0]   ext2itcm_icb_cmd_addr, 
+  // input                          ext2itcm_icb_cmd_read, 
+  // input  [`E203_XLEN-1:0]        ext2itcm_icb_cmd_wdata,
+  // input  [`E203_XLEN/8-1:0]      ext2itcm_icb_cmd_wmask,
+  // //
+  // //    * Bus RSP channel
+  // output                         ext2itcm_icb_rsp_valid,
+  // input                          ext2itcm_icb_rsp_ready,
+  // output                         ext2itcm_icb_rsp_err  ,
+  // output [`E203_XLEN-1:0]        ext2itcm_icb_rsp_rdata,
+  // `endif//}
 
-  `ifdef E203_HAS_DTCM_EXTITF //{
-  //////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////
-  // External-agent ICB to DTCM
-  //    * Bus cmd channel
-  input                          ext2dtcm_icb_cmd_valid,
-  output                         ext2dtcm_icb_cmd_ready,
-  input  [`E203_DTCM_ADDR_WIDTH-1:0]   ext2dtcm_icb_cmd_addr, 
-  input                          ext2dtcm_icb_cmd_read, 
-  input  [`E203_XLEN-1:0]        ext2dtcm_icb_cmd_wdata,
-  input  [`E203_XLEN/8-1:0]      ext2dtcm_icb_cmd_wmask,
-  //
-  //    * Bus RSP channel
-  output                         ext2dtcm_icb_rsp_valid,
-  input                          ext2dtcm_icb_rsp_ready,
-  output                         ext2dtcm_icb_rsp_err  ,
-  output [`E203_XLEN-1:0]        ext2dtcm_icb_rsp_rdata,
-  `endif//}
+  // `ifdef E203_HAS_DTCM_EXTITF //{
+  // //////////////////////////////////////////////////////////////
+  // //////////////////////////////////////////////////////////////
+  // // External-agent ICB to DTCM
+  // //    * Bus cmd channel
+  // input                          ext2dtcm_icb_cmd_valid,
+  // output                         ext2dtcm_icb_cmd_ready,
+  // input  [`E203_DTCM_ADDR_WIDTH-1:0]   ext2dtcm_icb_cmd_addr, 
+  // input                          ext2dtcm_icb_cmd_read, 
+  // input  [`E203_XLEN-1:0]        ext2dtcm_icb_cmd_wdata,
+  // input  [`E203_XLEN/8-1:0]      ext2dtcm_icb_cmd_wmask,
+  // //
+  // //    * Bus RSP channel
+  // output                         ext2dtcm_icb_rsp_valid,
+  // input                          ext2dtcm_icb_rsp_ready,
+  // output                         ext2dtcm_icb_rsp_err  ,
+  // output [`E203_XLEN-1:0]        ext2dtcm_icb_rsp_rdata,
+  // `endif//}
 
   
   //////////////////////////////////////////////////////////////
@@ -1011,31 +1011,31 @@ assign hfclk = hfextclk;
     .tmr_irq_a               (clint_tmr_irq),
 
   `ifdef E203_HAS_ITCM_EXTITF //{
-    .ext2itcm_icb_cmd_valid  (ext2itcm_icb_cmd_valid),
-    .ext2itcm_icb_cmd_ready  (ext2itcm_icb_cmd_ready),
-    .ext2itcm_icb_cmd_addr   (ext2itcm_icb_cmd_addr ),
-    .ext2itcm_icb_cmd_read   (ext2itcm_icb_cmd_read ),
-    .ext2itcm_icb_cmd_wdata  (ext2itcm_icb_cmd_wdata),
-    .ext2itcm_icb_cmd_wmask  (ext2itcm_icb_cmd_wmask),
+    .ext2itcm_icb_cmd_valid  (1'b0),
+    .ext2itcm_icb_cmd_ready  (),
+    .ext2itcm_icb_cmd_addr   (`E203_ITCM_ADDR_WIDTH'b0 ),
+    .ext2itcm_icb_cmd_read   (1'b0 ),
+    .ext2itcm_icb_cmd_wdata  (32'b0),
+    .ext2itcm_icb_cmd_wmask  (4'b0),
     
-    .ext2itcm_icb_rsp_valid  (ext2itcm_icb_rsp_valid),
-    .ext2itcm_icb_rsp_ready  (ext2itcm_icb_rsp_ready),
-    .ext2itcm_icb_rsp_err    (ext2itcm_icb_rsp_err  ),
-    .ext2itcm_icb_rsp_rdata  (ext2itcm_icb_rsp_rdata),
+    .ext2itcm_icb_rsp_valid  (),
+    .ext2itcm_icb_rsp_ready  (1'b0),
+    .ext2itcm_icb_rsp_err    (),
+    .ext2itcm_icb_rsp_rdata  (),
   `endif//}
 
   `ifdef E203_HAS_DTCM_EXTITF //{
-    .ext2dtcm_icb_cmd_valid  (ext2dtcm_icb_cmd_valid),
-    .ext2dtcm_icb_cmd_ready  (ext2dtcm_icb_cmd_ready),
-    .ext2dtcm_icb_cmd_addr   (ext2dtcm_icb_cmd_addr ),
-    .ext2dtcm_icb_cmd_read   (ext2dtcm_icb_cmd_read ),
-    .ext2dtcm_icb_cmd_wdata  (ext2dtcm_icb_cmd_wdata),
-    .ext2dtcm_icb_cmd_wmask  (ext2dtcm_icb_cmd_wmask),
+    .ext2dtcm_icb_cmd_valid  (1'b0),
+    .ext2dtcm_icb_cmd_ready  (),
+    .ext2dtcm_icb_cmd_addr   (`E203_DTCM_ADDR_WIDTH'b0 ),
+    .ext2dtcm_icb_cmd_read   (1'b0 ),
+    .ext2dtcm_icb_cmd_wdata  (32'b0),
+    .ext2dtcm_icb_cmd_wmask  (4'b0),
     
-    .ext2dtcm_icb_rsp_valid  (ext2dtcm_icb_rsp_valid),
-    .ext2dtcm_icb_rsp_ready  (ext2dtcm_icb_rsp_ready),
-    .ext2dtcm_icb_rsp_err    (ext2dtcm_icb_rsp_err  ),
-    .ext2dtcm_icb_rsp_rdata  (ext2dtcm_icb_rsp_rdata),
+    .ext2dtcm_icb_rsp_valid  (),
+    .ext2dtcm_icb_rsp_ready  (1'b0),
+    .ext2dtcm_icb_rsp_err    (),
+    .ext2dtcm_icb_rsp_rdata  (),
   `endif//}
 
 
