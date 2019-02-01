@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-01-24 08:57:00
 // Last Modified by:   29505
-// Last Modified time: 2019-02-01 21:58:59
+// Last Modified time: 2019-02-01 22:18:59
 // Email: 295054118@whut.edu.cn
 // Design Name: system.v  
 // Module Name: system
@@ -28,7 +28,7 @@ module system
   input wire CLK32768KHZ,//RTC_CLK-Y18
 
   input wire fpga_rst,//FPGA_RESET-T6
-  input wire mcu_rst,//MCU_RESET-P20
+  input wire mcu_rst//MCU_RESET-P20
 
 
   // Dedicated QSPI interface

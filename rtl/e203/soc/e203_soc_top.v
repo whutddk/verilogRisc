@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-01-31 16:01:05
 // Last Modified by:   29505
-// Last Modified time: 2019-02-01 22:10:10
+// Last Modified time: 2019-02-01 22:18:27
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_soc_top.v  
 // Module Name:  
@@ -56,7 +56,7 @@ module e203_soc_top(
   // output hfxoscen,// The signal to enable the crystal pad generated clock
 
   // This clock should comes from the crystal pad generated low speed clock (32.768KHz)
-  input  lfextclk,
+  input  lfextclk
   // output lfxoscen,// The signal to enable the crystal pad generated clock
 
 
