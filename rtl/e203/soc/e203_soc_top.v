@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-01-31 16:01:05
 // Last Modified by:   29505
-// Last Modified time: 2019-02-01 22:18:27
+// Last Modified time: 2019-02-02 21:06:40
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_soc_top.v  
 // Module Name:  
@@ -700,7 +700,7 @@ module e203_soc_top(
 
     .hfextclk        (hfextclk),
     // .hfxoscen        (hfxoscen),
-    .lfextclk        (lfextclk),
+    .lfextclk        (lfextclk)
     // .lfxoscen        (lfxoscen),
 
   // .io_pads_aon_erst_n_i_ival        (io_pads_aon_erst_n_i_ival       ), 

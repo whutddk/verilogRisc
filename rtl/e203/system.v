@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-01-24 08:57:00
 // Last Modified by:   29505
-// Last Modified time: 2019-02-01 22:18:59
+// Last Modified time: 2019-02-02 21:07:21
 // Email: 295054118@whut.edu.cn
 // Design Name: system.v  
 // Module Name: system
@@ -1009,7 +1009,7 @@ module system
     .hfextclk(clk_16M),
     // .hfxoscen(),
 
-    .lfextclk(CLK32768KHZ), 
+    .lfextclk(CLK32768KHZ)
     // .lfxoscen(),
 
        // Note: this is the real SoC top AON domain slow clock

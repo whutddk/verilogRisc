@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-01-28 20:59:01
 // Last Modified by:   29505
-// Last Modified time: 2019-02-01 18:04:04
+// Last Modified time: 2019-02-02 21:04:24
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_biu.v  
 // Module Name:  
@@ -951,7 +951,7 @@ module e203_biu(
   );
 
 
-  assign biu_active = ifu2biu_icb_cmd_valid | lsu2biu_icb_cmd_valid | icb_buffer_active; 
+  assign biu_active =  lsu2biu_icb_cmd_valid | icb_buffer_active; 
 
   ///////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////
