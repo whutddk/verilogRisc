@@ -1,3 +1,24 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Company:   
+// Engineer: Ruige_Lee
+// Create Date: 2019-02-17 17:25:12
+// Last Modified by:   Ruige_Lee
+// Last Modified time: 2019-04-01 15:00:02
+// Email: 295054118@whut.edu.cn
+// Design Name:   
+// Module Name: e203_biu
+// Project Name:   
+// Target Devices:   
+// Tool Versions:   
+// Description:   
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision:    -   
+// Additional Comments:  
+// 
+//////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////
 // Company:    
@@ -7,7 +28,7 @@
 // Last Modified time: 2019-02-02 21:04:24
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_biu.v  
-// Module Name:  
+// Module Name: e203_biu
 // Project Name:    
 // Target Devices:    
 // Tool Versions:    
