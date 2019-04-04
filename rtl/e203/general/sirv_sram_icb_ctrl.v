@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-04 17:45:16
+// Last Modified time: 2019-04-04 17:48:19
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: sirv_sram_icb_ctrl
@@ -58,12 +58,10 @@ module sirv_sram_icb_ctrl #(
 (
 	output sram_ctrl_active,
 	// The cgstop is coming from CSR (0xBFE mcgstop)'s filed 1
-	// // This register is our self-defined CSR register to disable the 
+	// This register is our self-defined CSR register to disable the 
 	// ITCM SRAM clock gating for debugging purpose
 	input  tcm_cgstop,
 	
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
 	//    * Cmd channel
 	input  i_icb_cmd_valid, // Handshake valid
 	output i_icb_cmd_ready, // Handshake ready
@@ -79,21 +77,30 @@ module sirv_sram_icb_ctrl #(
 	output [DW-1:0] i_icb_rsp_rdata, 
 	output [USR_W-1:0] i_icb_rsp_usr, 
 
-	output          ram_cs,  
-	output          ram_we,  
+
+
+
+
+
+	output ram_cs,  
+	output ram_we,  
 	output [AW-AW_LSB-1:0] ram_addr, 
 	output [MW-1:0] ram_wem,
 	output [DW-1:0] ram_din,          
 	input  [DW-1:0] ram_dout,
 	output          clk_ram,
 
+
+
+
+
+
 	input  test_mode,
 	input  clk,
 	input  rst_n
 	);
 
-		// We need to use bypbuf to flop one stage for the i_cmd channel to cut 
-		//   down the back-pressure ready signal 
+	// We need to use bypbuf to flop one stage for the i_cmd channel to cut down the back-pressure ready signal 
 	wire  byp_icb_cmd_valid;
 	wire  byp_icb_cmd_ready;
 	wire  byp_icb_cmd_read;
@@ -103,16 +110,17 @@ module sirv_sram_icb_ctrl #(
 	wire  [USR_W-1:0] byp_icb_cmd_usr; 
 
 	localparam BUF_CMD_PACK_W = (AW+DW+MW+USR_W+1);
+
 	wire [BUF_CMD_PACK_W-1:0] byp_icb_cmd_o_pack;
 	wire [BUF_CMD_PACK_W-1:0] byp_icb_cmd_i_pack =  {
-											i_icb_cmd_read, 
-											i_icb_cmd_addr, 
-											i_icb_cmd_wdata, 
-											i_icb_cmd_wmask, 
-											i_icb_cmd_usr  
-										};
-	assign {
-				byp_icb_cmd_read, 
+				i_icb_cmd_read, 
+				i_icb_cmd_addr, 
+				i_icb_cmd_wdata, 
+				i_icb_cmd_wmask, 
+				i_icb_cmd_usr  
+			};
+
+	assign {	byp_icb_cmd_read, 
 				byp_icb_cmd_addr, 
 				byp_icb_cmd_wdata, 
 				byp_icb_cmd_wmask, 
@@ -121,8 +129,8 @@ module sirv_sram_icb_ctrl #(
 
 		 
 	sirv_gnrl_bypbuf # (
-	 .DP(1),// We really use bypbuf here
-	 .DW(BUF_CMD_PACK_W)
+		.DP(1),// We really use bypbuf here
+		.DW(BUF_CMD_PACK_W)
 	) u_byp_icb_cmd_buf(
 		.i_vld(i_icb_cmd_valid), 
 		.i_rdy(i_icb_cmd_ready), 
@@ -131,7 +139,7 @@ module sirv_sram_icb_ctrl #(
 		.o_rdy(byp_icb_cmd_ready), 
 		.o_dat(byp_icb_cmd_o_pack),
 	
-		.clk  (clk  ),
+		.clk  (clk),
 		.rst_n(rst_n)  
 	);
 
