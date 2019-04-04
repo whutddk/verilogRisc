@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-04 14:17:36
+// Last Modified time: 2019-04-04 16:40:43
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_subsys_main
@@ -118,8 +118,8 @@ sirv_ResetCatchAndSync_2 u_main_ResetCatchAndSync_2_1 (
 
 	assign hfclk = hfextclk;
 
-	wire tcm_ds = 1'b0;// Currently we dont support it
-	wire tcm_sd = 1'b0;// Currently we dont support it
+	// wire tcm_ds = 1'b0;// Currently we dont support it
+	// wire tcm_sd = 1'b0;// Currently we dont support it
 
 `ifndef E203_HAS_LOCKSTEP//{
   wire core_rst_n = main_rst_n;
@@ -175,8 +175,8 @@ e203_cpu_top u_e203_cpu_top(
 	.tm_stop         (tm_stop),
 	.pc_rtvec        (pc_rtvec),
 
-	.tcm_sd          (tcm_sd),
-	.tcm_ds          (tcm_ds),
+	// .tcm_sd          (tcm_sd),
+	// .tcm_ds          (tcm_ds),
 	
 	.core_wfi        (core_wfi),
 
@@ -233,7 +233,6 @@ e203_cpu_top u_e203_cpu_top(
 	.clint_icb_rsp_err       (clint_icb_rsp_err  ),
 	.clint_icb_rsp_rdata     (clint_icb_rsp_rdata),
 
-	.test_mode     (1'b0), 
 	.clk           (hfclk  ),
 	.rst_n         (core_rst_n) 
 );

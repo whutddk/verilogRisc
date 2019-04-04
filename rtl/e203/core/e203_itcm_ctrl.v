@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-04 15:44:49
+// Last Modified time: 2019-04-04 16:46:41
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_itcm_ctrl
@@ -77,20 +77,21 @@ module e203_itcm_ctrl(
 	output [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata, 
 	
 	output ifu2itcm_holdup,
-	//output ifu2itcm_replay,
 
-	output                         itcm_ram_cs,  
-	output                         itcm_ram_we,  
-	output [`E203_ITCM_RAM_AW-1:0] itcm_ram_addr, 
-	output [`E203_ITCM_RAM_MW-1:0] itcm_ram_wem,
-	output [`E203_ITCM_RAM_DW-1:0] itcm_ram_din,          
-	input  [`E203_ITCM_RAM_DW-1:0] itcm_ram_dout,
-	output                         clk_itcm_ram,
 
-	input  test_mode,
 	input  clk,
 	input  rst_n
 	);
+
+	wire itcm_ram_cs;  
+	wire itcm_ram_we;  
+	wire [`E203_ITCM_RAM_AW-1:0] itcm_ram_addr; 
+	wire [`E203_ITCM_RAM_MW-1:0] itcm_ram_wem;
+	wire [`E203_ITCM_RAM_DW-1:0] itcm_ram_din;          
+	wire [`E203_ITCM_RAM_DW-1:0] itcm_ram_dout;
+	wire clk_itcm_ram;
+
+
 
 
 	wire sram_ready2ifu = 1'b1;	 //The EXT and load/store have higher priotry than the ifetch
@@ -164,7 +165,7 @@ module e203_itcm_ctrl(
 		 .ram_dout (itcm_ram_dout),
 		 .clk_ram  (clk_itcm_ram ),
 	
-		 .test_mode(test_mode  ),
+		 .test_mode(1'b0),
 		 .clk  (clk  ),
 		 .rst_n(rst_n)  
 		);
@@ -212,3 +213,17 @@ module e203_itcm_ctrl(
 endmodule
 
 	`endif//}
+
+
+	e203_itcm_ram u_e203_itcm_ram (
+	
+		.cs   (itcm_ram_cs),
+		.we   (itcm_ram_we),
+		.addr (itcm_ram_addr),
+		.wem  (itcm_ram_wem),
+		.din  (itcm_ram_din),
+		.dout (itcm_ram_dout),
+		.rst_n(rst_n),
+		.clk  (clk_itcm_ram )
+		);
+

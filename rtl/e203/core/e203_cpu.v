@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-04 15:45:39
+// Last Modified time: 2019-04-04 16:46:55
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_cpu
@@ -79,9 +79,7 @@ module e203_cpu #(
 	output inspect_dbg_irq,
 	output inspect_core_clk,
 	output core_csr_clk,
-	`ifdef E203_HAS_ITCM
-	output rst_itcm,
-	`endif
+
 	`ifdef E203_HAS_DTCM
 	output rst_dtcm,
 	`endif
@@ -172,17 +170,6 @@ module e203_cpu #(
 	input                          plic_icb_rsp_excl_ok  ,
 	input  [`E203_XLEN-1:0]        plic_icb_rsp_rdata,
 
-	`ifdef E203_HAS_ITCM
-	output itcm_ls,
-
-	output                         itcm_ram_cs,  
-	output                         itcm_ram_we,  
-	output [`E203_ITCM_RAM_AW-1:0] itcm_ram_addr, 
-	output [`E203_ITCM_RAM_MW-1:0] itcm_ram_wem,
-	output [`E203_ITCM_RAM_DW-1:0] itcm_ram_din,          
-	input  [`E203_ITCM_RAM_DW-1:0] itcm_ram_dout,
-	output                         clk_itcm_ram,
-	`endif
 
 	`ifdef E203_HAS_DTCM
 	output dtcm_ls,
@@ -195,8 +182,6 @@ module e203_cpu #(
 	input  [`E203_DTCM_RAM_DW-1:0] dtcm_ram_dout,
 	output                         clk_dtcm_ram,
 	`endif//}
-
-	input  test_mode,
 
 	input  clk,
 	input  rst_n
@@ -233,10 +218,14 @@ module e203_cpu #(
 
 	// The reset ctrl and clock ctrl should be in the power always-on domain
 
+
+	wire rst_itcm;
+
+
+
 e203_reset_ctrl #(.MASTER(MASTER)) u_e203_reset_ctrl (
 	.clk        (clk_aon  ),
 	.rst_n      (rst_n    ),
-	.test_mode  (test_mode),
 
 	.rst_core   (rst_core),
 
@@ -255,7 +244,7 @@ e203_reset_ctrl #(.MASTER(MASTER)) u_e203_reset_ctrl (
 e203_clk_ctrl u_e203_clk_ctrl(
 	.clk          (clk          ),
 	.rst_n        (rst_aon      ),
-	.test_mode    (test_mode    ),
+	.test_mode    (1'b0    ),
 															
 	.clk_aon      (clk_aon      ),
 
@@ -268,12 +257,12 @@ e203_clk_ctrl u_e203_clk_ctrl(
 `ifdef E203_HAS_ITCM
 	.clk_itcm     (clk_itcm     ),
 	.itcm_active  (itcm_active),
-	.itcm_ls      (itcm_ls    ),
+	.itcm_ls      ( ),
 `endif
 `ifdef E203_HAS_DTCM
 	.clk_dtcm     (clk_dtcm     ),
 	.dtcm_active  (dtcm_active),
-	.dtcm_ls      (dtcm_ls    ),
+	.dtcm_ls      ( ),
 `endif
 
 	.core_ifu_active(core_ifu_active),
@@ -496,7 +485,7 @@ e203_core u_e203_core(
 	.clk_core_exu      (clk_core_exu      ),
 	.clk_core_lsu      (clk_core_lsu      ),
 	.clk_core_biu      (clk_core_biu      ),
-	.test_mode         (test_mode),
+	.test_mode         (1'b0),
 	.rst_n             (rst_core ) 
 );
 
@@ -523,16 +512,14 @@ e203_itcm_ctrl u_e203_itcm_ctrl(
 
 
 
-	.itcm_ram_cs             (itcm_ram_cs  ),
-	.itcm_ram_we             (itcm_ram_we  ),
-	.itcm_ram_addr           (itcm_ram_addr), 
-	.itcm_ram_wem            (itcm_ram_wem ),
-	.itcm_ram_din            (itcm_ram_din ),         
-	.itcm_ram_dout           (itcm_ram_dout),
-	.clk_itcm_ram            (clk_itcm_ram ),
+	// .itcm_ram_cs             (itcm_ram_cs  ),
+	// .itcm_ram_we             (itcm_ram_we  ),
+	// .itcm_ram_addr           (itcm_ram_addr), 
+	// .itcm_ram_wem            (itcm_ram_wem ),
+	// .itcm_ram_din            (itcm_ram_din ),         
+	// .itcm_ram_dout           (itcm_ram_dout),
+	// .clk_itcm_ram            (clk_itcm_ram ),
 
-
-	.test_mode               (test_mode),
 	.clk                     (clk_itcm),
 	.rst_n                   (rst_itcm) 
 );
@@ -565,7 +552,7 @@ e203_dtcm_ctrl u_e203_dtcm_ctrl(
 	.clk_dtcm_ram            (clk_dtcm_ram ),
 
 
-	.test_mode               (test_mode),
+	.test_mode               (1'b0),
 	.clk                     (clk_dtcm),
 	.rst_n                   (rst_dtcm) 
 );

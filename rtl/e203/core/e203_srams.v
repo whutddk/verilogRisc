@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-04 15:43:28
+// Last Modified time: 2019-04-04 16:06:02
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_srams
@@ -108,6 +108,12 @@ module e203_srams(
 	//assign itcm_ram_dout = test_mode ? itcm_ram_din : itcm_ram_dout_pre;
 	assign itcm_ram_dout = itcm_ram_dout_pre;
 	`endif//}
+
+
+
+
+
+
 
 	`ifdef E203_HAS_DTCM //{
 	wire [`E203_DTCM_RAM_DW-1:0]  dtcm_ram_dout_pre;
