@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-04 11:04:35
+// Last Modified time: 2019-04-04 11:33:54
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu_ift2icb
@@ -49,11 +49,10 @@
 `include "e203_defines.v"
 
 module e203_ifu_ift2icb(
-
+	input  clk,
+	input  rst_n,
 
 	input  itcm_nohold,
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
 	// Fetch Interface to memory system, internal protocol
 	//    * IFetch REQ channel
 	input  ifu_req_valid, // Handshake valid
@@ -69,51 +68,33 @@ module e203_ifu_ift2icb(
 	output ifu_rsp_valid, // Response valid 
 	input  ifu_rsp_ready, // Response ready
 	output ifu_rsp_err,   // Response error
-	// Note: the RSP channel always return a valid instruction
-	//   fetched from the fetching start PC address.
-	//   The targetd (ITCM, ICache or Sys-MEM) ctrl modules 
-	//   will handle the unalign cases and split-and-merge works
-	//output ifu_rsp_replay,   // Response error
+	// Note: the RSP channel always return a valid instruction fetched from the fetching start PC address. The targetd (ITCM, ICache or Sys-MEM) ctrl modules  will handle the unalign cases and split-and-merge works
 	output [32-1:0] ifu_rsp_instr, // Response instruction
 
-	`ifdef E203_HAS_ITCM //{
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
+	`ifdef E203_HAS_ITCM
 	// The ITCM address region indication signal
 	input [`E203_ADDR_SIZE-1:0] itcm_region_indic,
 	// Bus Interface to ITCM, internal protocol called ICB (Internal Chip Bus)
+	
 	//    * Bus cmd channel
 	output ifu2itcm_icb_cmd_valid, // Handshake valid
 	input  ifu2itcm_icb_cmd_ready, // Handshake ready
-	// Note: The data on rdata or wdata channel must be naturally aligned, this is in line with the AXI definition
-	output [`E203_ITCM_ADDR_WIDTH-1:0]   ifu2itcm_icb_cmd_addr, // Bus transaction start addr 
+	output [`E203_ITCM_ADDR_WIDTH-1:0]   ifu2itcm_icb_cmd_addr, // Bus transaction start addr // Note: The data on rdata or wdata channel must be naturally aligned, this is in line with the AXI definition
 
 	//    * Bus RSP channel
 	input  ifu2itcm_icb_rsp_valid, // Response valid 
 	output ifu2itcm_icb_rsp_ready, // Response ready
 	input  ifu2itcm_icb_rsp_err,   // Response error
-			// Note: the RSP rdata is inline with AXI definition
-	input  [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata, 
+	input  [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata,// Note: the RSP rdata is inline with AXI definition 
 
+	input  ifu2itcm_holdup// The holdup indicating the target is not accessed by other agents since last accessed by IFU, and the output of it is holding up last value. 
 	`endif//}
 
 
-	// The holdup indicating the target is not accessed by other agents 
-	// since last accessed by IFU, and the output of it is holding up
-	// last value. 
-	`ifdef E203_HAS_ITCM //{
-	input  ifu2itcm_holdup,
-	//input  ifu2itcm_replay,
-	`endif//}
-
-	input  clk,
-	input  rst_n
 	);
 
 `ifndef E203_HAS_ITCM
-	`ifndef E203_HAS_MEM_ITF
 	!!! ERROR: There is no ITCM and no System interface, where to fetch the instructions? must be wrong configuration.
-	`endif//}
 `endif//}
 
 
@@ -138,10 +119,9 @@ module e203_ifu_ift2icb(
 							i_ifu_rsp_instr
 							};
 
-	assign {
-							ifu_rsp_err,
-							ifu_rsp_instr
-							} = ifu_rsp_bypbuf_o_data;
+	assign {	ifu_rsp_err,
+				ifu_rsp_instr
+			} = ifu_rsp_bypbuf_o_data;
 
 	sirv_gnrl_bypbuf # (
 	.DP(1),
@@ -156,7 +136,7 @@ module e203_ifu_ift2icb(
 		.i_dat   (ifu_rsp_bypbuf_i_data),
 		.o_dat   (ifu_rsp_bypbuf_o_data),
 	
-		.clk     (clk  ),
+		.clk     (clk),
 		.rst_n   (rst_n)
 	);
 

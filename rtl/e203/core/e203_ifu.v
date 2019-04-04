@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-01 16:33:19
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-04 10:26:10
+// Last Modified time: 2019-04-04 11:42:08
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu
@@ -53,50 +53,26 @@ module e203_ifu(
 	input  itcm_nohold,
 
 	input  [`E203_PC_SIZE-1:0] pc_rtvec,  
+	
 	`ifdef E203_HAS_ITCM //{
 	input  ifu2itcm_holdup,
-	//input  ifu2itcm_replay,
-
 	// The ITCM address region indication signal
 	input [`E203_ADDR_SIZE-1:0] itcm_region_indic,
-
 	//////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////
 	// Bus Interface to ITCM, internal protocol called ICB (Internal Chip Bus)
 	//    * Bus cmd channel
 	output ifu2itcm_icb_cmd_valid, // Handshake valid
 	input  ifu2itcm_icb_cmd_ready, // Handshake ready
-						// Note: The data on rdata or wdata channel must be naturally
-						//       aligned, this is in line with the AXI definition
+	// Note: The data on rdata or wdata channel must be naturally
+	//       aligned, this is in line with the AXI definition
 	output [`E203_ITCM_ADDR_WIDTH-1:0]   ifu2itcm_icb_cmd_addr, // Bus transaction start addr 
-
 	//    * Bus RSP channel
 	input  ifu2itcm_icb_rsp_valid, // Response valid 
 	output ifu2itcm_icb_rsp_ready, // Response ready
 	input  ifu2itcm_icb_rsp_err,   // Response error
 						// Note: the RSP rdata is inline with AXI definition
 	input  [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata, 
-	`endif//}
-
-	`ifdef E203_HAS_MEM_ITF //{
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// Bus Interface to System Memory, internal protocol called ICB (Internal Chip Bus)
-	//    * Bus cmd channel
-	output ifu2biu_icb_cmd_valid, // Handshake valid
-	input  ifu2biu_icb_cmd_ready, // Handshake ready
-						// Note: The data on rdata or wdata channel must be naturally
-						//       aligned, this is in line with the AXI definition
-	output [`E203_ADDR_SIZE-1:0]   ifu2biu_icb_cmd_addr, // Bus transaction start addr 
-
-	//    * Bus RSP channel
-	input  ifu2biu_icb_rsp_valid, // Response valid 
-	output ifu2biu_icb_rsp_ready, // Response ready
-	input  ifu2biu_icb_rsp_err,   // Response error
-						// Note: the RSP rdata is inline with AXI definition
-	input  [`E203_SYSMEM_DATA_WIDTH-1:0] ifu2biu_icb_rsp_rdata, 
-
-	//input  ifu2biu_replay,
 	`endif//}
 
 	//////////////////////////////////////////////////////////////
@@ -158,7 +134,7 @@ module e203_ifu(
 	wire ifu_rsp_ready; 
 	wire ifu_rsp_err;    
 	wire [`E203_INSTR_SIZE-1:0] ifu_rsp_instr; 
-
+(* DONT_TOUCH = "TRUE" *)
 	e203_ifu_ifetch u_e203_ifu_ifetch(
 		.inspect_pc   (inspect_pc),
 		.pc_rtvec      (pc_rtvec),  
@@ -210,7 +186,7 @@ module e203_ifu(
 	);
 
 
-
+(* DONT_TOUCH = "TRUE" *)
 	e203_ifu_ift2icb u_e203_ifu_ift2icb (
 		.ifu_req_valid (ifu_req_valid),
 		.ifu_req_ready (ifu_req_ready),
@@ -233,21 +209,7 @@ module e203_ifu(
 		.ifu2itcm_icb_rsp_ready(ifu2itcm_icb_rsp_ready),
 		.ifu2itcm_icb_rsp_err  (ifu2itcm_icb_rsp_err  ),
 		.ifu2itcm_icb_rsp_rdata(ifu2itcm_icb_rsp_rdata),
-	`endif
 
-
-	`ifdef E203_HAS_MEM_ITF //{
-		.ifu2biu_icb_cmd_valid(ifu2biu_icb_cmd_valid),
-		.ifu2biu_icb_cmd_ready(ifu2biu_icb_cmd_ready),
-		.ifu2biu_icb_cmd_addr (ifu2biu_icb_cmd_addr ),
-		.ifu2biu_icb_rsp_valid(ifu2biu_icb_rsp_valid),
-		.ifu2biu_icb_rsp_ready(ifu2biu_icb_rsp_ready),
-		.ifu2biu_icb_rsp_err  (ifu2biu_icb_rsp_err  ),
-		.ifu2biu_icb_rsp_rdata(ifu2biu_icb_rsp_rdata),
-
-	`endif//}
-
-	`ifdef E203_HAS_ITCM 
 		.ifu2itcm_holdup (ifu2itcm_holdup),
 	`endif
 

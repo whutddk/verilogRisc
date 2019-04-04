@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-01 15:02:47
+// Last Modified time: 2019-04-04 11:41:38
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_subsys_top
@@ -95,7 +95,7 @@ module e203_subsys_top(
 	wire corerst;
 
 	wire  [`E203_PC_SIZE-1:0] pc_rtvec;
-
+(* DONT_TOUCH = "TRUE" *)
 e203_subsys_main  u_e203_subsys_main(
 	.pc_rtvec        ({`E203_PC_SIZE-1{1'b0}}),
 
