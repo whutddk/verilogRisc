@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-04 16:46:41
+// Last Modified time: 2019-04-04 17:19:18
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_itcm_ctrl
@@ -210,13 +210,7 @@ module e203_itcm_ctrl(
 
 	assign itcm_active = ifu2itcm_icb_cmd_valid | itcm_sram_ctrl_active;
 
-endmodule
-
-	`endif//}
-
-
 	e203_itcm_ram u_e203_itcm_ram (
-	
 		.cs   (itcm_ram_cs),
 		.we   (itcm_ram_we),
 		.addr (itcm_ram_addr),
@@ -225,5 +219,16 @@ endmodule
 		.dout (itcm_ram_dout),
 		.rst_n(rst_n),
 		.clk  (clk_itcm_ram )
-		);
+	);
+
+
+
+
+
+endmodule
+
+	`endif//}
+
+
+	
 

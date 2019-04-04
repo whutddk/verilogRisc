@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-04 16:54:02
+// Last Modified time: 2019-04-04 17:11:08
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_cpu
@@ -80,9 +80,9 @@ module e203_cpu #(
 	output inspect_core_clk,
 	output core_csr_clk,
 
-	`ifdef E203_HAS_DTCM
-	output rst_dtcm,
-	`endif
+	// `ifdef E203_HAS_DTCM
+	// output rst_dtcm,
+	// `endif
 
 
 	output  core_wfi,
@@ -171,17 +171,17 @@ module e203_cpu #(
 	input  [`E203_XLEN-1:0]        plic_icb_rsp_rdata,
 
 
-	`ifdef E203_HAS_DTCM
-	output dtcm_ls,
+	// `ifdef E203_HAS_DTCM
+	// output dtcm_ls,
 
-	output                         dtcm_ram_cs,  
-	output                         dtcm_ram_we,  
-	output [`E203_DTCM_RAM_AW-1:0] dtcm_ram_addr, 
-	output [`E203_DTCM_RAM_MW-1:0] dtcm_ram_wem,
-	output [`E203_DTCM_RAM_DW-1:0] dtcm_ram_din,          
-	input  [`E203_DTCM_RAM_DW-1:0] dtcm_ram_dout,
-	output                         clk_dtcm_ram,
-	`endif//}
+	// output                         dtcm_ram_cs,  
+	// output                         dtcm_ram_we,  
+	// output [`E203_DTCM_RAM_AW-1:0] dtcm_ram_addr, 
+	// output [`E203_DTCM_RAM_MW-1:0] dtcm_ram_wem,
+	// output [`E203_DTCM_RAM_DW-1:0] dtcm_ram_din,          
+	// input  [`E203_DTCM_RAM_DW-1:0] dtcm_ram_dout,
+	// output                         clk_dtcm_ram,
+	// `endif//}
 
 	input  clk,
 	input  rst_n
@@ -540,13 +540,13 @@ e203_dtcm_ctrl u_e203_dtcm_ctrl(
 	.lsu2dtcm_icb_rsp_err    (lsu2dtcm_icb_rsp_err  ),
 	.lsu2dtcm_icb_rsp_rdata  (lsu2dtcm_icb_rsp_rdata),
 
-	.dtcm_ram_cs             (dtcm_ram_cs  ),
-	.dtcm_ram_we             (dtcm_ram_we  ),
-	.dtcm_ram_addr           (dtcm_ram_addr), 
-	.dtcm_ram_wem            (dtcm_ram_wem ),
-	.dtcm_ram_din            (dtcm_ram_din ),         
-	.dtcm_ram_dout           (dtcm_ram_dout),
-	.clk_dtcm_ram            (clk_dtcm_ram ),
+	// .dtcm_ram_cs             (dtcm_ram_cs  ),
+	// .dtcm_ram_we             (dtcm_ram_we  ),
+	// .dtcm_ram_addr           (dtcm_ram_addr), 
+	// .dtcm_ram_wem            (dtcm_ram_wem ),
+	// .dtcm_ram_din            (dtcm_ram_din ),         
+	// .dtcm_ram_dout           (dtcm_ram_dout),
+	// .clk_dtcm_ram            (clk_dtcm_ram ),
 
 
 	.test_mode               (1'b0),
