@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-04 17:19:18
+// Last Modified time: 2019-04-04 17:33:18
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_itcm_ctrl
@@ -94,14 +94,14 @@ module e203_itcm_ctrl(
 
 
 
-	wire sram_ready2ifu = 1'b1;	 //The EXT and load/store have higher priotry than the ifetch
+		 //The EXT and load/store have higher priotry than the ifetch
 
-	wire sram_sel_ifu  = sram_ready2ifu  & ifu2itcm_icb_cmd_valid;
+	wire sram_sel_ifu = ifu2itcm_icb_cmd_valid;
 
 	wire sram_icb_cmd_ready;
 	wire sram_icb_cmd_valid;
 
-	assign ifu2itcm_icb_cmd_ready = sram_ready2ifu   & sram_icb_cmd_ready;
+	assign ifu2itcm_icb_cmd_ready = sram_icb_cmd_ready;
 
 
 	wire [`E203_ITCM_ADDR_WIDTH-1:0] sram_icb_cmd_addr;

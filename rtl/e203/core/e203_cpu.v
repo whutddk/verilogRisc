@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-04 17:11:08
+// Last Modified time: 2019-04-04 17:31:38
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_cpu
@@ -20,27 +20,6 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-//////////////////////////////////////////////////////////////////////////////////
-// Company:     
-// Engineer: 29505
-// Create Date: 2019-01-28 20:59:01
-// Last Modified by:   29505
-// Last Modified time: 2019-02-01 20:40:43
-// Email: 295054118@whut.edu.cn
-// Design Name: e203_cpu.v  
-// Module Name: e203_cpu
-// Project Name:    
-// Target Devices:    
-// Tool Versions:    
-// Description:    
-// 
-// Dependencies:    
-// 
-// Revision:   
-// Revision  
-// Additional Comments:   
-// 
-////////////////////////////////////////////////////////////////////////////////// 
 
 /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
@@ -401,11 +380,9 @@ e203_core u_e203_core(
 	.dbg_stopcycle           (dbg_stopcycle),
 
 `ifdef E203_HAS_ITCM //{
-	//.itcm_region_indic       (itcm_region_indic),
 	.itcm_region_indic       (`E203_ITCM_ADDR_BASE),
 `endif//}
 `ifdef E203_HAS_DTCM //{
-	//.dtcm_region_indic       (dtcm_region_indic),
 	.dtcm_region_indic       (`E203_DTCM_ADDR_BASE),
 `endif//}
 
@@ -509,14 +486,6 @@ e203_itcm_ctrl u_e203_itcm_ctrl(
 
 	.ifu2itcm_holdup         (ifu2itcm_holdup       ),
 
-	// .itcm_ram_cs             (itcm_ram_cs  ),
-	// .itcm_ram_we             (itcm_ram_we  ),
-	// .itcm_ram_addr           (itcm_ram_addr), 
-	// .itcm_ram_wem            (itcm_ram_wem ),
-	// .itcm_ram_din            (itcm_ram_din ),         
-	// .itcm_ram_dout           (itcm_ram_dout),
-	// .clk_itcm_ram            (clk_itcm_ram ),
-
 	.clk                     (clk_itcm),
 	.rst_n                   (rst_itcm) 
 );
@@ -540,16 +509,6 @@ e203_dtcm_ctrl u_e203_dtcm_ctrl(
 	.lsu2dtcm_icb_rsp_err    (lsu2dtcm_icb_rsp_err  ),
 	.lsu2dtcm_icb_rsp_rdata  (lsu2dtcm_icb_rsp_rdata),
 
-	// .dtcm_ram_cs             (dtcm_ram_cs  ),
-	// .dtcm_ram_we             (dtcm_ram_we  ),
-	// .dtcm_ram_addr           (dtcm_ram_addr), 
-	// .dtcm_ram_wem            (dtcm_ram_wem ),
-	// .dtcm_ram_din            (dtcm_ram_din ),         
-	// .dtcm_ram_dout           (dtcm_ram_dout),
-	// .clk_dtcm_ram            (clk_dtcm_ram ),
-
-
-	.test_mode               (1'b0),
 	.clk                     (clk_dtcm),
 	.rst_n                   (rst_dtcm) 
 );
