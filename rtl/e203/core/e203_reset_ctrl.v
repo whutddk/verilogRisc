@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-04 16:43:11
+// Last Modified time: 2019-04-08 10:56:36
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_reset_ctrl
@@ -53,23 +53,11 @@ module e203_reset_ctrl #(
 	input  clk,        // clock
 	input  rst_n,      // async reset
 	
-	// The core's clk and rst
-	output rst_core,
-
-	// The ITCM/DTCM clk and rst
-	`ifdef E203_HAS_ITCM
-	output rst_itcm,
-	`endif
-	`ifdef E203_HAS_DTCM
-	output rst_dtcm,
-	`endif
-
-	// The Top always on clk and rst
-	output rst_aon 
+	output rst_sync_n
 
 );
 
-wire rst_sync_n;
+
 
 
 `ifndef E203_HAS_LOCKSTEP//{
@@ -107,20 +95,7 @@ generate
 
 endgenerate
 
-	// The core's clk and rst
-	assign rst_core = rst_sync_n;
- 
-	// The ITCM/DTCM clk and rst
-`ifdef E203_HAS_ITCM
-	assign rst_itcm = rst_sync_n;
-`endif
 
-`ifdef E203_HAS_DTCM
-	assign rst_dtcm = rst_sync_n;
-`endif
- 
-	// The Top always on clk and rst
-assign rst_aon = rst_sync_n;
 
 endmodule
 

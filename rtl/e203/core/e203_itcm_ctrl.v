@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-04 17:33:18
+// Last Modified time: 2019-04-08 11:36:11
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_itcm_ctrl
@@ -50,38 +50,34 @@
 	`ifdef E203_HAS_ITCM //{
 
 module e203_itcm_ctrl(
-	output itcm_active,
 	// The cgstop is coming from CSR (0xBFE mcgstop)'s filed 1
 	// // This register is our self-defined CSR register to disable the 
 	// ITCM SRAM clock gating for debugging purpose
 	input  tcm_cgstop,
 	// Note: the ITCM ICB interface only support the single-transaction
 	
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// IFU ICB to ITCM
-	//    * Bus cmd channel
-	input  ifu2itcm_icb_cmd_valid, // Handshake valid
-	output ifu2itcm_icb_cmd_ready, // Handshake ready
-	// Note: The data on rdata or wdata channel must be naturally aligned, this is in line with the AXI definition
-	input  [`E203_ITCM_ADDR_WIDTH-1:0] ifu2itcm_icb_cmd_addr, // Bus transaction start addr 
-	input  ifu2itcm_icb_cmd_read,   // Read or write
+
+	input  ifu2itcm_icb_cmd_valid,
+	output ifu2itcm_icb_cmd_ready,
+	input  [`E203_ITCM_ADDR_WIDTH-1:0] ifu2itcm_icb_cmd_addr,
+	input  ifu2itcm_icb_cmd_read,
 	input  [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_cmd_wdata, 
 	input  [`E203_ITCM_WMSK_WIDTH-1:0] ifu2itcm_icb_cmd_wmask, 
-
-	//    * Bus RSP channel
-	output ifu2itcm_icb_rsp_valid, // Response valid 
-	input  ifu2itcm_icb_rsp_ready, // Response ready
-	output ifu2itcm_icb_rsp_err,   // Response error
-						// Note: the RSP rdata is inline with AXI definition
-	output [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata, 
-	
+	output ifu2itcm_icb_rsp_valid,
+	input  ifu2itcm_icb_rsp_ready,
+	output ifu2itcm_icb_rsp_err,
+	output [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata, 	
 	output ifu2itcm_holdup,
 
 
 	input  clk,
 	input  rst_n
 	);
+
+	wire clk_itcm;
+
+
+
 
 	wire itcm_ram_cs;  
 	wire itcm_ram_we;  
@@ -166,7 +162,7 @@ module e203_itcm_ctrl(
 		 .clk_ram  (clk_itcm_ram ),
 	
 		 .test_mode(1'b0),
-		 .clk  (clk  ),
+		 .clk  (clk_itcm),
 		 .rst_n(rst_n)  
 		);
 
@@ -193,9 +189,9 @@ module e203_itcm_ctrl(
 	//   * The holdup flag it clear when when 
 	//         ** other agent (non-IFU) accessed this target
 	//         ** other agent (non-IFU) accessed this target
-								//for example:
-								//   *** The external agent accessed the ITCM
-								//   *** I$ updated by cache maintaineice operation
+	//for example:
+	//   *** The external agent accessed the ITCM
+	//   *** I$ updated by cache maintaineice operation
 	wire ifu_holdup_r;
 	// The IFU holdup will be set after last time accessed by a IFU access
 	wire ifu_holdup_set =   sram_icb_cmd_ifu & itcm_ram_cs;
@@ -203,12 +199,12 @@ module e203_itcm_ctrl(
 	wire ifu_holdup_clr = (~sram_icb_cmd_ifu) & itcm_ram_cs;
 	wire ifu_holdup_ena = ifu_holdup_set | ifu_holdup_clr;
 	wire ifu_holdup_nxt = ifu_holdup_set & (~ifu_holdup_clr);
-	sirv_gnrl_dfflr #(1)ifu_holdup_dffl(ifu_holdup_ena, ifu_holdup_nxt, ifu_holdup_r, clk, rst_n);
+	sirv_gnrl_dfflr #(1)ifu_holdup_dffl(ifu_holdup_ena, ifu_holdup_nxt, ifu_holdup_r, clk_itcm, rst_n);
 	assign ifu2itcm_holdup = ifu_holdup_r 
 														;
+	  
 
-
-	assign itcm_active = ifu2itcm_icb_cmd_valid | itcm_sram_ctrl_active;
+	wire itcm_active = ifu2itcm_icb_cmd_valid | itcm_sram_ctrl_active;
 
 	e203_itcm_ram u_e203_itcm_ram (
 		.cs   (itcm_ram_cs),
@@ -220,6 +216,29 @@ module e203_itcm_ctrl(
 		.rst_n(rst_n),
 		.clk  (clk_itcm_ram )
 	);
+
+
+
+
+
+
+// The ITCM and DTCM Ctrl module's clock gating does not need to check
+//  WFI because it may have request from external agent
+//  and also, it actually will automactically become inactive regardess
+//  currently is WFI or not, hence we dont need WFI here
+	wire itcm_active_r;
+	sirv_gnrl_dffr #(1)itcm_active_dffr(itcm_active, itcm_active_r, clk_itcm, rst_n);
+	wire itcm_clk_en = core_cgstop | itcm_active | itcm_active_r;
+
+
+	e203_clkgate u_itcm_clkgate(
+		.clk_in   (clk),
+		.test_mode(1'b0),
+		.clock_en (itcm_clk_en),
+		.clk_out  (clk_itcm)
+	);
+
+
 
 
 
