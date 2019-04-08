@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-08 15:52:25
+// Last Modified time: 2019-04-08 16:42:50
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu_ift2icb
@@ -256,7 +256,7 @@ input  ifu2itcm_holdup
 // wire ifu_req_lane_cross = (ifu_req_pc[1] == 1'b1) ;
 
 // The current accessing PC is begining of the lane boundry
-	wire ifu_req_lane_begin = 1'b1;//永远为真
+	// wire ifu_req_lane_begin = 1'b1;//永远为真
 	
 
 // The scheme to check if the current accessing PC is same as last accessed ICB address
@@ -304,25 +304,25 @@ input  ifu2itcm_holdup
 	// State 1: Issued first request and wait response
 	localparam ICB_STATE_1ST  = 2'd1;
 	// State 2: Wait to issue second request 
-	localparam ICB_STATE_WAIT2ND  = 2'd2;
+	// localparam ICB_STATE_WAIT2ND  = 2'd2;
 	// State 3: Issued second request and wait response
-	localparam ICB_STATE_2ND  = 2'd3;
+	// localparam ICB_STATE_2ND  = 2'd3;
 	
 	wire [ICB_STATE_WIDTH-1:0] icb_state_nxt;
 	wire [ICB_STATE_WIDTH-1:0] icb_state_r;
 	wire icb_state_ena;
 	wire [ICB_STATE_WIDTH-1:0] state_1st_nxt;
-	wire [ICB_STATE_WIDTH-1:0] state_2nd_nxt;
+// wire [ICB_STATE_WIDTH-1:0] state_2nd_nxt;
 	wire state_idle_exit_ena;
 	wire state_1st_exit_ena;
-	wire state_wait2nd_exit_ena;
-	wire state_2nd_exit_ena;
+// wire state_wait2nd_exit_ena;
+// wire state_2nd_exit_ena;
 
 	// Define some common signals and reused later to save gatecounts
 	wire icb_sta_is_idle    = (icb_state_r == ICB_STATE_IDLE   );
 	wire icb_sta_is_1st     = (icb_state_r == ICB_STATE_1ST    );
-	wire icb_sta_is_wait2nd = (icb_state_r == ICB_STATE_WAIT2ND);
-	wire icb_sta_is_2nd     = (icb_state_r == ICB_STATE_2ND    );
+// wire icb_sta_is_wait2nd = (icb_state_r == ICB_STATE_WAIT2ND);
+// wire icb_sta_is_2nd     = (icb_state_r == ICB_STATE_2ND    );
 
 	// **** If the current state is idle,
 	// If a new request come, next state is ICB_STATE_1ST
@@ -332,43 +332,38 @@ input  ifu2itcm_holdup
 	// If a response come, exit this state
 	// wire ifu_icb_rsp2leftover;
 	assign state_1st_exit_ena  = icb_sta_is_1st & ( i_ifu_rsp_hsked);
-	assign state_1st_nxt     = 
-				(
-				
-				// If it need zero or one requests and new req handshaked, then 
-				//   next state is ICB_STATE_1ST
-				// If it need zero or one requests and no new req handshaked, then
-				//   next state is ICB_STATE_IDLE
-					ifu_req_hsked  ?  ICB_STATE_1ST 
-									: ICB_STATE_IDLE 
-				) ;
+	assign state_1st_nxt = 
+		(	
+			// If it need zero or one requests and new req handshaked, then 
+			//   next state is ICB_STATE_1ST
+			// If it need zero or one requests and no new req handshaked, then
+			//   next state is ICB_STATE_IDLE
+			ifu_req_hsked  ?  ICB_STATE_1ST : ICB_STATE_IDLE 
+		) ;
 
 	// **** If the current state is wait-2nd,
 	// If the ICB CMD is ready, then next state is ICB_STATE_2ND
-	assign state_wait2nd_exit_ena = icb_sta_is_wait2nd &  ifu_icb_cmd_ready;
+// assign state_wait2nd_exit_ena = 1'b0;
 
 	// **** If the current state is 2nd,
 	// If a response come, exit this state
-	assign state_2nd_exit_ena     =  icb_sta_is_2nd &  i_ifu_rsp_hsked;
-	assign state_2nd_nxt          = 
-		(
-		// If meanwhile new req handshaked, then next state is ICB_STATE_1ST
-			ifu_req_hsked  ?  ICB_STATE_1ST : 
-			// otherwise, back to IDLE
-			ICB_STATE_IDLE
-		);
+// assign state_2nd_exit_ena = 1'b0;
+// assign state_2nd_nxt          = 
+// 		(
+// 		// If meanwhile new req handshaked, then next state is ICB_STATE_1ST
+// 			ifu_req_hsked  ?  ICB_STATE_1ST : 
+// 			// otherwise, back to IDLE
+// 			ICB_STATE_IDLE
+// 		);
 
 	// The state will only toggle when each state is meeting the condition to exit:
 	assign icb_state_ena = 
-			state_idle_exit_ena | state_1st_exit_ena | state_wait2nd_exit_ena | state_2nd_exit_ena;
+			state_idle_exit_ena | state_1st_exit_ena;
 
 	// The next-state is onehot mux to select different entries
 	assign icb_state_nxt = 
 				({ICB_STATE_WIDTH{state_idle_exit_ena   }} & ICB_STATE_1ST   )
-			| ({ICB_STATE_WIDTH{state_1st_exit_ena    }} & state_1st_nxt    )
-			| ({ICB_STATE_WIDTH{state_wait2nd_exit_ena}} & ICB_STATE_2ND)
-			| ({ICB_STATE_WIDTH{state_2nd_exit_ena    }} & state_2nd_nxt    )
-				;
+			| ({ICB_STATE_WIDTH{state_1st_exit_ena    }} & state_1st_nxt    );
 
 	sirv_gnrl_dfflr #(ICB_STATE_WIDTH) icb_state_dfflr (icb_state_ena, icb_state_nxt, icb_state_r, clk, rst_n);
 
@@ -386,31 +381,31 @@ input  ifu2itcm_holdup
 
 	/////////////////////////////////////////////////////////////////////////////////
 	// Implement Leftover Buffer
-	wire leftover_ena; 
-	wire [15:0] leftover_nxt; 
-	wire [15:0] leftover_r; 
+	// wire leftover_ena; 
+	// wire [15:0] leftover_nxt; 
+	// wire [15:0] leftover_r; 
 
 
 	// The leftover buffer will be loaded into two cases
 	// Please see "The itfctrl scheme introduction" for more details 
 	//    * Case #1: Loaded when the last holdup upper 16bits put into leftover
 	//    * Case #2: Loaded when the 1st request uop rdata upper 16bits put into leftover 
-	wire holdup2leftover_ena = ifu_req_hsked & holdup2leftover_sel;
-	wire [15:0]  put2leftover_data = 16'b0    
-		`ifdef E203_HAS_ITCM //{
-			| ({16{icb_cmd2itcm_r}} & ifu2itcm_icb_rsp_rdata[`E203_ITCM_DATA_WIDTH-1:`E203_ITCM_DATA_WIDTH-16]) 
-		`endif//}
-			;
+	// wire holdup2leftover_ena = 1'b0;
+	// wire [15:0]  put2leftover_data = 16'b0    
+	// 	`ifdef E203_HAS_ITCM //{
+	// 		| ({16{icb_cmd2itcm_r}} & ifu2itcm_icb_rsp_rdata[`E203_ITCM_DATA_WIDTH-1:`E203_ITCM_DATA_WIDTH-16]) 
+	// 	`endif//}
+	// 		;
 
 
-	wire uop1st2leftover_err = (icb_cmd2itcm_r & ifu2itcm_icb_rsp_err);
+	// wire uop1st2leftover_err = (icb_cmd2itcm_r & ifu2itcm_icb_rsp_err);
 
-	assign leftover_ena = holdup2leftover_ena ;
+	// assign leftover_ena = 1'b0 ;
 
-	assign leftover_nxt = put2leftover_data[15:0];
+	// assign leftover_nxt = put2leftover_data[15:0];
 
 
-	sirv_gnrl_dffl #(16) leftover_dffl     (leftover_ena, leftover_nxt,     leftover_r,     clk);
+	// sirv_gnrl_dffl #(16) leftover_dffl     (leftover_ena, leftover_nxt,     leftover_r,     clk);
 	
 	/////////////////////////////////////////////////////////////////////////////////
 	// Generate the ifetch response channel
@@ -422,13 +417,11 @@ input  ifu2itcm_holdup
 	//          ** the state is in 1ND uop but it is same-cross-holdup case
 	//    * Source #2: The rdata-aligned, when
 	//           ** not selecting leftover
-	wire rsp_instr_sel_leftover = icb_sta_is_2nd;
+// wire rsp_instr_sel_leftover = 1'b0;
 
-	wire rsp_instr_sel_icb_rsp = ~rsp_instr_sel_leftover;
+// wire rsp_instr_sel_icb_rsp = 1'b1;
 
-	wire [16-1:0] ifu_icb_rsp_rdata_lsb16 = 16'b0
-			| ({16{icb_cmd2itcm_r}} & ifu2itcm_icb_rsp_rdata[15:0])
-			;
+	wire [16-1:0] ifu_icb_rsp_rdata_lsb16 = ({16{icb_cmd2itcm_r}} & ifu2itcm_icb_rsp_rdata[15:0]);
 
 
 	// The fetched instruction from ICB rdata bus need to be aligned by PC LSB bits
@@ -438,19 +431,12 @@ input  ifu2itcm_holdup
 
 
 
-	wire [32-1:0] ifu_icb_rsp_instr = 32'b0
-				 | ({32{icb_cmd2itcm_r}} & ifu2itcm_icb_rsp_instr)
-			;
+	wire [32-1:0] ifu_icb_rsp_instr = ({32{icb_cmd2itcm_r}} & ifu2itcm_icb_rsp_instr);
 
-	wire ifu_icb_rsp_err = (icb_cmd2itcm_r & ifu2itcm_icb_rsp_err)
-			;
+	wire ifu_icb_rsp_err = (icb_cmd2itcm_r & ifu2itcm_icb_rsp_err);
 
-	assign i_ifu_rsp_instr = 
-				({32{rsp_instr_sel_leftover}} & {ifu_icb_rsp_rdata_lsb16, leftover_r})
-			| ({32{rsp_instr_sel_icb_rsp }} & ifu_icb_rsp_instr);
-	assign i_ifu_rsp_err = 
-				(rsp_instr_sel_leftover & (|{ifu_icb_rsp_err, 1'b0}))
-			| (rsp_instr_sel_icb_rsp  & ifu_icb_rsp_err);
+	assign i_ifu_rsp_instr =  ifu_icb_rsp_instr;
+	assign i_ifu_rsp_err =  ifu_icb_rsp_err;
 
 			
 	// issue ICB CMD request, use ICB response valid. But not each response
@@ -499,7 +485,7 @@ input  ifu2itcm_holdup
 	//                 to caculate. So we caculate it by 
 	//                 last-fetched-PC (flopped value pc_r) truncated
 	//                 with lane-offset and plus a lane siz
-	wire icb_addr_sel_1stnxtalgn = holdup2leftover_sel;
+	// wire icb_addr_sel_1stnxtalgn = 1'b0;
 	//
 	//   * Case #2: Use next lane-aligned address, when
 	//                 ** It need 2 uops, and it is 1ST or WAIT2ND stage
@@ -508,15 +494,13 @@ input  ifu2itcm_holdup
 	//
 	//   * Case #3: Use current ifetch address in 1st uop, when 
 	//                 ** It is not above two cases
-	wire icb_addr_sel_cur = (~icb_addr_sel_1stnxtalgn);
+	// wire icb_addr_sel_cur = 1'b1;
 
 	wire [`E203_PC_SIZE-1:0] nxtalgn_plus_offset = ifu_req_seq_rv32  ? `E203_PC_SIZE'd6 : `E203_PC_SIZE'd4;
 	// Since we always fetch 32bits
 	wire [`E203_PC_SIZE-1:0] icb_algn_nxt_lane_addr = ifu_req_last_pc + nxtalgn_plus_offset;
 
-	assign ifu_icb_cmd_addr = 
-		({`E203_PC_SIZE{icb_addr_sel_1stnxtalgn }} & icb_algn_nxt_lane_addr)
-	| ({`E203_PC_SIZE{icb_addr_sel_cur}} & ifu_req_pc);
+	assign ifu_icb_cmd_addr =  ifu_req_pc;
 
 	/////////////////////////////////////////////////////////////////////////////////
 	// Generate the ifetch req channel ready signal
