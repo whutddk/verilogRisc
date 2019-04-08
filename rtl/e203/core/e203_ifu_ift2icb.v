@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-08 11:49:05
+// Last Modified time: 2019-04-08 13:18:23
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu_ift2icb
@@ -208,13 +208,13 @@ input  ifu2itcm_holdup
 //            ---- Put the leftover buffer value into IR lower 16bits
 //            ---- Put rdata lower 16bits into IR upper 16bits if instr is 32bits-long
 //
-//     ** If it is crossing the lane boundry, but the current lane rdout is not 
-//        holding up, then
-//        ---- First cycle Issue ICB cmd request with current lane address 
-//            ---- Put rdata upper 16bits into leftover buffer
-//        ---- Second cycle Issue ICB cmd request with next lane address 
-//            ---- Put the leftover buffer value into IR lower 16bits
-//            ---- Put rdata upper 16bits into IR upper 16bits if instr is 32bits-long
+//** If it is crossing the lane boundry, but the current lane rdout is not 
+//holding up, then
+//---- First cycle Issue ICB cmd request with current lane address 
+//---- Put rdata upper 16bits into leftover buffer
+//---- Second cycle Issue ICB cmd request with next lane address 
+//---- Put the leftover buffer value into IR lower 16bits
+//---- Put rdata upper 16bits into IR upper 16bits if instr is 32bits-long
 //
 //     ** If it is not crossing the lane boundry, and the current lane rdout is 
 //        holding up, then
@@ -222,29 +222,29 @@ input  ifu2itcm_holdup
 //            ---- Put aligned rdata into IR (upper 16bits 
 //                    only loaded when instr is 32bits-long)
 //
-//     ** If it is not crossing the lane boundry, but the current lane rdout is 
-//        not holding up, then
-//        ---- Issue ICB cmd request with current lane address, just directly use
-//               current holding rdata
-//            ---- Put aligned rdata into IR (upper 16bits 
-//                    only loaded when instr is 32bits-long)
+//** If it is not crossing the lane boundry, but the current lane rdout is 
+//not holding up, then
+//---- Issue ICB cmd request with current lane address, just directly use
+//current holding rdata
+//---- Put aligned rdata into IR (upper 16bits 
+//only loaded when instr is 32bits-long)
 //   
 //
-//   * If the new ifetch address is in the different lane portion as last fetch
-//     address (current PC):
-//     ** If it is crossing the lane boundry, regardless the current lane rdout is 
-//        holding up or not, then
-//        ---- First cycle Issue ICB cmd reqeust with current lane address 
-//            ---- Put rdata upper 16bits into leftover buffer
-//        ---- Second cycle Issue ICB cmd reqeust with next lane address 
-//            ---- Put the leftover buffer value into IR lower 16bits
-//            ---- Put rdata upper 16bits into IR upper 16bits if instr is 32bits-long
+//* If the new ifetch address is in the different lane portion as last fetch
+//address (current PC):
+//** If it is crossing the lane boundry, regardless the current lane rdout is 
+//holding up or not, then
+//---- First cycle Issue ICB cmd reqeust with current lane address 
+//---- Put rdata upper 16bits into leftover buffer
+//---- Second cycle Issue ICB cmd reqeust with next lane address 
+//---- Put the leftover buffer value into IR lower 16bits
+//---- Put rdata upper 16bits into IR upper 16bits if instr is 32bits-long
 //
-//     ** If it is not crossing the lane boundry, then
-//        ---- Issue ICB cmd request with current lane address, just directly use
-//               current holding rdata
-//            ---- Put aligned rdata into IR (upper 16bits 
-//                    only loaded when instr is 32bits-long)
+//** If it is not crossing the lane boundry, then
+//---- Issue ICB cmd request with current lane address, just directly use
+//current holding rdata
+//---- Put aligned rdata into IR (upper 16bits 
+//only loaded when instr is 32bits-long)
 //
 // ===========================================================================
 
@@ -661,11 +661,7 @@ wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[
 
 
 
-	assign ifu_icb_cmd_ready = 1'b0
-
-		| (ifu_icb_cmd2itcm & ifu2itcm_icb_cmd_ready) 
-
-		;
+	assign ifu_icb_cmd_ready = (ifu_icb_cmd2itcm & ifu2itcm_icb_cmd_ready);
 
 
 endmodule
