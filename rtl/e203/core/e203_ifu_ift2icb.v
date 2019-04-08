@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-08 14:36:07
+// Last Modified time: 2019-04-08 15:35:08
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu_ift2icb
@@ -248,35 +248,15 @@ input  ifu2itcm_holdup
 //
 // ===========================================================================
 
-// 这个应该没有其他状况了
-wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[`E203_ITCM_BASE_REGION]); 
 
 
 
-// The current accessing PC is crossing the lane boundry
-	wire ifu_req_lane_cross = ( ifu_req_pc2itcm   
-				
-			 `ifdef E203_ITCM_DATA_WIDTH_IS_32 //{
-				& (ifu_req_pc[1] == 1'b1)
-			 `endif//}
-			 `ifdef E203_ITCM_DATA_WIDTH_IS_64 //{
-				& (ifu_req_pc[2:1] == 2'b11)
-			 `endif//}
-				 )
-		;
+
+// The current accessing PC is crossing the lane boundry,删除C指令后不会发生了
+// wire ifu_req_lane_cross = (ifu_req_pc[1] == 1'b1) ;
 
 // The current accessing PC is begining of the lane boundry
-	wire ifu_req_lane_begin = 1'b0
-			 | (
-				ifu_req_pc2itcm   
-			 `ifdef E203_ITCM_DATA_WIDTH_IS_32 //{
-				& (ifu_req_pc[1] == 1'b0)
-			 `endif//}
-			 `ifdef E203_ITCM_DATA_WIDTH_IS_64 //{
-				& (ifu_req_pc[2:1] == 2'b00)
-			 `endif//}
-				 )
-		;
+	wire ifu_req_lane_begin = (ifu_req_pc[1] == 1'b0);
 	
 
 // The scheme to check if the current accessing PC is same as last accessed ICB address
@@ -294,11 +274,11 @@ wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[
 //     * Note: All other non-sequential cases (e.g., flush, branch or replay) are not
 //          treated as this case
 //  
-	wire req_lane_cross_r;
-	wire ifu_req_lane_same = ifu_req_seq & (ifu_req_lane_begin ? req_lane_cross_r : 1'b1);
+// wire req_lane_cross_r;
+	wire ifu_req_lane_same = ifu_req_seq & (ifu_req_lane_begin ? 1'b0 : 1'b1);
 	
 	// The current accessing PC is same as last accessed ICB address
-	wire ifu_req_lane_holdup = (ifu_req_pc2itcm & ifu2itcm_holdup & (~itcm_nohold));
+	wire ifu_req_lane_holdup = ( ifu2itcm_holdup & (~itcm_nohold) );
 
 	wire ifu_req_hsked = ifu_req_valid & ifu_req_ready;
 	wire i_ifu_rsp_hsked = i_ifu_rsp_valid & i_ifu_rsp_ready;
@@ -314,7 +294,7 @@ wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[
 	/////////////////////////////////////////////////////////////////////////////////
 	// Implement the state machine for the ifetch req interface
 	//
-	wire req_need_2uop_r;
+	// wire req_need_2uop_r;
 	wire req_need_0uop_r;
 
 
@@ -353,22 +333,16 @@ wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[
 
 	// **** If the current state is 1st,
 	// If a response come, exit this state
-	wire ifu_icb_rsp2leftover;
-	assign state_1st_exit_ena  = icb_sta_is_1st & (
-				ifu_icb_rsp2leftover ? ifu_icb_rsp_hsked : i_ifu_rsp_hsked);
+	// wire ifu_icb_rsp2leftover;
+	assign state_1st_exit_ena  = icb_sta_is_1st & ( i_ifu_rsp_hsked);
 	assign state_1st_nxt     = 
 				(
-				// If it need two requests but the ifetch request is not ready to be 
-				//   accepted, then next state is ICB_STATE_WAIT2ND
-					(req_need_2uop_r & (~ifu_icb_cmd_ready)) ?  ICB_STATE_WAIT2ND
-				// If it need two requests and the ifetch request is ready to be 
-				//   accepted, then next state is ICB_STATE_2ND
-					: (req_need_2uop_r & (ifu_icb_cmd_ready)) ?  ICB_STATE_2ND 
+				
 				// If it need zero or one requests and new req handshaked, then 
 				//   next state is ICB_STATE_1ST
 				// If it need zero or one requests and no new req handshaked, then
 				//   next state is ICB_STATE_IDLE
-					:  ifu_req_hsked  ?  ICB_STATE_1ST 
+					ifu_req_hsked  ?  ICB_STATE_1ST 
 									: ICB_STATE_IDLE 
 				) ;
 
@@ -404,17 +378,17 @@ wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[
 
 	/////////////////////////////////////////////////////////////////////////////////
 	// Save the same_cross_holdup flags for this ifetch request to be used
-	wire req_same_cross_holdup_r;
+// wire req_same_cross_holdup_r;
 
-	wire req_same_cross_holdup = ifu_req_lane_same & ifu_req_lane_cross & ifu_req_lane_holdup;
-	wire req_need_2uop         = (  ifu_req_lane_same  & ifu_req_lane_cross & (~ifu_req_lane_holdup))
-							 | ((~ifu_req_lane_same) & ifu_req_lane_cross);
-	wire req_need_0uop         = ifu_req_lane_same & (~ifu_req_lane_cross) & ifu_req_lane_holdup;
+// wire req_same_cross_holdup = ifu_req_lane_same & ifu_req_lane_cross & ifu_req_lane_holdup;
+// wire req_need_2uop         = (  ifu_req_lane_same  & ifu_req_lane_cross & (~ifu_req_lane_holdup))
+// 							 | ((~ifu_req_lane_same) & ifu_req_lane_cross);
+	wire req_need_0uop         = ifu_req_lane_same  & ifu_req_lane_holdup;
 
-	sirv_gnrl_dfflr #(1) req_same_cross_holdup_dfflr (ifu_req_hsked, req_same_cross_holdup, req_same_cross_holdup_r, clk, rst_n);
-	sirv_gnrl_dfflr #(1) req_need_2uop_dfflr         (ifu_req_hsked, req_need_2uop,         req_need_2uop_r,         clk, rst_n);
+// sirv_gnrl_dfflr #(1) req_same_cross_holdup_dfflr (ifu_req_hsked, req_same_cross_holdup, req_same_cross_holdup_r, clk, rst_n);
+// sirv_gnrl_dfflr #(1) req_need_2uop_dfflr         (ifu_req_hsked, req_need_2uop,         req_need_2uop_r,         clk, rst_n);
 	sirv_gnrl_dfflr #(1) req_need_0uop_dfflr         (ifu_req_hsked, req_need_0uop,         req_need_0uop_r,         clk, rst_n);
-	sirv_gnrl_dfflr #(1) req_lane_cross_dfflr        (ifu_req_hsked, ifu_req_lane_cross,    req_lane_cross_r,        clk, rst_n);
+// sirv_gnrl_dfflr #(1) req_lane_cross_dfflr        (ifu_req_hsked, ifu_req_lane_cross,    req_lane_cross_r,        clk, rst_n);
 
 	/////////////////////////////////////////////////////////////////////////////////
 	// Save the indicate flags for this ICB transaction to be used
@@ -439,7 +413,7 @@ wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[
 	// Please see "The itfctrl scheme introduction" for more details 
 	//    * Case #1: Loaded when the last holdup upper 16bits put into leftover
 	//    * Case #2: Loaded when the 1st request uop rdata upper 16bits put into leftover 
-	wire holdup2leftover_sel = req_same_cross_holdup;
+// wire holdup2leftover_sel = req_same_cross_holdup;
 	wire holdup2leftover_ena = ifu_req_hsked & holdup2leftover_sel;
 	wire [15:0]  put2leftover_data = 16'b0    
 		`ifdef E203_HAS_ITCM //{
@@ -447,19 +421,16 @@ wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[
 		`endif//}
 			;
 
-	wire uop1st2leftover_sel = ifu_icb_rsp2leftover;
-	wire uop1st2leftover_ena = ifu_icb_rsp_hsked & uop1st2leftover_sel;
+// wire uop1st2leftover_sel = ifu_icb_rsp2leftover;
+// wire uop1st2leftover_ena = 1'b0;
 
-	wire uop1st2leftover_err = 1'b0   
-						| (icb_cmd2itcm_r & ifu2itcm_icb_rsp_err)
-		;
+	wire uop1st2leftover_err = (icb_cmd2itcm_r & ifu2itcm_icb_rsp_err);
 
-	assign leftover_ena = holdup2leftover_ena | uop1st2leftover_ena;
+	assign leftover_ena = holdup2leftover_ena ;
 
 	assign leftover_nxt = put2leftover_data[15:0];
 
-	assign leftover_err_nxt = 
-		(holdup2leftover_sel & 1'b0) | (uop1st2leftover_sel & uop1st2leftover_err);
+	assign leftover_err_nxt = 1'b0;
 
 	sirv_gnrl_dffl #(16) leftover_dffl     (leftover_ena, leftover_nxt,     leftover_r,     clk);
 	sirv_gnrl_dfflr #(1) leftover_err_dfflr(leftover_ena, leftover_err_nxt, leftover_err_r, clk, rst_n);
@@ -474,10 +445,7 @@ wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[
 	//          ** the state is in 1ND uop but it is same-cross-holdup case
 	//    * Source #2: The rdata-aligned, when
 	//           ** not selecting leftover
-	wire rsp_instr_sel_leftover = (   icb_sta_is_1st
-									& req_same_cross_holdup_r
-								)
-								| icb_sta_is_2nd;
+	wire rsp_instr_sel_leftover = icb_sta_is_2nd;
 
 	wire rsp_instr_sel_icb_rsp = ~rsp_instr_sel_leftover;
 
@@ -488,34 +456,17 @@ wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[
 
 	// The fetched instruction from ICB rdata bus need to be aligned by PC LSB bits
 
-	wire[31:0] ifu2itcm_icb_rsp_instr = 
-		`ifdef E203_ITCM_DATA_WIDTH_IS_32 //{
-					ifu2itcm_icb_rsp_rdata;
-		`else//}{
-			`ifdef E203_ITCM_DATA_WIDTH_IS_64
-					({32{icb_cmd_addr_2_1_r == 2'b00}} & ifu2itcm_icb_rsp_rdata[31: 0]) 
-					| ({32{icb_cmd_addr_2_1_r == 2'b01}} & ifu2itcm_icb_rsp_rdata[47:16]) 
-					| ({32{icb_cmd_addr_2_1_r == 2'b10}} & ifu2itcm_icb_rsp_rdata[63:32])
-					 ;
-			`else//}{
-			!!! ERROR: There must be something wrong, we dont support the width 
-			other than 32bits and 64bits, leave this message to catch this error by 
-			compilation message.
-			`endif//}
-		`endif//}
+	wire[31:0] ifu2itcm_icb_rsp_instr = ifu2itcm_icb_rsp_rdata;
+
 
 
 
 	wire [32-1:0] ifu_icb_rsp_instr = 32'b0
-
 				 | ({32{icb_cmd2itcm_r}} & ifu2itcm_icb_rsp_instr)
-
 			;
 
 	wire ifu_icb_rsp_err = 1'b0
-
 				| (icb_cmd2itcm_r & ifu2itcm_icb_rsp_err)
-
 			;
 
 	assign i_ifu_rsp_instr = 
@@ -535,11 +486,11 @@ wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[
 	//               into the leftover buffer when:
 	//                    It need two uops and itf-state is in 1ST stage (the leftover
 	//                    buffer is always ready to accept this)
-	assign ifu_icb_rsp2leftover = req_need_2uop_r & icb_sta_is_1st;
+// assign ifu_icb_rsp2leftover = req_need_2uop_r & icb_sta_is_1st;
 	wire ifu_icb_rsp2ir_ready;
 
-	wire ifu_icb_rsp2ir_valid = ifu_icb_rsp2leftover ? 1'b0 : ifu_icb_rsp_valid;
-	assign ifu_icb_rsp_ready  = ifu_icb_rsp2leftover ? 1'b1 : ifu_icb_rsp2ir_ready;
+	wire ifu_icb_rsp2ir_valid = ifu_icb_rsp_valid;
+	assign ifu_icb_rsp_ready  = ifu_icb_rsp2ir_ready;
 	//
 
 	assign i_ifu_rsp_valid = holdup_gen_fake_rsp_valid | ifu_icb_rsp2ir_valid;
@@ -553,9 +504,7 @@ wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[
 	//    * Case #1: The itf need two uops, and it is in 2ND state response
 	//    * Case #2: The itf need only one uop, and it is in 1ND state response
 	assign ifu_icb_rsp_valid = 1'b0
-
 			| (icb_cmd2itcm_r & ifu2itcm_icb_rsp_valid)
-
 		;
  
 	/////////////////////////////////////////////////////////////////////////////////
@@ -572,16 +521,6 @@ wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[
 	assign ifu_icb_cmd_valid = 
 					(
 						ifu_req_valid_pos & (~req_need_0uop)
-					)
-					| 
-					( 
-						req_need_2uop_r &
-						(
-							(
-								( icb_sta_is_1st & ifu_icb_rsp_hsked )
-								|  icb_sta_is_wait2nd
-							)
-						)
 					);
 					 
 	// The ICB cmd address will be generated in 3 cases:
@@ -599,25 +538,18 @@ wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[
 	//                 ** It need 2 uops, and it is 1ST or WAIT2ND stage
 	//                 The next-lane-aligned address can be generated by
 	//                 last request-PC plus 16bits. 
-	wire icb_addr_sel_2ndnxtalgn = req_need_2uop_r &
-					 (
-							icb_sta_is_1st 
-						 |  icb_sta_is_wait2nd
-					 );
+// wire icb_addr_sel_2ndnxtalgn = 1'b0;
 	//
 	//   * Case #3: Use current ifetch address in 1st uop, when 
 	//                 ** It is not above two cases
 	wire icb_addr_sel_cur = (~icb_addr_sel_1stnxtalgn) & (~icb_addr_sel_2ndnxtalgn);
 
-	wire [`E203_PC_SIZE-1:0] nxtalgn_plus_offset = 
-				 icb_addr_sel_2ndnxtalgn ? `E203_PC_SIZE'd2 :
-				 ifu_req_seq_rv32        ? `E203_PC_SIZE'd6 :
-										 `E203_PC_SIZE'd4;
+	wire [`E203_PC_SIZE-1:0] nxtalgn_plus_offset = ifu_req_seq_rv32  ? `E203_PC_SIZE'd6 : `E203_PC_SIZE'd4;
 	// Since we always fetch 32bits
 	wire [`E203_PC_SIZE-1:0] icb_algn_nxt_lane_addr = ifu_req_last_pc + nxtalgn_plus_offset;
 
 	assign ifu_icb_cmd_addr = 
-		({`E203_PC_SIZE{icb_addr_sel_1stnxtalgn | icb_addr_sel_2ndnxtalgn}} & icb_algn_nxt_lane_addr)
+		({`E203_PC_SIZE{icb_addr_sel_1stnxtalgn }} & icb_algn_nxt_lane_addr)
 	| ({`E203_PC_SIZE{icb_addr_sel_cur}} & ifu_req_pc);
 
 	/////////////////////////////////////////////////////////////////////////////////
@@ -630,8 +562,7 @@ wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[
 	wire ifu_req_ready_condi = 
 				(
 					icb_sta_is_idle 
-					| ((~req_need_2uop_r) & icb_sta_is_1st & i_ifu_rsp_hsked)
-					| (  req_need_2uop_r  & icb_sta_is_2nd & i_ifu_rsp_hsked) 
+					| ( icb_sta_is_1st & i_ifu_rsp_hsked)
 				);
 	assign ifu_req_ready     = ifu_icb_cmd_ready & ifu_req_ready_condi; 
 	assign ifu_req_valid_pos = ifu_req_valid     & ifu_req_ready_condi; // Handshake valid
