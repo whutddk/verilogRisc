@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-04 14:40:34
+// Last Modified time: 2019-04-08 14:55:21
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_itcm_ctrl
@@ -50,256 +50,55 @@
 	`ifdef E203_HAS_ITCM //{
 
 module e203_itcm_ctrl(
-	output itcm_active,
 	// The cgstop is coming from CSR (0xBFE mcgstop)'s filed 1
 	// // This register is our self-defined CSR register to disable the 
 	// ITCM SRAM clock gating for debugging purpose
 	input  tcm_cgstop,
+	input core_cgstop,
 	// Note: the ITCM ICB interface only support the single-transaction
 	
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// IFU ICB to ITCM
-	//    * Bus cmd channel
-	input  ifu2itcm_icb_cmd_valid, // Handshake valid
-	output ifu2itcm_icb_cmd_ready, // Handshake ready
-	// Note: The data on rdata or wdata channel must be naturally aligned, this is in line with the AXI definition
-	input  [`E203_ITCM_ADDR_WIDTH-1:0] ifu2itcm_icb_cmd_addr, // Bus transaction start addr 
-	input  ifu2itcm_icb_cmd_read,   // Read or write
+
+	input  ifu2itcm_icb_cmd_valid,
+	output ifu2itcm_icb_cmd_ready,
+	input  [`E203_ITCM_ADDR_WIDTH-1:0] ifu2itcm_icb_cmd_addr,
+	input  ifu2itcm_icb_cmd_read,
 	input  [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_cmd_wdata, 
 	input  [`E203_ITCM_WMSK_WIDTH-1:0] ifu2itcm_icb_cmd_wmask, 
-
-	//    * Bus RSP channel
-	output ifu2itcm_icb_rsp_valid, // Response valid 
-	input  ifu2itcm_icb_rsp_ready, // Response ready
-	output ifu2itcm_icb_rsp_err,   // Response error
-						// Note: the RSP rdata is inline with AXI definition
-	output [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata, 
-	
+	output ifu2itcm_icb_rsp_valid,
+	input  ifu2itcm_icb_rsp_ready,
+	output ifu2itcm_icb_rsp_err,
+	output [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata, 	
 	output ifu2itcm_holdup,
-	//output ifu2itcm_replay,
-
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// LSU ICB to ITCM
-	//    * Bus cmd channel
-	input  lsu2itcm_icb_cmd_valid, // Handshake valid
-	output lsu2itcm_icb_cmd_ready, // Handshake ready
-	// Note: The data on rdata or wdata channel must be naturally aligned, this is in line with the AXI definition
-	input  [`E203_ITCM_ADDR_WIDTH-1:0]   lsu2itcm_icb_cmd_addr, // Bus transaction start addr 
-	input  lsu2itcm_icb_cmd_read,   // Read or write
-	input  [32-1:0] lsu2itcm_icb_cmd_wdata, 
-	input  [4-1:0] lsu2itcm_icb_cmd_wmask, 
-
-	//    * Bus RSP channel
-	output lsu2itcm_icb_rsp_valid, // Response valid 
-	input  lsu2itcm_icb_rsp_ready, // Response ready
-	output lsu2itcm_icb_rsp_err,   // Response error
-	// Note: the RSP rdata is inline with AXI definition
-	output [32-1:0] lsu2itcm_icb_rsp_rdata, 
 
 
-	output                         itcm_ram_cs,  
-	output                         itcm_ram_we,  
-	output [`E203_ITCM_RAM_AW-1:0] itcm_ram_addr, 
-	output [`E203_ITCM_RAM_MW-1:0] itcm_ram_wem,
-	output [`E203_ITCM_RAM_DW-1:0] itcm_ram_din,          
-	input  [`E203_ITCM_RAM_DW-1:0] itcm_ram_dout,
-	output                         clk_itcm_ram,
-
-	input  test_mode,
 	input  clk,
 	input  rst_n
 	);
 
-		// LSU2ITCM converted to ICM data width
-	//    * Bus cmd channel
-	wire lsu_icb_cmd_valid;
-	wire lsu_icb_cmd_ready;
-	wire [`E203_ITCM_ADDR_WIDTH-1:0] lsu_icb_cmd_addr;
-	wire lsu_icb_cmd_read;
-	wire [`E203_ITCM_DATA_WIDTH-1:0] lsu_icb_cmd_wdata;
-	wire [`E203_ITCM_DATA_WIDTH/8-1:0] lsu_icb_cmd_wmask;
-
-	//    * Bus RSP channel
-	wire lsu_icb_rsp_valid;
-	wire lsu_icb_rsp_ready;
-	wire lsu_icb_rsp_err;
-	wire [`E203_ITCM_DATA_WIDTH-1:0] lsu_icb_rsp_rdata; 
-
-	sirv_gnrl_icb_n2w # (
-	.FIFO_OUTS_NUM   (`E203_ITCM_OUTS_NUM),
-	.FIFO_CUT_READY  (0),
-	.USR_W      (1),
-	.AW         (`E203_ITCM_ADDR_WIDTH),
-	.X_W        (32),
-	.Y_W        (`E203_ITCM_DATA_WIDTH) 
-	) u_itcm_icb_lsu2itcm_n2w(
-	.i_icb_cmd_valid        (lsu2itcm_icb_cmd_valid ),  
-	.i_icb_cmd_ready        (lsu2itcm_icb_cmd_ready ),
-	.i_icb_cmd_read         (lsu2itcm_icb_cmd_read ) ,
-	.i_icb_cmd_addr         (lsu2itcm_icb_cmd_addr ) ,
-	.i_icb_cmd_wdata        (lsu2itcm_icb_cmd_wdata ),
-	.i_icb_cmd_wmask        (lsu2itcm_icb_cmd_wmask) ,
-	.i_icb_cmd_burst        (2'b0)                   ,
-	.i_icb_cmd_beat         (2'b0)                   ,
-	.i_icb_cmd_lock         (1'b0),
-	.i_icb_cmd_excl         (1'b0),
-	.i_icb_cmd_size         (2'b0),
-	.i_icb_cmd_usr          (1'b0),
-	 
-	.i_icb_rsp_valid        (lsu2itcm_icb_rsp_valid ),
-	.i_icb_rsp_ready        (lsu2itcm_icb_rsp_ready ),
-	.i_icb_rsp_err          (lsu2itcm_icb_rsp_err)   ,
-	.i_icb_rsp_excl_ok      ()   ,
-	.i_icb_rsp_rdata        (lsu2itcm_icb_rsp_rdata ),
-	.i_icb_rsp_usr          (),
-																								
-	.o_icb_cmd_valid        (lsu_icb_cmd_valid ),  
-	.o_icb_cmd_ready        (lsu_icb_cmd_ready ),
-	.o_icb_cmd_read         (lsu_icb_cmd_read ) ,
-	.o_icb_cmd_addr         (lsu_icb_cmd_addr ) ,
-	.o_icb_cmd_wdata        (lsu_icb_cmd_wdata ),
-	.o_icb_cmd_wmask        (lsu_icb_cmd_wmask) ,
-	.o_icb_cmd_burst        ()                   ,
-	.o_icb_cmd_beat         ()                   ,
-	.o_icb_cmd_lock         (),
-	.o_icb_cmd_excl         (),
-	.o_icb_cmd_size         (),
-	.o_icb_cmd_usr          (),
-	 
-	.o_icb_rsp_valid        (lsu_icb_rsp_valid ),
-	.o_icb_rsp_ready        (lsu_icb_rsp_ready ),
-	.o_icb_rsp_err          (lsu_icb_rsp_err)   ,
-	.o_icb_rsp_excl_ok      (1'b0)   ,
-	.o_icb_rsp_rdata        (lsu_icb_rsp_rdata ),
-	.o_icb_rsp_usr          (1'b0),
-
-	.clk                    (clk   )                  ,
-	.rst_n                  (rst_n )                 
-	);
-
-
-
-	wire arbt_icb_cmd_valid;
-	wire arbt_icb_cmd_ready;
-	wire [`E203_ITCM_ADDR_WIDTH-1:0] arbt_icb_cmd_addr;
-	wire arbt_icb_cmd_read;
-	wire [`E203_ITCM_DATA_WIDTH-1:0] arbt_icb_cmd_wdata;
-	wire [`E203_ITCM_WMSK_WIDTH-1:0] arbt_icb_cmd_wmask;
-
-	wire arbt_icb_rsp_valid;
-	wire arbt_icb_rsp_ready;
-	wire arbt_icb_rsp_err;
-	wire [`E203_ITCM_DATA_WIDTH-1:0] arbt_icb_rsp_rdata;
-
-
-	localparam ITCM_ARBT_I_NUM = 1;
-	localparam ITCM_ARBT_I_PTR_W = 1;
-
-
-	wire [ITCM_ARBT_I_NUM*1-1:0] arbt_bus_icb_cmd_valid;
-	wire [ITCM_ARBT_I_NUM*1-1:0] arbt_bus_icb_cmd_ready;
-	wire [ITCM_ARBT_I_NUM*`E203_ITCM_ADDR_WIDTH-1:0] arbt_bus_icb_cmd_addr;
-	wire [ITCM_ARBT_I_NUM*1-1:0] arbt_bus_icb_cmd_read;
-	wire [ITCM_ARBT_I_NUM*`E203_ITCM_DATA_WIDTH-1:0] arbt_bus_icb_cmd_wdata;
-	wire [ITCM_ARBT_I_NUM*`E203_ITCM_WMSK_WIDTH-1:0] arbt_bus_icb_cmd_wmask;
-
-	wire [ITCM_ARBT_I_NUM*1-1:0] arbt_bus_icb_rsp_valid;
-	wire [ITCM_ARBT_I_NUM*1-1:0] arbt_bus_icb_rsp_ready;
-	wire [ITCM_ARBT_I_NUM*1-1:0] arbt_bus_icb_rsp_err;
-	wire [ITCM_ARBT_I_NUM*`E203_ITCM_DATA_WIDTH-1:0] arbt_bus_icb_rsp_rdata;
-
-	// LSU take higher priority
-	assign arbt_bus_icb_cmd_valid = lsu_icb_cmd_valid;
-	assign arbt_bus_icb_cmd_addr = lsu_icb_cmd_addr ;
-	assign arbt_bus_icb_cmd_read = lsu_icb_cmd_read ;
-	assign arbt_bus_icb_cmd_wdata = lsu_icb_cmd_wdata ;
-	assign arbt_bus_icb_cmd_wmask = lsu_icb_cmd_wmask ;
-	assign lsu_icb_cmd_ready = arbt_bus_icb_cmd_ready;
-
-
-	assign lsu_icb_rsp_valid = arbt_bus_icb_rsp_valid;
-	assign lsu_icb_rsp_err = arbt_bus_icb_rsp_err;
-	assign lsu_icb_rsp_rdata = arbt_bus_icb_rsp_rdata;
-	assign arbt_bus_icb_rsp_ready = lsu_icb_rsp_ready ;
-
-	sirv_gnrl_icb_arbt # (
-	.ARBT_SCHEME (0),// Priority based
-	.ALLOW_0CYCL_RSP (0),// Dont allow the 0 cycle response because for ITCM and DTCM, 
-											 //   Dcache, .etc, definitely they cannot reponse as 0 cycle
-	.FIFO_OUTS_NUM   (`E203_ITCM_OUTS_NUM),
-	.FIFO_CUT_READY(0),
-	.USR_W      (1),
-	.ARBT_NUM   (ITCM_ARBT_I_NUM  ),
-	.ARBT_PTR_W (ITCM_ARBT_I_PTR_W),
-	.AW         (`E203_ITCM_ADDR_WIDTH),
-	.DW         (`E203_ITCM_DATA_WIDTH) 
-	) u_itcm_icb_arbt(
-	.o_icb_cmd_valid        (arbt_icb_cmd_valid )     ,
-	.o_icb_cmd_ready        (arbt_icb_cmd_ready )     ,
-	.o_icb_cmd_read         (arbt_icb_cmd_read )      ,
-	.o_icb_cmd_addr         (arbt_icb_cmd_addr )      ,
-	.o_icb_cmd_wdata        (arbt_icb_cmd_wdata )     ,
-	.o_icb_cmd_wmask        (arbt_icb_cmd_wmask)      ,
-	.o_icb_cmd_burst        ()     ,
-	.o_icb_cmd_beat         ()     ,
-	.o_icb_cmd_lock         ()     ,
-	.o_icb_cmd_excl         ()     ,
-	.o_icb_cmd_size         ()     ,
-	.o_icb_cmd_usr          ()     ,
-																
-	.o_icb_rsp_valid        (arbt_icb_rsp_valid )     ,
-	.o_icb_rsp_ready        (arbt_icb_rsp_ready )     ,
-	.o_icb_rsp_err          (arbt_icb_rsp_err)        ,
-	.o_icb_rsp_rdata        (arbt_icb_rsp_rdata )     ,
-	.o_icb_rsp_usr          (1'b0),
-	.o_icb_rsp_excl_ok      (1'b0),
-															 
-	.i_bus_icb_cmd_ready    (arbt_bus_icb_cmd_ready ) ,
-	.i_bus_icb_cmd_valid    (arbt_bus_icb_cmd_valid ) ,
-	.i_bus_icb_cmd_read     (arbt_bus_icb_cmd_read )  ,
-	.i_bus_icb_cmd_addr     (arbt_bus_icb_cmd_addr )  ,
-	.i_bus_icb_cmd_wdata    (arbt_bus_icb_cmd_wdata ) ,
-	.i_bus_icb_cmd_wmask    (arbt_bus_icb_cmd_wmask)  ,
-	.i_bus_icb_cmd_burst    ({2*ITCM_ARBT_I_NUM{1'b0}}) ,
-	.i_bus_icb_cmd_beat     ({2*ITCM_ARBT_I_NUM{1'b0}}) ,
-	.i_bus_icb_cmd_lock     ({1*ITCM_ARBT_I_NUM{1'b0}}),
-	.i_bus_icb_cmd_excl     ({1*ITCM_ARBT_I_NUM{1'b0}}),
-	.i_bus_icb_cmd_size     ({2*ITCM_ARBT_I_NUM{1'b0}}),
-	.i_bus_icb_cmd_usr      ({1*ITCM_ARBT_I_NUM{1'b0}}),
-
-																
-	.i_bus_icb_rsp_valid    (arbt_bus_icb_rsp_valid ) ,
-	.i_bus_icb_rsp_ready    (arbt_bus_icb_rsp_ready ) ,
-	.i_bus_icb_rsp_err      (arbt_bus_icb_rsp_err)    ,
-	.i_bus_icb_rsp_rdata    (arbt_bus_icb_rsp_rdata ) ,
-	.i_bus_icb_rsp_usr      (),
-	.i_bus_icb_rsp_excl_ok  (),
-														 
-	.clk                    (clk  )                     ,
-	.rst_n                  (rst_n)
-	);
+	wire clk_itcm;
 
 
 
 
+	wire itcm_ram_cs;  
+	wire itcm_ram_we;  
+	wire [`E203_ITCM_RAM_AW-1:0] itcm_ram_addr; 
+	wire [`E203_ITCM_RAM_MW-1:0] itcm_ram_wem;
+	wire [`E203_ITCM_RAM_DW-1:0] itcm_ram_din;          
+	wire [`E203_ITCM_RAM_DW-1:0] itcm_ram_dout;
+	wire clk_itcm_ram;
 
-	wire sram_ready2ifu = 1'b1	 //The EXT and load/store have higher priotry than the ifetch
-						& (~arbt_icb_cmd_valid);
-
-	wire sram_ready2arbt = 1'b1;
 
 
-	wire sram_sel_ifu  = sram_ready2ifu  & ifu2itcm_icb_cmd_valid;
-	wire sram_sel_arbt = sram_ready2arbt & arbt_icb_cmd_valid;
+
+		 //The EXT and load/store have higher priotry than the ifetch
+
+	wire sram_sel_ifu = ifu2itcm_icb_cmd_valid;
 
 	wire sram_icb_cmd_ready;
 	wire sram_icb_cmd_valid;
 
-	assign ifu2itcm_icb_cmd_ready = sram_ready2ifu   & sram_icb_cmd_ready;
-	assign arbt_icb_cmd_ready = sram_ready2arbt  & sram_icb_cmd_ready;
-
+	assign ifu2itcm_icb_cmd_ready = sram_icb_cmd_ready;
 
 
 	wire [`E203_ITCM_ADDR_WIDTH-1:0] sram_icb_cmd_addr;
@@ -307,17 +106,12 @@ module e203_itcm_ctrl(
 	wire [`E203_ITCM_DATA_WIDTH-1:0] sram_icb_cmd_wdata;
 	wire [`E203_ITCM_WMSK_WIDTH-1:0] sram_icb_cmd_wmask;
 
-	assign sram_icb_cmd_valid = (sram_sel_ifu   & ifu2itcm_icb_cmd_valid)
-														| (sram_sel_arbt  & arbt_icb_cmd_valid);
+	assign sram_icb_cmd_valid = (sram_sel_ifu   & ifu2itcm_icb_cmd_valid);
 
-	assign sram_icb_cmd_addr  = ({`E203_ITCM_ADDR_WIDTH{sram_sel_ifu  }} & ifu2itcm_icb_cmd_addr)
-														| ({`E203_ITCM_ADDR_WIDTH{sram_sel_arbt }} & arbt_icb_cmd_addr);
-	assign sram_icb_cmd_read  = (sram_sel_ifu   & ifu2itcm_icb_cmd_read)
-														| (sram_sel_arbt  & arbt_icb_cmd_read);
-	assign sram_icb_cmd_wdata = ({`E203_ITCM_DATA_WIDTH{sram_sel_ifu  }} & ifu2itcm_icb_cmd_wdata)
-														| ({`E203_ITCM_DATA_WIDTH{sram_sel_arbt }} & arbt_icb_cmd_wdata);
-	assign sram_icb_cmd_wmask = ({`E203_ITCM_WMSK_WIDTH{sram_sel_ifu  }} & ifu2itcm_icb_cmd_wmask)
-														| ({`E203_ITCM_WMSK_WIDTH{sram_sel_arbt }} & arbt_icb_cmd_wmask);
+	assign sram_icb_cmd_addr  = ({`E203_ITCM_ADDR_WIDTH{sram_sel_ifu  }} & ifu2itcm_icb_cmd_addr);
+	assign sram_icb_cmd_read  = (sram_sel_ifu   & ifu2itcm_icb_cmd_read);
+	assign sram_icb_cmd_wdata = ({`E203_ITCM_DATA_WIDTH{sram_sel_ifu  }} & ifu2itcm_icb_cmd_wdata);
+	assign sram_icb_cmd_wmask = ({`E203_ITCM_WMSK_WIDTH{sram_sel_ifu  }} & ifu2itcm_icb_cmd_wmask);
 
 												
 	wire sram_icb_cmd_ifu = sram_sel_ifu;
@@ -368,8 +162,8 @@ module e203_itcm_ctrl(
 		 .ram_dout (itcm_ram_dout),
 		 .clk_ram  (clk_itcm_ram ),
 	
-		 .test_mode(test_mode  ),
-		 .clk  (clk  ),
+		 .test_mode(1'b0),
+		 .clk  (clk_itcm),
 		 .rst_n(rst_n)  
 		);
 
@@ -382,19 +176,11 @@ module e203_itcm_ctrl(
 
 	// The E2 pass to IFU RSP channel only when it is IFU access 
 	// The E2 pass to ARBT RSP channel only when it is not IFU access
-	assign sram_icb_rsp_ready = sram_icb_rsp_ifu ? 
-										ifu2itcm_icb_rsp_ready : arbt_icb_rsp_ready;
+	assign sram_icb_rsp_ready = ifu2itcm_icb_rsp_ready ;
 
 	assign ifu2itcm_icb_rsp_valid = sram_icb_rsp_valid & sram_icb_rsp_ifu;
 	assign ifu2itcm_icb_rsp_err   = sram_icb_rsp_err;
 	assign ifu2itcm_icb_rsp_rdata = sram_icb_rsp_rdata;
-
-	assign arbt_icb_rsp_valid = sram_icb_rsp_valid & (~sram_icb_rsp_ifu);
-	assign arbt_icb_rsp_err   = sram_icb_rsp_err;
-	assign arbt_icb_rsp_rdata = sram_icb_rsp_rdata;
-
- 
-
 
 	// The holdup indicating the target is not accessed by other agents 
 	// since last accessed by IFU, and the output of it is holding up
@@ -404,9 +190,9 @@ module e203_itcm_ctrl(
 	//   * The holdup flag it clear when when 
 	//         ** other agent (non-IFU) accessed this target
 	//         ** other agent (non-IFU) accessed this target
-								//for example:
-								//   *** The external agent accessed the ITCM
-								//   *** I$ updated by cache maintaineice operation
+	//for example:
+	//   *** The external agent accessed the ITCM
+	//   *** I$ updated by cache maintaineice operation
 	wire ifu_holdup_r;
 	// The IFU holdup will be set after last time accessed by a IFU access
 	wire ifu_holdup_set =   sram_icb_cmd_ifu & itcm_ram_cs;
@@ -414,13 +200,55 @@ module e203_itcm_ctrl(
 	wire ifu_holdup_clr = (~sram_icb_cmd_ifu) & itcm_ram_cs;
 	wire ifu_holdup_ena = ifu_holdup_set | ifu_holdup_clr;
 	wire ifu_holdup_nxt = ifu_holdup_set & (~ifu_holdup_clr);
-	sirv_gnrl_dfflr #(1)ifu_holdup_dffl(ifu_holdup_ena, ifu_holdup_nxt, ifu_holdup_r, clk, rst_n);
+	sirv_gnrl_dfflr #(1)ifu_holdup_dffl(ifu_holdup_ena, ifu_holdup_nxt, ifu_holdup_r, clk_itcm, rst_n);
 	assign ifu2itcm_holdup = ifu_holdup_r 
 														;
+	  
+
+	wire itcm_active = ifu2itcm_icb_cmd_valid | itcm_sram_ctrl_active;
+
+	e203_itcm_ram u_e203_itcm_ram (
+		.cs   (itcm_ram_cs),
+		.we   (itcm_ram_we),
+		.addr (itcm_ram_addr),
+		.wem  (itcm_ram_wem),
+		.din  (itcm_ram_din),
+		.dout (itcm_ram_dout),
+		.rst_n(rst_n),
+		.clk  (clk_itcm_ram )
+	);
 
 
-	assign itcm_active = ifu2itcm_icb_cmd_valid | lsu2itcm_icb_cmd_valid | itcm_sram_ctrl_active;
+
+
+
+
+// The ITCM and DTCM Ctrl module's clock gating does not need to check
+//  WFI because it may have request from external agent
+//  and also, it actually will automactically become inactive regardess
+//  currently is WFI or not, hence we dont need WFI here
+	wire itcm_active_r;
+	sirv_gnrl_dffr #(1)itcm_active_dffr(itcm_active, itcm_active_r, clk_itcm, rst_n);
+	wire itcm_clk_en = core_cgstop | itcm_active | itcm_active_r;
+
+
+	e203_clkgate u_itcm_clkgate(
+		.clk_in   (clk),
+		.test_mode(1'b0),
+		.clock_en (itcm_clk_en),
+		.clk_out  (clk_itcm)
+	);
+
+
+
+
+
+
 
 endmodule
 
 	`endif//}
+
+
+	
+

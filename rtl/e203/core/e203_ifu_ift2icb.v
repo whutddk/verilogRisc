@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-04 11:33:54
+// Last Modified time: 2019-04-08 14:36:07
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu_ift2icb
@@ -53,42 +53,33 @@ module e203_ifu_ift2icb(
 	input  rst_n,
 
 	input  itcm_nohold,
-	// Fetch Interface to memory system, internal protocol
-	//    * IFetch REQ channel
+
 	input  ifu_req_valid, // Handshake valid
 	output ifu_req_ready, // Handshake ready
-	// Note: the req-addr can be unaligned with the length indicated by req_len signal. The targetd (ITCM, ICache or Sys-MEM) ctrl modules will handle the unalign cases and split-and-merge works
 	input  [`E203_PC_SIZE-1:0] ifu_req_pc, // Fetch PC
 	input  ifu_req_seq, // This request is a sequential instruction fetch
 	input  ifu_req_seq_rv32, // This request is incremented 32bits fetch
 	input  [`E203_PC_SIZE-1:0] ifu_req_last_pc, // The last accessed
-	 // PC address (i.e., pc_r)
-							 
-	//    * IFetch RSP channel
 	output ifu_rsp_valid, // Response valid 
 	input  ifu_rsp_ready, // Response ready
 	output ifu_rsp_err,   // Response error
 	// Note: the RSP channel always return a valid instruction fetched from the fetching start PC address. The targetd (ITCM, ICache or Sys-MEM) ctrl modules  will handle the unalign cases and split-and-merge works
 	output [32-1:0] ifu_rsp_instr, // Response instruction
 
-	`ifdef E203_HAS_ITCM
-	// The ITCM address region indication signal
-	input [`E203_ADDR_SIZE-1:0] itcm_region_indic,
-	// Bus Interface to ITCM, internal protocol called ICB (Internal Chip Bus)
-	
-	//    * Bus cmd channel
-	output ifu2itcm_icb_cmd_valid, // Handshake valid
-	input  ifu2itcm_icb_cmd_ready, // Handshake ready
-	output [`E203_ITCM_ADDR_WIDTH-1:0]   ifu2itcm_icb_cmd_addr, // Bus transaction start addr // Note: The data on rdata or wdata channel must be naturally aligned, this is in line with the AXI definition
 
-	//    * Bus RSP channel
-	input  ifu2itcm_icb_rsp_valid, // Response valid 
-	output ifu2itcm_icb_rsp_ready, // Response ready
-	input  ifu2itcm_icb_rsp_err,   // Response error
-	input  [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata,// Note: the RSP rdata is inline with AXI definition 
 
-	input  ifu2itcm_holdup// The holdup indicating the target is not accessed by other agents since last accessed by IFU, and the output of it is holding up last value. 
-	`endif//}
+`ifdef E203_HAS_ITCM
+
+input [`E203_ADDR_SIZE-1:0] itcm_region_indic,
+output ifu2itcm_icb_cmd_valid,
+input  ifu2itcm_icb_cmd_ready,
+output [`E203_ITCM_ADDR_WIDTH-1:0]   ifu2itcm_icb_cmd_addr,
+input  ifu2itcm_icb_rsp_valid,
+output ifu2itcm_icb_rsp_ready,
+input  ifu2itcm_icb_rsp_err,
+input  [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata,
+input  ifu2itcm_holdup 
+`endif//}
 
 
 	);
@@ -217,13 +208,13 @@ module e203_ifu_ift2icb(
 //            ---- Put the leftover buffer value into IR lower 16bits
 //            ---- Put rdata lower 16bits into IR upper 16bits if instr is 32bits-long
 //
-//     ** If it is crossing the lane boundry, but the current lane rdout is not 
-//        holding up, then
-//        ---- First cycle Issue ICB cmd request with current lane address 
-//            ---- Put rdata upper 16bits into leftover buffer
-//        ---- Second cycle Issue ICB cmd request with next lane address 
-//            ---- Put the leftover buffer value into IR lower 16bits
-//            ---- Put rdata upper 16bits into IR upper 16bits if instr is 32bits-long
+//** If it is crossing the lane boundry, but the current lane rdout is not 
+//holding up, then
+//---- First cycle Issue ICB cmd request with current lane address 
+//---- Put rdata upper 16bits into leftover buffer
+//---- Second cycle Issue ICB cmd request with next lane address 
+//---- Put the leftover buffer value into IR lower 16bits
+//---- Put rdata upper 16bits into IR upper 16bits if instr is 32bits-long
 //
 //     ** If it is not crossing the lane boundry, and the current lane rdout is 
 //        holding up, then
@@ -231,42 +222,40 @@ module e203_ifu_ift2icb(
 //            ---- Put aligned rdata into IR (upper 16bits 
 //                    only loaded when instr is 32bits-long)
 //
-//     ** If it is not crossing the lane boundry, but the current lane rdout is 
-//        not holding up, then
-//        ---- Issue ICB cmd request with current lane address, just directly use
-//               current holding rdata
-//            ---- Put aligned rdata into IR (upper 16bits 
-//                    only loaded when instr is 32bits-long)
+//** If it is not crossing the lane boundry, but the current lane rdout is 
+//not holding up, then
+//---- Issue ICB cmd request with current lane address, just directly use
+//current holding rdata
+//---- Put aligned rdata into IR (upper 16bits 
+//only loaded when instr is 32bits-long)
 //   
 //
-//   * If the new ifetch address is in the different lane portion as last fetch
-//     address (current PC):
-//     ** If it is crossing the lane boundry, regardless the current lane rdout is 
-//        holding up or not, then
-//        ---- First cycle Issue ICB cmd reqeust with current lane address 
-//            ---- Put rdata upper 16bits into leftover buffer
-//        ---- Second cycle Issue ICB cmd reqeust with next lane address 
-//            ---- Put the leftover buffer value into IR lower 16bits
-//            ---- Put rdata upper 16bits into IR upper 16bits if instr is 32bits-long
+//* If the new ifetch address is in the different lane portion as last fetch
+//address (current PC):
+//** If it is crossing the lane boundry, regardless the current lane rdout is 
+//holding up or not, then
+//---- First cycle Issue ICB cmd reqeust with current lane address 
+//---- Put rdata upper 16bits into leftover buffer
+//---- Second cycle Issue ICB cmd reqeust with next lane address 
+//---- Put the leftover buffer value into IR lower 16bits
+//---- Put rdata upper 16bits into IR upper 16bits if instr is 32bits-long
 //
-//     ** If it is not crossing the lane boundry, then
-//        ---- Issue ICB cmd request with current lane address, just directly use
-//               current holding rdata
-//            ---- Put aligned rdata into IR (upper 16bits 
-//                    only loaded when instr is 32bits-long)
+//** If it is not crossing the lane boundry, then
+//---- Issue ICB cmd request with current lane address, just directly use
+//current holding rdata
+//---- Put aligned rdata into IR (upper 16bits 
+//only loaded when instr is 32bits-long)
 //
 // ===========================================================================
 
-`ifdef E203_HAS_ITCM //{
-	wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[`E203_ITCM_BASE_REGION]); 
-`endif//}
+// 这个应该没有其他状况了
+wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[`E203_ITCM_BASE_REGION]); 
+
 
 
 // The current accessing PC is crossing the lane boundry
-	wire ifu_req_lane_cross = 1'b0
-		`ifdef E203_HAS_ITCM //{
-			 | (
-				ifu_req_pc2itcm   
+	wire ifu_req_lane_cross = ( ifu_req_pc2itcm   
+				
 			 `ifdef E203_ITCM_DATA_WIDTH_IS_32 //{
 				& (ifu_req_pc[1] == 1'b1)
 			 `endif//}
@@ -274,12 +263,10 @@ module e203_ifu_ift2icb(
 				& (ifu_req_pc[2:1] == 2'b11)
 			 `endif//}
 				 )
-		`endif//}
 		;
 
 // The current accessing PC is begining of the lane boundry
 	wire ifu_req_lane_begin = 1'b0
-		`ifdef E203_HAS_ITCM //{
 			 | (
 				ifu_req_pc2itcm   
 			 `ifdef E203_ITCM_DATA_WIDTH_IS_32 //{
@@ -289,37 +276,33 @@ module e203_ifu_ift2icb(
 				& (ifu_req_pc[2:1] == 2'b00)
 			 `endif//}
 				 )
-		`endif//}
 		;
 	
 
-	// The scheme to check if the current accessing PC is same as last accessed ICB address
-	//   is as below:
-	//     * We only treat this case as true when it is sequentially instruction-fetch
-	//         reqeust, and it is crossing the boundry as unalgned (1st 16bits and 2nd 16bits
-	//         is crossing the boundry)
-	//         ** If the ifetch request is the begining of lane boundry, and sequential fetch,
-	//            Then:
-	//                 **** If the last time it was prefetched ahead, then this time is accessing
-	//                        the same address as last time. Otherwise not.
-	//         ** If the ifetch request is not the begining of lane boundry, and sequential fetch,
-	//            Then:
-	//                 **** It must be access the same address as last time.
-	//     * Note: All other non-sequential cases (e.g., flush, branch or replay) are not
-	//          treated as this case
-	//  
+// The scheme to check if the current accessing PC is same as last accessed ICB address
+//   is as below:
+//     * We only treat this case as true when it is sequentially instruction-fetch
+//         reqeust, and it is crossing the boundry as unalgned (1st 16bits and 2nd 16bits
+//         is crossing the boundry)
+//         ** If the ifetch request is the begining of lane boundry, and sequential fetch,
+//            Then:
+//                 **** If the last time it was prefetched ahead, then this time is accessing
+//                        the same address as last time. Otherwise not.
+//         ** If the ifetch request is not the begining of lane boundry, and sequential fetch,
+//            Then:
+//                 **** It must be access the same address as last time.
+//     * Note: All other non-sequential cases (e.g., flush, branch or replay) are not
+//          treated as this case
+//  
 	wire req_lane_cross_r;
 	wire ifu_req_lane_same = ifu_req_seq & (ifu_req_lane_begin ? req_lane_cross_r : 1'b1);
 	
 	// The current accessing PC is same as last accessed ICB address
-	wire ifu_req_lane_holdup = 1'b0
-			`ifdef E203_HAS_ITCM //{
-			| (ifu_req_pc2itcm & ifu2itcm_holdup & (~itcm_nohold)) 
-			`endif//}
-			;
+	wire ifu_req_lane_holdup = (ifu_req_pc2itcm & ifu2itcm_holdup & (~itcm_nohold));
 
 	wire ifu_req_hsked = ifu_req_valid & ifu_req_ready;
 	wire i_ifu_rsp_hsked = i_ifu_rsp_valid & i_ifu_rsp_ready;
+	
 	wire ifu_icb_cmd_valid;
 	wire ifu_icb_cmd_ready;
 	wire ifu_icb_cmd_hsked = ifu_icb_cmd_valid & ifu_icb_cmd_ready;
@@ -348,14 +331,14 @@ module e203_ifu_ift2icb(
 	wire [ICB_STATE_WIDTH-1:0] icb_state_nxt;
 	wire [ICB_STATE_WIDTH-1:0] icb_state_r;
 	wire icb_state_ena;
-	wire [ICB_STATE_WIDTH-1:0] state_idle_nxt   ;
-	wire [ICB_STATE_WIDTH-1:0] state_1st_nxt    ;
-	wire [ICB_STATE_WIDTH-1:0] state_wait2nd_nxt;
-	wire [ICB_STATE_WIDTH-1:0] state_2nd_nxt    ;
-	wire state_idle_exit_ena     ;
-	wire state_1st_exit_ena      ;
-	wire state_wait2nd_exit_ena  ;
-	wire state_2nd_exit_ena      ;
+// wire [ICB_STATE_WIDTH-1:0] state_idle_nxt;
+	wire [ICB_STATE_WIDTH-1:0] state_1st_nxt;
+// wire [ICB_STATE_WIDTH-1:0] state_wait2nd_nxt;
+	wire [ICB_STATE_WIDTH-1:0] state_2nd_nxt;
+	wire state_idle_exit_ena;
+	wire state_1st_exit_ena;
+	wire state_wait2nd_exit_ena;
+	wire state_2nd_exit_ena;
 
 	// Define some common signals and reused later to save gatecounts
 	wire icb_sta_is_idle    = (icb_state_r == ICB_STATE_IDLE   );
@@ -364,12 +347,12 @@ module e203_ifu_ift2icb(
 	wire icb_sta_is_2nd     = (icb_state_r == ICB_STATE_2ND    );
 
 	// **** If the current state is idle,
-			// If a new request come, next state is ICB_STATE_1ST
+	// If a new request come, next state is ICB_STATE_1ST
 	assign state_idle_exit_ena = icb_sta_is_idle & ifu_req_hsked;
-	assign state_idle_nxt      = ICB_STATE_1ST;
+	// assign state_idle_nxt      = ICB_STATE_1ST;
 
-		// **** If the current state is 1st,
-			// If a response come, exit this state
+	// **** If the current state is 1st,
+	// If a response come, exit this state
 	wire ifu_icb_rsp2leftover;
 	assign state_1st_exit_ena  = icb_sta_is_1st & (
 				ifu_icb_rsp2leftover ? ifu_icb_rsp_hsked : i_ifu_rsp_hsked);
@@ -392,7 +375,7 @@ module e203_ifu_ift2icb(
 	// **** If the current state is wait-2nd,
 	// If the ICB CMD is ready, then next state is ICB_STATE_2ND
 	assign state_wait2nd_exit_ena = icb_sta_is_wait2nd &  ifu_icb_cmd_ready;
-	assign state_wait2nd_nxt      = ICB_STATE_2ND;
+	// assign state_wait2nd_nxt      = ICB_STATE_2ND;
 
 	// **** If the current state is 2nd,
 	// If a response come, exit this state
@@ -411,9 +394,9 @@ module e203_ifu_ift2icb(
 
 	// The next-state is onehot mux to select different entries
 	assign icb_state_nxt = 
-				({ICB_STATE_WIDTH{state_idle_exit_ena   }} & state_idle_nxt   )
+				({ICB_STATE_WIDTH{state_idle_exit_ena   }} & ICB_STATE_1ST   )
 			| ({ICB_STATE_WIDTH{state_1st_exit_ena    }} & state_1st_nxt    )
-			| ({ICB_STATE_WIDTH{state_wait2nd_exit_ena}} & state_wait2nd_nxt)
+			| ({ICB_STATE_WIDTH{state_wait2nd_exit_ena}} & ICB_STATE_2ND)
 			| ({ICB_STATE_WIDTH{state_2nd_exit_ena    }} & state_2nd_nxt    )
 				;
 
@@ -436,11 +419,10 @@ module e203_ifu_ift2icb(
 	/////////////////////////////////////////////////////////////////////////////////
 	// Save the indicate flags for this ICB transaction to be used
 	wire [`E203_PC_SIZE-1:0] ifu_icb_cmd_addr;
-	`ifdef E203_HAS_ITCM //{
+
 	wire ifu_icb_cmd2itcm;
 	wire icb_cmd2itcm_r;
 	sirv_gnrl_dfflr #(1) icb2itcm_dfflr(ifu_icb_cmd_hsked, ifu_icb_cmd2itcm, icb_cmd2itcm_r, clk, rst_n);
-	`endif//}
 	wire icb_cmd_addr_2_1_ena = ifu_icb_cmd_hsked | ifu_req_hsked;
 	wire [1:0] icb_cmd_addr_2_1_r;
 	sirv_gnrl_dffl #(2)icb_addr_2_1_dffl(icb_cmd_addr_2_1_ena, ifu_icb_cmd_addr[2:1], icb_cmd_addr_2_1_r, clk);
@@ -469,9 +451,7 @@ module e203_ifu_ift2icb(
 	wire uop1st2leftover_ena = ifu_icb_rsp_hsked & uop1st2leftover_sel;
 
 	wire uop1st2leftover_err = 1'b0   
-		`ifdef E203_HAS_ITCM //{
 						| (icb_cmd2itcm_r & ifu2itcm_icb_rsp_err)
-		`endif//}
 		;
 
 	assign leftover_ena = holdup2leftover_ena | uop1st2leftover_ena;
@@ -502,14 +482,12 @@ module e203_ifu_ift2icb(
 	wire rsp_instr_sel_icb_rsp = ~rsp_instr_sel_leftover;
 
 	wire [16-1:0] ifu_icb_rsp_rdata_lsb16 = 16'b0
-		`ifdef E203_HAS_ITCM //{
 			| ({16{icb_cmd2itcm_r}} & ifu2itcm_icb_rsp_rdata[15:0])
-		`endif//}
 			;
 
 
 	// The fetched instruction from ICB rdata bus need to be aligned by PC LSB bits
-	`ifdef E203_HAS_ITCM //{
+
 	wire[31:0] ifu2itcm_icb_rsp_instr = 
 		`ifdef E203_ITCM_DATA_WIDTH_IS_32 //{
 					ifu2itcm_icb_rsp_rdata;
@@ -525,19 +503,19 @@ module e203_ifu_ift2icb(
 			compilation message.
 			`endif//}
 		`endif//}
-	`endif//}
+
 
 
 	wire [32-1:0] ifu_icb_rsp_instr = 32'b0
-			`ifdef E203_HAS_ITCM
+
 				 | ({32{icb_cmd2itcm_r}} & ifu2itcm_icb_rsp_instr)
-			`endif
+
 			;
 
 	wire ifu_icb_rsp_err = 1'b0
-			`ifdef E203_HAS_ITCM
+
 				| (icb_cmd2itcm_r & ifu2itcm_icb_rsp_err)
-			`endif
+
 			;
 
 	assign i_ifu_rsp_instr = 
@@ -546,14 +524,7 @@ module e203_ifu_ift2icb(
 	assign i_ifu_rsp_err = 
 				(rsp_instr_sel_leftover & (|{ifu_icb_rsp_err, leftover_err_r}))
 			| (rsp_instr_sel_icb_rsp  & ifu_icb_rsp_err);
-	////If the response is to leftover, it is always can be accepted,
-	////  so there is no chance to turn over the value, and no need 
-	////  to replay, but the data from the response channel (from
-	////  ITCM) may be turned over, so need to be replayed
-	//wire ifu_icb_rsp_replay;
-	//assign ifu_rsp_replay = 
-	//            (rsp_instr_sel_leftover & (|{ifu_icb_rsp_replay, 1'b0}))
-	//          | (rsp_instr_sel_icb_rsp  & ifu_icb_rsp_replay);
+
 			
 	// The ifetch response valid will have 2 sources
 	//    Source #1: Did not issue ICB CMD request, and just use last holdup values, then
@@ -582,9 +553,9 @@ module e203_ifu_ift2icb(
 	//    * Case #1: The itf need two uops, and it is in 2ND state response
 	//    * Case #2: The itf need only one uop, and it is in 1ND state response
 	assign ifu_icb_rsp_valid = 1'b0
-		`ifdef E203_HAS_ITCM //{
+
 			| (icb_cmd2itcm_r & ifu2itcm_icb_rsp_valid)
-		`endif//}
+
 		;
  
 	/////////////////////////////////////////////////////////////////////////////////
@@ -671,21 +642,17 @@ module e203_ifu_ift2icb(
 	///////////////////////////////////////////////////////
 	// Dispatch the ICB CMD and RSP Channel to ITCM and System Memory
 	//   according to the address range
-	`ifdef E203_HAS_ITCM //{
+
 	assign ifu_icb_cmd2itcm = (ifu_icb_cmd_addr[`E203_ITCM_BASE_REGION] == itcm_region_indic[`E203_ITCM_BASE_REGION]);
 
 	assign ifu2itcm_icb_cmd_valid = ifu_icb_cmd_valid & ifu_icb_cmd2itcm;
 	assign ifu2itcm_icb_cmd_addr = ifu_icb_cmd_addr[`E203_ITCM_ADDR_WIDTH-1:0];
 
 	assign ifu2itcm_icb_rsp_ready = ifu_icb_rsp_ready;
-	`endif//}
 
 
-	assign ifu_icb_cmd_ready = 1'b0
-	`ifdef E203_HAS_ITCM
-		| (ifu_icb_cmd2itcm & ifu2itcm_icb_cmd_ready) 
-	`endif
-		;
+
+	assign ifu_icb_cmd_ready = (ifu_icb_cmd2itcm & ifu2itcm_icb_cmd_ready);
 
 
 endmodule

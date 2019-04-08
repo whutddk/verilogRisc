@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-04 14:21:41
+// Last Modified time: 2019-04-08 14:58:29
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_cpu
@@ -20,27 +20,6 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-//////////////////////////////////////////////////////////////////////////////////
-// Company:     
-// Engineer: 29505
-// Create Date: 2019-01-28 20:59:01
-// Last Modified by:   29505
-// Last Modified time: 2019-02-01 20:40:43
-// Email: 295054118@whut.edu.cn
-// Design Name: e203_cpu.v  
-// Module Name: e203_cpu
-// Project Name:    
-// Target Devices:    
-// Tool Versions:    
-// Description:    
-// 
-// Dependencies:    
-// 
-// Revision:   
-// Revision  
-// Additional Comments:   
-// 
-////////////////////////////////////////////////////////////////////////////////// 
 
 /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
@@ -79,12 +58,10 @@ module e203_cpu #(
 	output inspect_dbg_irq,
 	output inspect_core_clk,
 	output core_csr_clk,
-	`ifdef E203_HAS_ITCM
-	output rst_itcm,
-	`endif
-	`ifdef E203_HAS_DTCM
-	output rst_dtcm,
-	`endif
+
+	// `ifdef E203_HAS_DTCM
+	// output rst_dtcm,
+	// `endif
 
 
 	output  core_wfi,
@@ -172,32 +149,6 @@ module e203_cpu #(
 	input                          plic_icb_rsp_excl_ok  ,
 	input  [`E203_XLEN-1:0]        plic_icb_rsp_rdata,
 
-	`ifdef E203_HAS_ITCM
-	output itcm_ls,
-
-	output                         itcm_ram_cs,  
-	output                         itcm_ram_we,  
-	output [`E203_ITCM_RAM_AW-1:0] itcm_ram_addr, 
-	output [`E203_ITCM_RAM_MW-1:0] itcm_ram_wem,
-	output [`E203_ITCM_RAM_DW-1:0] itcm_ram_din,          
-	input  [`E203_ITCM_RAM_DW-1:0] itcm_ram_dout,
-	output                         clk_itcm_ram,
-	`endif
-
-	`ifdef E203_HAS_DTCM
-	output dtcm_ls,
-
-	output                         dtcm_ram_cs,  
-	output                         dtcm_ram_we,  
-	output [`E203_DTCM_RAM_AW-1:0] dtcm_ram_addr, 
-	output [`E203_DTCM_RAM_MW-1:0] dtcm_ram_wem,
-	output [`E203_DTCM_RAM_DW-1:0] dtcm_ram_din,          
-	input  [`E203_DTCM_RAM_DW-1:0] dtcm_ram_dout,
-	output                         clk_dtcm_ram,
-	`endif//}
-
-	input  test_mode,
-
 	input  clk,
 	input  rst_n
 	);
@@ -217,11 +168,7 @@ module e203_cpu #(
 	wire clk_core_lsu;
 	wire clk_core_biu;
 	
-	// The ITCM/DTCM clk and rst
-	`ifdef E203_HAS_ITCM
-	wire clk_itcm;
-	wire itcm_active;
-	`endif
+
 	`ifdef E203_HAS_DTCM
 	wire clk_dtcm;
 	wire dtcm_active;
@@ -229,51 +176,42 @@ module e203_cpu #(
 
 	// The Top always on clk and rst
 	wire rst_aon;
-	wire clk_aon;
+
 
 	// The reset ctrl and clock ctrl should be in the power always-on domain
 
+
+	wire rst_itcm;
+
+
+
 e203_reset_ctrl #(.MASTER(MASTER)) u_e203_reset_ctrl (
-	.clk        (clk_aon  ),
+	.clk        (clk  ),
 	.rst_n      (rst_n    ),
-	.test_mode  (test_mode),
 
-	.rst_core   (rst_core),
+	.rst_sync_n   (rst_sync_n)
 
-`ifdef E203_HAS_ITCM
-	.rst_itcm   (rst_itcm),
-`endif
-`ifdef E203_HAS_DTCM
-	.rst_dtcm   (rst_dtcm),
-`endif
 
-	.rst_aon   (rst_aon) 
 );
 
 
 
 e203_clk_ctrl u_e203_clk_ctrl(
 	.clk          (clk          ),
-	.rst_n        (rst_aon      ),
-	.test_mode    (test_mode    ),
+	.rst_n        (rst_sync_n),
+	.test_mode    (1'b0    ),
 															
-	.clk_aon      (clk_aon      ),
-
 	.core_cgstop   (core_cgstop),
 		
 	.clk_core_ifu (clk_core_ifu      ),
 	.clk_core_exu (clk_core_exu      ),
 	.clk_core_lsu (clk_core_lsu      ),
 	.clk_core_biu (clk_core_biu      ),
-`ifdef E203_HAS_ITCM
-	.clk_itcm     (clk_itcm     ),
-	.itcm_active  (itcm_active),
-	.itcm_ls      (itcm_ls    ),
-`endif
+
 `ifdef E203_HAS_DTCM
 	.clk_dtcm     (clk_dtcm     ),
 	.dtcm_active  (dtcm_active),
-	.dtcm_ls      (dtcm_ls    ),
+	.dtcm_ls      ( ),
 `endif
 
 	.core_ifu_active(core_ifu_active),
@@ -288,8 +226,8 @@ e203_clk_ctrl u_e203_clk_ctrl(
 	wire tmr_irq_r;
 
 e203_irq_sync  #(.MASTER(MASTER)) u_e203_irq_sync(
-	.clk       (clk_aon  ),
-	.rst_n     (rst_aon  ),
+	.clk       (clk),
+	.rst_n     (rst_sync_n),
 											 
 
 	.dbg_irq_a (dbg_irq_a),
@@ -305,9 +243,8 @@ e203_irq_sync  #(.MASTER(MASTER)) u_e203_irq_sync(
 
 
 
-`ifdef E203_HAS_ITCM //{
+`ifdef E203_HAS_ITCM
 	wire ifu2itcm_holdup;
-	//wire ifu2itcm_replay;
 
 	wire ifu2itcm_icb_cmd_valid;
 	wire ifu2itcm_icb_cmd_ready;
@@ -318,22 +255,9 @@ e203_irq_sync  #(.MASTER(MASTER)) u_e203_irq_sync(
 	wire ifu2itcm_icb_rsp_err;
 	wire [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata; 
 
-	wire                         lsu2itcm_icb_cmd_valid;
-	wire                         lsu2itcm_icb_cmd_ready;
-	wire [`E203_ITCM_ADDR_WIDTH-1:0]   lsu2itcm_icb_cmd_addr; 
-	wire                         lsu2itcm_icb_cmd_read; 
-	wire [`E203_XLEN-1:0]        lsu2itcm_icb_cmd_wdata;
-	wire [`E203_XLEN/8-1:0]      lsu2itcm_icb_cmd_wmask;
-	wire                         lsu2itcm_icb_cmd_lock;
-	wire                         lsu2itcm_icb_cmd_excl;
-	wire [1:0]                   lsu2itcm_icb_cmd_size;
-	wire                         lsu2itcm_icb_rsp_valid;
-	wire                         lsu2itcm_icb_rsp_ready;
-	wire                         lsu2itcm_icb_rsp_err  ;
-	wire [`E203_XLEN-1:0]        lsu2itcm_icb_rsp_rdata;
-`endif//}
+`endif
 
-`ifdef E203_HAS_DTCM //{
+`ifdef E203_HAS_DTCM
 	wire                               lsu2dtcm_icb_cmd_valid;
 	wire                               lsu2dtcm_icb_cmd_ready;
 	wire [`E203_DTCM_ADDR_WIDTH-1:0]   lsu2dtcm_icb_cmd_addr; 
@@ -347,7 +271,7 @@ e203_irq_sync  #(.MASTER(MASTER)) u_e203_irq_sync(
 	wire                               lsu2dtcm_icb_rsp_ready;
 	wire                               lsu2dtcm_icb_rsp_err  ;
 	wire [`E203_XLEN-1:0]              lsu2dtcm_icb_rsp_rdata;
-`endif//}
+`endif
 
 `ifdef E203_HAS_CSR_EAI//{
 	wire         eai_csr_valid;
@@ -367,12 +291,12 @@ e203_extend_csr u_e203_extend_csr(
 	.eai_csr_wdata (eai_csr_wdata),
 	.eai_csr_rdata (eai_csr_rdata),
 	.clk           (clk_core_exu ),
-	.rst_n         (rst_core ) 
+	.rst_n         (rst_sync_n) 
  );
 `endif//}
 
  
-
+(* DONT_TOUCH = "TRUE" *)
 e203_core u_e203_core(
 	.inspect_pc            (inspect_pc),
 
@@ -384,6 +308,7 @@ e203_core u_e203_core(
 	.eai_csr_wdata (eai_csr_wdata),
 	.eai_csr_rdata (eai_csr_rdata),
 `endif
+
 	.tcm_cgstop              (tcm_cgstop),
 	.core_cgstop             (core_cgstop),
 	.tm_stop                 (tm_stop),
@@ -425,42 +350,24 @@ e203_core u_e203_core(
 	.dbg_ebreakm_r           (dbg_ebreakm_r),
 	.dbg_stopcycle           (dbg_stopcycle),
 
-`ifdef E203_HAS_ITCM //{
-	//.itcm_region_indic       (itcm_region_indic),
-	.itcm_region_indic       (`E203_ITCM_ADDR_BASE),
-`endif//}
-`ifdef E203_HAS_DTCM //{
-	//.dtcm_region_indic       (dtcm_region_indic),
-	.dtcm_region_indic       (`E203_DTCM_ADDR_BASE),
-`endif//}
+// `ifdef E203_HAS_ITCM //{
+// 	.itcm_region_indic       (`E203_ITCM_ADDR_BASE),
+// `endif//}
+	`ifdef E203_HAS_DTCM //{
+		.dtcm_region_indic       (`E203_DTCM_ADDR_BASE),
+	`endif//}
 
-`ifdef E203_HAS_ITCM //{
+	`ifdef E203_HAS_ITCM //{
 
-	.ifu2itcm_holdup         (ifu2itcm_holdup       ),
+	// .ifu2itcm_holdup         (ifu2itcm_holdup       ),
 
-	.ifu2itcm_icb_cmd_valid  (ifu2itcm_icb_cmd_valid),
-	.ifu2itcm_icb_cmd_ready  (ifu2itcm_icb_cmd_ready),
-	.ifu2itcm_icb_cmd_addr   (ifu2itcm_icb_cmd_addr ),
-	.ifu2itcm_icb_rsp_valid  (ifu2itcm_icb_rsp_valid),
-	.ifu2itcm_icb_rsp_ready  (ifu2itcm_icb_rsp_ready),
-	.ifu2itcm_icb_rsp_err    (ifu2itcm_icb_rsp_err  ),
-	.ifu2itcm_icb_rsp_rdata  (ifu2itcm_icb_rsp_rdata),
-
-	.lsu2itcm_icb_cmd_valid  (lsu2itcm_icb_cmd_valid),
-	.lsu2itcm_icb_cmd_ready  (lsu2itcm_icb_cmd_ready),
-	.lsu2itcm_icb_cmd_addr   (lsu2itcm_icb_cmd_addr ),
-	.lsu2itcm_icb_cmd_read   (lsu2itcm_icb_cmd_read ),
-	.lsu2itcm_icb_cmd_wdata  (lsu2itcm_icb_cmd_wdata),
-	.lsu2itcm_icb_cmd_wmask  (lsu2itcm_icb_cmd_wmask),
-	.lsu2itcm_icb_cmd_lock   (lsu2itcm_icb_cmd_lock ),
-	.lsu2itcm_icb_cmd_excl   (lsu2itcm_icb_cmd_excl ),
-	.lsu2itcm_icb_cmd_size   (lsu2itcm_icb_cmd_size ),
-	
-	.lsu2itcm_icb_rsp_valid  (lsu2itcm_icb_rsp_valid),
-	.lsu2itcm_icb_rsp_ready  (lsu2itcm_icb_rsp_ready),
-	.lsu2itcm_icb_rsp_err    (lsu2itcm_icb_rsp_err  ),
-	.lsu2itcm_icb_rsp_excl_ok(1'b0),
-	.lsu2itcm_icb_rsp_rdata  (lsu2itcm_icb_rsp_rdata),
+	// .ifu2itcm_icb_cmd_valid  (ifu2itcm_icb_cmd_valid),
+	// .ifu2itcm_icb_cmd_ready  (ifu2itcm_icb_cmd_ready),
+	// .ifu2itcm_icb_cmd_addr   (ifu2itcm_icb_cmd_addr ),
+	// .ifu2itcm_icb_rsp_valid  (ifu2itcm_icb_rsp_valid),
+	// .ifu2itcm_icb_rsp_ready  (ifu2itcm_icb_rsp_ready),
+	// .ifu2itcm_icb_rsp_err    (ifu2itcm_icb_rsp_err  ),
+	// .ifu2itcm_icb_rsp_rdata  (ifu2itcm_icb_rsp_rdata),
 
 `endif//}
 
@@ -520,61 +427,16 @@ e203_core u_e203_core(
 	.clint_icb_rsp_excl_ok   (clint_icb_rsp_excl_ok),
 	.clint_icb_rsp_rdata     (clint_icb_rsp_rdata),
 
-	.clk_aon           (clk_aon           ),
+	.clk               (clk),
 	.clk_core_ifu      (clk_core_ifu      ),
 	.clk_core_exu      (clk_core_exu      ),
 	.clk_core_lsu      (clk_core_lsu      ),
 	.clk_core_biu      (clk_core_biu      ),
-	.test_mode         (test_mode),
-	.rst_n             (rst_core ) 
+	.test_mode         (1'b0),
+	.rst_n             (rst_sync_n) 
 );
 
-`ifdef E203_HAS_ITCM //{
-e203_itcm_ctrl u_e203_itcm_ctrl(
-	.tcm_cgstop   (tcm_cgstop),
 
-	.itcm_active  (itcm_active),
-
-	.ifu2itcm_icb_cmd_valid  (ifu2itcm_icb_cmd_valid),
-	.ifu2itcm_icb_cmd_ready  (ifu2itcm_icb_cmd_ready),
-	.ifu2itcm_icb_cmd_addr   (ifu2itcm_icb_cmd_addr ),
-	.ifu2itcm_icb_cmd_read   (1'b1 ),
-	.ifu2itcm_icb_cmd_wdata  ({`E203_ITCM_DATA_WIDTH{1'b0}}),
-	.ifu2itcm_icb_cmd_wmask  ({`E203_ITCM_DATA_WIDTH/8{1'b0}}),
-
-	.ifu2itcm_icb_rsp_valid  (ifu2itcm_icb_rsp_valid),
-	.ifu2itcm_icb_rsp_ready  (ifu2itcm_icb_rsp_ready),
-	.ifu2itcm_icb_rsp_err    (ifu2itcm_icb_rsp_err  ),
-	.ifu2itcm_icb_rsp_rdata  (ifu2itcm_icb_rsp_rdata),
-
-	.ifu2itcm_holdup         (ifu2itcm_holdup       ),
-
-	.lsu2itcm_icb_cmd_valid  (lsu2itcm_icb_cmd_valid),
-	.lsu2itcm_icb_cmd_ready  (lsu2itcm_icb_cmd_ready),
-	.lsu2itcm_icb_cmd_addr   (lsu2itcm_icb_cmd_addr ),
-	.lsu2itcm_icb_cmd_read   (lsu2itcm_icb_cmd_read ),
-	.lsu2itcm_icb_cmd_wdata  (lsu2itcm_icb_cmd_wdata),
-	.lsu2itcm_icb_cmd_wmask  (lsu2itcm_icb_cmd_wmask),
-	
-	.lsu2itcm_icb_rsp_valid  (lsu2itcm_icb_rsp_valid),
-	.lsu2itcm_icb_rsp_ready  (lsu2itcm_icb_rsp_ready),
-	.lsu2itcm_icb_rsp_err    (lsu2itcm_icb_rsp_err  ),
-	.lsu2itcm_icb_rsp_rdata  (lsu2itcm_icb_rsp_rdata),
-
-	.itcm_ram_cs             (itcm_ram_cs  ),
-	.itcm_ram_we             (itcm_ram_we  ),
-	.itcm_ram_addr           (itcm_ram_addr), 
-	.itcm_ram_wem            (itcm_ram_wem ),
-	.itcm_ram_din            (itcm_ram_din ),         
-	.itcm_ram_dout           (itcm_ram_dout),
-	.clk_itcm_ram            (clk_itcm_ram ),
-
-
-	.test_mode               (test_mode),
-	.clk                     (clk_itcm),
-	.rst_n                   (rst_itcm) 
-);
-`endif//}
 
 `ifdef E203_HAS_DTCM //{
 e203_dtcm_ctrl u_e203_dtcm_ctrl(
@@ -594,18 +456,8 @@ e203_dtcm_ctrl u_e203_dtcm_ctrl(
 	.lsu2dtcm_icb_rsp_err    (lsu2dtcm_icb_rsp_err  ),
 	.lsu2dtcm_icb_rsp_rdata  (lsu2dtcm_icb_rsp_rdata),
 
-	.dtcm_ram_cs             (dtcm_ram_cs  ),
-	.dtcm_ram_we             (dtcm_ram_we  ),
-	.dtcm_ram_addr           (dtcm_ram_addr), 
-	.dtcm_ram_wem            (dtcm_ram_wem ),
-	.dtcm_ram_din            (dtcm_ram_din ),         
-	.dtcm_ram_dout           (dtcm_ram_dout),
-	.clk_dtcm_ram            (clk_dtcm_ram ),
-
-
-	.test_mode               (test_mode),
 	.clk                     (clk_dtcm),
-	.rst_n                   (rst_dtcm) 
+	.rst_n                   (rst_sync_n) 
 );
 `endif//}
 

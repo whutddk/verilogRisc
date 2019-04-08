@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-04 14:19:51
+// Last Modified time: 2019-04-08 10:16:17
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_cpu_top
@@ -131,13 +131,7 @@ module e203_cpu_top(
 	input  sft_irq_a,
 	// The Timer Interrupt signal from CLINT
 	input  tmr_irq_a,
-  
-  
-	// The PMU control signal from PMU to control the TCM Shutdown
-	input tcm_sd,
-	// The PMU control signal from PMU to control the TCM Deep-Sleep
-	input tcm_ds,
-	
+  	
 	// The CLINT Interface (ICB): Begin
 	output                         clint_icb_cmd_valid,
 	input                          clint_icb_cmd_ready,
@@ -169,9 +163,6 @@ module e203_cpu_top(
 	input  [`E203_XLEN-1:0]        plic_icb_rsp_rdata,
 	// The PLIC Interface (ICB): End
 
-	// The test mode signal
-	input  test_mode,
-
 	// The Clock
 	input  clk,
 
@@ -179,37 +170,8 @@ module e203_cpu_top(
 	input  rst_n
 );
 
-`ifdef E203_HAS_ITCM //{
-	wire  itcm_ls;
 
-	wire rst_itcm;
 
-	wire                          itcm_ram_cs  ;
-	wire                          itcm_ram_we  ;
-	wire  [`E203_ITCM_RAM_AW-1:0] itcm_ram_addr;
-	wire  [`E203_ITCM_RAM_MW-1:0] itcm_ram_wem ;
-	wire  [`E203_ITCM_RAM_DW-1:0] itcm_ram_din ;
-`ifndef E203_HAS_LOCKSTEP//{
-	wire  [`E203_ITCM_RAM_DW-1:0] itcm_ram_dout;
-`endif//}
-	wire                          clk_itcm_ram ;
-`endif//}
-
-  
-`ifdef E203_HAS_DTCM //{
-  wire  dtcm_ls;
-
-  wire rst_dtcm;
-  wire                          dtcm_ram_cs  ;
-  wire                          dtcm_ram_we  ;
-  wire  [`E203_DTCM_RAM_AW-1:0] dtcm_ram_addr;
-  wire  [`E203_DTCM_RAM_MW-1:0] dtcm_ram_wem ;
-  wire  [`E203_DTCM_RAM_DW-1:0] dtcm_ram_din ;
-`ifndef E203_HAS_LOCKSTEP//{
-  wire  [`E203_DTCM_RAM_DW-1:0] dtcm_ram_dout;
-`endif//}
-  wire                          clk_dtcm_ram ;
-`endif//}
 
 
 `ifndef E203_HAS_LOCKSTEP//{
@@ -264,12 +226,7 @@ e203_cpu #(.MASTER(1)) u_e203_cpu(
 
 	.tm_stop (tm_stop),
 	.pc_rtvec(pc_rtvec),
-  `ifdef E203_HAS_ITCM //{
-	.itcm_ls (itcm_ls),
-  `endif//}
-  `ifdef E203_HAS_DTCM //{
-	.dtcm_ls (dtcm_ls),
-  `endif//}
+
 	.core_wfi        (core_wfi),
 	.dbg_irq_r       (dbg_irq_r      ),
 
@@ -339,70 +296,20 @@ e203_cpu #(.MASTER(1)) u_e203_cpu(
 	.plic_icb_rsp_rdata     (plic_icb_rsp_rdata),
 
 
-  `ifdef E203_HAS_ITCM //{
-	.itcm_ram_cs   (itcm_ram_cs  ),
-	.itcm_ram_we   (itcm_ram_we  ),
-	.itcm_ram_addr (itcm_ram_addr), 
-	.itcm_ram_wem  (itcm_ram_wem ),
-	.itcm_ram_din  (itcm_ram_din ),         
-	.itcm_ram_dout (itcm_ram_dout),
-	.clk_itcm_ram  (clk_itcm_ram ),  
-	.rst_itcm(rst_itcm),
-  `endif//}
 
-  `ifdef E203_HAS_DTCM //{
-	.dtcm_ram_cs   (dtcm_ram_cs  ),
-	.dtcm_ram_we   (dtcm_ram_we  ),
-	.dtcm_ram_addr (dtcm_ram_addr), 
-	.dtcm_ram_wem  (dtcm_ram_wem ),
-	.dtcm_ram_din  (dtcm_ram_din ),         
-	.dtcm_ram_dout (dtcm_ram_dout),
-	.clk_dtcm_ram  (clk_dtcm_ram ),  
-	.rst_dtcm(rst_dtcm),
-  `endif//}
 
-	.test_mode     (test_mode), 
-  `ifndef E203_HAS_LOCKSTEP//{
-  `endif//}
+`ifndef E203_HAS_LOCKSTEP//{
+`endif//}
 	.rst_n         (rst_n),
 	.clk           (clk  ) 
 
   );
 
-  e203_srams u_e203_srams(
-  `ifdef E203_HAS_DTCM //{
-   .dtcm_ram_sd (tcm_sd),
-   .dtcm_ram_ds (tcm_ds),
-   .dtcm_ram_ls (dtcm_ls),
 
-   .dtcm_ram_cs   (dtcm_ram_cs  ),
-   .dtcm_ram_we   (dtcm_ram_we  ),
-   .dtcm_ram_addr (dtcm_ram_addr), 
-   .dtcm_ram_wem  (dtcm_ram_wem ),
-   .dtcm_ram_din  (dtcm_ram_din ),         
-   .dtcm_ram_dout (dtcm_ram_dout),
-   .clk_dtcm_ram  (clk_dtcm_ram ),  
-   .rst_dtcm(rst_dtcm),
-  `endif//}
 
-  `ifdef E203_HAS_ITCM //{
-   .itcm_ram_sd (tcm_sd),
-   .itcm_ram_ds (tcm_ds),
-   .itcm_ram_ls (itcm_ls),
+		
 
-   .itcm_ram_cs   (itcm_ram_cs  ),
-   .itcm_ram_we   (itcm_ram_we  ),
-   .itcm_ram_addr (itcm_ram_addr), 
-   .itcm_ram_wem  (itcm_ram_wem ),
-   .itcm_ram_din  (itcm_ram_din ),         
-   .itcm_ram_dout (itcm_ram_dout),
-   .clk_itcm_ram  (clk_itcm_ram ),  
-   .rst_itcm(rst_itcm),
-  `endif//}
-   .test_mode (test_mode) 
-  );
-
-  
+		 
 
 
 endmodule
