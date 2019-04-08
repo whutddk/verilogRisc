@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-08 11:36:11
+// Last Modified time: 2019-04-08 14:55:21
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_itcm_ctrl
@@ -54,6 +54,7 @@ module e203_itcm_ctrl(
 	// // This register is our self-defined CSR register to disable the 
 	// ITCM SRAM clock gating for debugging purpose
 	input  tcm_cgstop,
+	input core_cgstop,
 	// Note: the ITCM ICB interface only support the single-transaction
 	
 

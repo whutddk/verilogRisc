@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-08 13:18:23
+// Last Modified time: 2019-04-08 14:36:07
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu_ift2icb
@@ -248,15 +248,14 @@ input  ifu2itcm_holdup
 //
 // ===========================================================================
 
-
+// 这个应该没有其他状况了
 wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[`E203_ITCM_BASE_REGION]); 
 
 
 
 // The current accessing PC is crossing the lane boundry
-	wire ifu_req_lane_cross = 1'b0
-			 | (
-				ifu_req_pc2itcm   
+	wire ifu_req_lane_cross = ( ifu_req_pc2itcm   
+				
 			 `ifdef E203_ITCM_DATA_WIDTH_IS_32 //{
 				& (ifu_req_pc[1] == 1'b1)
 			 `endif//}
@@ -280,31 +279,30 @@ wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[
 		;
 	
 
-	// The scheme to check if the current accessing PC is same as last accessed ICB address
-	//   is as below:
-	//     * We only treat this case as true when it is sequentially instruction-fetch
-	//         reqeust, and it is crossing the boundry as unalgned (1st 16bits and 2nd 16bits
-	//         is crossing the boundry)
-	//         ** If the ifetch request is the begining of lane boundry, and sequential fetch,
-	//            Then:
-	//                 **** If the last time it was prefetched ahead, then this time is accessing
-	//                        the same address as last time. Otherwise not.
-	//         ** If the ifetch request is not the begining of lane boundry, and sequential fetch,
-	//            Then:
-	//                 **** It must be access the same address as last time.
-	//     * Note: All other non-sequential cases (e.g., flush, branch or replay) are not
-	//          treated as this case
-	//  
+// The scheme to check if the current accessing PC is same as last accessed ICB address
+//   is as below:
+//     * We only treat this case as true when it is sequentially instruction-fetch
+//         reqeust, and it is crossing the boundry as unalgned (1st 16bits and 2nd 16bits
+//         is crossing the boundry)
+//         ** If the ifetch request is the begining of lane boundry, and sequential fetch,
+//            Then:
+//                 **** If the last time it was prefetched ahead, then this time is accessing
+//                        the same address as last time. Otherwise not.
+//         ** If the ifetch request is not the begining of lane boundry, and sequential fetch,
+//            Then:
+//                 **** It must be access the same address as last time.
+//     * Note: All other non-sequential cases (e.g., flush, branch or replay) are not
+//          treated as this case
+//  
 	wire req_lane_cross_r;
 	wire ifu_req_lane_same = ifu_req_seq & (ifu_req_lane_begin ? req_lane_cross_r : 1'b1);
 	
 	// The current accessing PC is same as last accessed ICB address
-	wire ifu_req_lane_holdup = 1'b0
-			| (ifu_req_pc2itcm & ifu2itcm_holdup & (~itcm_nohold)) 
-			;
+	wire ifu_req_lane_holdup = (ifu_req_pc2itcm & ifu2itcm_holdup & (~itcm_nohold));
 
 	wire ifu_req_hsked = ifu_req_valid & ifu_req_ready;
 	wire i_ifu_rsp_hsked = i_ifu_rsp_valid & i_ifu_rsp_ready;
+	
 	wire ifu_icb_cmd_valid;
 	wire ifu_icb_cmd_ready;
 	wire ifu_icb_cmd_hsked = ifu_icb_cmd_valid & ifu_icb_cmd_ready;
@@ -333,14 +331,14 @@ wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[
 	wire [ICB_STATE_WIDTH-1:0] icb_state_nxt;
 	wire [ICB_STATE_WIDTH-1:0] icb_state_r;
 	wire icb_state_ena;
-	wire [ICB_STATE_WIDTH-1:0] state_idle_nxt   ;
-	wire [ICB_STATE_WIDTH-1:0] state_1st_nxt    ;
-	wire [ICB_STATE_WIDTH-1:0] state_wait2nd_nxt;
-	wire [ICB_STATE_WIDTH-1:0] state_2nd_nxt    ;
-	wire state_idle_exit_ena     ;
-	wire state_1st_exit_ena      ;
-	wire state_wait2nd_exit_ena  ;
-	wire state_2nd_exit_ena      ;
+// wire [ICB_STATE_WIDTH-1:0] state_idle_nxt;
+	wire [ICB_STATE_WIDTH-1:0] state_1st_nxt;
+// wire [ICB_STATE_WIDTH-1:0] state_wait2nd_nxt;
+	wire [ICB_STATE_WIDTH-1:0] state_2nd_nxt;
+	wire state_idle_exit_ena;
+	wire state_1st_exit_ena;
+	wire state_wait2nd_exit_ena;
+	wire state_2nd_exit_ena;
 
 	// Define some common signals and reused later to save gatecounts
 	wire icb_sta_is_idle    = (icb_state_r == ICB_STATE_IDLE   );
@@ -349,12 +347,12 @@ wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[
 	wire icb_sta_is_2nd     = (icb_state_r == ICB_STATE_2ND    );
 
 	// **** If the current state is idle,
-			// If a new request come, next state is ICB_STATE_1ST
+	// If a new request come, next state is ICB_STATE_1ST
 	assign state_idle_exit_ena = icb_sta_is_idle & ifu_req_hsked;
-	assign state_idle_nxt      = ICB_STATE_1ST;
+	// assign state_idle_nxt      = ICB_STATE_1ST;
 
-		// **** If the current state is 1st,
-			// If a response come, exit this state
+	// **** If the current state is 1st,
+	// If a response come, exit this state
 	wire ifu_icb_rsp2leftover;
 	assign state_1st_exit_ena  = icb_sta_is_1st & (
 				ifu_icb_rsp2leftover ? ifu_icb_rsp_hsked : i_ifu_rsp_hsked);
@@ -377,7 +375,7 @@ wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[
 	// **** If the current state is wait-2nd,
 	// If the ICB CMD is ready, then next state is ICB_STATE_2ND
 	assign state_wait2nd_exit_ena = icb_sta_is_wait2nd &  ifu_icb_cmd_ready;
-	assign state_wait2nd_nxt      = ICB_STATE_2ND;
+	// assign state_wait2nd_nxt      = ICB_STATE_2ND;
 
 	// **** If the current state is 2nd,
 	// If a response come, exit this state
@@ -396,9 +394,9 @@ wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[
 
 	// The next-state is onehot mux to select different entries
 	assign icb_state_nxt = 
-				({ICB_STATE_WIDTH{state_idle_exit_ena   }} & state_idle_nxt   )
+				({ICB_STATE_WIDTH{state_idle_exit_ena   }} & ICB_STATE_1ST   )
 			| ({ICB_STATE_WIDTH{state_1st_exit_ena    }} & state_1st_nxt    )
-			| ({ICB_STATE_WIDTH{state_wait2nd_exit_ena}} & state_wait2nd_nxt)
+			| ({ICB_STATE_WIDTH{state_wait2nd_exit_ena}} & ICB_STATE_2ND)
 			| ({ICB_STATE_WIDTH{state_2nd_exit_ena    }} & state_2nd_nxt    )
 				;
 
@@ -526,14 +524,7 @@ wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[
 	assign i_ifu_rsp_err = 
 				(rsp_instr_sel_leftover & (|{ifu_icb_rsp_err, leftover_err_r}))
 			| (rsp_instr_sel_icb_rsp  & ifu_icb_rsp_err);
-	////If the response is to leftover, it is always can be accepted,
-	////  so there is no chance to turn over the value, and no need 
-	////  to replay, but the data from the response channel (from
-	////  ITCM) may be turned over, so need to be replayed
-	//wire ifu_icb_rsp_replay;
-	//assign ifu_rsp_replay = 
-	//            (rsp_instr_sel_leftover & (|{ifu_icb_rsp_replay, 1'b0}))
-	//          | (rsp_instr_sel_icb_rsp  & ifu_icb_rsp_replay);
+
 			
 	// The ifetch response valid will have 2 sources
 	//    Source #1: Did not issue ICB CMD request, and just use last holdup values, then

@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-08 11:25:06
+// Last Modified time: 2019-04-08 14:58:29
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_cpu
@@ -359,15 +359,15 @@ e203_core u_e203_core(
 
 	`ifdef E203_HAS_ITCM //{
 
-	.ifu2itcm_holdup         (ifu2itcm_holdup       ),
+	// .ifu2itcm_holdup         (ifu2itcm_holdup       ),
 
-	.ifu2itcm_icb_cmd_valid  (ifu2itcm_icb_cmd_valid),
-	.ifu2itcm_icb_cmd_ready  (ifu2itcm_icb_cmd_ready),
-	.ifu2itcm_icb_cmd_addr   (ifu2itcm_icb_cmd_addr ),
-	.ifu2itcm_icb_rsp_valid  (ifu2itcm_icb_rsp_valid),
-	.ifu2itcm_icb_rsp_ready  (ifu2itcm_icb_rsp_ready),
-	.ifu2itcm_icb_rsp_err    (ifu2itcm_icb_rsp_err  ),
-	.ifu2itcm_icb_rsp_rdata  (ifu2itcm_icb_rsp_rdata),
+	// .ifu2itcm_icb_cmd_valid  (ifu2itcm_icb_cmd_valid),
+	// .ifu2itcm_icb_cmd_ready  (ifu2itcm_icb_cmd_ready),
+	// .ifu2itcm_icb_cmd_addr   (ifu2itcm_icb_cmd_addr ),
+	// .ifu2itcm_icb_rsp_valid  (ifu2itcm_icb_rsp_valid),
+	// .ifu2itcm_icb_rsp_ready  (ifu2itcm_icb_rsp_ready),
+	// .ifu2itcm_icb_rsp_err    (ifu2itcm_icb_rsp_err  ),
+	// .ifu2itcm_icb_rsp_rdata  (ifu2itcm_icb_rsp_rdata),
 
 `endif//}
 

@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-08 11:37:47
+// Last Modified time: 2019-04-08 14:54:05
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_core
@@ -635,7 +635,8 @@ e203_biu u_e203_biu(
 (* DONT_TOUCH = "TRUE" *)
 e203_itcm_ctrl u_e203_itcm_ctrl(
 	.tcm_cgstop   (tcm_cgstop),
-
+	.core_cgstop            (core_cgstop),
+	
 .ifu2itcm_icb_cmd_valid  (ifu2itcm_icb_cmd_valid),
 .ifu2itcm_icb_cmd_ready  (ifu2itcm_icb_cmd_ready),
 .ifu2itcm_icb_cmd_addr   (ifu2itcm_icb_cmd_addr ),
