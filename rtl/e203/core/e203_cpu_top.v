@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-04 17:11:20
+// Last Modified time: 2019-04-08 10:16:17
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_cpu_top
@@ -131,13 +131,7 @@ module e203_cpu_top(
 	input  sft_irq_a,
 	// The Timer Interrupt signal from CLINT
 	input  tmr_irq_a,
-  
-  
-	// The PMU control signal from PMU to control the TCM Shutdown
-	// input tcm_sd,
-	// The PMU control signal from PMU to control the TCM Deep-Sleep
-	// input tcm_ds,
-	
+  	
 	// The CLINT Interface (ICB): Begin
 	output                         clint_icb_cmd_valid,
 	input                          clint_icb_cmd_ready,
@@ -177,21 +171,7 @@ module e203_cpu_top(
 );
 
 
-  
-// `ifdef E203_HAS_DTCM //{
-//   wire  dtcm_ls;
 
-//   wire rst_dtcm;
-//   wire                          dtcm_ram_cs  ;
-//   wire                          dtcm_ram_we  ;
-//   wire  [`E203_DTCM_RAM_AW-1:0] dtcm_ram_addr;
-//   wire  [`E203_DTCM_RAM_MW-1:0] dtcm_ram_wem ;
-//   wire  [`E203_DTCM_RAM_DW-1:0] dtcm_ram_din ;
-// `ifndef E203_HAS_LOCKSTEP//{
-//   wire  [`E203_DTCM_RAM_DW-1:0] dtcm_ram_dout;
-// `endif//}
-//   wire                          clk_dtcm_ram ;
-// `endif//}
 
 
 `ifndef E203_HAS_LOCKSTEP//{
@@ -246,12 +226,7 @@ e203_cpu #(.MASTER(1)) u_e203_cpu(
 
 	.tm_stop (tm_stop),
 	.pc_rtvec(pc_rtvec),
-// `ifdef E203_HAS_ITCM //{
-// .itcm_ls (itcm_ls),
-// `endif//}
-  `ifdef E203_HAS_DTCM //{
-	.dtcm_ls (dtcm_ls),
-  `endif//}
+
 	.core_wfi        (core_wfi),
 	.dbg_irq_r       (dbg_irq_r      ),
 
