@@ -1,3 +1,24 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Company:   
+// Engineer: Ruige_Lee
+// Create Date: 2019-02-17 17:25:12
+// Last Modified by:   Ruige_Lee
+// Last Modified time: 2019-04-08 15:54:33
+// Email: 295054118@whut.edu.cn
+// Design Name:   
+// Module Name: e203_defines
+// Project Name:   
+// Target Devices:   
+// Tool Versions:   
+// Description:   
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision:    -   
+// Additional Comments:  
+// 
+//////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////
 // Company:    
@@ -7,7 +28,7 @@
 // Last Modified time: 2019-02-01 22:07:37
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_defines.v  
-// Module Name:  
+// Module Name: e203_defines
 // Project Name:    
 // Target Devices:    
 // Tool Versions:    
@@ -202,12 +223,12 @@
   `define E203_CFG_ITCM_DATA_WIDTH_IS_64
   `ifdef E203_CFG_ITCM_DATA_WIDTH_IS_64
     `define E203_ITCM_DATA_WIDTH_IS_64
-    `define E203_ITCM_DATA_WIDTH  64
+    `define E203_ITCM_DATA_WIDTH  32
     `define E203_ITCM_WMSK_WIDTH  8
   
     `define E203_ITCM_RAM_ECC_DW  8
     `define E203_ITCM_RAM_ECC_MW  1
-  `endif
+  // `endif
   `ifndef E203_HAS_ECC //{
     `define E203_ITCM_RAM_DW      `E203_ITCM_DATA_WIDTH
     `define E203_ITCM_RAM_MW      `E203_ITCM_WMSK_WIDTH
