@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-09 10:46:48
+// Last Modified time: 2019-04-09 11:13:00
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_itcm_ctrl
@@ -129,7 +129,6 @@ module e203_itcm_ctrl(
 	// wire [`E203_ITCM_DATA_WIDTH-1:0] sram_icb_rsp_rdata;
 	// wire sram_icb_rsp_err;
 
-	`ifndef E203_HAS_ECC //{
 	sirv_sram_icb_ctrl #(
 			.DW     (`E203_ITCM_DATA_WIDTH),
 			.AW     (`E203_ITCM_ADDR_WIDTH),
@@ -137,37 +136,37 @@ module e203_itcm_ctrl(
 			.AW_LSB (3),// ITCM is 64bits wide, so the LSB is 3
 			.USR_W  (2) 
 	) u_sram_icb_ctrl(
-		 .sram_ctrl_active (itcm_sram_ctrl_active),
-		 .tcm_cgstop       (tcm_cgstop),
+			.sram_ctrl_active (itcm_sram_ctrl_active),
+			.tcm_cgstop       (tcm_cgstop),
 		 
-		 .i_icb_cmd_valid (ifu2itcm_icb_cmd_valid),
-		 .i_icb_cmd_ready (ifu2itcm_icb_cmd_ready),
-		 .i_icb_cmd_read  (ifu2itcm_icb_cmd_read),
-		 .i_icb_cmd_addr  (ifu2itcm_icb_cmd_addr), 
-		 .i_icb_cmd_wdata (ifu2itcm_icb_cmd_wdata), 
-		 .i_icb_cmd_wmask (ifu2itcm_icb_cmd_wmask), 
-		 .i_icb_cmd_usr   (sram_icb_cmd_usr  ),
+			.i_icb_cmd_valid (ifu2itcm_icb_cmd_valid),
+			.i_icb_cmd_ready (ifu2itcm_icb_cmd_ready),
+			.i_icb_cmd_read  (ifu2itcm_icb_cmd_read),
+			.i_icb_cmd_addr  (ifu2itcm_icb_cmd_addr), 
+			.i_icb_cmd_wdata (ifu2itcm_icb_cmd_wdata), 
+			.i_icb_cmd_wmask (ifu2itcm_icb_cmd_wmask), 
+			.i_icb_cmd_usr   (sram_icb_cmd_usr  ),
 	
-		 .i_icb_rsp_valid (sram_icb_rsp_valid),
-		 .i_icb_rsp_ready (ifu2itcm_icb_rsp_ready),
-		 .i_icb_rsp_rdata (ifu2itcm_icb_rsp_rdata),
-		 .i_icb_rsp_usr   (sram_icb_rsp_usr  ),
+			.i_icb_rsp_valid (sram_icb_rsp_valid),
+			.i_icb_rsp_ready (ifu2itcm_icb_rsp_ready),
+			.i_icb_rsp_rdata (ifu2itcm_icb_rsp_rdata),
+			.i_icb_rsp_usr   (sram_icb_rsp_usr  ),
 	
-		 .ram_cs   (itcm_ram_cs  ),  
-		 .ram_we   (itcm_ram_we  ),  
-		 .ram_addr (itcm_ram_addr), 
-		 .ram_wem  (itcm_ram_wem ),
-		 .ram_din  (itcm_ram_din ),          
-		 .ram_dout (itcm_ram_dout),
-		 .clk_ram  (clk_itcm_ram ),
+			.ram_cs   (itcm_ram_cs  ),  
+			.ram_we   (itcm_ram_we  ),  
+			.ram_addr (itcm_ram_addr), 
+			.ram_wem  (itcm_ram_wem ),
+			.ram_din  (itcm_ram_din ),          
+			.ram_dout (itcm_ram_dout),
+			.clk_ram  (clk_itcm_ram ),
 	
-		 .test_mode(1'b0),
-		 .clk  (clk_itcm),
-		 .rst_n(rst_n)  
+			.test_mode(1'b0),
+			.clk  (clk_itcm),
+			.rst_n(rst_n)  
 		);
 
 		// assign sram_icb_rsp_err = 1'b0;
-	`endif//}
+
 
 	
 
