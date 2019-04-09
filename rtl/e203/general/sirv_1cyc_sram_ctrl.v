@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-09 11:21:37
+// Last Modified time: 2019-04-09 11:49:11
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: sirv_1cyc_sram_ctrl
@@ -56,8 +56,8 @@ module sirv_1cyc_sram_ctrl #(
 )(
 	output sram_ctrl_active,
 	// The cgstop is coming from CSR (0xBFE mcgstop)'s filed 1
-	// // This register is our self-defined CSR register to disable the 
-			// ITCM SRAM clock gating for debugging purpose
+	// This register is our self-defined CSR register to disable the 
+	// ITCM SRAM clock gating for debugging purpose
 	input  tcm_cgstop,
 	
 	//////////////////////////////////////////////////////////////
@@ -77,13 +77,13 @@ module sirv_1cyc_sram_ctrl #(
 	output [DW-1:0] uop_rsp_rdata, 
 	output [USR_W-1:0] uop_rsp_usr, 
 
-	output          ram_cs,  
-	output          ram_we,  
+	output ram_cs,  
+	output ram_we,  
 	output [AW-AW_LSB-1:0] ram_addr, 
 	output [MW-1:0] ram_wem,
 	output [DW-1:0] ram_din,          
 	input  [DW-1:0] ram_dout,
-	output          clk_ram,
+	output clk_ram,
 
 	input test_mode,
 	input clk,

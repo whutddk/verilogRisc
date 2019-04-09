@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-08 14:54:05
+// Last Modified time: 2019-04-09 11:46:16
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_core
@@ -641,8 +641,8 @@ e203_itcm_ctrl u_e203_itcm_ctrl(
 .ifu2itcm_icb_cmd_ready  (ifu2itcm_icb_cmd_ready),
 .ifu2itcm_icb_cmd_addr   (ifu2itcm_icb_cmd_addr ),
 .ifu2itcm_icb_cmd_read   (1'b1 ),
-.ifu2itcm_icb_cmd_wdata  ({`E203_ITCM_DATA_WIDTH{1'b0}}),
-.ifu2itcm_icb_cmd_wmask  ({`E203_ITCM_DATA_WIDTH/8{1'b0}}),
+// .ifu2itcm_icb_cmd_wdata  ({`E203_ITCM_DATA_WIDTH{1'b0}}),
+// .ifu2itcm_icb_cmd_wmask  ({`E203_ITCM_DATA_WIDTH/8{1'b0}}),
 
 .ifu2itcm_icb_rsp_valid  (ifu2itcm_icb_rsp_valid),
 .ifu2itcm_icb_rsp_ready  (ifu2itcm_icb_rsp_ready),

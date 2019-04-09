@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-09 11:13:00
+// Last Modified time: 2019-04-09 11:47:15
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_itcm_ctrl
@@ -62,8 +62,8 @@ module e203_itcm_ctrl(
 	output ifu2itcm_icb_cmd_ready,
 	input  [`E203_ITCM_ADDR_WIDTH-1:0] ifu2itcm_icb_cmd_addr,
 	input  ifu2itcm_icb_cmd_read,
-	input  [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_cmd_wdata, 
-	input  [`E203_ITCM_WMSK_WIDTH-1:0] ifu2itcm_icb_cmd_wmask, 
+// input  [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_cmd_wdata, 
+// input  [`E203_ITCM_WMSK_WIDTH-1:0] ifu2itcm_icb_cmd_wmask, 
 	output ifu2itcm_icb_rsp_valid,
 	input  ifu2itcm_icb_rsp_ready,
 	output ifu2itcm_icb_rsp_err,
@@ -143,8 +143,8 @@ module e203_itcm_ctrl(
 			.i_icb_cmd_ready (ifu2itcm_icb_cmd_ready),
 			.i_icb_cmd_read  (ifu2itcm_icb_cmd_read),
 			.i_icb_cmd_addr  (ifu2itcm_icb_cmd_addr), 
-			.i_icb_cmd_wdata (ifu2itcm_icb_cmd_wdata), 
-			.i_icb_cmd_wmask (ifu2itcm_icb_cmd_wmask), 
+			// .i_icb_cmd_wdata ({`E203_ITCM_DATA_WIDTH{1'b0}}), 
+			// .i_icb_cmd_wmask ({`E203_ITCM_DATA_WIDTH/8{1'b0}}), 
 			.i_icb_cmd_usr   (sram_icb_cmd_usr  ),
 	
 			.i_icb_rsp_valid (sram_icb_rsp_valid),
