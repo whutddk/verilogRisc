@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-09 11:47:15
+// Last Modified time: 2019-04-09 12:19:51
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_itcm_ctrl
@@ -143,8 +143,8 @@ module e203_itcm_ctrl(
 			.i_icb_cmd_ready (ifu2itcm_icb_cmd_ready),
 			.i_icb_cmd_read  (ifu2itcm_icb_cmd_read),
 			.i_icb_cmd_addr  (ifu2itcm_icb_cmd_addr), 
-			// .i_icb_cmd_wdata ({`E203_ITCM_DATA_WIDTH{1'b0}}), 
-			// .i_icb_cmd_wmask ({`E203_ITCM_DATA_WIDTH/8{1'b0}}), 
+			.i_icb_cmd_wdata ({`E203_ITCM_DATA_WIDTH{1'b0}}), 
+			.i_icb_cmd_wmask ({`E203_ITCM_DATA_WIDTH/8{1'b0}}), 
 			.i_icb_cmd_usr   (sram_icb_cmd_usr  ),
 	
 			.i_icb_rsp_valid (sram_icb_rsp_valid),
@@ -240,6 +240,12 @@ module e203_itcm_ctrl(
 
 
 
+	assign ram_cs = uop_cmd_valid & uop_cmd_ready;  
+	assign ram_we = (~uop_cmd_read);  
+	assign ram_addr= uop_cmd_addr [AW-1:AW_LSB];          
+	assign ram_wem = uop_cmd_wmask[MW-1:0];          
+	assign ram_din = uop_cmd_wdata[DW-1:0]; 
+	assign uop_rsp_rdata = ram_dout;
 
 
 endmodule
