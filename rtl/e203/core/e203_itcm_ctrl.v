@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-09 10:41:28
+// Last Modified time: 2019-04-09 10:46:48
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_itcm_ctrl
@@ -125,7 +125,7 @@ module e203_itcm_ctrl(
 	wire itcm_sram_ctrl_active;
 
 	wire sram_icb_rsp_valid;
-	wire sram_icb_rsp_ready;
+	// wire sram_icb_rsp_ready;
 	// wire [`E203_ITCM_DATA_WIDTH-1:0] sram_icb_rsp_rdata;
 	// wire sram_icb_rsp_err;
 
@@ -149,7 +149,7 @@ module e203_itcm_ctrl(
 		 .i_icb_cmd_usr   (sram_icb_cmd_usr  ),
 	
 		 .i_icb_rsp_valid (sram_icb_rsp_valid),
-		 .i_icb_rsp_ready (sram_icb_rsp_ready),
+		 .i_icb_rsp_ready (ifu2itcm_icb_rsp_ready),
 		 .i_icb_rsp_rdata (ifu2itcm_icb_rsp_rdata),
 		 .i_icb_rsp_usr   (sram_icb_rsp_usr  ),
 	
@@ -175,7 +175,7 @@ module e203_itcm_ctrl(
 
 	// The E2 pass to IFU RSP channel only when it is IFU access 
 	// The E2 pass to ARBT RSP channel only when it is not IFU access
-	assign sram_icb_rsp_ready = ifu2itcm_icb_rsp_ready ;
+	// assign sram_icb_rsp_ready = ifu2itcm_icb_rsp_ready ;
 
 	assign ifu2itcm_icb_rsp_valid = sram_icb_rsp_valid & sram_icb_rsp_ifu;
 	assign ifu2itcm_icb_rsp_err   = 1'b0;
