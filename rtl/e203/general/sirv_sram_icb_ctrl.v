@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-09 11:48:17
+// Last Modified time: 2019-04-09 21:14:53
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: sirv_sram_icb_ctrl
@@ -175,7 +175,7 @@ module sirv_sram_icb_ctrl #(
 
 
 	assign sram_ctrl_active = 
-		i_icb_cmd_valid // Input command
+	i	_icb_cmd_valid // Input command
 		| byp_icb_cmd_valid // Byp input command
 		| sram_active  // SRAM active
 		| i_icb_rsp_valid // Output Response
