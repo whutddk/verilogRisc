@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-10 16:33:31
+// Last Modified time: 2019-04-10 16:47:42
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_itcm_ctrl
@@ -127,7 +127,7 @@ module e203_itcm_ctrl(
 	assign itcm_ram_addr = ifu2itcm_icb_cmd_addr [15:3];          
 	assign itcm_ram_wem = {`E203_ITCM_DATA_WIDTH/8{1'b0}};          
 	assign itcm_ram_din = {`E203_ITCM_DATA_WIDTH{1'b0}}; 
-	assign uop_rsp_rdata = itcm_ram_dout;
+	assign ifu2itcm_icb_rsp_rdata = itcm_ram_dout;
 
 
 endmodule

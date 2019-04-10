@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-10 16:33:41
+// Last Modified time: 2019-04-10 16:34:40
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_core
@@ -260,15 +260,15 @@ e203_ifu u_e203_ifu(
 	.itcm_nohold     (itcm_nohold),
 
 
-.ifu2itcm_holdup (ifu2itcm_holdup),
-// .itcm_region_indic (`E203_ITCM_ADDR_BASE),
-.ifu2itcm_icb_cmd_valid(ifu2itcm_icb_cmd_valid),
-.ifu2itcm_icb_cmd_ready(ifu2itcm_icb_cmd_ready),
-.ifu2itcm_icb_cmd_addr (ifu2itcm_icb_cmd_addr ),
-.ifu2itcm_icb_rsp_valid(ifu2itcm_icb_rsp_valid),
-.ifu2itcm_icb_rsp_ready(ifu2itcm_icb_rsp_ready),
-// .ifu2itcm_icb_rsp_err  (1'b0),
-.ifu2itcm_icb_rsp_rdata(ifu2itcm_icb_rsp_rdata),
+// .ifu2itcm_holdup (ifu2itcm_holdup),
+// // .itcm_region_indic (`E203_ITCM_ADDR_BASE),
+// .ifu2itcm_icb_cmd_valid(ifu2itcm_icb_cmd_valid),
+// .ifu2itcm_icb_cmd_ready(ifu2itcm_icb_cmd_ready),
+// .ifu2itcm_icb_cmd_addr (ifu2itcm_icb_cmd_addr ),
+// .ifu2itcm_icb_rsp_valid(ifu2itcm_icb_rsp_valid),
+// .ifu2itcm_icb_rsp_ready(ifu2itcm_icb_rsp_ready),
+// // .ifu2itcm_icb_rsp_err  (1'b0),
+// .ifu2itcm_icb_rsp_rdata(ifu2itcm_icb_rsp_rdata),
 
 
 
@@ -632,27 +632,7 @@ e203_biu u_e203_biu(
 
 
 
-(* DONT_TOUCH = "TRUE" *)
-e203_itcm_ctrl u_e203_itcm_ctrl(
 
-	
-.ifu2itcm_icb_cmd_valid  (ifu2itcm_icb_cmd_valid),
-.ifu2itcm_icb_cmd_ready  (ifu2itcm_icb_cmd_ready),
-.ifu2itcm_icb_cmd_addr   (ifu2itcm_icb_cmd_addr ),
-.ifu2itcm_icb_cmd_read   (1'b1 ),
-// .ifu2itcm_icb_cmd_wdata  ({`E203_ITCM_DATA_WIDTH{1'b0}}),
-// .ifu2itcm_icb_cmd_wmask  ({`E203_ITCM_DATA_WIDTH/8{1'b0}}),
-
-.ifu2itcm_icb_rsp_valid  (ifu2itcm_icb_rsp_valid),
-.ifu2itcm_icb_rsp_ready  (ifu2itcm_icb_rsp_ready),
-// .ifu2itcm_icb_rsp_err    (ifu2itcm_icb_rsp_err  ),
-.ifu2itcm_icb_rsp_rdata  (ifu2itcm_icb_rsp_rdata),
-
-.ifu2itcm_holdup         (ifu2itcm_holdup       ),
-
-	.clk                     (clk),
-	.rst_n                   (rst_n) 
-);
 
 
 
