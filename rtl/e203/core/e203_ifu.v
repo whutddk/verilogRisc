@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-01 16:33:19
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-10 16:52:03
+// Last Modified time: 2019-04-10 19:58:18
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu
@@ -178,7 +178,7 @@ module e203_ifu(
 
 
 (* DONT_TOUCH = "TRUE" *)
-	e203_ifu_ift2icb u_e203_ifu_ift2icb (
+	e203_ifu_ift2itcm u_e203_ifu_ift2itcm (
 		.ifu_req_valid (ifu_req_valid),
 		.ifu_req_ready (ifu_req_ready),
 		.ifu_req_pc    (ifu_req_pc   ),
