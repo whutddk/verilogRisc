@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-01 16:33:19
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-08 14:11:11
+// Last Modified time: 2019-04-10 15:27:15
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu
@@ -56,13 +56,13 @@ module e203_ifu(
 	
 `ifdef E203_HAS_ITCM //{
 input  ifu2itcm_holdup,
-input [`E203_ADDR_SIZE-1:0] itcm_region_indic,
+// input [`E203_ADDR_SIZE-1:0] itcm_region_indic,
 output ifu2itcm_icb_cmd_valid, // Handshake valid
 input  ifu2itcm_icb_cmd_ready, // Handshake ready
 output [`E203_ITCM_ADDR_WIDTH-1:0]   ifu2itcm_icb_cmd_addr, // Bus transaction start addr 
 input  ifu2itcm_icb_rsp_valid, // Response valid 
 output ifu2itcm_icb_rsp_ready, // Response ready
-input  ifu2itcm_icb_rsp_err,   // Response error
+// input  ifu2itcm_icb_rsp_err,   // Response error
 input  [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata, 
 `endif//}
 
@@ -192,13 +192,13 @@ input  [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata,
 		.itcm_nohold   (itcm_nohold),
 
 `ifdef E203_HAS_ITCM
-.itcm_region_indic (itcm_region_indic),
+// .itcm_region_indic (itcm_region_indic),
 .ifu2itcm_icb_cmd_valid(ifu2itcm_icb_cmd_valid),
 .ifu2itcm_icb_cmd_ready(ifu2itcm_icb_cmd_ready),
 .ifu2itcm_icb_cmd_addr (ifu2itcm_icb_cmd_addr ),
 .ifu2itcm_icb_rsp_valid(ifu2itcm_icb_rsp_valid),
 .ifu2itcm_icb_rsp_ready(ifu2itcm_icb_rsp_ready),
-.ifu2itcm_icb_rsp_err  (ifu2itcm_icb_rsp_err  ),
+// .ifu2itcm_icb_rsp_err  (ifu2itcm_icb_rsp_err  ),
 .ifu2itcm_icb_rsp_rdata(ifu2itcm_icb_rsp_rdata),
 
 .ifu2itcm_holdup (ifu2itcm_holdup),

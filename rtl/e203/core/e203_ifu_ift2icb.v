@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-08 16:59:16
+// Last Modified time: 2019-04-10 15:27:27
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu_ift2icb
@@ -70,13 +70,13 @@ module e203_ifu_ift2icb(
 
 `ifdef E203_HAS_ITCM
 
-input [`E203_ADDR_SIZE-1:0] itcm_region_indic,
+// input [`E203_ADDR_SIZE-1:0] itcm_region_indic,
 output ifu2itcm_icb_cmd_valid,
 input  ifu2itcm_icb_cmd_ready,
 output [`E203_ITCM_ADDR_WIDTH-1:0]   ifu2itcm_icb_cmd_addr,
 input  ifu2itcm_icb_rsp_valid,
 output ifu2itcm_icb_rsp_ready,
-input  ifu2itcm_icb_rsp_err,
+// input  ifu2itcm_icb_rsp_err,
 input  [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata,
 input  ifu2itcm_holdup 
 `endif//}
@@ -195,20 +195,7 @@ input  ifu2itcm_holdup
 			ifu_req_hsked  ?  ICB_STATE_1ST : ICB_STATE_IDLE 
 		) ;
 
-	// **** If the current state is wait-2nd,
-	// If the ICB CMD is ready, then next state is ICB_STATE_2ND
-// assign state_wait2nd_exit_ena = 1'b0;
 
-	// **** If the current state is 2nd,
-	// If a response come, exit this state
-// assign state_2nd_exit_ena = 1'b0;
-// assign state_2nd_nxt          = 
-// 		(
-// 		// If meanwhile new req handshaked, then next state is ICB_STATE_1ST
-// 			ifu_req_hsked  ?  ICB_STATE_1ST : 
-// 			// otherwise, back to IDLE
-// 			ICB_STATE_IDLE
-// 		);
 
 	// The state will only toggle when each state is meeting the condition to exit:
 	assign icb_state_ena = 
@@ -233,52 +220,7 @@ input  ifu2itcm_holdup
 	wire [1:0] icb_cmd_addr_2_1_r;
 	sirv_gnrl_dffl #(2)icb_addr_2_1_dffl(icb_cmd_addr_2_1_ena, ifu_icb_cmd_addr[2:1], icb_cmd_addr_2_1_r, clk);
 
-	/////////////////////////////////////////////////////////////////////////////////
-	// Implement Leftover Buffer
-	// wire leftover_ena; 
-	// wire [15:0] leftover_nxt; 
-	// wire [15:0] leftover_r; 
-
-
-	// The leftover buffer will be loaded into two cases
-	// Please see "The itfctrl scheme introduction" for more details 
-	//    * Case #1: Loaded when the last holdup upper 16bits put into leftover
-	//    * Case #2: Loaded when the 1st request uop rdata upper 16bits put into leftover 
-	// wire holdup2leftover_ena = 1'b0;
-	// wire [15:0]  put2leftover_data = 16'b0    
-	// 	`ifdef E203_HAS_ITCM //{
-	// 		| ({16{icb_cmd2itcm_r}} & ifu2itcm_icb_rsp_rdata[`E203_ITCM_DATA_WIDTH-1:`E203_ITCM_DATA_WIDTH-16]) 
-	// 	`endif//}
-	// 		;
-
-
-	// wire uop1st2leftover_err = (icb_cmd2itcm_r & ifu2itcm_icb_rsp_err);
-
-	// assign leftover_ena = 1'b0 ;
-
-	// assign leftover_nxt = put2leftover_data[15:0];
-
-
-	// sirv_gnrl_dffl #(16) leftover_dffl     (leftover_ena, leftover_nxt,     leftover_r,     clk);
 	
-	/////////////////////////////////////////////////////////////////////////////////
-	// Generate the ifetch response channel
-	// 
-	// The ifetch response instr will have 2 sources
-	// Please see "The itfctrl scheme introduction" for more details 
-	//    * Source #1: The concatenation by {rdata[15:0],leftover}, when
-	//          ** the state is in 2ND uop
-	//          ** the state is in 1ND uop but it is same-cross-holdup case
-	//    * Source #2: The rdata-aligned, when
-	//           ** not selecting leftover
-// wire rsp_instr_sel_leftover = 1'b0;
-
-// wire rsp_instr_sel_icb_rsp = 1'b1;
-
-	// wire [16-1:0] ifu_icb_rsp_rdata_lsb16 = ({16{icb_cmd2itcm_r}} & ifu2itcm_icb_rsp_rdata[15:0]);
-
-
-	// The fetched instruction from ICB rdata bus need to be aligned by PC LSB bits
 
 	wire[31:0] ifu2itcm_icb_rsp_instr = ifu2itcm_icb_rsp_rdata;
 
@@ -287,7 +229,7 @@ input  ifu2itcm_holdup
 
 	wire [32-1:0] ifu_icb_rsp_instr = ({32{icb_cmd2itcm_r}} & ifu2itcm_icb_rsp_instr);
 
-	wire ifu_icb_rsp_err = (icb_cmd2itcm_r & ifu2itcm_icb_rsp_err);
+	wire ifu_icb_rsp_err = (icb_cmd2itcm_r & 1'b0);
 
 	assign i_ifu_rsp_instr =  ifu_icb_rsp_instr;
 	assign i_ifu_rsp_err =  ifu_icb_rsp_err;
@@ -378,7 +320,7 @@ input  ifu2itcm_holdup
 	// Dispatch the ICB CMD and RSP Channel to ITCM and System Memory
 	//   according to the address range
 
-	assign ifu_icb_cmd2itcm = (ifu_icb_cmd_addr[`E203_ITCM_BASE_REGION] == itcm_region_indic[`E203_ITCM_BASE_REGION]);
+	assign ifu_icb_cmd2itcm = (ifu_icb_cmd_addr[`E203_ITCM_BASE_REGION] == `E203_ITCM_ADDR_BASE);
 
 	assign ifu2itcm_icb_cmd_valid = ifu_icb_cmd_valid & ifu_icb_cmd2itcm;
 	assign ifu2itcm_icb_cmd_addr = ifu_icb_cmd_addr[`E203_ITCM_ADDR_WIDTH-1:0];
