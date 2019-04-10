@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-09 21:33:31
+// Last Modified time: 2019-04-10 15:08:21
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_itcm_ctrl
@@ -106,7 +106,7 @@ module e203_itcm_ctrl(
 	assign ifu2itcm_holdup = ifu_holdup_r ;
 	  
 
-	wire itcm_active = ifu2itcm_icb_cmd_valid | itcm_sram_ctrl_active;
+	wire itcm_active = ifu2itcm_icb_cmd_valid;
 
 	e203_itcm_ram u_e203_itcm_ram (
 		.cs   (itcm_ram_cs),
@@ -125,7 +125,7 @@ module e203_itcm_ctrl(
 
 	assign itcm_ram_cs = ifu2itcm_icb_cmd_valid & ifu2itcm_icb_cmd_ready;  
 	assign itcm_ram_we = ( ~ifu2itcm_icb_cmd_read );  
-	assign itcm_ram_addr = ifu2itcm_icb_cmd_addr [31:3];          
+	assign itcm_ram_addr = ifu2itcm_icb_cmd_addr [15:3];          
 	assign itcm_ram_wem = {`E203_ITCM_DATA_WIDTH/8{1'b0}};          
 	assign itcm_ram_din = {`E203_ITCM_DATA_WIDTH{1'b0}}; 
 	assign uop_rsp_rdata = itcm_ram_dout;

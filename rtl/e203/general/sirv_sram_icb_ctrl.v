@@ -175,7 +175,7 @@ module sirv_sram_icb_ctrl #(
 
 
 	assign sram_ctrl_active = 
-	i	_icb_cmd_valid // Input command
+	i_icb_cmd_valid // Input command
 		| byp_icb_cmd_valid // Byp input command
 		| sram_active  // SRAM active
 		| i_icb_rsp_valid // Output Response
