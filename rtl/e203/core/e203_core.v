@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-10 16:34:40
+// Last Modified time: 2019-04-10 20:00:17
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_core
@@ -249,7 +249,7 @@ module e203_core(
 	wire dec2ifu_remu  ;
 
 
-	wire itcm_nohold;
+	// wire itcm_nohold;
 
 e203_ifu u_e203_ifu(
 	.inspect_pc   (inspect_pc),
@@ -257,7 +257,7 @@ e203_ifu u_e203_ifu(
 	.ifu_active      (ifu_active),
 	.pc_rtvec        (pc_rtvec),  
 
-	.itcm_nohold     (itcm_nohold),
+	// .itcm_nohold     (itcm_nohold),
 
 
 // .ifu2itcm_holdup (ifu2itcm_holdup),
@@ -364,7 +364,7 @@ e203_exu u_e203_exu(
 	.test_mode              (test_mode),
 	.core_wfi               (core_wfi),
 	.tm_stop                (tm_stop),
-	.itcm_nohold            (itcm_nohold),
+	.itcm_nohold            (),
 	.core_cgstop            (core_cgstop),
 	.tcm_cgstop             (tcm_cgstop),
 	.exu_active             (exu_active),

@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-10 19:57:33
+// Last Modified time: 2019-04-10 20:14:24
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu_ift2icb
@@ -52,21 +52,16 @@ module e203_ifu_ift2itcm(
 	input  clk,
 	input  rst_n,
 
-input  itcm_nohold,
-
-input  ifu_req_valid, // Handshake valid
+	input  ifu_req_valid, // Handshake valid
 	output ifu_req_ready, // Handshake ready
+
 	input  [`E203_PC_SIZE-1:0] ifu_req_pc, // Fetch PC
-	input  ifu_req_seq, // This request is a sequential instruction fetch
-	input  ifu_req_seq_rv32, // This request is incremented 32bits fetch
-	input  [`E203_PC_SIZE-1:0] ifu_req_last_pc, // The last accessed
-output ifu_rsp_valid, // Response valid 
+
+	output ifu_rsp_valid, // Response valid 
 	input  ifu_rsp_ready, // Response ready
-	output ifu_rsp_err = 1'b0,   // Response error
-	output [32-1:0] ifu_rsp_instr // Response instruction
+
+	output [31:0] ifu_rsp_instr // Response instruction
 	);
-
-
 
 
 `ifndef E203_HAS_ITCM
@@ -76,29 +71,12 @@ output ifu_rsp_valid, // Response valid
 	//这里打一拍应该就可以了
 	assign ifu_req_ready = ifu_rsp_ready; 
 	assign ifu_rsp_valid = ifu_req_valid;
-
-
-	wire [`E203_PC_SIZE-1:0] nxtalgn_plus_offset = ifu_req_seq_rv32  ? `E203_PC_SIZE'd6 : `E203_PC_SIZE'd4;
-	// Since we always fetch 32bits
-	wire [`E203_PC_SIZE-1:0] icb_algn_nxt_lane_addr = ifu_req_last_pc + nxtalgn_plus_offset;
-
-
-	assign itcm_ram_cs = ifu_req_valid & ifu_rsp_ready;  
-assign itcm_ram_we = ( ~ifu2itcm_icb_cmd_read );  
-	assign itcm_ram_addr = ifu_req_pc[15:2];          
-
-
-	wire itcm_ram_cs;  
-	wire itcm_ram_we;  
-	wire [`E203_ITCM_RAM_AW-1:0] itcm_ram_addr; 
-	  
-
-	wire clk_itcm = clk & ifu_req_valid;
-
+       
+sirv_gnrl_dffr # (.DW(2)) (.dnxt({ifu_rsp_ready,ifu_req_valid}),.qout({ifu_req_ready,ifu_rsp_valid}),.clk(clk),.rst_n(rst_n));
 
 	itcm_rom i_itcm_rom(
-		.addra(itcm_ram_addr),
-		.clka(clk_itcm),
+		.addra(ifu_req_pc[15:2]),
+		.clka(clk),
 		.douta(ifu_rsp_instr)
 		);
 
