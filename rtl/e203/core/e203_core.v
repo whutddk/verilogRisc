@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-10 15:27:01
+// Last Modified time: 2019-04-10 16:33:41
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_core
@@ -259,7 +259,7 @@ e203_ifu u_e203_ifu(
 
 	.itcm_nohold     (itcm_nohold),
 
-`ifdef E203_HAS_ITCM
+
 .ifu2itcm_holdup (ifu2itcm_holdup),
 // .itcm_region_indic (`E203_ITCM_ADDR_BASE),
 .ifu2itcm_icb_cmd_valid(ifu2itcm_icb_cmd_valid),
@@ -269,7 +269,7 @@ e203_ifu u_e203_ifu(
 .ifu2itcm_icb_rsp_ready(ifu2itcm_icb_rsp_ready),
 // .ifu2itcm_icb_rsp_err  (1'b0),
 .ifu2itcm_icb_rsp_rdata(ifu2itcm_icb_rsp_rdata),
-`endif
+
 
 
 
@@ -634,8 +634,7 @@ e203_biu u_e203_biu(
 
 (* DONT_TOUCH = "TRUE" *)
 e203_itcm_ctrl u_e203_itcm_ctrl(
-	.tcm_cgstop   (tcm_cgstop),
-	.core_cgstop            (core_cgstop),
+
 	
 .ifu2itcm_icb_cmd_valid  (ifu2itcm_icb_cmd_valid),
 .ifu2itcm_icb_cmd_ready  (ifu2itcm_icb_cmd_ready),

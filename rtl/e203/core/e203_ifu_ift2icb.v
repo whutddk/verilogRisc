@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-10 16:20:13
+// Last Modified time: 2019-04-10 16:21:14
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu_ift2icb
@@ -88,8 +88,6 @@ input  ifu2itcm_holdup
 `endif
 
 
-
-	// wire i_ifu_rsp_valid;
 	wire i_ifu_rsp_ready;
 
 
@@ -175,30 +173,10 @@ input  ifu2itcm_holdup
 	sirv_gnrl_dfflr #(ICB_STATE_WIDTH) icb_state_dfflr (icb_state_ena, icb_state_nxt, icb_state_r, clk, rst_n);
 
 
-	/////////////////////////////////////////////////////////////////////////////////
-	// Save the indicate flags for this ICB transaction to be used
-	// wire [`E203_PC_SIZE-1:0] ifu_icb_cmd_addr;
-
-
 
 	wire icb_cmd_addr_2_1_ena = ifu_icb_cmd_hsked | ifu_req_hsked;
 	wire [1:0] icb_cmd_addr_2_1_r;
 	sirv_gnrl_dffl #(2)icb_addr_2_1_dffl(icb_cmd_addr_2_1_ena, ifu_req_pc[2:1], icb_cmd_addr_2_1_r, clk);
-
-
-	// issue ICB CMD request, use ICB response valid. But not each response
-	// valid will be sent to ifetch-response. The ICB response data will put 
-	// into the leftover buffer when:
-	// It need two uops and itf-state is in 1ST stage (the leftover
-	// buffer is always ready to accept this)
-
-	// wire ifu_icb_rsp2ir_ready;
-
-	// wire ifu_icb_rsp2ir_valid = ifu2itcm_icb_rsp_valid;
-	// assign ifu_icb_rsp_ready  = i_ifu_rsp_ready;
-	// assign i_ifu_rsp_valid = ifu2itcm_icb_rsp_valid;
-	// assign ifu_icb_rsp2ir_ready = i_ifu_rsp_ready;
-
 
 
 	wire ifu_req_valid_pos;
@@ -208,7 +186,6 @@ input  ifu2itcm_holdup
 	// Since we always fetch 32bits
 	wire [`E203_PC_SIZE-1:0] icb_algn_nxt_lane_addr = ifu_req_last_pc + nxtalgn_plus_offset;
 
-	// assign ifu_icb_cmd_addr =  ifu_req_pc;
 
 
 	wire ifu_req_ready_condi = 
@@ -219,12 +196,10 @@ input  ifu2itcm_holdup
 	assign ifu_req_ready     = ifu2itcm_icb_cmd_ready & ifu_req_ready_condi; 
 	assign ifu_req_valid_pos = ifu_req_valid     & ifu_req_ready_condi; // Handshake valid
 
-
-
 	assign ifu2itcm_icb_cmd_valid = ifu_req_valid_pos;
 	assign ifu2itcm_icb_cmd_addr = ifu_req_pc[`E203_ITCM_ADDR_WIDTH-1:0];
 	assign ifu2itcm_icb_rsp_ready = i_ifu_rsp_ready;
-	// assign ifu_icb_cmd_ready =  ifu2itcm_icb_cmd_ready;
+
 
 
 endmodule

@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-10 15:08:21
+// Last Modified time: 2019-04-10 16:33:31
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_itcm_ctrl
@@ -49,8 +49,7 @@
 
 module e203_itcm_ctrl(
 
-	input tcm_cgstop,
-	input core_cgstop,
+
 
 	input  ifu2itcm_icb_cmd_valid,
 	output ifu2itcm_icb_cmd_ready,
@@ -72,7 +71,7 @@ module e203_itcm_ctrl(
 
 	wire itcm_active_r;
 	sirv_gnrl_dffr #(1)itcm_active_dffr(itcm_active, itcm_active_r, clk_itcm, rst_n);
-	wire itcm_clk_en = core_cgstop | itcm_active | itcm_active_r;
+	wire itcm_clk_en = itcm_active | itcm_active_r;
 
 
 	e203_clkgate u_itcm_clkgate(
