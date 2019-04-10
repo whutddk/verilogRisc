@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-10 15:00:13
+// Last Modified time: 2019-04-10 17:59:46
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_defines
@@ -216,8 +216,8 @@
   // The ITCM size is 2^addr_width bytes, and ITCM is 64bits wide (8 bytes)
   //  so the DP is 2^addr_wdith/8
   //  so the AW is addr_wdith - 3
-  `define E203_ITCM_RAM_DP      (1<<(`E203_CFG_ITCM_ADDR_WIDTH-3)) 
-  `define E203_ITCM_RAM_AW          (`E203_CFG_ITCM_ADDR_WIDTH-3) 
+  `define E203_ITCM_RAM_DP      (1<<(`E203_CFG_ITCM_ADDR_WIDTH-2)) 
+  `define E203_ITCM_RAM_AW          (`E203_CFG_ITCM_ADDR_WIDTH-2) 
   `define E203_ITCM_BASE_REGION  `E203_ADDR_SIZE-1:`E203_ITCM_ADDR_WIDTH
   
   `define E203_CFG_ITCM_DATA_WIDTH_IS_64

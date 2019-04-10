@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-10 17:47:12
+// Last Modified time: 2019-04-10 18:13:56
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu_ift2icb
@@ -52,7 +52,7 @@ module e203_ifu_ift2icb(
 	input  clk,
 	input  rst_n,
 
-	input  itcm_nohold,
+input  itcm_nohold,
 
 input  ifu_req_valid, // Handshake valid
 	output ifu_req_ready, // Handshake ready
@@ -63,24 +63,7 @@ input  ifu_req_valid, // Handshake valid
 output ifu_rsp_valid, // Response valid 
 	input  ifu_rsp_ready, // Response ready
 	output ifu_rsp_err = 1'b0,   // Response error
-	// Note: the RSP channel always return a valid instruction fetched from the fetching start PC address. The targetd (ITCM, ICache or Sys-MEM) ctrl modules  will handle the unalign cases and split-and-merge works
 	output [32-1:0] ifu_rsp_instr, // Response instruction
-
-
-
-// `ifdef E203_HAS_ITCM
-
-// output ifu2itcm_icb_cmd_valid,
-// input  ifu2itcm_icb_cmd_ready,
-// output [`E203_ITCM_ADDR_WIDTH-1:0]   ifu2itcm_icb_cmd_addr,
-// input  ifu2itcm_icb_rsp_valid,
-// output ifu2itcm_icb_rsp_ready,
-// // input  ifu2itcm_icb_rsp_err,
-// input  [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata,
-// input  ifu2itcm_holdup 
-// `endif
-
-
 	);
 
 
@@ -96,7 +79,7 @@ output ifu_rsp_valid, // Response valid
 
 	
 	// The current accessing PC is same as last accessed ICB address
-	wire ifu_req_lane_holdup = ( ifu_holdup_r & (~itcm_nohold) );
+	// wire ifu_req_lane_holdup = ( ifu_holdup_r & (~itcm_nohold) );
 
 	wire ifu_req_hsked = ifu_req_valid & ifu_req_ready;
 	wire i_ifu_rsp_hsked = ifu_req_valid & ifu_rsp_ready;
@@ -133,13 +116,10 @@ output ifu_rsp_valid, // Response valid
 	wire icb_sta_is_1st     = (icb_state_r == ICB_STATE_1ST);
 
 
-	// **** If the current state is idle,
-	// If a new request come, next state is ICB_STATE_1ST
-	assign state_idle_exit_ena = icb_sta_is_idle & ifu_req_hsked;
-
-	// **** If the current state is 1st,
-	// If a response come, exit this state
-	assign state_1st_exit_ena  = icb_sta_is_1st & ( i_ifu_rsp_hsked);
+	
+	assign state_idle_exit_ena = icb_sta_is_idle & ifu_req_hsked;// **** If the current state is idle, If a new request come, next state is ICB_STATE_1ST
+	assign state_1st_exit_ena  = icb_sta_is_1st & ( i_ifu_rsp_hsked);// **** If the current state is 1st, If a response come, exit this state
+	
 	assign state_1st_nxt = 
 		(	
 			// If it need zero or one requests and new req handshaked, then 
@@ -163,10 +143,7 @@ output ifu_rsp_valid, // Response valid
 
 
 
-	wire icb_cmd_addr_2_1_ena = ifu_icb_cmd_hsked | ifu_req_hsked;
-	wire [1:0] icb_cmd_addr_2_1_r;
-	sirv_gnrl_dffl #(2)icb_addr_2_1_dffl(icb_cmd_addr_2_1_ena, ifu_req_pc[2:1], icb_cmd_addr_2_1_r, clk);
-
+	// wire icb_cmd_addr_2_1_ena = ifu_icb_cmd_hsked | ifu_req_hsked;
 
 	wire ifu_req_valid_pos;
 	
@@ -176,66 +153,27 @@ output ifu_rsp_valid, // Response valid
 	wire [`E203_PC_SIZE-1:0] icb_algn_nxt_lane_addr = ifu_req_last_pc + nxtalgn_plus_offset;
 
 
-
 	wire ifu_req_ready_condi = 
 				(
 					icb_sta_is_idle 
 					| ( icb_sta_is_1st & i_ifu_rsp_hsked)
 				);
+				// wire i_ifu_rsp_hsked = ifu_req_valid & ifu_rsp_ready;
 	assign ifu_req_ready     = ifu_rsp_ready & ifu_req_ready_condi; 
 	assign ifu_req_valid_pos = ifu_req_valid     & ifu_req_ready_condi; // Handshake valid
-
-// assign ifu2itcm_icb_cmd_valid = ifu_req_valid_pos;
-	// assign ifu2itcm_icb_cmd_addr = ifu_req_pc[`E203_ITCM_ADDR_WIDTH-1:0];
-	// assign ifu2itcm_icb_rsp_ready = i_ifu_rsp_ready;
-
 
 
 	assign itcm_ram_cs = ifu_req_valid_pos & ifu_rsp_ready;  
 assign itcm_ram_we = ( ~ifu2itcm_icb_cmd_read );  
-	assign itcm_ram_addr = ifu_req_pc[15:3];          
-	assign itcm_ram_wem = {`E203_ITCM_DATA_WIDTH/8{1'b0}};          
-	assign itcm_ram_din = {`E203_ITCM_DATA_WIDTH{1'b0}}; 
-	// assign ifu2itcm_icb_rsp_rdata = itcm_ram_dout;
+	assign itcm_ram_addr = ifu_req_pc[15:2];          
+
 
 	wire itcm_ram_cs;  
 	wire itcm_ram_we;  
 	wire [`E203_ITCM_RAM_AW-1:0] itcm_ram_addr; 
-	wire [`E203_ITCM_RAM_MW-1:0] itcm_ram_wem;
-	wire [`E203_ITCM_RAM_DW-1:0] itcm_ram_din;          
-	// wire [`E203_ITCM_RAM_DW-1:0] itcm_ram_dout;
-
-
-	wire ifu_holdup_r;
-	// The IFU holdup will be set after last time accessed by a IFU access
-	wire ifu_holdup_set =   ifu_req_valid_pos & itcm_ram_cs;
-	// The IFU holdup will be cleared after last time accessed by a non-IFU access
-	wire ifu_holdup_clr = (~ifu_req_valid_pos) & itcm_ram_cs;
-	wire ifu_holdup_ena = ifu_holdup_set | ifu_holdup_clr;
-	wire ifu_holdup_nxt = ifu_holdup_set & (~ifu_holdup_clr);
-	sirv_gnrl_dfflr #(1)ifu_holdup_dffl(ifu_holdup_ena, ifu_holdup_nxt, ifu_holdup_r, clk_itcm, rst_n);
-	// assign ifu2itcm_holdup = ifu_holdup_r ;
 	  
 
 	wire itcm_active = ifu_req_valid_pos;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -254,16 +192,12 @@ assign itcm_ram_we = ( ~ifu2itcm_icb_cmd_read );
 	);
 
 
-
-
-
-
 	e203_itcm_ram u_e203_itcm_ram (
 		.cs   (itcm_ram_cs),
 		.we   (itcm_ram_we),
 		.addr (itcm_ram_addr),
-		.wem  (itcm_ram_wem),
-		.din  (itcm_ram_din),
+		.wem  ({`E203_ITCM_DATA_WIDTH/8{1'b0}}),
+		.din  ({`E203_ITCM_DATA_WIDTH{1'b0}}),
 		.dout (ifu_rsp_instr),
 		.rst_n(rst_n),
 		.clk  (clk_itcm)
