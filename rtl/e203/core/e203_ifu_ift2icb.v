@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-10 16:55:57
+// Last Modified time: 2019-04-10 17:47:12
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu_ift2icb
@@ -54,57 +54,61 @@ module e203_ifu_ift2icb(
 
 	input  itcm_nohold,
 
-	input  ifu_req_valid, // Handshake valid
+input  ifu_req_valid, // Handshake valid
 	output ifu_req_ready, // Handshake ready
 	input  [`E203_PC_SIZE-1:0] ifu_req_pc, // Fetch PC
 	input  ifu_req_seq, // This request is a sequential instruction fetch
 	input  ifu_req_seq_rv32, // This request is incremented 32bits fetch
 	input  [`E203_PC_SIZE-1:0] ifu_req_last_pc, // The last accessed
-	output ifu_rsp_valid, // Response valid 
+output ifu_rsp_valid, // Response valid 
 	input  ifu_rsp_ready, // Response ready
 	output ifu_rsp_err = 1'b0,   // Response error
 	// Note: the RSP channel always return a valid instruction fetched from the fetching start PC address. The targetd (ITCM, ICache or Sys-MEM) ctrl modules  will handle the unalign cases and split-and-merge works
 	output [32-1:0] ifu_rsp_instr, // Response instruction
 
+
+
+// `ifdef E203_HAS_ITCM
+
+// output ifu2itcm_icb_cmd_valid,
+// input  ifu2itcm_icb_cmd_ready,
+// output [`E203_ITCM_ADDR_WIDTH-1:0]   ifu2itcm_icb_cmd_addr,
+// input  ifu2itcm_icb_rsp_valid,
+// output ifu2itcm_icb_rsp_ready,
+// // input  ifu2itcm_icb_rsp_err,
+// input  [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata,
+// input  ifu2itcm_holdup 
+// `endif
+
+
 	);
+
+
+
 
 `ifndef E203_HAS_ITCM
 	!!! ERROR: There is no ITCM and no System interface, where to fetch the instructions? must be wrong configuration.
 `endif
 
 
-	wire i_ifu_rsp_ready;
+	assign ifu_rsp_valid = ifu_req_valid;
 
 
-	sirv_gnrl_bypbuf # (
-	.DP(1),
-	.DW(`E203_INSTR_SIZE) 
-	) u_e203_ifetch_rsp_bypbuf(
-		.i_vld   (ifu2itcm_icb_rsp_valid),
-		.i_rdy   (i_ifu_rsp_ready),
-
-		.o_vld   (ifu_rsp_valid),
-		.o_rdy   (ifu_rsp_ready),
-
-		.i_dat   (itcm_ram_dout),
-		.o_dat   (ifu_rsp_instr),
-	
-		.clk     (clk),
-		.rst_n   (rst_n)
-	);
 	
 	// The current accessing PC is same as last accessed ICB address
 	wire ifu_req_lane_holdup = ( ifu_holdup_r & (~itcm_nohold) );
 
 	wire ifu_req_hsked = ifu_req_valid & ifu_req_ready;
-	wire i_ifu_rsp_hsked = ifu2itcm_icb_rsp_valid & i_ifu_rsp_ready;
+	wire i_ifu_rsp_hsked = ifu_req_valid & ifu_rsp_ready;
 	
 
 	// wire ifu_icb_cmd_ready;
-	wire ifu_icb_cmd_hsked = ifu_req_valid_pos & ifu2itcm_icb_cmd_ready;
+	wire ifu_icb_cmd_hsked = ifu_req_valid_pos & ifu_rsp_ready;
 
 	// wire ifu_icb_rsp_ready;
-	wire ifu_icb_rsp_hsked = ifu2itcm_icb_rsp_valid & i_ifu_rsp_ready;
+	wire ifu_icb_rsp_hsked = ifu_req_valid & ifu_rsp_ready;
+
+
 
 
 
@@ -178,7 +182,7 @@ module e203_ifu_ift2icb(
 					icb_sta_is_idle 
 					| ( icb_sta_is_1st & i_ifu_rsp_hsked)
 				);
-	assign ifu_req_ready     = ifu2itcm_icb_cmd_ready & ifu_req_ready_condi; 
+	assign ifu_req_ready     = ifu_rsp_ready & ifu_req_ready_condi; 
 	assign ifu_req_valid_pos = ifu_req_valid     & ifu_req_ready_condi; // Handshake valid
 
 // assign ifu2itcm_icb_cmd_valid = ifu_req_valid_pos;
@@ -187,8 +191,8 @@ module e203_ifu_ift2icb(
 
 
 
-	assign itcm_ram_cs = ifu_req_valid_pos & ifu2itcm_icb_cmd_ready;  
-	assign itcm_ram_we = ( ~ifu2itcm_icb_cmd_read );  
+	assign itcm_ram_cs = ifu_req_valid_pos & ifu_rsp_ready;  
+assign itcm_ram_we = ( ~ifu2itcm_icb_cmd_read );  
 	assign itcm_ram_addr = ifu_req_pc[15:3];          
 	assign itcm_ram_wem = {`E203_ITCM_DATA_WIDTH/8{1'b0}};          
 	assign itcm_ram_din = {`E203_ITCM_DATA_WIDTH{1'b0}}; 
@@ -199,7 +203,7 @@ module e203_ifu_ift2icb(
 	wire [`E203_ITCM_RAM_AW-1:0] itcm_ram_addr; 
 	wire [`E203_ITCM_RAM_MW-1:0] itcm_ram_wem;
 	wire [`E203_ITCM_RAM_DW-1:0] itcm_ram_din;          
-	wire [`E203_ITCM_RAM_DW-1:0] itcm_ram_dout;
+	// wire [`E203_ITCM_RAM_DW-1:0] itcm_ram_dout;
 
 
 	wire ifu_holdup_r;
@@ -260,7 +264,7 @@ module e203_ifu_ift2icb(
 		.addr (itcm_ram_addr),
 		.wem  (itcm_ram_wem),
 		.din  (itcm_ram_din),
-		.dout (itcm_ram_dout),
+		.dout (ifu_rsp_instr),
 		.rst_n(rst_n),
 		.clk  (clk_itcm)
 	);
