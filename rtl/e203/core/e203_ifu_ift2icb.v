@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-10 20:14:24
+// Last Modified time: 2019-04-10 20:19:38
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu_ift2icb
@@ -69,8 +69,8 @@ module e203_ifu_ift2itcm(
 `endif
 
 	//这里打一拍应该就可以了
-	assign ifu_req_ready = ifu_rsp_ready; 
-	assign ifu_rsp_valid = ifu_req_valid;
+	// assign ifu_req_ready = ifu_rsp_ready; 
+	// assign ifu_rsp_valid = ifu_req_valid;
        
 sirv_gnrl_dffr # (.DW(2)) (.dnxt({ifu_rsp_ready,ifu_req_valid}),.qout({ifu_req_ready,ifu_rsp_valid}),.clk(clk),.rst_n(rst_n));
 
