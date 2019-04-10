@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-01 16:33:19
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-10 20:07:21
+// Last Modified time: 2019-04-10 20:26:43
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu
@@ -106,8 +106,8 @@ module e203_ifu(
 	wire ifu_req_ready; 
 	wire [`E203_PC_SIZE-1:0]   ifu_req_pc; 
 	// wire ifu_req_seq;
-	wire ifu_req_seq_rv32;
-	wire [`E203_PC_SIZE-1:0] ifu_req_last_pc;
+	// wire ifu_req_seq_rv32;
+	// wire [`E203_PC_SIZE-1:0] ifu_req_last_pc;
 	wire ifu_rsp_valid; 
 	wire ifu_rsp_ready; 
 	// wire ifu_rsp_err;    
