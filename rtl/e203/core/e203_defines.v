@@ -228,7 +228,7 @@
   
     `define E203_ITCM_RAM_ECC_DW  8
     `define E203_ITCM_RAM_ECC_MW  1
-  // `endif
+  `endif
   `ifndef E203_HAS_ECC //{
     `define E203_ITCM_RAM_DW      `E203_ITCM_DATA_WIDTH
     `define E203_ITCM_RAM_MW      `E203_ITCM_WMSK_WIDTH
