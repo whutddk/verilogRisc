@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-01 16:33:19
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-10 20:26:43
+// Last Modified time: 2019-04-10 20:29:26
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu
@@ -117,16 +117,16 @@ module e203_ifu(
 	e203_ifu_ifetch u_e203_ifu_ifetch(
 		.inspect_pc   (inspect_pc),
 		.pc_rtvec      (pc_rtvec),  
-		.ifu_req_valid (ifu_req_valid),
-		.ifu_req_ready (ifu_req_ready),
-		.ifu_req_pc    (ifu_req_pc   ),
+.ifu_req_valid (ifu_req_valid),
+.ifu_req_ready (ifu_req_ready),
+.ifu_req_pc    (ifu_req_pc   ),
 		.ifu_req_seq     (),
 		.ifu_req_seq_rv32(),
 		.ifu_req_last_pc (),
-		.ifu_rsp_valid (ifu_rsp_valid),
-		.ifu_rsp_ready (ifu_rsp_ready),
+.ifu_rsp_valid (ifu_rsp_valid),
+.ifu_rsp_ready (ifu_rsp_ready),
 		.ifu_rsp_err   (1'b0),
-		.ifu_rsp_instr (ifu_rsp_instr),
+.ifu_rsp_instr (ifu_rsp_instr),
 		.ifu_o_ir      (ifu_o_ir     ),
 		.ifu_o_pc      (ifu_o_pc     ),
 		.ifu_o_pc_vld  (ifu_o_pc_vld ),
