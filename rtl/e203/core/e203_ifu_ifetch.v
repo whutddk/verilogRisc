@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-01 16:33:19
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-10 20:34:07
+// Last Modified time: 2019-04-12 16:42:42
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu_ifetch
@@ -64,7 +64,7 @@ input  ifu_req_ready, // Handshake ready
 	//       will handle the unalign cases and split-and-merge works
 output [`E203_PC_SIZE-1:0] ifu_req_pc, // Fetch PC
 output ifu_req_seq, // This request is a sequential instruction fetch
-output ifu_req_seq_rv32, // This request is incremented 32bits fetch
+// output ifu_req_seq_rv32, // This request is incremented 32bits fetch
 output [`E203_PC_SIZE-1:0] ifu_req_last_pc, // The last accessed
 																					 // PC address (i.e., pc_r)
 	//    * IFetch RSP channel
@@ -276,8 +276,8 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 	sirv_gnrl_dfflr #(1) ir_muldiv_b2b_dfflr (ir_valid_set, ifu_muldiv_b2b_nxt, ifu_muldiv_b2b_r, clk, rst_n);
 	//To save power the H-16bits only loaded when it is 32bits length instru 
 	wire [`E203_INSTR_SIZE-1:0] ifu_ir_r;// The instruction register
-	wire minidec_rv32;
-	wire ir_hi_ena = ir_valid_set & minidec_rv32;
+	// wire minidec_rv32;
+	wire ir_hi_ena = ir_valid_set;
 	wire ir_lo_ena = ir_valid_set;
 	sirv_gnrl_dfflr #(`E203_INSTR_SIZE/2) ifu_hi_ir_dfflr (ir_hi_ena, ifu_ir_nxt[31:16], ifu_ir_r[31:16], clk, rst_n);
 	sirv_gnrl_dfflr #(`E203_INSTR_SIZE/2) ifu_lo_ir_dfflr (ir_lo_ena, ifu_ir_nxt[15: 0], ifu_ir_r[15: 0], clk, rst_n);
@@ -394,7 +394,7 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 		.dec_rs1idx  (minidec_rs1idx     ),
 		.dec_rs2idx  (minidec_rs2idx     ),
 
-		.dec_rv32    (minidec_rv32       ),
+		// .dec_rv32    (minidec_rv32       ),
 		.dec_bjp     (minidec_bjp        ),
 		.dec_jal     (minidec_jal        ),
 		.dec_jalr    (minidec_jalr       ),
@@ -450,7 +450,7 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 		.rst_n                    (rst_n )                 
 	);
 	// If the instruciton is 32bits length, increament 4, otherwise 2
-	wire [2:0] pc_incr_ofst = minidec_rv32 ? 3'd4 : 3'd2;
+	wire [2:0] pc_incr_ofst =  3'd4;
 
 	wire [`E203_PC_SIZE-1:0] pc_nxt_pre;
 	wire [`E203_PC_SIZE-1:0] pc_nxt;
@@ -480,7 +480,7 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 				pc_incr_ofst ;
 
 	assign ifu_req_seq = (~pipe_flush_req_real) & (~ifu_reset_req) & (~ifetch_replay_req) & (~bjp_req);
-	assign ifu_req_seq_rv32 = minidec_rv32;
+	// assign ifu_req_seq_rv32 = minidec_rv32;
 	assign ifu_req_last_pc = pc_r;
 
 	assign pc_nxt_pre = pc_add_op1 + pc_add_op2;

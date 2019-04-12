@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-01 16:33:19
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-10 20:29:26
+// Last Modified time: 2019-04-12 16:41:47
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu
@@ -121,7 +121,7 @@ module e203_ifu(
 .ifu_req_ready (ifu_req_ready),
 .ifu_req_pc    (ifu_req_pc   ),
 		.ifu_req_seq     (),
-		.ifu_req_seq_rv32(),
+		// .ifu_req_seq_rv32(),
 		.ifu_req_last_pc (),
 .ifu_rsp_valid (ifu_rsp_valid),
 .ifu_rsp_ready (ifu_rsp_ready),

@@ -1,3 +1,24 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Company:   
+// Engineer: Ruige_Lee
+// Create Date: 2019-02-17 17:25:12
+// Last Modified by:   Ruige_Lee
+// Last Modified time: 2019-04-12 16:44:03
+// Email: 295054118@whut.edu.cn
+// Design Name:   
+// Module Name: e203_exu_decode
+// Project Name:   
+// Target Devices:   
+// Tool Versions:   
+// Description:   
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision:    -   
+// Additional Comments:  
+// 
+//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -64,7 +85,7 @@ module e203_exu_decode(
   output dec_divu  ,
   output dec_remu  ,
 
-  output dec_rv32,
+  // output dec_rv32,
   output dec_bjp,
   output dec_jal,
   output dec_jalr,
@@ -86,7 +107,8 @@ module e203_exu_decode(
   wire opcode_1_0_10  = (opcode[1:0] == 2'b10);
   wire opcode_1_0_11  = (opcode[1:0] == 2'b11);
 
-  wire rv32 = (~(i_instr[4:2] == 3'b111)) & opcode_1_0_11;
+//恒为1
+wire rv32 = (~(i_instr[4:2] == 3'b111)) & opcode_1_0_11;
 
   wire [4:0]  rv32_rd     = rv32_instr[11:7];
   wire [2:0]  rv32_func3  = rv32_instr[14:12];
@@ -1159,7 +1181,7 @@ module e203_exu_decode(
   assign rv_index_ilgl = 1'b0;
   `endif//}
 
-  assign dec_rv32 = rv32;
+  // assign dec_rv32 = rv32;
 
   assign dec_bjp_imm = 
                      ({32{rv16_jal | rv16_j     }} & rv16_jjal_imm)
