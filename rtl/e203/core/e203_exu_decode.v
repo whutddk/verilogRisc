@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-12 18:00:06
+// Last Modified time: 2019-04-12 18:13:26
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_exu_decode
@@ -116,15 +116,15 @@ module e203_exu_decode(
 	wire [4:0]  rv32_rs2    = rv32_instr[24:20];
 	wire [6:0]  rv32_func7  = rv32_instr[31:25];
 
-	wire [4:0]  rv16_rd     = rv32_rd;
-	wire [4:0]  rv16_rs1    = rv16_rd; 
-	wire [4:0]  rv16_rs2    = rv32_instr[6:2];
+	// wire [4:0]  rv16_rd     = rv32_rd;
+	// wire [4:0]  rv16_rs1    = rv16_rd; 
+	// wire [4:0]  rv16_rs2    = rv32_instr[6:2];
 
-	wire [4:0]  rv16_rdd    = {2'b01,rv32_instr[4:2]};
-	wire [4:0]  rv16_rss1   = {2'b01,rv32_instr[9:7]};
-	wire [4:0]  rv16_rss2   = rv16_rdd;
+	// wire [4:0]  rv16_rdd    = {2'b01,rv32_instr[4:2]};
+	// wire [4:0]  rv16_rss1   = {2'b01,rv32_instr[9:7]};
+	// wire [4:0]  rv16_rss2   = rv16_rdd;
 
-	wire [2:0]  rv16_func3  = rv32_instr[15:13];
+	// wire [2:0]  rv16_func3  = rv32_instr[15:13];
 
 	
 	// We generate the signals and reused them as much as possible to save gatecounts
@@ -150,14 +150,14 @@ module e203_exu_decode(
 	wire rv32_func3_110 = (rv32_func3 == 3'b110);
 	wire rv32_func3_111 = (rv32_func3 == 3'b111);
 
-	wire rv16_func3_000 = (rv16_func3 == 3'b000);
-	wire rv16_func3_001 = (rv16_func3 == 3'b001);
-	wire rv16_func3_010 = (rv16_func3 == 3'b010);
-	wire rv16_func3_011 = (rv16_func3 == 3'b011);
-	wire rv16_func3_100 = (rv16_func3 == 3'b100);
-	wire rv16_func3_101 = (rv16_func3 == 3'b101);
-	wire rv16_func3_110 = (rv16_func3 == 3'b110);
-	wire rv16_func3_111 = (rv16_func3 == 3'b111);
+	// wire rv16_func3_000 = (rv16_func3 == 3'b000);
+	// wire rv16_func3_001 = (rv16_func3 == 3'b001);
+	// wire rv16_func3_010 = (rv16_func3 == 3'b010);
+	// wire rv16_func3_011 = (rv16_func3 == 3'b011);
+	// wire rv16_func3_100 = (rv16_func3 == 3'b100);
+	// wire rv16_func3_101 = (rv16_func3 == 3'b101);
+	// wire rv16_func3_110 = (rv16_func3 == 3'b110);
+	// wire rv16_func3_111 = (rv16_func3 == 3'b111);
 
 	wire rv32_func7_0000000 = (rv32_func7 == 7'b0000000);
 	wire rv32_func7_0100000 = (rv32_func7 == 7'b0100000);
@@ -192,10 +192,10 @@ module e203_exu_decode(
 	wire rv32_rd_x0  = (rv32_rd  == 5'b00000);
 	wire rv32_rd_x2  = (rv32_rd  == 5'b00010);
 
-	wire rv16_rs1_x0 = (rv16_rs1 == 5'b00000);
-	wire rv16_rs2_x0 = (rv16_rs2 == 5'b00000);
-	wire rv16_rd_x0  = (rv16_rd  == 5'b00000);
-	wire rv16_rd_x2  = (rv16_rd  == 5'b00010);
+	// wire rv16_rs1_x0 = (rv16_rs1 == 5'b00000);
+	// wire rv16_rs2_x0 = (rv16_rs2 == 5'b00000);
+	// wire rv16_rd_x0  = (rv16_rd  == 5'b00000);
+	// wire rv16_rd_x2  = (rv16_rd  == 5'b00010);
 
 	wire rv32_rs1_x31 = (rv32_rs1 == 5'b11111);
 	wire rv32_rs2_x31 = (rv32_rs2 == 5'b11111);
@@ -261,7 +261,7 @@ module e203_exu_decode(
 	// wire rv16_jalr_mv_add  = 1'b0;//opcode_1_0_10 & rv16_func3_100;//--
 	// wire rv16_swsp         = 1'b0;//opcode_1_0_10 & rv16_func3_110;//
 
-	`ifndef E203_HAS_FPU//{
+	// `ifndef E203_HAS_FPU//{
 	// wire rv16_flw          = 1'b0;
 	// wire rv16_fld          = 1'b0;
 	// wire rv16_fsw          = 1'b0;
@@ -270,7 +270,7 @@ module e203_exu_decode(
 	// wire rv16_flwsp        = 1'b0;
 	// wire rv16_fsdsp        = 1'b0;
 	// wire rv16_fswsp        = 1'b0;
-	`endif//}
+	// `endif//}
 
 	// wire rv16_lwsp_ilgl    = 1'B0;//rv16_lwsp & rv16_rd_x0;//(RES, rd=0)
 
@@ -280,13 +280,13 @@ module e203_exu_decode(
 	// wire rv16_srai         = 1'b0;//rv16_miscalu  & (rv16_instr[11:10] == 2'b01);
 	// wire rv16_andi         = 1'b0;//rv16_miscalu  & (rv16_instr[11:10] == 2'b10);
 
-	wire rv16_instr_12_is0   = (rv16_instr[12] == 1'b0);
-	wire rv16_instr_6_2_is0s = (rv16_instr[6:2] == 5'b0);
+	// wire rv16_instr_12_is0   = (rv16_instr[12] == 1'b0);
+	// wire rv16_instr_6_2_is0s = (rv16_instr[6:2] == 5'b0);
 
-	wire rv16_sxxi_shamt_legl = 
-								 rv16_instr_12_is0 //shamt[5] must be zero for RV32C
-							 & (~(rv16_instr_6_2_is0s)) //shamt[4:0] must be non-zero for RV32C
-								 ;
+	// wire rv16_sxxi_shamt_legl = 
+	// 							 rv16_instr_12_is0 //shamt[5] must be zero for RV32C
+	// 						 & (~(rv16_instr_6_2_is0s)) //shamt[4:0] must be non-zero for RV32C
+	// 							 ;
 	// wire rv16_sxxi_shamt_ilgl =  1'B0;//(rv16_slli //| rv16_srli 
 							//| rv16_srai
 							//) & (~rv16_sxxi_shamt_legl);
@@ -639,19 +639,19 @@ module e203_exu_decode(
 												& opcode_4_2_111 
 												& (opcode[1:0] == 2'b11); 
 
-	wire rv16_all0s_ilgl  = rv16_func3_000 //rv16_func3  = rv32_instr[15:13];
-												& rv32_func3_000 //rv32_func3  = rv32_instr[14:12];
-												& rv32_rd_x0     //rv32_rd     = rv32_instr[11:7];
-												& opcode_6_5_00 
-												& opcode_4_2_000 
-												& (opcode[1:0] == 2'b00); 
+	// wire rv16_all0s_ilgl  = rv16_func3_000 //rv16_func3  = rv32_instr[15:13];
+	// 											& rv32_func3_000 //rv32_func3  = rv32_instr[14:12];
+	// 											& rv32_rd_x0     //rv32_rd     = rv32_instr[11:7];
+	// 											& opcode_6_5_00 
+	// 											& opcode_4_2_000 
+	// 											& (opcode[1:0] == 2'b00); 
 
-	wire rv16_all1s_ilgl  = rv16_func3_111
-												& rv32_func3_111 
-												& rv32_rd_x31 
-												& opcode_6_5_11 
-												& opcode_4_2_111 
-												& (opcode[1:0] == 2'b11);
+	// wire rv16_all1s_ilgl  = rv16_func3_111
+	// 											& rv32_func3_111 
+	// 											& rv32_rd_x31 
+	// 											& opcode_6_5_11 
+	// 											& opcode_4_2_111 
+	// 											& (opcode[1:0] == 2'b11);
 	
 	wire rv_all0s1s_ilgl =   (rv32_all0s_ilgl | rv32_all1s_ilgl);
 
@@ -775,21 +775,21 @@ module e203_exu_decode(
 									 // It will select CIS-type immediate when
 									 //    * rv16_lwsp
 	// wire rv16_imm_sel_cis = 1'B0;//rv16_lwsp;
-	wire [31:0]  rv16_cis_imm ={
-													24'b0
-												, rv16_instr[3:2]
-												, rv16_instr[12]
-												, rv16_instr[6:4]
-												, 2'b0
-												 };
+	// wire [31:0]  rv16_cis_imm ={
+	// 												24'b0
+	// 											, rv16_instr[3:2]
+	// 											, rv16_instr[12]
+	// 											, rv16_instr[6:4]
+	// 											, 2'b0
+	// 											 };
 									 
-	wire [31:0]  rv16_cis_d_imm ={
-													23'b0
-												, rv16_instr[4:2]
-												, rv16_instr[12]
-												, rv16_instr[6:5]
-												, 3'b0
-												 };
+	// wire [31:0]  rv16_cis_d_imm ={
+	// 												23'b0
+	// 											, rv16_instr[4:2]
+	// 											, rv16_instr[12]
+	// 											, rv16_instr[6:5]
+	// 											, 3'b0
+	// 											 };
 									 // It will select CILI-type immediate when
 									 //    * rv16_li
 									 //    * rv16_addi
@@ -802,141 +802,141 @@ module e203_exu_decode(
 							//rv16_slli;
 							//| rv16_srai //| rv16_srli 
 							//| rv16_andi;
-	wire [31:0]  rv16_cili_imm ={
-													{26{rv16_instr[12]}}
-												, rv16_instr[12]
-												, rv16_instr[6:2]
-												 };
+	// wire [31:0]  rv16_cili_imm ={
+	// 												{26{rv16_instr[12]}}
+	// 											, rv16_instr[12]
+	// 											, rv16_instr[6:2]
+	// 											 };
 									 
 									 // It will select CILUI-type immediate when
 									 //    * rv16_lui
 	// wire rv16_imm_sel_cilui = 1'B0;//rv16_lui;
-	wire [31:0]  rv16_cilui_imm ={
-													{14{rv16_instr[12]}}
-												, rv16_instr[12]
-												, rv16_instr[6:2]
-												, 12'b0
-												 };
+	// wire [31:0]  rv16_cilui_imm ={
+	// 												{14{rv16_instr[12]}}
+	// 											, rv16_instr[12]
+	// 											, rv16_instr[6:2]
+	// 											, 12'b0
+	// 											 };
 									 
 									 // It will select CI16SP-type immediate when
 									 //    * rv16_addi16sp
 	//wire rv16_imm_sel_ci16sp = 1'b0;//rv16_addi16sp;
-	wire [31:0]  rv16_ci16sp_imm ={
-													{22{rv16_instr[12]}}
-												, rv16_instr[12]
-												, rv16_instr[4]
-												, rv16_instr[3]
-												, rv16_instr[5]
-												, rv16_instr[2]
-												, rv16_instr[6]
-												, 4'b0
-												 };
+	// wire [31:0]  rv16_ci16sp_imm ={
+	// 												{22{rv16_instr[12]}}
+	// 											, rv16_instr[12]
+	// 											, rv16_instr[4]
+	// 											, rv16_instr[3]
+	// 											, rv16_instr[5]
+	// 											, rv16_instr[2]
+	// 											, rv16_instr[6]
+	// 											, 4'b0
+	// 											 };
 									 
 									 // It will select CSS-type immediate when
 									 //    * rv16_swsp
 	// wire rv16_imm_sel_css = 1'B0;//rv16_swsp;
-	wire [31:0]  rv16_css_imm ={
-									24'b0
-								, rv16_instr[8:7]
-								, rv16_instr[12:9]
-								, 2'b0
-								 };
-	wire [31:0]  rv16_css_d_imm ={
-									23'b0
-								, rv16_instr[9:7]
-								, rv16_instr[12:10]
-								, 3'b0
-								 };
+	// wire [31:0]  rv16_css_imm ={
+	// 								24'b0
+	// 							, rv16_instr[8:7]
+	// 							, rv16_instr[12:9]
+	// 							, 2'b0
+	// 							 };
+	// wire [31:0]  rv16_css_d_imm ={
+	// 								23'b0
+	// 							, rv16_instr[9:7]
+	// 							, rv16_instr[12:10]
+	// 							, 3'b0
+	// 							 };
 									 // It will select CIW-type immediate when
 									 //    * rv16_addi4spn
 	// wire rv16_imm_sel_ciw = 1'b0;//rv16_addi4spn;
-	wire [31:0]  rv16_ciw_imm ={
-									22'b0
-								, rv16_instr[10:7]
-								, rv16_instr[12]
-								, rv16_instr[11]
-								, rv16_instr[5]
-								, rv16_instr[6]
-								, 2'b0
-								 };
+	// wire [31:0]  rv16_ciw_imm ={
+	// 								22'b0
+	// 							, rv16_instr[10:7]
+	// 							, rv16_instr[12]
+	// 							, rv16_instr[11]
+	// 							, rv16_instr[5]
+	// 							, rv16_instr[6]
+	// 							, 2'b0
+	// 							 };
 
 									 // It will select CL-type immediate when
 									 //    * rv16_lw
 	//wire rv16_imm_sel_cl = rv16_lw;
-	wire [31:0]  rv16_cl_imm ={
-									25'b0
-								, rv16_instr[5]
-								, rv16_instr[12]
-								, rv16_instr[11]
-								, rv16_instr[10]
-								, rv16_instr[6]
-								, 2'b0
-								 };
+	// wire [31:0]  rv16_cl_imm ={
+	// 								25'b0
+	// 							, rv16_instr[5]
+	// 							, rv16_instr[12]
+	// 							, rv16_instr[11]
+	// 							, rv16_instr[10]
+	// 							, rv16_instr[6]
+	// 							, 2'b0
+	// 							 };
 									 
-	wire [31:0]  rv16_cl_d_imm ={
-									24'b0
-								, rv16_instr[6]
-								, rv16_instr[5]
-								, rv16_instr[12]
-								, rv16_instr[11]
-								, rv16_instr[10]
-								, 3'b0
-								 };
+	// wire [31:0]  rv16_cl_d_imm ={
+	// 								24'b0
+	// 							, rv16_instr[6]
+	// 							, rv16_instr[5]
+	// 							, rv16_instr[12]
+	// 							, rv16_instr[11]
+	// 							, rv16_instr[10]
+	// 							, 3'b0
+	// 							 };
 									 // It will select CS-type immediate when
 									 //    * rv16_sw
 	//wire rv16_imm_sel_cs = rv16_sw;
-	wire [31:0]  rv16_cs_imm ={
-									25'b0
-								, rv16_instr[5]
-								, rv16_instr[12]
-								, rv16_instr[11]
-								, rv16_instr[10]
-								, rv16_instr[6]
-								, 2'b0
-								 };
-	 wire [31:0]  rv16_cs_d_imm ={
-									24'b0
-								, rv16_instr[6]
-								, rv16_instr[5]
-								, rv16_instr[12]
-								, rv16_instr[11]
-								, rv16_instr[10]
-								, 3'b0
-								 };
+	// wire [31:0]  rv16_cs_imm ={
+	// 								25'b0
+	// 							, rv16_instr[5]
+	// 							, rv16_instr[12]
+	// 							, rv16_instr[11]
+	// 							, rv16_instr[10]
+	// 							, rv16_instr[6]
+	// 							, 2'b0
+	// 							 };
+	 // wire [31:0]  rv16_cs_d_imm ={
+		// 							24'b0
+		// 						, rv16_instr[6]
+		// 						, rv16_instr[5]
+		// 						, rv16_instr[12]
+		// 						, rv16_instr[11]
+		// 						, rv16_instr[10]
+		// 						, 3'b0
+		// 						 };
 
 									 // It will select CB-type immediate when
 									 //    * rv16_beqz
 									 //    * rv16_bnez
 	// wire rv16_imm_sel_cb = 1'b0;//rv16_beqz | 
 						//rv16_bnez;
-	wire [31:0]  rv16_cb_imm ={
-									{23{rv16_instr[12]}}
-								, rv16_instr[12]
-								, rv16_instr[6:5]
-								, rv16_instr[2]
-								, rv16_instr[11:10]
-								, rv16_instr[4:3]
-								, 1'b0
-								 };
-	wire [31:0]  rv16_bxx_imm = rv16_cb_imm;
+	// wire [31:0]  rv16_cb_imm ={
+	// 								{23{rv16_instr[12]}}
+	// 							, rv16_instr[12]
+	// 							, rv16_instr[6:5]
+	// 							, rv16_instr[2]
+	// 							, rv16_instr[11:10]
+	// 							, rv16_instr[4:3]
+	// 							, 1'b0
+	// 							 };
+	// wire [31:0]  rv16_bxx_imm = rv16_cb_imm;
 
 									 // It will select CJ-type immediate when
 									 //    * rv16_j
 									 //    * rv16_jal
 	// wire rv16_imm_sel_cj = 1'b0;//rv16_j ;//| rv16_jal;
-	wire [31:0]  rv16_cj_imm ={
-									{20{rv16_instr[12]}}
-								, rv16_instr[12]
-								, rv16_instr[8]
-								, rv16_instr[10:9]
-								, rv16_instr[6]
-								, rv16_instr[7]
-								, rv16_instr[2]
-								, rv16_instr[11]
-								, rv16_instr[5:3]
-								, 1'b0
-								 };
-	wire [31:0]  rv16_jjal_imm = rv16_cj_imm;
+	// wire [31:0]  rv16_cj_imm ={
+	// 								{20{rv16_instr[12]}}
+	// 							, rv16_instr[12]
+	// 							, rv16_instr[8]
+	// 							, rv16_instr[10:9]
+	// 							, rv16_instr[6]
+	// 							, rv16_instr[7]
+	// 							, rv16_instr[2]
+	// 							, rv16_instr[11]
+	// 							, rv16_instr[5:3]
+	// 							, 1'b0
+	// 							 };
+	// wire [31:0]  rv16_jjal_imm = rv16_cj_imm;
 
 									 // It will select CR-type register (no-imm) when
 									 //    * rv16_jalr_mv_add
@@ -1052,14 +1052,14 @@ module e203_exu_decode(
 	// wire rv16_need_cr_rs1   = 1'B0;//rv16_format_cr & 1'b1;
 	// wire rv16_need_cr_rs2   = 1'B0;//rv16_format_cr & 1'b1;
 	// wire rv16_need_cr_rd    = 1'B0;//rv16_format_cr & 1'b1;
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_cr_rs1 = //rv16_mv ? `E203_RFIDX_WIDTH'd0 : 
-												rv16_rs1[`E203_RFIDX_WIDTH-1:0];
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_cr_rs2 = rv16_rs2[`E203_RFIDX_WIDTH-1:0];
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_cr_rs1 = //rv16_mv ? `E203_RFIDX_WIDTH'd0 : 
+	// 											rv16_rs1[`E203_RFIDX_WIDTH-1:0];
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_cr_rs2 = rv16_rs2[`E203_RFIDX_WIDTH-1:0];
 		 // The JALR and JR difference in encoding is just the rv16_instr[12]
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_cr_rd  = //(rv16_jalr //| rv16_jr
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_cr_rd  = //(rv16_jalr //| rv16_jr
 												//)? 
 								// {{`E203_RFIDX_WIDTH-1{1'b0}},rv16_instr[12]} : 
-								 rv16_rd[`E203_RFIDX_WIDTH-1:0];
+								 // rv16_rd[`E203_RFIDX_WIDTH-1:0];
 												 
 	// In CI Cases:
 	//   * LWSP:     rs1= x2 (implicit),  rd = rd 
@@ -1070,41 +1070,41 @@ module e203_exu_decode(
 	// wire rv16_need_ci_rs1   = 1'B0;//rv16_format_ci & 1'b1;
 	// wire rv16_need_ci_rs2   = 1'B0;//rv16_format_ci & 1'b0;
 	// wire rv16_need_ci_rd    = 1'B0;//rv16_format_ci & 1'b1;
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_ci_rs1 = //(//rv16_lwsp | 
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_ci_rs1 = //(//rv16_lwsp | 
 												//	rv16_flwsp //| rv16_fldsp
 												//	) ? `E203_RFIDX_WIDTH'd2 :
 																	//(//rv16_li | 
 																	//	rv16_lui) ? `E203_RFIDX_WIDTH'd0 : 
-												rv16_rs1[`E203_RFIDX_WIDTH-1:0];
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_ci_rs2 = `E203_RFIDX_WIDTH'd0;
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_ci_rd  = rv16_rd[`E203_RFIDX_WIDTH-1:0];
+												// rv16_rs1[`E203_RFIDX_WIDTH-1:0];
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_ci_rs2 = `E203_RFIDX_WIDTH'd0;
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_ci_rd  = rv16_rd[`E203_RFIDX_WIDTH-1:0];
 												
 	// In CSS Cases:
 	//   * SWSP:     rs1 = x2 (implicit), rs2= rs2 
 	// wire rv16_need_css_rs1  = 1'B0;//rv16_format_css & 1'b1;
 	// wire rv16_need_css_rs2  = 1'B0;//rv16_format_css & 1'b1;
 	// wire rv16_need_css_rd   = 1'B0;//rv16_format_css & 1'b0;
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_css_rs1 = `E203_RFIDX_WIDTH'd2;
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_css_rs2 = rv16_rs2[`E203_RFIDX_WIDTH-1:0];
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_css_rd  = `E203_RFIDX_WIDTH'd0;
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_css_rs1 = `E203_RFIDX_WIDTH'd2;
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_css_rs2 = rv16_rs2[`E203_RFIDX_WIDTH-1:0];
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_css_rd  = `E203_RFIDX_WIDTH'd0;
 											 
 	// In CIW cases:
 	//   * ADDI4SPN:   rdd = rdd, rss1= x2 (implicit)
 	// wire rv16_need_ciw_rss1 = 1'B0;//rv16_format_ciw & 1'b1;
 	// wire rv16_need_ciw_rss2 = 1'B0;//rv16_format_ciw & 1'b0;
 	// wire rv16_need_ciw_rdd  = 1'B0;//rv16_format_ciw & 1'b1;
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_ciw_rss1  = `E203_RFIDX_WIDTH'd2;
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_ciw_rss2  = `E203_RFIDX_WIDTH'd0;
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_ciw_rdd  = rv16_rdd[`E203_RFIDX_WIDTH-1:0];
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_ciw_rss1  = `E203_RFIDX_WIDTH'd2;
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_ciw_rss2  = `E203_RFIDX_WIDTH'd0;
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_ciw_rdd  = rv16_rdd[`E203_RFIDX_WIDTH-1:0];
 											
 	// In CL cases:
 	//   * LW:   rss1 = rss1, rdd= rdd
 	// wire rv16_need_cl_rss1  = 1'B0;//rv16_format_cl & 1'b1;
 	// wire rv16_need_cl_rss2  = 1'B0;//rv16_format_cl & 1'b0;
 	// wire rv16_need_cl_rdd   = 1'B0;//rv16_format_cl & 1'b1;
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_cl_rss1 = rv16_rss1[`E203_RFIDX_WIDTH-1:0];
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_cl_rss2 = `E203_RFIDX_WIDTH'd0;
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_cl_rdd  = rv16_rdd[`E203_RFIDX_WIDTH-1:0];
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_cl_rss1 = rv16_rss1[`E203_RFIDX_WIDTH-1:0];
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_cl_rss2 = `E203_RFIDX_WIDTH'd0;
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_cl_rdd  = rv16_rdd[`E203_RFIDX_WIDTH-1:0];
 										 
 	// In CS cases:
 	//   * SW:            rdd = none(implicit), rss1= rss1       , rss2=rss2
@@ -1112,9 +1112,9 @@ module e203_exu_decode(
 	// wire rv16_need_cs_rss1  = 1'B0;//rv16_format_cs & 1'b1;
 	// wire rv16_need_cs_rss2  = 1'B0;//rv16_format_cs & 1'b1;
 	// wire rv16_need_cs_rdd   = 1'b0;//rv16_format_cs & rv16_subxororand;
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_cs_rss1 = rv16_rss1[`E203_RFIDX_WIDTH-1:0];
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_cs_rss2 = rv16_rss2[`E203_RFIDX_WIDTH-1:0];
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_cs_rdd  = rv16_rss1[`E203_RFIDX_WIDTH-1:0];
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_cs_rss1 = rv16_rss1[`E203_RFIDX_WIDTH-1:0];
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_cs_rss2 = rv16_rss2[`E203_RFIDX_WIDTH-1:0];
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_cs_rdd  = rv16_rss1[`E203_RFIDX_WIDTH-1:0];
 										
 	// In CB cases:
 	//   * BEQ/BNE:            rdd = none(implicit), rss1= rss1, rss2=x0(implicit)
@@ -1124,9 +1124,9 @@ module e203_exu_decode(
 												//rv16_bnez);
 	// wire rv16_need_cb_rdd   = 1'b0;//rv16_format_cb ;//& (~(//rv16_beqz | 
 												//rv16_bnez));
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_cb_rss1 = rv16_rss1[`E203_RFIDX_WIDTH-1:0];
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_cb_rss2 = `E203_RFIDX_WIDTH'd0;
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_cb_rdd  = rv16_rss1[`E203_RFIDX_WIDTH-1:0];
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_cb_rss1 = rv16_rss1[`E203_RFIDX_WIDTH-1:0];
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_cb_rss2 = `E203_RFIDX_WIDTH'd0;
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_cb_rdd  = rv16_rss1[`E203_RFIDX_WIDTH-1:0];
 	
 	// In CJ cases:
 	//   * J:            rdd = x0(implicit)
@@ -1134,10 +1134,10 @@ module e203_exu_decode(
 	// wire rv16_need_cj_rss1  = 1'B0;//rv16_format_cj & 1'b0;
 	// wire rv16_need_cj_rss2  = 1'B0;//rv16_format_cj & 1'b0;
 	//wire rv16_need_cj_rdd   = 1'B0;//rv16_format_cj & 1'b1;
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_cj_rss1 = `E203_RFIDX_WIDTH'd0;
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_cj_rss2 = `E203_RFIDX_WIDTH'd0;
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_cj_rdd  = //rv16_j ? `E203_RFIDX_WIDTH'd0 :
-												 `E203_RFIDX_WIDTH'd1;
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_cj_rss1 = `E203_RFIDX_WIDTH'd0;
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_cj_rss2 = `E203_RFIDX_WIDTH'd0;
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_cj_rdd  = //rv16_j ? `E203_RFIDX_WIDTH'd0 :
+												 // `E203_RFIDX_WIDTH'd1;
 
 	// rv16_format_cr  
 	// rv16_format_ci  
@@ -1179,11 +1179,11 @@ module e203_exu_decode(
 					//rv16_need_rss2);
 	// wire rv16_rden  = 1'B0;//(rv16_need_rd  | rv16_need_rdd );
 
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_rs1idx;
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_rs2idx;
-	wire [`E203_RFIDX_WIDTH-1:0] rv16_rdidx ;
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_rs1idx;
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_rs2idx;
+	// wire [`E203_RFIDX_WIDTH-1:0] rv16_rdidx ;
 
-	assign rv16_rs1idx = {`E203_RFIDX_WIDTH{1'B0}}
+	// assign rv16_rs1idx = {`E203_RFIDX_WIDTH{1'B0}}
 				 //({`E203_RFIDX_WIDTH{rv16_need_cr_rs1 }} & rv16_cr_rs1)
 			 //| 
 			 //({`E203_RFIDX_WIDTH{rv16_need_ci_rs1 }} & rv16_ci_rs1)
@@ -1197,9 +1197,9 @@ module e203_exu_decode(
 			 //({`E203_RFIDX_WIDTH{rv16_need_cs_rss1}}  & rv16_cs_rss1)
 			 //| ({`E203_RFIDX_WIDTH{rv16_need_cb_rss1}}  & rv16_cb_rss1)
 			 //| ({`E203_RFIDX_WIDTH{rv16_need_cj_rss1}}  & rv16_cj_rss1)
-			 ;
+			 // ;
 
-	assign rv16_rs2idx = {`E203_RFIDX_WIDTH{1'B0}}
+	// assign rv16_rs2idx = {`E203_RFIDX_WIDTH{1'B0}}
 				 //({`E203_RFIDX_WIDTH{rv16_need_cr_rs2 }} & rv16_cr_rs2)
 			 //| 
 			 //({`E203_RFIDX_WIDTH{rv16_need_ci_rs2 }} & rv16_ci_rs2)
@@ -1213,9 +1213,9 @@ module e203_exu_decode(
 			 //({`E203_RFIDX_WIDTH{rv16_need_cs_rss2}}  & rv16_cs_rss2)
 			 //| ({`E203_RFIDX_WIDTH{rv16_need_cb_rss2}}  & rv16_cb_rss2)
 			 //| ({`E203_RFIDX_WIDTH{rv16_need_cj_rss2}}  & rv16_cj_rss2)
-			 ;
+			 // ;
 
-	assign rv16_rdidx = {`E203_RFIDX_WIDTH{1'B0}}
+	// assign rv16_rdidx = {`E203_RFIDX_WIDTH{1'B0}}
 				// ({`E203_RFIDX_WIDTH{rv16_need_cr_rd }} & rv16_cr_rd)
 			 //| 
 			 //({`E203_RFIDX_WIDTH{rv16_need_ci_rd }} & rv16_ci_rd)
@@ -1229,7 +1229,7 @@ module e203_exu_decode(
 			 //({`E203_RFIDX_WIDTH{rv16_need_cs_rdd}}  & rv16_cs_rdd)
 			 //| ({`E203_RFIDX_WIDTH{rv16_need_cb_rdd}}  & rv16_cb_rdd)
 			 //| ({`E203_RFIDX_WIDTH{rv16_need_cj_rdd}}  & rv16_cj_rdd)
-			 ;
+			 // ;
 
 	assign dec_rs1idx = rv32_rs1[`E203_RFIDX_WIDTH-1:0];
 	assign dec_rs2idx = rv32_rs2[`E203_RFIDX_WIDTH-1:0];
