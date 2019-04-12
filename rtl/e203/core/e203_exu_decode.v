@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-12 16:44:03
+// Last Modified time: 2019-04-12 16:53:47
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_exu_decode
@@ -102,13 +102,13 @@ module e203_exu_decode(
 
   wire [6:0]  opcode = rv32_instr[6:0];
 
-  wire opcode_1_0_00  = (opcode[1:0] == 2'b00);
-  wire opcode_1_0_01  = (opcode[1:0] == 2'b01);
-  wire opcode_1_0_10  = (opcode[1:0] == 2'b10);
-  wire opcode_1_0_11  = (opcode[1:0] == 2'b11);
+  wire opcode_1_0_00  = 1'b0;
+  wire opcode_1_0_01  = 1'b0;
+  wire opcode_1_0_10  = 1'b0;
+  wire opcode_1_0_11  = 1'b1;
 
 //恒为1
-wire rv32 = (~(i_instr[4:2] == 3'b111)) & opcode_1_0_11;
+wire rv32 = 1'b1;
 
   wire [4:0]  rv32_rd     = rv32_instr[11:7];
   wire [2:0]  rv32_func3  = rv32_instr[14:12];
@@ -371,7 +371,7 @@ wire rv32 = (~(i_instr[4:2] == 3'b111)) & opcode_1_0_11;
 
   wire [`E203_DECINFO_BJP_WIDTH-1:0] bjp_info_bus;
   assign bjp_info_bus[`E203_DECINFO_GRP    ]    = `E203_DECINFO_GRP_BJP;
-  assign bjp_info_bus[`E203_DECINFO_RV32   ]    = rv32;
+  assign bjp_info_bus[`E203_DECINFO_RV32   ]    = 1'b1;
   assign bjp_info_bus[`E203_DECINFO_BJP_JUMP ]  = dec_jal | dec_jalr;
   assign bjp_info_bus[`E203_DECINFO_BJP_BPRDT]  = i_prdt_taken;
   assign bjp_info_bus[`E203_DECINFO_BJP_BEQ  ]  = rv32_beq | rv16_beqz;
@@ -438,7 +438,7 @@ wire rv32 = (~(i_instr[4:2] == 3'b111)) & opcode_1_0_11;
   wire need_imm;
   wire [`E203_DECINFO_ALU_WIDTH-1:0] alu_info_bus;
   assign alu_info_bus[`E203_DECINFO_GRP    ]    = `E203_DECINFO_GRP_ALU;
-  assign alu_info_bus[`E203_DECINFO_RV32   ]    = rv32;
+  assign alu_info_bus[`E203_DECINFO_RV32   ]    = 1'b1;
   assign alu_info_bus[`E203_DECINFO_ALU_ADD]    = rv32_add  | rv32_addi | rv32_auipc |
                                                   rv16_addi4spn | rv16_addi | rv16_addi16sp | rv16_add |
                             // We also decode LI and MV as the add instruction, becuase
@@ -466,7 +466,7 @@ wire rv32 = (~(i_instr[4:2] == 3'b111)) & opcode_1_0_11;
   wire csr_op = rv32_csr;
   wire [`E203_DECINFO_CSR_WIDTH-1:0] csr_info_bus;
   assign csr_info_bus[`E203_DECINFO_GRP    ]    = `E203_DECINFO_GRP_CSR;
-  assign csr_info_bus[`E203_DECINFO_RV32   ]    = rv32;
+  assign csr_info_bus[`E203_DECINFO_RV32   ]    = 1'b1;
   assign csr_info_bus[`E203_DECINFO_CSR_CSRRW ] = rv32_csrrw | rv32_csrrwi; 
   assign csr_info_bus[`E203_DECINFO_CSR_CSRRS ] = rv32_csrrs | rv32_csrrsi;
   assign csr_info_bus[`E203_DECINFO_CSR_CSRRC ] = rv32_csrrc | rv32_csrrci;
@@ -505,7 +505,7 @@ wire rv32 = (~(i_instr[4:2] == 3'b111)) & opcode_1_0_11;
 
   wire [`E203_DECINFO_MULDIV_WIDTH-1:0] muldiv_info_bus;
   assign muldiv_info_bus[`E203_DECINFO_GRP          ] = `E203_DECINFO_GRP_MULDIV;
-  assign muldiv_info_bus[`E203_DECINFO_RV32         ] = rv32        ;
+  assign muldiv_info_bus[`E203_DECINFO_RV32         ] = 1'b1        ;
   assign muldiv_info_bus[`E203_DECINFO_MULDIV_MUL   ] = rv32_mul    ;   
   assign muldiv_info_bus[`E203_DECINFO_MULDIV_MULH  ] = rv32_mulh   ;
   assign muldiv_info_bus[`E203_DECINFO_MULDIV_MULHSU] = rv32_mulhsu ;
@@ -569,13 +569,13 @@ wire rv32 = (~(i_instr[4:2] == 3'b111)) & opcode_1_0_11;
 
   wire   amoldst_op = rv32_amo | rv32_load | rv32_store | rv16_lw | rv16_sw | (rv16_lwsp & (~rv16_lwsp_ilgl)) | rv16_swsp;
     // The RV16 always is word
-  wire [1:0] lsu_info_size  = rv32 ? rv32_func3[1:0] : 2'b10;
+  wire [1:0] lsu_info_size  =  rv32_func3[1:0] ;
     // The RV16 always is signed
-  wire       lsu_info_usign = rv32? rv32_func3[2] : 1'b0;
+  wire       lsu_info_usign =  rv32_func3[2] ;
 
   wire [`E203_DECINFO_AGU_WIDTH-1:0] agu_info_bus;
   assign agu_info_bus[`E203_DECINFO_GRP    ] = `E203_DECINFO_GRP_AGU;
-  assign agu_info_bus[`E203_DECINFO_RV32   ] = rv32;
+  assign agu_info_bus[`E203_DECINFO_RV32   ] = 1'b1;
   assign agu_info_bus[`E203_DECINFO_AGU_LOAD   ] = rv32_load  | rv32_lr_w | rv16_lw | rv16_lwsp;
   assign agu_info_bus[`E203_DECINFO_AGU_STORE  ] = rv32_store | rv32_sc_w | rv16_sw | rv16_swsp;
   assign agu_info_bus[`E203_DECINFO_AGU_SIZE   ] = lsu_info_size;
@@ -629,8 +629,7 @@ wire rv32 = (~(i_instr[4:2] == 3'b111)) & opcode_1_0_11;
                         & opcode_4_2_111 
                         & (opcode[1:0] == 2'b11);
   
-  wire rv_all0s1s_ilgl = rv32 ?  (rv32_all0s_ilgl | rv32_all1s_ilgl)
-                              :  (rv16_all0s_ilgl | rv16_all1s_ilgl);
+  wire rv_all0s1s_ilgl =   (rv32_all0s_ilgl | rv32_all1s_ilgl);
 
   //
   // All the RV32IMA need RD register except the
@@ -964,9 +963,9 @@ wire rv32 = (~(i_instr[4:2] == 3'b111)) & opcode_1_0_11;
                    ;
 
 
-  assign need_imm = rv32 ? rv32_need_imm : rv16_need_imm; 
+  assign need_imm =  rv32_need_imm ; 
 
-  assign dec_imm = rv32 ? rv32_imm : rv16_imm;
+  assign dec_imm =  rv32_imm ;
   assign dec_pc  = i_pc;
 
   
@@ -1142,14 +1141,14 @@ wire rv32 = (~(i_instr[4:2] == 3'b111)) & opcode_1_0_11;
        | ({`E203_RFIDX_WIDTH{rv16_need_cj_rdd}}  & rv16_cj_rdd)
        ;
 
-  assign dec_rs1idx = rv32 ? rv32_rs1[`E203_RFIDX_WIDTH-1:0] : rv16_rs1idx;
-  assign dec_rs2idx = rv32 ? rv32_rs2[`E203_RFIDX_WIDTH-1:0] : rv16_rs2idx;
-  assign dec_rdidx  = rv32 ? rv32_rd [`E203_RFIDX_WIDTH-1:0] : rv16_rdidx ;
+  assign dec_rs1idx = rv32_rs1[`E203_RFIDX_WIDTH-1:0];
+  assign dec_rs2idx = rv32_rs2[`E203_RFIDX_WIDTH-1:0];
+  assign dec_rdidx  = rv32_rd [`E203_RFIDX_WIDTH-1:0];
 
 
-  assign dec_rs1en = rv32 ? rv32_need_rs1 : (rv16_rs1en & (~(rv16_rs1idx == `E203_RFIDX_WIDTH'b0))); 
-  assign dec_rs2en = rv32 ? rv32_need_rs2 : (rv16_rs2en & (~(rv16_rs2idx == `E203_RFIDX_WIDTH'b0)));
-  assign dec_rdwen = rv32 ? rv32_need_rd  : (rv16_rden  & (~(rv16_rdidx  == `E203_RFIDX_WIDTH'b0)));
+  assign dec_rs1en = rv32_need_rs1; 
+  assign dec_rs2en = rv32_need_rs2;
+  assign dec_rdwen = rv32_need_rd;
 
   assign dec_rs1x0 = (dec_rs1idx == `E203_RFIDX_WIDTH'b0);
   assign dec_rs2x0 = (dec_rs2idx == `E203_RFIDX_WIDTH'b0);
@@ -1192,7 +1191,7 @@ wire rv32 = (~(i_instr[4:2] == 3'b111)) & opcode_1_0_11;
                    | ({32{rv32_branch           }} & rv32_bxx_imm)
                    ;
 
-  assign dec_jalr_rs1idx = rv32 ? rv32_rs1[`E203_RFIDX_WIDTH-1:0] : rv16_rs1[`E203_RFIDX_WIDTH-1:0]; 
+  assign dec_jalr_rs1idx = rv32_rs1[`E203_RFIDX_WIDTH-1:0]; 
 
   assign dec_misalgn = i_misalgn;
   assign dec_buserr  = i_buserr ;
