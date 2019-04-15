@@ -1,3 +1,24 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Company:   
+// Engineer: Ruige_Lee
+// Create Date: 2019-02-17 17:25:12
+// Last Modified by:   Ruige_Lee
+// Last Modified time: 2019-04-10 15:03:29
+// Email: 295054118@whut.edu.cn
+// Design Name:   
+// Module Name: config
+// Project Name:   
+// Target Devices:   
+// Tool Versions:   
+// Description:   
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision:    -   
+// Additional Comments:  
+// 
+//////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////
 // Company:    
@@ -7,7 +28,7 @@
 // Last Modified time: 2019-02-01 18:07:14
 // Email: 295054118@whut.edu.cn
 // Design Name: config.v  
-// Module Name:  
+// Module Name: config
 // Project Name:    
 // Target Devices:    
 // Tool Versions:    

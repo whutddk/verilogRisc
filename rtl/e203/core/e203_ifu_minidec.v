@@ -1,3 +1,24 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Company:   
+// Engineer: Ruige_Lee
+// Create Date: 2019-02-17 17:25:12
+// Last Modified by:   Ruige_Lee
+// Last Modified time: 2019-04-12 16:43:21
+// Email: 295054118@whut.edu.cn
+// Design Name:   
+// Module Name: e203_ifu_minidec
+// Project Name:   
+// Target Devices:   
+// Tool Versions:   
+// Description:   
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision:    -   
+// Additional Comments:  
+// 
+//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -47,7 +68,7 @@ module e203_ifu_minidec(
   output dec_divu  ,
   output dec_remu  ,
 
-  output dec_rv32,
+  // output dec_rv32,
   output dec_bjp,
   output dec_jal,
   output dec_jalr,
@@ -93,7 +114,7 @@ module e203_ifu_minidec(
   .dec_divu  (dec_divu  ),
   .dec_remu  (dec_remu  ),
 
-  .dec_rv32(dec_rv32),
+  // .dec_rv32(dec_rv32),
   .dec_bjp (dec_bjp ),
   .dec_jal (dec_jal ),
   .dec_jalr(dec_jalr),

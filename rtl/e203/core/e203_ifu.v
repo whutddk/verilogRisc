@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-01 16:33:19
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-08 14:11:11
+// Last Modified time: 2019-04-12 16:41:47
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu
@@ -50,22 +50,9 @@
 module e203_ifu(
 	output[`E203_PC_SIZE-1:0] inspect_pc,
 	output ifu_active,
-	input  itcm_nohold,
 
 	input  [`E203_PC_SIZE-1:0] pc_rtvec,  
 	
-`ifdef E203_HAS_ITCM //{
-input  ifu2itcm_holdup,
-input [`E203_ADDR_SIZE-1:0] itcm_region_indic,
-output ifu2itcm_icb_cmd_valid, // Handshake valid
-input  ifu2itcm_icb_cmd_ready, // Handshake ready
-output [`E203_ITCM_ADDR_WIDTH-1:0]   ifu2itcm_icb_cmd_addr, // Bus transaction start addr 
-input  ifu2itcm_icb_rsp_valid, // Response valid 
-output ifu2itcm_icb_rsp_ready, // Response ready
-input  ifu2itcm_icb_rsp_err,   // Response error
-input  [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata, 
-`endif//}
-
 	//////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////
 	// The IR stage to EXU interface
@@ -118,27 +105,28 @@ input  [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata,
 	wire ifu_req_valid; 
 	wire ifu_req_ready; 
 	wire [`E203_PC_SIZE-1:0]   ifu_req_pc; 
-	wire ifu_req_seq;
-	wire ifu_req_seq_rv32;
-	wire [`E203_PC_SIZE-1:0] ifu_req_last_pc;
+	// wire ifu_req_seq;
+	// wire ifu_req_seq_rv32;
+	// wire [`E203_PC_SIZE-1:0] ifu_req_last_pc;
 	wire ifu_rsp_valid; 
 	wire ifu_rsp_ready; 
-	wire ifu_rsp_err;    
+	// wire ifu_rsp_err;    
 	wire [`E203_INSTR_SIZE-1:0] ifu_rsp_instr; 
+
 (* DONT_TOUCH = "TRUE" *)
 	e203_ifu_ifetch u_e203_ifu_ifetch(
 		.inspect_pc   (inspect_pc),
 		.pc_rtvec      (pc_rtvec),  
-		.ifu_req_valid (ifu_req_valid),
-		.ifu_req_ready (ifu_req_ready),
-		.ifu_req_pc    (ifu_req_pc   ),
-		.ifu_req_seq     (ifu_req_seq     ),
-		.ifu_req_seq_rv32(ifu_req_seq_rv32),
-		.ifu_req_last_pc (ifu_req_last_pc ),
-		.ifu_rsp_valid (ifu_rsp_valid),
-		.ifu_rsp_ready (ifu_rsp_ready),
-		.ifu_rsp_err   (ifu_rsp_err  ),
-		.ifu_rsp_instr (ifu_rsp_instr),
+.ifu_req_valid (ifu_req_valid),
+.ifu_req_ready (ifu_req_ready),
+.ifu_req_pc    (ifu_req_pc   ),
+		.ifu_req_seq     (),
+		// .ifu_req_seq_rv32(),
+		.ifu_req_last_pc (),
+.ifu_rsp_valid (ifu_rsp_valid),
+.ifu_rsp_ready (ifu_rsp_ready),
+		.ifu_rsp_err   (1'b0),
+.ifu_rsp_instr (ifu_rsp_instr),
 		.ifu_o_ir      (ifu_o_ir     ),
 		.ifu_o_pc      (ifu_o_pc     ),
 		.ifu_o_pc_vld  (ifu_o_pc_vld ),
@@ -178,31 +166,18 @@ input  [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata,
 
 
 (* DONT_TOUCH = "TRUE" *)
-	e203_ifu_ift2icb u_e203_ifu_ift2icb (
+	e203_ifu_ift2itcm u_e203_ifu_ift2itcm (
 		.ifu_req_valid (ifu_req_valid),
 		.ifu_req_ready (ifu_req_ready),
 		.ifu_req_pc    (ifu_req_pc   ),
-		.ifu_req_seq     (ifu_req_seq     ),
-		.ifu_req_seq_rv32(ifu_req_seq_rv32),
-		.ifu_req_last_pc (ifu_req_last_pc ),
+		// .ifu_req_seq     (ifu_req_seq     ),
+		// .ifu_req_seq_rv32(ifu_req_seq_rv32),
+		// .ifu_req_last_pc (ifu_req_last_pc ),
 		.ifu_rsp_valid (ifu_rsp_valid),
 		.ifu_rsp_ready (ifu_rsp_ready),
-		.ifu_rsp_err   (ifu_rsp_err  ),
+		// .ifu_rsp_err   (ifu_rsp_err  ),
 		.ifu_rsp_instr (ifu_rsp_instr),
-		.itcm_nohold   (itcm_nohold),
 
-`ifdef E203_HAS_ITCM
-.itcm_region_indic (itcm_region_indic),
-.ifu2itcm_icb_cmd_valid(ifu2itcm_icb_cmd_valid),
-.ifu2itcm_icb_cmd_ready(ifu2itcm_icb_cmd_ready),
-.ifu2itcm_icb_cmd_addr (ifu2itcm_icb_cmd_addr ),
-.ifu2itcm_icb_rsp_valid(ifu2itcm_icb_rsp_valid),
-.ifu2itcm_icb_rsp_ready(ifu2itcm_icb_rsp_ready),
-.ifu2itcm_icb_rsp_err  (ifu2itcm_icb_rsp_err  ),
-.ifu2itcm_icb_rsp_rdata(ifu2itcm_icb_rsp_rdata),
-
-.ifu2itcm_holdup (ifu2itcm_holdup),
-`endif
 
 		.clk           (clk          ),
 		.rst_n         (rst_n        ) 
