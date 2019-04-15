@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-01 16:33:19
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-12 16:42:42
+// Last Modified time: 2019-04-15 17:39:58
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu_ifetch
@@ -242,11 +242,11 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 
 	// The ir valid is set when there is new instruction fetched *and* 
 	//   no flush happening 
-	wire ifu_rsp_need_replay;
+	// wire ifu_rsp_need_replay;
 	wire pc_newpend_r;
 	wire ifu_ir_i_ready;
-	assign ir_valid_set  = ifu_rsp_hsked & (~pipe_flush_req_real) & (~ifu_rsp_need_replay);
-	assign ir_pc_vld_set = pc_newpend_r & ifu_ir_i_ready & (~pipe_flush_req_real) & (~ifu_rsp_need_replay);
+	assign ir_valid_set  = ifu_rsp_hsked & (~pipe_flush_req_real) ;
+	assign ir_pc_vld_set = pc_newpend_r & ifu_ir_i_ready & (~pipe_flush_req_real);
 	// The ir valid is cleared when it is accepted by EXU stage *or*
 	//   the flush happening 
 	assign ir_valid_clr  = ifu_ir_o_hsked | (pipe_flush_hsked & ir_valid_r);
@@ -457,51 +457,39 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 
 	wire bjp_req = minidec_bjp & prdt_taken;
 
-	wire ifetch_replay_req;
+	// wire ifetch_replay_req;
 
 	wire [`E203_PC_SIZE-1:0] pc_add_op1 = 
-			`ifndef E203_TIMING_BOOST//}
-				pipe_flush_req  ? pipe_flush_add_op1 :
-				dly_pipe_flush_req  ? pc_r :
-			`endif//}
-				ifetch_replay_req  ? pc_r :
 				bjp_req ? prdt_pc_add_op1    :
 				ifu_reset_req   ? pc_rtvec :
 				pc_r;
 
 	wire [`E203_PC_SIZE-1:0] pc_add_op2 =  
-			`ifndef E203_TIMING_BOOST//}
-				pipe_flush_req  ? pipe_flush_add_op2 :
-				dly_pipe_flush_req  ? `E203_PC_SIZE'b0 :
-			`endif//}
-				ifetch_replay_req  ? `E203_PC_SIZE'b0 :
 				bjp_req ? prdt_pc_add_op2    :
 				ifu_reset_req   ? `E203_PC_SIZE'b0 :
 				pc_incr_ofst ;
 
-	assign ifu_req_seq = (~pipe_flush_req_real) & (~ifu_reset_req) & (~ifetch_replay_req) & (~bjp_req);
+	assign ifu_req_seq = (~pipe_flush_req_real) & (~ifu_reset_req) & (~bjp_req);
 	// assign ifu_req_seq_rv32 = minidec_rv32;
 	assign ifu_req_last_pc = pc_r;
 
 	assign pc_nxt_pre = pc_add_op1 + pc_add_op2;
-	`ifndef E203_TIMING_BOOST//}
-	assign pc_nxt = {pc_nxt_pre[`E203_PC_SIZE-1:1],1'b0};
-	`else//}{
+
 	assign pc_nxt = 
 			pipe_flush_req ? {pipe_flush_pc[`E203_PC_SIZE-1:1],1'b0} :
 			dly_pipe_flush_req ? {pc_r[`E203_PC_SIZE-1:1],1'b0} :
 			{pc_nxt_pre[`E203_PC_SIZE-1:1],1'b0};
-	`endif//}
+
 
 	// The Ifetch issue new ifetch request when
 	//   * If it is a bjp insturction, and it does not need to wait, and it is not a replay-set cycle
 	//   * and there is no halt_request
-	wire ifu_new_req = (~bpu_wait) & (~ifu_halt_req) & (~reset_flag_r) & (~ifu_rsp_need_replay);
+	wire ifu_new_req = (~bpu_wait) & (~ifu_halt_req) & (~reset_flag_r);
 
 	// The fetch request valid is triggering when
 	//      * New ifetch request
 	//      * or The flush-request is pending
-	wire ifu_req_valid_pre = ifu_new_req | ifu_reset_req | pipe_flush_req_real | ifetch_replay_req;
+	wire ifu_req_valid_pre = ifu_new_req | ifu_reset_req | pipe_flush_req_real;
 	// The new request ready condition is:
 	//   * No outstanding reqeusts
 	//   * Or if there is outstanding, but it is reponse valid back
@@ -554,8 +542,8 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 	sirv_gnrl_dfflr #(1) pc_newpend_dfflr (pc_newpend_ena, pc_newpend_nxt, pc_newpend_r, clk, rst_n);
 
 
-	assign ifu_rsp_need_replay = 1'b0;
-	assign ifetch_replay_req = 1'b0;
+	// assign ifu_rsp_need_replay = 1'b0;
+	// assign ifetch_replay_req = 1'b0;
 
 	`ifndef FPGA_SOURCE//{
 	`ifndef DISABLE_SV_ASSERTION//{
