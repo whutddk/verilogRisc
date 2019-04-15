@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-12 20:39:31
+// Last Modified time: 2019-04-15 17:05:25
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_exu_decode
@@ -456,12 +456,8 @@ module e203_exu_decode(
 	wire [`E203_DECINFO_AGU_WIDTH-1:0] agu_info_bus;
 	assign agu_info_bus[`E203_DECINFO_GRP    ] = `E203_DECINFO_GRP_AGU;
 	assign agu_info_bus[`E203_DECINFO_RV32   ] = 1'b1;
-	assign agu_info_bus[`E203_DECINFO_AGU_LOAD   ] = rv32_load  | rv32_lr_w //| rv16_lw 
-													//| rv16_lwsp
-													;
+	assign agu_info_bus[`E203_DECINFO_AGU_LOAD   ] = rv32_load  | rv32_lr_w ;
 	assign agu_info_bus[`E203_DECINFO_AGU_STORE  ] = rv32_store | rv32_sc_w ;
-													//| rv16_sw 
-													//| rv16_swsp
 	assign agu_info_bus[`E203_DECINFO_AGU_SIZE   ] = lsu_info_size;
 	assign agu_info_bus[`E203_DECINFO_AGU_USIGN  ] = lsu_info_usign;
 	assign agu_info_bus[`E203_DECINFO_AGU_EXCL   ] = rv32_lr_w | rv32_sc_w;
@@ -498,8 +494,7 @@ module e203_exu_decode(
 												& opcode_6_5_11 
 												& opcode_4_2_111 
 												& (opcode[1:0] == 2'b11); 
-
-									& (opcode[1:0] == 2'b11);
+												& (opcode[1:0] == 2'b11);
 	
 	wire rv_all0s1s_ilgl =   (rv32_all0s_ilgl | rv32_all1s_ilgl);
 
@@ -508,14 +503,14 @@ module e203_exu_decode(
 	//   * Branch, Store,
 	//   * fence, fence_i 
 	//   * ecall, ebreak  
-	wire rv32_need_rd = 
-											(~rv32_rd_x0) & (
-										(
-											(~rv32_branch) & (~rv32_store)
-										& (~rv32_fence_fencei)
-										& (~rv32_ecall_ebreak_ret_wfi) 
-										)
-									 );
+	wire rv32_need_rd = (~rv32_rd_x0) 
+						& (
+							(
+									(~rv32_branch) & (~rv32_store)
+								& (~rv32_fence_fencei)
+								& (~rv32_ecall_ebreak_ret_wfi) 
+							)
+						);
 
 	// All the RV32IMA need RS1 register except the
 	//   * lui
@@ -526,33 +521,34 @@ module e203_exu_decode(
 	//   * csrrwi
 	//   * csrrsi
 	//   * csrrci
-	wire rv32_need_rs1 =
-											(~rv32_rs1_x0) & (
-										(
-											(~rv32_lui)
-										& (~rv32_auipc)
-										& (~rv32_jal)
-										& (~rv32_fence_fencei)
-										& (~rv32_ecall_ebreak_ret_wfi)
-										& (~rv32_csrrwi)
-										& (~rv32_csrrsi)
-										& (~rv32_csrrci)
-										)
-									);
+	wire rv32_need_rs1 = (~rv32_rs1_x0) 
+						& (
+							(
+								(~rv32_lui)
+								& (~rv32_auipc)
+								& (~rv32_jal)
+								& (~rv32_fence_fencei)
+								& (~rv32_ecall_ebreak_ret_wfi)
+								& (~rv32_csrrwi)
+								& (~rv32_csrrsi)
+								& (~rv32_csrrci)
+							)
+						);
 										
 	// Following RV32IMA instructions need RS2 register
 	//   * branch
 	//   * store
 	//   * rv32_op
 	//   * rv32_amo except the rv32_lr_w
-	wire rv32_need_rs2 = (~rv32_rs2_x0) & (
-								(
-								 (rv32_branch)
-							 | (rv32_store)
-							 | (rv32_op)
-							 | (rv32_amo & (~rv32_lr_w))
-								 )
-								 );
+	wire rv32_need_rs2 = (~rv32_rs2_x0) 
+						& (
+							(
+								(rv32_branch)
+							| (rv32_store)
+							| (rv32_op)
+							| (rv32_amo & (~rv32_lr_w))
+							)
+						);
 
 	wire [31:0]  rv32_i_imm = { {20{rv32_instr[31]}} , rv32_instr[31:20] };
 
@@ -648,11 +644,6 @@ module e203_exu_decode(
 	assign dec_rs2x0 = (dec_rs2idx == `E203_RFIDX_WIDTH'b0);
 										 
 
-	`ifdef E203_RFREG_NUM_IS_32
-
-	//Never happen this illegal exception
-
-	`endif
 
 	assign dec_bjp_imm = ({32{rv32_jal}} & rv32_jal_imm)
 						| ({32{rv32_jalr}} & rv32_jalr_imm)
