@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-15 17:05:25
+// Last Modified time: 2019-04-21 17:48:13
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_exu_decode
@@ -494,7 +494,6 @@ module e203_exu_decode(
 												& opcode_6_5_11 
 												& opcode_4_2_111 
 												& (opcode[1:0] == 2'b11); 
-												& (opcode[1:0] == 2'b11);
 	
 	wire rv_all0s1s_ilgl =   (rv32_all0s_ilgl | rv32_all1s_ilgl);
 

@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-21 17:31:09
+// Last Modified time: 2019-04-21 17:43:42
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_core
@@ -227,7 +227,7 @@ module e203_core(
 
 	wire wfi_halt_ifu_req;
 	wire wfi_halt_ifu_ack;
-	wire pipe_flush_ack;
+// wire pipe_flush_ack;
 	wire pipe_flush_req;
 	wire [`E203_PC_SIZE-1:0] pipe_flush_add_op1;  
 	wire [`E203_PC_SIZE-1:0] pipe_flush_add_op2;  
@@ -285,7 +285,7 @@ e203_ifu u_e203_ifu(
 
 	.ifu_halt_req           (wfi_halt_ifu_req),
 	.ifu_halt_ack           (wfi_halt_ifu_ack),
-	.pipe_flush_ack         (pipe_flush_ack      ),
+// .pipe_flush_ack         (pipe_flush_ack      ),
 	.pipe_flush_req         (pipe_flush_req      ),
 	.pipe_flush_add_op1     (pipe_flush_add_op1  ),  
 	.pipe_flush_add_op2     (pipe_flush_add_op2  ),  
@@ -413,7 +413,7 @@ e203_exu u_e203_exu(
 	.wfi_halt_ifu_req       (wfi_halt_ifu_req),
 	.wfi_halt_ifu_ack       (wfi_halt_ifu_ack),
 
-	.pipe_flush_ack         (pipe_flush_ack      ),
+	.pipe_flush_ack         (1'b1),
 	.pipe_flush_req         (pipe_flush_req      ),
 	.pipe_flush_add_op1     (pipe_flush_add_op1  ),  
 	.pipe_flush_add_op2     (pipe_flush_add_op2  ),  

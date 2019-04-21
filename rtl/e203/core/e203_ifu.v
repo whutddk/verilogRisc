@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-01 16:33:19
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-21 17:32:29
+// Last Modified time: 2019-04-21 17:52:22
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu
@@ -66,7 +66,7 @@ module e203_ifu(
 	output ifu_o_valid, // Handshake signals with EXU stage
 	input  ifu_o_ready,
 
-	output  pipe_flush_ack,
+// output  pipe_flush_ack,
 	input   pipe_flush_req,
 	input   [`E203_PC_SIZE-1:0] pipe_flush_add_op1,  
 	input   [`E203_PC_SIZE-1:0] pipe_flush_add_op2,
@@ -141,7 +141,7 @@ module e203_ifu(
 		.ifu_o_muldiv_b2b(ifu_o_muldiv_b2b),
 		.ifu_o_valid   (ifu_o_valid  ),
 		.ifu_o_ready   (ifu_o_ready  ),
-		.pipe_flush_ack     (pipe_flush_ack    ), 
+// .pipe_flush_ack     (pipe_flush_ack    ), 
 		.pipe_flush_req     (pipe_flush_req    ),
 		.pipe_flush_add_op1 (pipe_flush_add_op1),     
 	`ifdef E203_TIMING_BOOST//}

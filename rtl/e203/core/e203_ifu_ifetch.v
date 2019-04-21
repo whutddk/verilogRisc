@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-01 16:33:19
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-21 17:28:18
+// Last Modified time: 2019-04-21 17:43:02
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu_ifetch
@@ -94,7 +94,7 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 	
 	input  ifu_o_ready,
 
-	output  pipe_flush_ack,
+// output  pipe_flush_ack,
 	input   pipe_flush_req,
 	input   [`E203_PC_SIZE-1:0] pipe_flush_add_op1,  
 	input   [`E203_PC_SIZE-1:0] pipe_flush_add_op2,
@@ -131,7 +131,7 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 	wire ifu_req_hsked  = (ifu_req_valid & ifu_req_ready) ;
 	wire ifu_rsp_hsked  = (ifu_rsp_valid & ifu_rsp_ready) ;
 	wire ifu_ir_o_hsked = (ifu_o_valid & ifu_o_ready) ;
-	wire pipe_flush_hsked = pipe_flush_req & pipe_flush_ack;
+	wire pipe_flush_hsked = pipe_flush_req;
 
 	
  // The rst_flag is the synced version of rst_n
@@ -200,7 +200,7 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 	//     delayed flush indication to remember this flush
 	//   Note: Even if there is a delayed flush pending there, we
 	//     still can accept new flush request
-	assign pipe_flush_ack = 1'b1;
+// assign pipe_flush_ack = 1'b1;
 
 	wire dly_flush_set;
 	wire dly_flush_clr;
