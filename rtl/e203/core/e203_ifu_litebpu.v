@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-15 17:33:09
+// Last Modified time: 2019-04-21 16:23:03
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu_litebpu
@@ -112,8 +112,8 @@ module e203_ifu_litebpu(
 	wire jalr_rs1x1_dep = dec_i_valid & dec_jalr & dec_jalr_rs1x1 & ((~oitf_empty) | (jalr_rs1idx_cam_irrdidx));
 	wire jalr_rs1xn_dep = dec_i_valid & dec_jalr & dec_jalr_rs1xn & ((~oitf_empty) | (~ir_empty));
 
-											// If only depend to IR stage (OITF is empty), then if IR is under clearing, or
-													// it does not use RS1 index, then we can also treat it as non-dependency
+	// If only depend to IR stage (OITF is empty), then if IR is under clearing, or
+	// it does not use RS1 index, then we can also treat it as non-dependency
 	wire jalr_rs1xn_dep_ir_clr = (jalr_rs1xn_dep & oitf_empty & (~ir_empty)) & (ir_valid_clr | (~ir_rs1en));
 
 	wire rs1xn_rdrf_r;

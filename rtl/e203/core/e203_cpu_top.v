@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-08 10:16:17
+// Last Modified time: 2019-04-21 16:57:55
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_cpu_top
@@ -72,7 +72,7 @@
 `include "e203_defines.v"
 
 module e203_cpu_top(
-	output [`E203_PC_SIZE-1:0] inspect_pc,
+
 	output inspect_dbg_irq,
 
 	output inspect_core_clk,
@@ -215,7 +215,6 @@ module e203_cpu_top(
 
 
 e203_cpu #(.MASTER(1)) u_e203_cpu(
-	.inspect_pc               (inspect_pc), 
 	.inspect_dbg_irq          (inspect_dbg_irq      ),
 
 	.inspect_core_clk         (inspect_core_clk     ),

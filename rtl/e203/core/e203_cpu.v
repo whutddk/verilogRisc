@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-10 16:37:24
+// Last Modified time: 2019-04-21 17:31:38
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_cpu
@@ -54,7 +54,6 @@ module e203_cpu #(
 	parameter MASTER = 1
 )
 (
-	output [`E203_PC_SIZE-1:0] inspect_pc,
 	output inspect_dbg_irq,
 	output inspect_core_clk,
 	output core_csr_clk,
@@ -156,7 +155,7 @@ module e203_cpu #(
 	wire core_cgstop;
 	wire tcm_cgstop;
 	
-	wire core_ifu_active;
+// wire core_ifu_active;
 	wire core_exu_active;
 	wire core_lsu_active;
 	wire core_biu_active;
@@ -214,7 +213,7 @@ e203_clk_ctrl u_e203_clk_ctrl(
 	.dtcm_ls      ( ),
 `endif
 
-	.core_ifu_active(core_ifu_active),
+	.core_ifu_active(1'b1),
 	.core_exu_active(core_exu_active),
 	.core_lsu_active(core_lsu_active),
 	.core_biu_active(core_biu_active),
@@ -298,7 +297,6 @@ e203_extend_csr u_e203_extend_csr(
  
 (* DONT_TOUCH = "TRUE" *)
 e203_core u_e203_core(
-	.inspect_pc            (inspect_pc),
 
 `ifdef E203_HAS_CSR_EAI
 	.eai_csr_valid (eai_csr_valid),
@@ -315,7 +313,7 @@ e203_core u_e203_core(
 
 	.pc_rtvec                (pc_rtvec),
 
-	.ifu_active              (core_ifu_active),
+// .ifu_active              (core_ifu_active),
 	.exu_active              (core_exu_active),
 	.lsu_active              (core_lsu_active),
 	.biu_active              (core_biu_active),

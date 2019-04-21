@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-01 16:33:19
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-15 17:39:58
+// Last Modified time: 2019-04-21 17:28:18
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu_ifetch
@@ -48,7 +48,7 @@
 `include "e203_defines.v"
 
 module e203_ifu_ifetch(
-	output[`E203_PC_SIZE-1:0] inspect_pc,
+
 
 
 	input  [`E203_PC_SIZE-1:0] pc_rtvec,  
@@ -63,14 +63,14 @@ input  ifu_req_ready, // Handshake ready
 	//       The targetd (ITCM, ICache or Sys-MEM) ctrl modules 
 	//       will handle the unalign cases and split-and-merge works
 output [`E203_PC_SIZE-1:0] ifu_req_pc, // Fetch PC
-output ifu_req_seq, // This request is a sequential instruction fetch
+// output ifu_req_seq, // This request is a sequential instruction fetch
 // output ifu_req_seq_rv32, // This request is incremented 32bits fetch
-output [`E203_PC_SIZE-1:0] ifu_req_last_pc, // The last accessed
+// output [`E203_PC_SIZE-1:0] ifu_req_last_pc, // The last accessed
 																					 // PC address (i.e., pc_r)
 	//    * IFetch RSP channel
 input  ifu_rsp_valid, // Response valid 
 output ifu_rsp_ready, // Response ready
-input  ifu_rsp_err,   // Response error
+// input  ifu_rsp_err,   // Response error
 	// Note: the RSP channel always return a valid instruction
 	//   fetched from the fetching start PC address.
 	//   The targetd (ITCM, ICache or Sys-MEM) ctrl modules 
@@ -87,10 +87,11 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 	output [`E203_RFIDX_WIDTH-1:0] ifu_o_rs1idx,
 	output [`E203_RFIDX_WIDTH-1:0] ifu_o_rs2idx,
 	output ifu_o_prdt_taken,               // The Bxx is predicted as taken
-	output ifu_o_misalgn,                  // The fetch misalign 
-	output ifu_o_buserr,                   // The fetch bus error
+// output ifu_o_misalgn,                  // The fetch misalign 
+// output ifu_o_buserr,                   // The fetch bus error
 	output ifu_o_muldiv_b2b,               // The mul/div back2back case
 	output ifu_o_valid, // Handshake signals with EXU stage
+	
 	input  ifu_o_ready,
 
 	output  pipe_flush_ack,
@@ -263,11 +264,11 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 	// IFU-IR loaded with the returned instruction from the IFetch RSP channel
 	wire [`E203_INSTR_SIZE-1:0] ifu_ir_nxt = ifu_rsp_instr;
 	// IFU-PC loaded with the current PC
-	wire                     ifu_err_nxt = ifu_rsp_err;
+// wire ifu_err_nxt = 1'b0;
 
 	// IFU-IR and IFU-PC as the datapath register, only loaded and toggle when the valid reg is set
-	wire ifu_err_r;
-	sirv_gnrl_dfflr #(1) ifu_err_dfflr(ir_valid_set, ifu_err_nxt, ifu_err_r, clk, rst_n);
+// wire ifu_err_r;
+// sirv_gnrl_dfflr #(1) ifu_err_dfflr(ir_valid_set, ifu_err_nxt, ifu_err_r, clk, rst_n);
 	wire prdt_taken;  
 	wire ifu_prdt_taken_r;
 	sirv_gnrl_dfflr #(1) ifu_prdt_taken_dfflr (ir_valid_set, prdt_taken, ifu_prdt_taken_r, clk, rst_n);
@@ -319,8 +320,8 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 	assign ifu_o_pc  = ifu_pc_r;
 	// Instruction fetch misaligned exceptions are not possible on machines that support extensions
 	// with 16-bit aligned instructions, such as the compressed instruction set extension, C.
-	assign ifu_o_misalgn = 1'b0;// Never happen in RV32C configuration 
-	assign ifu_o_buserr  = ifu_err_r;
+// assign ifu_o_misalgn = 1'b0;// Never happen in RV32C configuration 
+// assign ifu_o_buserr  = ifu_err_r;
 	assign ifu_o_rs1idx = ir_rs1idx_r;
 	assign ifu_o_rs2idx = ir_rs2idx_r;
 	assign ifu_o_prdt_taken = ifu_prdt_taken_r;
@@ -457,8 +458,6 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 
 	wire bjp_req = minidec_bjp & prdt_taken;
 
-	// wire ifetch_replay_req;
-
 	wire [`E203_PC_SIZE-1:0] pc_add_op1 = 
 				bjp_req ? prdt_pc_add_op1    :
 				ifu_reset_req   ? pc_rtvec :
@@ -469,10 +468,11 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 				ifu_reset_req   ? `E203_PC_SIZE'b0 :
 				pc_incr_ofst ;
 
-	assign ifu_req_seq = (~pipe_flush_req_real) & (~ifu_reset_req) & (~bjp_req);
-	// assign ifu_req_seq_rv32 = minidec_rv32;
-	assign ifu_req_last_pc = pc_r;
+// assign ifu_req_seq = (~pipe_flush_req_real) & (~ifu_reset_req) & (~bjp_req);
 
+// assign ifu_req_last_pc = pc_r;
+
+	//综合pc加法器
 	assign pc_nxt_pre = pc_add_op1 + pc_add_op2;
 
 	assign pc_nxt = 
@@ -516,14 +516,11 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 	sirv_gnrl_dfflr #(`E203_PC_SIZE) pc_dfflr (pc_ena, pc_nxt, pc_r, clk, rst_n);
 
 
-	assign inspect_pc = pc_r;
-
-
 	assign ifu_req_pc    = pc_nxt;
 
-		 // The out_flag will be set if there is a new request handshaked
+	// The out_flag will be set if there is a new request handshaked
 	wire out_flag_set = ifu_req_hsked;
-		 // The out_flag will be cleared if there is a request response handshaked
+	// The out_flag will be cleared if there is a request response handshaked
 	assign out_flag_clr = ifu_rsp_hsked;
 	wire out_flag_ena = out_flag_set | out_flag_clr;
 		 // If meanwhile set and clear, then set preempt
@@ -531,19 +528,17 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 
 	sirv_gnrl_dfflr #(1) out_flag_dfflr (out_flag_ena, out_flag_nxt, out_flag_r, clk, rst_n);
 
-			 // The pc_newpend will be set if there is a new PC loaded
+	// The pc_newpend will be set if there is a new PC loaded
 	wire pc_newpend_set = pc_ena;
-		 // The pc_newpend will be cleared if have already loaded into the IR-PC stage
+	// The pc_newpend will be cleared if have already loaded into the IR-PC stage
 	wire pc_newpend_clr = ir_pc_vld_set;
 	wire pc_newpend_ena = pc_newpend_set | pc_newpend_clr;
-		 // If meanwhile set and clear, then set preempt
+	// If meanwhile set and clear, then set preempt
 	wire pc_newpend_nxt = pc_newpend_set | (~pc_newpend_clr);
 
 	sirv_gnrl_dfflr #(1) pc_newpend_dfflr (pc_newpend_ena, pc_newpend_nxt, pc_newpend_r, clk, rst_n);
 
 
-	// assign ifu_rsp_need_replay = 1'b0;
-	// assign ifetch_replay_req = 1'b0;
 
 	`ifndef FPGA_SOURCE//{
 	`ifndef DISABLE_SV_ASSERTION//{

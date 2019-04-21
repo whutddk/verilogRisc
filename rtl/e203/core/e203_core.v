@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-10 20:00:17
+// Last Modified time: 2019-04-21 17:31:09
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_core
@@ -72,7 +72,6 @@
 `include "e203_defines.v"
 
 module e203_core(
-	output[`E203_PC_SIZE-1:0] inspect_pc,
 
 `ifdef E203_HAS_CSR_EAI//{
 	output         eai_csr_valid,
@@ -188,7 +187,7 @@ module e203_core(
 `endif//}
 
 	output exu_active,
-	output ifu_active,
+// output ifu_active,
 	output lsu_active,
 	output biu_active,
 
@@ -219,8 +218,8 @@ module e203_core(
 	wire [`E203_INSTR_SIZE-1:0] ifu_o_ir;
 	wire [`E203_PC_SIZE-1:0] ifu_o_pc;
 	wire ifu_o_pc_vld; 
-	wire ifu_o_misalgn; 
-	wire ifu_o_buserr; 
+// wire ifu_o_misalgn; 
+// wire ifu_o_buserr; 
 	wire [`E203_RFIDX_WIDTH-1:0] ifu_o_rs1idx;
 	wire [`E203_RFIDX_WIDTH-1:0] ifu_o_rs2idx;
 	wire ifu_o_prdt_taken;
@@ -252,9 +251,8 @@ module e203_core(
 	// wire itcm_nohold;
 
 e203_ifu u_e203_ifu(
-	.inspect_pc   (inspect_pc),
 
-	.ifu_active      (ifu_active),
+// .ifu_active      (ifu_active),
 	.pc_rtvec        (pc_rtvec),  
 
 	// .itcm_nohold     (itcm_nohold),
@@ -278,8 +276,8 @@ e203_ifu u_e203_ifu(
 	.ifu_o_ir               (ifu_o_ir            ),
 	.ifu_o_pc               (ifu_o_pc            ),
 	.ifu_o_pc_vld           (ifu_o_pc_vld        ),
-	.ifu_o_misalgn          (ifu_o_misalgn       ), 
-	.ifu_o_buserr           (ifu_o_buserr        ), 
+// .ifu_o_misalgn          (ifu_o_misalgn       ), 
+// .ifu_o_buserr           (ifu_o_buserr        ), 
 	.ifu_o_rs1idx           (ifu_o_rs1idx        ),
 	.ifu_o_rs2idx           (ifu_o_rs2idx        ),
 	.ifu_o_prdt_taken       (ifu_o_prdt_taken    ),
@@ -405,8 +403,8 @@ e203_exu u_e203_exu(
 	.i_ir                   (ifu_o_ir            ),
 	.i_pc                   (ifu_o_pc            ),
 	.i_pc_vld               (ifu_o_pc_vld        ),
-	.i_misalgn              (ifu_o_misalgn       ), 
-	.i_buserr               (ifu_o_buserr        ), 
+	.i_misalgn              (1'b0), 
+	.i_buserr               (1'b0), 
 	.i_rs1idx               (ifu_o_rs1idx        ),
 	.i_rs2idx               (ifu_o_rs2idx        ),
 	.i_prdt_taken           (ifu_o_prdt_taken    ),

@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-04 16:40:43
+// Last Modified time: 2019-04-21 16:57:36
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_subsys_main
@@ -98,8 +98,6 @@ module e203_subsys_main(
 
   );
 
-	wire [31:0] inspect_pc;
-
 	wire inspect_core_clk;
 	wire inspect_pll_clk;
 	wire inspect_16m_clk;
@@ -168,7 +166,6 @@ sirv_ResetCatchAndSync_2 u_main_ResetCatchAndSync_2_1 (
 
 
 e203_cpu_top u_e203_cpu_top(
-	.inspect_pc               (inspect_pc), 
 	.inspect_dbg_irq          (),
 	.inspect_core_clk         (inspect_core_clk),
 

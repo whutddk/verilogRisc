@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-01 16:33:19
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-12 16:41:47
+// Last Modified time: 2019-04-21 17:32:29
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu
@@ -19,21 +19,22 @@
 // Additional Comments:  
 // 
 //////////////////////////////////////////////////////////////////////////////////
- /*                                                                      
- Copyright 2018 Nuclei System Technology, Inc.                
-																																				 
- Licensed under the Apache License, Version 2.0 (the "License");         
- you may not use this file except in compliance with the License.        
- You may obtain a copy of the License at                                 
-																																				 
-		 http://www.apache.org/licenses/LICENSE-2.0                          
-																																				 
-	Unless required by applicable law or agreed to in writing, software    
- distributed under the License is distributed on an "AS IS" BASIS,       
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and     
- limitations under the License.                                          
- */                                                                      
+
+/*                                                                      
+Copyright 2018 Nuclei System Technology, Inc.                
+																																			 
+Licensed under the Apache License, Version 2.0 (the "License");         
+you may not use this file except in compliance with the License.        
+You may obtain a copy of the License at                                 
+																																			 
+	 http://www.apache.org/licenses/LICENSE-2.0                          
+																																			 
+Unless required by applicable law or agreed to in writing, software    
+distributed under the License is distributed on an "AS IS" BASIS,       
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and     
+limitations under the License.                                          
+*/                                                                      
 																																				 
 																																				 
 																																				 
@@ -48,8 +49,6 @@
 `include "e203_defines.v"
 
 module e203_ifu(
-	output[`E203_PC_SIZE-1:0] inspect_pc,
-	output ifu_active,
 
 	input  [`E203_PC_SIZE-1:0] pc_rtvec,  
 	
@@ -59,8 +58,7 @@ module e203_ifu(
 	output [`E203_INSTR_SIZE-1:0] ifu_o_ir,// The instruction register
 	output [`E203_PC_SIZE-1:0] ifu_o_pc,   // The PC register along with
 	output ifu_o_pc_vld,
-	output ifu_o_misalgn,                  // The fetch misalign 
-	output ifu_o_buserr,                   // The fetch bus error
+
 	output [`E203_RFIDX_WIDTH-1:0] ifu_o_rs1idx,
 	output [`E203_RFIDX_WIDTH-1:0] ifu_o_rs2idx,
 	output ifu_o_prdt_taken,               // The Bxx is predicted as taken
@@ -101,6 +99,10 @@ module e203_ifu(
 	input  rst_n
 	);
 
+
+
+
+
 	
 	wire ifu_req_valid; 
 	wire ifu_req_ready; 
@@ -113,25 +115,26 @@ module e203_ifu(
 	// wire ifu_rsp_err;    
 	wire [`E203_INSTR_SIZE-1:0] ifu_rsp_instr; 
 
+
+
+
+
 (* DONT_TOUCH = "TRUE" *)
 	e203_ifu_ifetch u_e203_ifu_ifetch(
-		.inspect_pc   (inspect_pc),
+
 		.pc_rtvec      (pc_rtvec),  
 .ifu_req_valid (ifu_req_valid),
 .ifu_req_ready (ifu_req_ready),
 .ifu_req_pc    (ifu_req_pc   ),
-		.ifu_req_seq     (),
-		// .ifu_req_seq_rv32(),
-		.ifu_req_last_pc (),
+
 .ifu_rsp_valid (ifu_rsp_valid),
 .ifu_rsp_ready (ifu_rsp_ready),
-		.ifu_rsp_err   (1'b0),
 .ifu_rsp_instr (ifu_rsp_instr),
+
+
 		.ifu_o_ir      (ifu_o_ir     ),
 		.ifu_o_pc      (ifu_o_pc     ),
 		.ifu_o_pc_vld  (ifu_o_pc_vld ),
-		.ifu_o_misalgn (ifu_o_misalgn),
-		.ifu_o_buserr  (ifu_o_buserr ),
 		.ifu_o_rs1idx  (ifu_o_rs1idx),
 		.ifu_o_rs2idx  (ifu_o_rs2idx),
 		.ifu_o_prdt_taken(ifu_o_prdt_taken),
@@ -170,12 +173,9 @@ module e203_ifu(
 		.ifu_req_valid (ifu_req_valid),
 		.ifu_req_ready (ifu_req_ready),
 		.ifu_req_pc    (ifu_req_pc   ),
-		// .ifu_req_seq     (ifu_req_seq     ),
-		// .ifu_req_seq_rv32(ifu_req_seq_rv32),
-		// .ifu_req_last_pc (ifu_req_last_pc ),
+
 		.ifu_rsp_valid (ifu_rsp_valid),
 		.ifu_rsp_ready (ifu_rsp_ready),
-		// .ifu_rsp_err   (ifu_rsp_err  ),
 		.ifu_rsp_instr (ifu_rsp_instr),
 
 
@@ -183,7 +183,6 @@ module e203_ifu(
 		.rst_n         (rst_n        ) 
 	);
 
-	assign ifu_active = 1'b1;// Seems the IFU never rest at block level
 	
 endmodule
 
