@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-01 16:33:19
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-21 17:43:02
+// Last Modified time: 2019-04-21 18:59:59
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu_ifetch
@@ -131,7 +131,7 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 	wire ifu_req_hsked  = (ifu_req_valid & ifu_req_ready) ;
 	wire ifu_rsp_hsked  = (ifu_rsp_valid & ifu_rsp_ready) ;
 	wire ifu_ir_o_hsked = (ifu_o_valid & ifu_o_ready) ;
-	wire pipe_flush_hsked = pipe_flush_req;
+	// wire pipe_flush_hsked = pipe_flush_req;
 
 	
  // The rst_flag is the synced version of rst_n
@@ -154,7 +154,7 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 
 	sirv_gnrl_dfflr #(1) reset_req_dfflr (reset_req_ena, reset_req_nxt, reset_req_r, clk, rst_n);
 
-	wire ifu_reset_req = reset_req_r;
+	// wire ifu_reset_req = reset_req_r;
 
 
 
@@ -220,8 +220,8 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 
 	sirv_gnrl_dfflr #(1) dly_flush_dfflr (dly_flush_ena, dly_flush_nxt, dly_flush_r, clk, rst_n);
 
-	wire dly_pipe_flush_req = dly_flush_r;
-	wire pipe_flush_req_real = pipe_flush_req | dly_pipe_flush_req;
+	// wire dly_pipe_flush_req = dly_flush_r;
+	wire pipe_flush_req_real = pipe_flush_req | dly_flush_r;
 
 
 
@@ -235,7 +235,7 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 	wire ir_valid_nxt;
 
 	wire ir_pc_vld_set;
-	wire ir_pc_vld_clr;
+	// wire ir_pc_vld_clr;
 	wire ir_pc_vld_ena;
 	wire ir_pc_vld_r;
 	wire ir_pc_vld_nxt;
@@ -250,13 +250,13 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 	assign ir_pc_vld_set = pc_newpend_r & ifu_ir_i_ready & (~pipe_flush_req_real);
 	// The ir valid is cleared when it is accepted by EXU stage *or*
 	//   the flush happening 
-	assign ir_valid_clr  = ifu_ir_o_hsked | (pipe_flush_hsked & ir_valid_r);
-	assign ir_pc_vld_clr = ir_valid_clr;
+	assign ir_valid_clr  = ifu_ir_o_hsked | (pipe_flush_req & ir_valid_r);
+	// assign ir_pc_vld_clr = ir_valid_clr;
 
 	assign ir_valid_ena  = ir_valid_set  | ir_valid_clr;
 	assign ir_valid_nxt  = ir_valid_set  | (~ir_valid_clr);
-	assign ir_pc_vld_ena = ir_pc_vld_set | ir_pc_vld_clr;
-	assign ir_pc_vld_nxt = ir_pc_vld_set | (~ir_pc_vld_clr);
+	assign ir_pc_vld_ena = ir_pc_vld_set | ir_valid_clr;
+	assign ir_pc_vld_nxt = ir_pc_vld_set | (~ir_valid_clr);
 
 	sirv_gnrl_dfflr #(1) ir_valid_dfflr (ir_valid_ena, ir_valid_nxt, ir_valid_r, clk, rst_n);
 	sirv_gnrl_dfflr #(1) ir_pc_vld_dfflr (ir_pc_vld_ena, ir_pc_vld_nxt, ir_pc_vld_r, clk, rst_n);
@@ -288,26 +288,26 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 	wire [`E203_RFIDX_WIDTH-1:0] minidec_rs1idx;
 	wire [`E203_RFIDX_WIDTH-1:0] minidec_rs2idx;
 
-	`ifndef E203_HAS_FPU//}
-	wire minidec_fpu        = 1'b0;
-	wire minidec_fpu_rs1en  = 1'b0;
-	wire minidec_fpu_rs2en  = 1'b0;
-	wire minidec_fpu_rs3en  = 1'b0;
-	wire minidec_fpu_rs1fpu = 1'b0;
-	wire minidec_fpu_rs2fpu = 1'b0;
-	wire minidec_fpu_rs3fpu = 1'b0;
-	wire [`E203_RFIDX_WIDTH-1:0] minidec_fpu_rs1idx = `E203_RFIDX_WIDTH'b0;
-	wire [`E203_RFIDX_WIDTH-1:0] minidec_fpu_rs2idx = `E203_RFIDX_WIDTH'b0;
-	`endif//}
+
+wire minidec_fpu        = 1'b0;
+wire minidec_fpu_rs1en  = 1'b0;
+wire minidec_fpu_rs2en  = 1'b0;
+wire minidec_fpu_rs3en  = 1'b0;
+wire minidec_fpu_rs1fpu = 1'b0;
+wire minidec_fpu_rs2fpu = 1'b0;
+wire minidec_fpu_rs3fpu = 1'b0;
+wire [`E203_RFIDX_WIDTH-1:0] minidec_fpu_rs1idx = `E203_RFIDX_WIDTH'b0;
+wire [`E203_RFIDX_WIDTH-1:0] minidec_fpu_rs2idx = `E203_RFIDX_WIDTH'b0;
+
 
 	wire [`E203_RFIDX_WIDTH-1:0] ir_rs1idx_r;
 	wire [`E203_RFIDX_WIDTH-1:0] ir_rs2idx_r;
 	wire bpu2rf_rs1_ena;
 	//FPU: if it is FPU instruction. we still need to put it into the IR register, but we need to mask off the non-integer regfile index to save power
-	wire ir_rs1idx_ena = (minidec_fpu & ir_valid_set & minidec_fpu_rs1en & (~minidec_fpu_rs1fpu)) | ((~minidec_fpu) & ir_valid_set & minidec_rs1en) | bpu2rf_rs1_ena;
-	wire ir_rs2idx_ena = (minidec_fpu & ir_valid_set & minidec_fpu_rs2en & (~minidec_fpu_rs2fpu)) | ((~minidec_fpu) & ir_valid_set & minidec_rs2en);
-	wire [`E203_RFIDX_WIDTH-1:0] ir_rs1idx_nxt = minidec_fpu ? minidec_fpu_rs1idx : minidec_rs1idx;
-	wire [`E203_RFIDX_WIDTH-1:0] ir_rs2idx_nxt = minidec_fpu ? minidec_fpu_rs2idx : minidec_rs2idx;
+	wire ir_rs1idx_ena = (ir_valid_set & minidec_rs1en) | bpu2rf_rs1_ena;
+	wire ir_rs2idx_ena = (ir_valid_set & minidec_rs2en);
+	wire [`E203_RFIDX_WIDTH-1:0] ir_rs1idx_nxt = minidec_rs1idx;
+	wire [`E203_RFIDX_WIDTH-1:0] ir_rs2idx_nxt = minidec_rs2idx;
 	sirv_gnrl_dfflr #(`E203_RFIDX_WIDTH) ir_rs1idx_dfflr (ir_rs1idx_ena, ir_rs1idx_nxt, ir_rs1idx_r, clk, rst_n);
 	sirv_gnrl_dfflr #(`E203_RFIDX_WIDTH) ir_rs2idx_dfflr (ir_rs2idx_ena, ir_rs2idx_nxt, ir_rs2idx_r, clk, rst_n);
 
@@ -460,12 +460,12 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 
 	wire [`E203_PC_SIZE-1:0] pc_add_op1 = 
 				bjp_req ? prdt_pc_add_op1    :
-				ifu_reset_req   ? pc_rtvec :
+				reset_req_r   ? pc_rtvec :
 				pc_r;
 
 	wire [`E203_PC_SIZE-1:0] pc_add_op2 =  
 				bjp_req ? prdt_pc_add_op2    :
-				ifu_reset_req   ? `E203_PC_SIZE'b0 :
+				reset_req_r   ? `E203_PC_SIZE'b0 :
 				pc_incr_ofst ;
 
 // assign ifu_req_seq = (~pipe_flush_req_real) & (~ifu_reset_req) & (~bjp_req);
@@ -477,7 +477,7 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 
 	assign pc_nxt = 
 			pipe_flush_req ? {pipe_flush_pc[`E203_PC_SIZE-1:1],1'b0} :
-			dly_pipe_flush_req ? {pc_r[`E203_PC_SIZE-1:1],1'b0} :
+			dly_flush_r ? {pc_r[`E203_PC_SIZE-1:1],1'b0} :
 			{pc_nxt_pre[`E203_PC_SIZE-1:1],1'b0};
 
 
@@ -489,7 +489,7 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 	// The fetch request valid is triggering when
 	//      * New ifetch request
 	//      * or The flush-request is pending
-	wire ifu_req_valid_pre = ifu_new_req | ifu_reset_req | pipe_flush_req_real;
+	wire ifu_req_valid_pre = ifu_new_req | reset_req_r | pipe_flush_req_real;
 	// The new request ready condition is:
 	//   * No outstanding reqeusts
 	//   * Or if there is outstanding, but it is reponse valid back
@@ -511,7 +511,7 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 	assign ifu_rsp_ready = ifu_rsp2ir_ready;
 
 	// The PC will need to be updated when ifu req channel handshaked or a flush is incoming
-	wire pc_ena = ifu_req_hsked | pipe_flush_hsked;
+	wire pc_ena = ifu_req_hsked | pipe_flush_req;
 
 	sirv_gnrl_dfflr #(`E203_PC_SIZE) pc_dfflr (pc_ena, pc_nxt, pc_r, clk, rst_n);
 
