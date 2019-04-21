@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-01 16:33:19
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-21 18:59:59
+// Last Modified time: 2019-04-21 19:07:59
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu_ifetch
@@ -289,15 +289,15 @@ input  [`E203_INSTR_SIZE-1:0] ifu_rsp_instr, // Response instruction
 	wire [`E203_RFIDX_WIDTH-1:0] minidec_rs2idx;
 
 
-wire minidec_fpu        = 1'b0;
-wire minidec_fpu_rs1en  = 1'b0;
-wire minidec_fpu_rs2en  = 1'b0;
-wire minidec_fpu_rs3en  = 1'b0;
-wire minidec_fpu_rs1fpu = 1'b0;
-wire minidec_fpu_rs2fpu = 1'b0;
-wire minidec_fpu_rs3fpu = 1'b0;
-wire [`E203_RFIDX_WIDTH-1:0] minidec_fpu_rs1idx = `E203_RFIDX_WIDTH'b0;
-wire [`E203_RFIDX_WIDTH-1:0] minidec_fpu_rs2idx = `E203_RFIDX_WIDTH'b0;
+// wire minidec_fpu        = 1'b0;
+// wire minidec_fpu_rs1en  = 1'b0;
+// wire minidec_fpu_rs2en  = 1'b0;
+// wire minidec_fpu_rs3en  = 1'b0;
+// wire minidec_fpu_rs1fpu = 1'b0;
+// wire minidec_fpu_rs2fpu = 1'b0;
+// wire minidec_fpu_rs3fpu = 1'b0;
+// wire [`E203_RFIDX_WIDTH-1:0] minidec_fpu_rs1idx = `E203_RFIDX_WIDTH'b0;
+// wire [`E203_RFIDX_WIDTH-1:0] minidec_fpu_rs2idx = `E203_RFIDX_WIDTH'b0;
 
 
 	wire [`E203_RFIDX_WIDTH-1:0] ir_rs1idx_r;
@@ -320,8 +320,7 @@ wire [`E203_RFIDX_WIDTH-1:0] minidec_fpu_rs2idx = `E203_RFIDX_WIDTH'b0;
 	assign ifu_o_pc  = ifu_pc_r;
 	// Instruction fetch misaligned exceptions are not possible on machines that support extensions
 	// with 16-bit aligned instructions, such as the compressed instruction set extension, C.
-// assign ifu_o_misalgn = 1'b0;// Never happen in RV32C configuration 
-// assign ifu_o_buserr  = ifu_err_r;
+
 	assign ifu_o_rs1idx = ir_rs1idx_r;
 	assign ifu_o_rs2idx = ir_rs2idx_r;
 	assign ifu_o_prdt_taken = ifu_prdt_taken_r;
@@ -357,24 +356,25 @@ wire [`E203_RFIDX_WIDTH-1:0] minidec_fpu_rs2idx = `E203_RFIDX_WIDTH'b0;
 	(
 		// For multiplicaiton, only the MUL instruction following
 		//    MULH/MULHU/MULSU can be treated as back2back
-		( minidec_mul & dec2ifu_mulhsu)
-		// For divider and reminder instructions, only the following cases
-		//    can be treated as back2back
-		//      * DIV--REM
-		//      * REM--DIV
-		//      * DIVU--REMU
-		//      * REMU--DIVU
-		| ( minidec_div  & dec2ifu_rem)
-		| ( minidec_rem  & dec2ifu_div)
-		| ( minidec_divu & dec2ifu_remu)
-		| ( minidec_remu & dec2ifu_divu)
-	)
+		( 
+			minidec_mul & dec2ifu_mulhsu)
+			// For divider and reminder instructions, only the following cases
+			//    can be treated as back2back
+			//      * DIV--REM
+			//      * REM--DIV
+			//      * DIVU--REMU
+			//      * REMU--DIVU
+			| ( minidec_div  & dec2ifu_rem)
+			| ( minidec_rem  & dec2ifu_div)
+			| ( minidec_divu & dec2ifu_remu)
+			| ( minidec_remu & dec2ifu_divu)
+		)
 	// The last rs1 and rs2 indexes are same as this instruction
-	& (ir_rs1idx_r == ir_rs1idx_nxt)
-	& (ir_rs2idx_r == ir_rs2idx_nxt)
-	// The last rs1 and rs2 indexes are not same as last RD index
-	& (~(ir_rs1idx_r == ir_rdidx))
-	& (~(ir_rs2idx_r == ir_rdidx))
+		& (ir_rs1idx_r == ir_rs1idx_nxt)
+		& (ir_rs2idx_r == ir_rs2idx_nxt)
+		// The last rs1 and rs2 indexes are not same as last RD index
+		& (~(ir_rs1idx_r == ir_rdidx))
+		& (~(ir_rs2idx_r == ir_rdidx))
 	;
 
 	//////////////////////////////////////////////////////////////
@@ -401,7 +401,7 @@ wire [`E203_RFIDX_WIDTH-1:0] minidec_fpu_rs2idx = `E203_RFIDX_WIDTH'b0;
 		.dec_jalr    (minidec_jalr       ),
 		.dec_bxx     (minidec_bxx        ),
 
-		.dec_mulhsu  (),
+		// .dec_mulhsu  (),
 		.dec_mul     (minidec_mul ),
 		.dec_div     (minidec_div ),
 		.dec_rem     (minidec_rem ),
@@ -496,7 +496,7 @@ wire [`E203_RFIDX_WIDTH-1:0] minidec_fpu_rs2idx = `E203_RFIDX_WIDTH'b0;
 	wire out_flag_clr;
 	wire out_flag_r;
 	wire new_req_condi = (~out_flag_r) | out_flag_clr;
-	assign ifu_no_outs   = (~out_flag_r) | ifu_rsp_valid;
+	assign ifu_no_outs = (~out_flag_r) | ifu_rsp_valid;
 	// Here we use the rsp_valid rather than the out_flag_clr (ifu_rsp_hsked) because
 	//   as long as the rsp_valid is asserting then means last request have returned the
 	//   response back, in WFI case, we cannot expect it to be handshaked (otherwise deadlock)

@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-12 16:43:21
+// Last Modified time: 2019-04-21 19:07:03
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_ifu_minidec
@@ -61,7 +61,7 @@ module e203_ifu_minidec(
   output [`E203_RFIDX_WIDTH-1:0] dec_rs1idx,
   output [`E203_RFIDX_WIDTH-1:0] dec_rs2idx,
 
-  output dec_mulhsu,
+  // output dec_mulhsu,
   output dec_mul   ,
   output dec_div   ,
   output dec_rem   ,
@@ -107,7 +107,7 @@ module e203_ifu_minidec(
   .dec_pc(),
 
   
-  .dec_mulhsu(dec_mulhsu),
+  .dec_mulhsu(),
   .dec_mul   (dec_mul   ),
   .dec_div   (dec_div   ),
   .dec_rem   (dec_rem   ),
