@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-21 17:43:42
+// Last Modified time: 2019-04-23 11:13:27
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_core
@@ -252,23 +252,7 @@ module e203_core(
 
 e203_ifu u_e203_ifu(
 
-// .ifu_active      (ifu_active),
 	.pc_rtvec        (pc_rtvec),  
-
-	// .itcm_nohold     (itcm_nohold),
-
-
-// .ifu2itcm_holdup (ifu2itcm_holdup),
-// // .itcm_region_indic (`E203_ITCM_ADDR_BASE),
-// .ifu2itcm_icb_cmd_valid(ifu2itcm_icb_cmd_valid),
-// .ifu2itcm_icb_cmd_ready(ifu2itcm_icb_cmd_ready),
-// .ifu2itcm_icb_cmd_addr (ifu2itcm_icb_cmd_addr ),
-// .ifu2itcm_icb_rsp_valid(ifu2itcm_icb_rsp_valid),
-// .ifu2itcm_icb_rsp_ready(ifu2itcm_icb_rsp_ready),
-// // .ifu2itcm_icb_rsp_err  (1'b0),
-// .ifu2itcm_icb_rsp_rdata(ifu2itcm_icb_rsp_rdata),
-
-
 
 
 	.ifu_o_valid            (ifu_o_valid         ),
@@ -276,8 +260,7 @@ e203_ifu u_e203_ifu(
 	.ifu_o_ir               (ifu_o_ir            ),
 	.ifu_o_pc               (ifu_o_pc            ),
 	.ifu_o_pc_vld           (ifu_o_pc_vld        ),
-// .ifu_o_misalgn          (ifu_o_misalgn       ), 
-// .ifu_o_buserr           (ifu_o_buserr        ), 
+
 	.ifu_o_rs1idx           (ifu_o_rs1idx        ),
 	.ifu_o_rs2idx           (ifu_o_rs2idx        ),
 	.ifu_o_prdt_taken       (ifu_o_prdt_taken    ),
@@ -285,15 +268,15 @@ e203_ifu u_e203_ifu(
 
 	.ifu_halt_req           (wfi_halt_ifu_req),
 	.ifu_halt_ack           (wfi_halt_ifu_ack),
-// .pipe_flush_ack         (pipe_flush_ack      ),
+
 	.pipe_flush_req         (pipe_flush_req      ),
 	.pipe_flush_add_op1     (pipe_flush_add_op1  ),  
 	.pipe_flush_add_op2     (pipe_flush_add_op2  ),  
+
 `ifdef E203_TIMING_BOOST//}
 	.pipe_flush_pc          (pipe_flush_pc),  
 `endif//}
-
-															 
+														 
 	.oitf_empty             (oitf_empty   ),
 	.rf2ifu_x1              (rf2ifu_x1    ),
 	.rf2ifu_rs1             (rf2ifu_rs1   ),
