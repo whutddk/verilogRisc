@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-23 19:29:45
+// Last Modified time: 2019-04-23 19:39:08
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_dtcm_ctrl
@@ -82,8 +82,8 @@ module e203_dtcm_ctrl(
 
 
 
-	assign lsu2dtcm_icb_cmd_ready = lsu2dtcm_icb_rsp_ready;
-	assign lsu2dtcm_icb_rsp_valid = lsu2dtcm_icb_cmd_valid;
+	// assign lsu2dtcm_icb_cmd_ready = lsu2dtcm_icb_rsp_ready;
+	// assign lsu2dtcm_icb_rsp_valid = lsu2dtcm_icb_cmd_valid;
 
 	sirv_gnrl_dffr # (.DW(2)) (.dnxt({lsu2dtcm_icb_rsp_ready,lsu2dtcm_icb_cmd_valid}),.qout({lsu2dtcm_icb_cmd_ready,lsu2dtcm_icb_rsp_valid}),.clk(clk),.rst_n(rst_n));
 
