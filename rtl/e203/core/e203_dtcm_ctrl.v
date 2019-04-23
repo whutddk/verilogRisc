@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-23 19:20:48
+// Last Modified time: 2019-04-23 19:29:45
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_dtcm_ctrl
@@ -63,7 +63,6 @@ module e203_dtcm_ctrl(
 	//    * Bus cmd channel
 	input  lsu2dtcm_icb_cmd_valid, // Handshake valid
 	output lsu2dtcm_icb_cmd_ready, // Handshake ready
-	// Note: The data on rdata or wdata channel must be naturally aligned, this is in line with the AXI definition
 	input  [`E203_DTCM_ADDR_WIDTH-1:0]   lsu2dtcm_icb_cmd_addr, // Bus transaction start addr 
 	input  lsu2dtcm_icb_cmd_read,   // Read or write
 	input  [32-1:0] lsu2dtcm_icb_cmd_wdata, 
@@ -74,100 +73,48 @@ module e203_dtcm_ctrl(
 	input  lsu2dtcm_icb_rsp_ready, // Response ready
 	output lsu2dtcm_icb_rsp_err,   // Response error
 						// Note: the RSP rdata is inline with AXI definition
-	output [32-1:0] lsu2dtcm_icb_rsp_rdata, 
+	output [31:0] lsu2dtcm_icb_rsp_rdata, 
 
 	input  clk,
 	input  rst_n
 	);
 
-	wire clk_dtcm_ram;
+
 
 
 	assign lsu2dtcm_icb_cmd_ready = lsu2dtcm_icb_rsp_ready;
-
-
 	assign lsu2dtcm_icb_rsp_valid = lsu2dtcm_icb_cmd_valid;
+
+	sirv_gnrl_dffr # (.DW(2)) (.dnxt({lsu2dtcm_icb_rsp_ready,lsu2dtcm_icb_cmd_valid}),.qout({lsu2dtcm_icb_cmd_ready,lsu2dtcm_icb_rsp_valid}),.clk(clk),.rst_n(rst_n));
+
+	wire [31:0] ram_dout; 
 	assign lsu2dtcm_icb_rsp_err = 1'b0;
 	assign lsu2dtcm_icb_rsp_rdata = ram_dout;
 
 
 
 
-
-// 	sirv_sram_icb_ctrl #(
-// 		.DW     (`E203_DTCM_DATA_WIDTH),
-// 		.AW     (`E203_DTCM_ADDR_WIDTH),
-// 		.MW     (`E203_DTCM_WMSK_WIDTH),
-// 		.AW_LSB (2),// DTCM is 32bits wide, so the LSB is 2
-// 		.USR_W  (1) 
-// 	) u_sram_icb_ctrl (
-// 		.sram_ctrl_active (),
-// 		// .tcm_cgstop       (tcm_cgstop),
-		 
-// 		.i_icb_cmd_valid (sram_icb_cmd_valid),
-// 		.i_icb_cmd_ready (sram_icb_cmd_ready),
-// 		.i_icb_cmd_read  (sram_icb_cmd_read ),
-// 		.i_icb_cmd_addr  (sram_icb_cmd_addr ), 
-// 		.i_icb_cmd_wdata (sram_icb_cmd_wdata), 
-// 		.i_icb_cmd_wmask (sram_icb_cmd_wmask), 
-// 		.i_icb_cmd_usr   (sram_icb_cmd_read ),
-	
-// 		.i_icb_rsp_valid (sram_icb_rsp_valid),
-// 		.i_icb_rsp_ready (sram_icb_rsp_ready),
-// 		.i_icb_rsp_rdata (sram_icb_rsp_rdata),
-// 		.i_icb_rsp_usr   (),
-	
-// 		.ram_cs   (dtcm_ram_cs  ),  
-// 		.ram_we   (dtcm_ram_we  ),  
-// 		.ram_addr (dtcm_ram_addr), 
-// 		.ram_wem  (dtcm_ram_wem ),
-// 		.ram_din  (dtcm_ram_din ),          
-// 		.ram_dout (dtcm_ram_dout),
-// 		.clk_ram  (clk_dtcm_ram ),
-	
-// 		.test_mode(1'b0),
-// 		.clk  (clk  ),
-// 		.rst_n(rst_n)  
-// 	);
-
-
-
-// (* DONT_TOUCH = "TRUE" *)
-// 	e203_dtcm_ram u_e203_dtcm_ram (
-// 		.cs   (dtcm_ram_cs),
-// 		.we   (dtcm_ram_we),
-// 		.addr (dtcm_ram_addr),
-// 		.wem  (dtcm_ram_wem),
-// 		.din  (dtcm_ram_din),
-// 		.dout (dtcm_ram_dout),
-// 		.rst_n(rst_n),
-// 		.clk  (clk_dtcm_ram)
-// 	);
-
 	wire ram_cs = lsu2dtcm_icb_cmd_valid & lsu2dtcm_icb_rsp_ready;  
 	wire ram_we = (~lsu2dtcm_icb_cmd_read);  
-	wire ram_addr = lsu2dtcm_icb_cmd_addr [`E203_DTCM_ADDR_WIDTH-1:2];          
-// assign ram_wem = uop_cmd_wmask[`E203_DTCM_WMSK_WIDTH-1:0];          
-	wire ram_din = {8{lsu2dtcm_icb_cmd_wmask[3]},
-					8{lsu2dtcm_icb_cmd_wmask[2]},
-					8{lsu2dtcm_icb_cmd_wmask[1]},
-					8{lsu2dtcm_icb_cmd_wmask[0]}} 
-					& 
-					lsu2dtcm_icb_cmd_wdata[`E203_DTCM_DATA_WIDTH-1:0];
+	wire [13:0] ram_addr = lsu2dtcm_icb_cmd_addr [`E203_DTCM_ADDR_WIDTH-1:2];                
+	wire [31:0] ram_din = { 
+							{8{lsu2dtcm_icb_cmd_wmask[3]}},
+							{8{lsu2dtcm_icb_cmd_wmask[2]}},
+							{8{lsu2dtcm_icb_cmd_wmask[1]}},
+							{8{lsu2dtcm_icb_cmd_wmask[0]}}
+						  } 
+							& 
+							lsu2dtcm_icb_cmd_wdata[31:0];
 					
 
-	
 
 
-	wire ram_dout; 
-	assign sram_icb_rsp_rdata = ram_dout;
-
-i_dtcm_ram dtcm_ram(
-		.addra(ram_addr)
-		.clka(clk_dtcm_ram)
-		.dina(ram_din)
-		.douta(ram_dout)
-		.ena(ram_cs)
+dtcm_ram i_dtcm_ram (
+		.addra(ram_addr),
+		.clka(clk),
+		.dina(ram_din),
+		.douta(ram_dout),
+		.ena(ram_cs),
 		.wea(ram_we)
 	);
 
