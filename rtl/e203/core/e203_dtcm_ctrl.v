@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-23 17:41:27
+// Last Modified time: 2019-04-23 19:20:48
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_dtcm_ctrl
@@ -83,33 +83,13 @@ module e203_dtcm_ctrl(
 	wire clk_dtcm_ram;
 
 
-	// wire sram_icb_cmd_ready;
-// wire sram_icb_cmd_valid;
-	// wire [`E203_DTCM_ADDR_WIDTH-1:0] sram_icb_cmd_addr;
-	// wire sram_icb_cmd_read;
-	// wire [`E203_DTCM_DATA_WIDTH-1:0] sram_icb_cmd_wdata;
-	wire [`E203_DTCM_WMSK_WIDTH-1:0] sram_icb_cmd_wmask;
-
-
-	wire sram_icb_rsp_valid;
-	wire sram_icb_rsp_ready;
-	// wire [`E203_DTCM_DATA_WIDTH-1:0] sram_icb_rsp_rdata;
-
-
-
-	//LSU take higher priority
-	assign sram_icb_cmd_valid = lsu2dtcm_icb_cmd_valid;
-	// assign sram_icb_cmd_addr = lsu2dtcm_icb_cmd_addr;
-	// assign sram_icb_cmd_read = lsu2dtcm_icb_cmd_read;
-	// assign sram_icb_cmd_wdata = lsu2dtcm_icb_cmd_wdata;
-	assign sram_icb_cmd_wmask = lsu2dtcm_icb_cmd_wmask;
 	assign lsu2dtcm_icb_cmd_ready = lsu2dtcm_icb_rsp_ready;
 
 
-	assign lsu2dtcm_icb_rsp_valid = sram_icb_rsp_valid;
+	assign lsu2dtcm_icb_rsp_valid = lsu2dtcm_icb_cmd_valid;
 	assign lsu2dtcm_icb_rsp_err = 1'b0;
 	assign lsu2dtcm_icb_rsp_rdata = ram_dout;
-	assign sram_icb_rsp_ready = lsu2dtcm_icb_rsp_ready;
+
 
 
 
@@ -168,7 +148,17 @@ module e203_dtcm_ctrl(
 	wire ram_we = (~lsu2dtcm_icb_cmd_read);  
 	wire ram_addr = lsu2dtcm_icb_cmd_addr [`E203_DTCM_ADDR_WIDTH-1:2];          
 // assign ram_wem = uop_cmd_wmask[`E203_DTCM_WMSK_WIDTH-1:0];          
-	wire ram_din = lsu2dtcm_icb_cmd_wdata[`E203_DTCM_DATA_WIDTH-1:0];  
+	wire ram_din = {8{lsu2dtcm_icb_cmd_wmask[3]},
+					8{lsu2dtcm_icb_cmd_wmask[2]},
+					8{lsu2dtcm_icb_cmd_wmask[1]},
+					8{lsu2dtcm_icb_cmd_wmask[0]}} 
+					& 
+					lsu2dtcm_icb_cmd_wdata[`E203_DTCM_DATA_WIDTH-1:0];
+					
+
+	
+
+
 	wire ram_dout; 
 	assign sram_icb_rsp_rdata = ram_dout;
 
