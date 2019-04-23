@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-23 14:45:35
+// Last Modified time: 2019-04-23 16:03:11
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_dtcm_ctrl
@@ -264,7 +264,7 @@ module e203_dtcm_ctrl(
 
 	// assign dtcm_active = lsu2dtcm_icb_cmd_valid | dtcm_sram_ctrl_active;
 
-
+(* DONT_TOUCH = "TRUE" *)
 	e203_dtcm_ram u_e203_dtcm_ram (
 		.cs   (dtcm_ram_cs),
 		.we   (dtcm_ram_we),

@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-23 15:28:56
+// Last Modified time: 2019-04-23 16:00:21
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_lsu_ctrl
@@ -187,7 +187,8 @@ module e203_lsu_ctrl(
 	// wire [USR_W-1:0] fpu_icb_cmd_usr = {USR_W-1{1'b0}};
 
 	wire [USR_W-1:0] pre_agu_icb_rsp_usr;
-	assign {	pre_agu_icb_rsp_back2agu,
+	assign {	
+				pre_agu_icb_rsp_back2agu,
 				pre_agu_icb_rsp_usign,
 				pre_agu_icb_rsp_read,
 				pre_agu_icb_rsp_size,
@@ -235,7 +236,7 @@ module e203_lsu_ctrl(
 	wire [1-1:0] arbt_bus_icb_rsp_err;
 	wire [1-1:0] arbt_bus_icb_rsp_excl_ok;
 	wire [`E203_XLEN-1:0] arbt_bus_icb_rsp_rdata;
-	wire [*USR_W-1:0] arbt_bus_icb_rsp_usr;
+	wire [USR_W-1:0] arbt_bus_icb_rsp_usr;
 
 	//CMD Channel
 	wire [1-1:0] arbt_bus_icb_cmd_valid_raw;
@@ -364,7 +365,7 @@ module e203_lsu_ctrl(
 
 	wire arbt_icb_rsp_biu;
 	wire arbt_icb_rsp_dtcm;
-	wire arbt_icb_rsp_scond_true;
+	// wire arbt_icb_rsp_scond_true;
 
 
 	localparam SPLT_FIFO_W = (USR_W+2);
@@ -424,10 +425,7 @@ module e203_lsu_ctrl(
 
 	wire all_icb_cmd_ready;
 	wire all_icb_cmd_ready_excp_biu;
-	// wire all_icb_cmd_ready_excp_dcach;
 	wire all_icb_cmd_ready_excp_dtcm;
-	// wire all_icb_cmd_ready_excp_itcm;
-
 
 	assign dtcm_icb_cmd_valid = arbt_icb_cmd_valid_pos & arbt_icb_cmd_dtcm & all_icb_cmd_ready_excp_dtcm;
 	assign dtcm_icb_cmd_addr  = arbt_icb_cmd_addr [`E203_DTCM_ADDR_WIDTH-1:0]; 
@@ -453,14 +451,8 @@ module e203_lsu_ctrl(
 	//   case
 	//
 	assign all_icb_cmd_ready = (biu_icb_cmd_ready ) & (dtcm_icb_cmd_ready);
-
 	assign all_icb_cmd_ready_excp_biu = (dtcm_icb_cmd_ready);
-
-	// assign all_icb_cmd_ready_excp_dcach = (biu_icb_cmd_ready ) & (dtcm_icb_cmd_ready);
 	assign all_icb_cmd_ready_excp_dtcm = (biu_icb_cmd_ready );
-
-	// assign all_icb_cmd_ready_excp_itcm = (biu_icb_cmd_ready ) & (dtcm_icb_cmd_ready);
-
 	assign arbt_icb_cmd_ready_pos = all_icb_cmd_ready;  
 
 	assign {	arbt_icb_rsp_valid 
@@ -468,19 +460,24 @@ module e203_lsu_ctrl(
 				, arbt_icb_rsp_excl_ok 
 				, arbt_icb_rsp_rdata 
 				 } =
-						({`E203_XLEN+3{arbt_icb_rsp_biu}} &
-												{ biu_icb_rsp_valid 
-												, biu_icb_rsp_err 
-												, biu_icb_rsp_excl_ok 
-												, biu_icb_rsp_rdata 
-												}
-						) 
-					| ({`E203_XLEN+3{arbt_icb_rsp_dtcm}} &
-												{ dtcm_icb_rsp_valid 
-												, dtcm_icb_rsp_err 
-												, 1'b0 
-												, dtcm_icb_rsp_rdata 
-												}
+					(
+						{`E203_XLEN+3{arbt_icb_rsp_biu}} &
+							{ 
+								biu_icb_rsp_valid, 
+								biu_icb_rsp_err, 
+								biu_icb_rsp_excl_ok, 
+								biu_icb_rsp_rdata 
+							}
+					) 
+					| 
+					(
+						{`E203_XLEN+3{arbt_icb_rsp_dtcm}} &
+							{ 
+								dtcm_icb_rsp_valid, 
+								dtcm_icb_rsp_err, 
+								1'b0, 
+								dtcm_icb_rsp_rdata 
+							}
 						);
 
 	assign biu_icb_rsp_ready    = arbt_icb_rsp_biu    & arbt_icb_rsp_ready;
@@ -510,11 +507,9 @@ module e203_lsu_ctrl(
 	wire rsp_lw  = (pre_agu_icb_rsp_size == 2'b10);
 
 
-       // If not support the store-condition instructions, then we have no chance to issue excl transaction
-           // no need to consider the store-condition result write-back
-  assign lsu_o_wbck_wdat   = 
-
-	
+	// If not support the store-condition instructions, then we have no chance to issue excl transaction
+	// no need to consider the store-condition result write-back
+	assign lsu_o_wbck_wdat = 
 					( ({`E203_XLEN{rsp_lbu}} & {{24{          1'b0}}, rdata_algn[ 7:0]})
 					| ({`E203_XLEN{rsp_lb }} & {{24{rdata_algn[ 7]}}, rdata_algn[ 7:0]})
 					| ({`E203_XLEN{rsp_lhu}} & {{16{          1'b0}}, rdata_algn[15:0]})
