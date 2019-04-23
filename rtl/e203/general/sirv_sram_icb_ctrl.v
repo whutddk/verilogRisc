@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-23 14:38:19
+// Last Modified time: 2019-04-23 17:07:36
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: sirv_sram_icb_ctrl
@@ -118,20 +118,20 @@ module sirv_sram_icb_ctrl #(
 			} = byp_icb_cmd_o_pack;
 
 		 
-	sirv_gnrl_bypbuf # (
-		.DP(1),// We really use bypbuf here
-		.DW(BUF_CMD_PACK_W)
-	) u_byp_icb_cmd_buf(
-		.i_vld(i_icb_cmd_valid), 
-		.i_rdy(i_icb_cmd_ready), 
-		.i_dat(byp_icb_cmd_i_pack),
-		.o_vld(byp_icb_cmd_valid), 
-		.o_rdy(byp_icb_cmd_ready), 
-		.o_dat(byp_icb_cmd_o_pack),
-	
-		.clk  (clk),
-		.rst_n(rst_n)  
-	);
+sirv_gnrl_bypbuf # (
+.DP(1),// We really use bypbuf here
+.DW(BUF_CMD_PACK_W)
+) u_byp_icb_cmd_buf(
+.i_vld(i_icb_cmd_valid), 
+.i_rdy(i_icb_cmd_ready), 
+.i_dat(byp_icb_cmd_i_pack),
+.o_vld(byp_icb_cmd_valid), 
+.o_rdy(byp_icb_cmd_ready), 
+.o_dat(byp_icb_cmd_o_pack),
+
+.clk  (clk),
+.rst_n(rst_n)  
+);
 
 	// Instantiated the SRAM Ctrl
 
@@ -175,7 +175,7 @@ module sirv_sram_icb_ctrl #(
 
 
 	assign sram_ctrl_active = 
-	i_icb_cmd_valid // Input command
+		i_icb_cmd_valid // Input command
 		| byp_icb_cmd_valid // Byp input command
 		| sram_active  // SRAM active
 		| i_icb_rsp_valid // Output Response
