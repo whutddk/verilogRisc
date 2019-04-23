@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-10 15:03:29
+// Last Modified time: 2019-04-23 16:13:57
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: config
@@ -136,8 +136,8 @@
 
 
 
-`define E203_CFG_HAS_ECC
-`define E203_CFG_HAS_EAI
+// `define E203_CFG_HAS_ECC
+// `define E203_CFG_HAS_EAI
 `define E203_CFG_SUPPORT_SHARE_MULDIV
-`define E203_CFG_SUPPORT_AMO
+// `define E203_CFG_SUPPORT_AMO
 `define E203_CFG_DTCM_ADDR_WIDTH 16

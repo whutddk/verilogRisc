@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-23 11:13:27
+// Last Modified time: 2019-04-23 14:29:13
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_core
@@ -84,7 +84,7 @@ module e203_core(
 	output core_wfi,
 	output tm_stop,
 	output core_cgstop,
-	output tcm_cgstop,
+	// output tcm_cgstop,
 
 	input  [`E203_PC_SIZE-1:0] pc_rtvec,
 
@@ -161,30 +161,30 @@ module e203_core(
 
 
 
-`ifdef E203_HAS_DTCM //{
-	input [`E203_ADDR_SIZE-1:0] dtcm_region_indic,
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// The ICB Interface to DTCM
-	//
-	//    * Bus cmd channel
-	output                         lsu2dtcm_icb_cmd_valid,
-	input                          lsu2dtcm_icb_cmd_ready,
-	output [`E203_DTCM_ADDR_WIDTH-1:0]   lsu2dtcm_icb_cmd_addr, 
-	output                         lsu2dtcm_icb_cmd_read, 
-	output [`E203_XLEN-1:0]        lsu2dtcm_icb_cmd_wdata,
-	output [`E203_XLEN/8-1:0]      lsu2dtcm_icb_cmd_wmask,
-	output                         lsu2dtcm_icb_cmd_lock,
-	output                         lsu2dtcm_icb_cmd_excl,
-	output [1:0]                   lsu2dtcm_icb_cmd_size,
-	//
-	//    * Bus RSP channel
-	input                          lsu2dtcm_icb_rsp_valid,
-	output                         lsu2dtcm_icb_rsp_ready,
-	input                          lsu2dtcm_icb_rsp_err  ,
-	input                          lsu2dtcm_icb_rsp_excl_ok,
-	input  [`E203_XLEN-1:0]        lsu2dtcm_icb_rsp_rdata,
-`endif//}
+
+// input [`E203_ADDR_SIZE-1:0] dtcm_region_indic,
+// 	//////////////////////////////////////////////////////////////
+// 	//////////////////////////////////////////////////////////////
+// 	// The ICB Interface to DTCM
+// 	//
+// 	//    * Bus cmd channel
+// output                         lsu2dtcm_icb_cmd_valid,
+// input                          lsu2dtcm_icb_cmd_ready,
+// output [`E203_DTCM_ADDR_WIDTH-1:0]   lsu2dtcm_icb_cmd_addr, 
+// output                         lsu2dtcm_icb_cmd_read, 
+// output [`E203_XLEN-1:0]        lsu2dtcm_icb_cmd_wdata,
+// output [`E203_XLEN/8-1:0]      lsu2dtcm_icb_cmd_wmask,
+// output                         lsu2dtcm_icb_cmd_lock,
+// output                         lsu2dtcm_icb_cmd_excl,
+// output [1:0]                   lsu2dtcm_icb_cmd_size,
+// //
+// //    * Bus RSP channel
+// input                          lsu2dtcm_icb_rsp_valid,
+// output                         lsu2dtcm_icb_rsp_ready,
+// input                          lsu2dtcm_icb_rsp_err  ,
+// input                          lsu2dtcm_icb_rsp_excl_ok,
+// input  [`E203_XLEN-1:0]        lsu2dtcm_icb_rsp_rdata,
+
 
 	output exu_active,
 // output ifu_active,
@@ -200,16 +200,6 @@ module e203_core(
 	input test_mode,
 	input  rst_n
 	);
-
-	wire ifu2itcm_holdup;
-	wire ifu2itcm_icb_cmd_valid;
-	wire ifu2itcm_icb_cmd_ready;
-	wire [`E203_ITCM_ADDR_WIDTH-1:0]   ifu2itcm_icb_cmd_addr;
-	wire ifu2itcm_icb_rsp_valid;
-	wire ifu2itcm_icb_rsp_ready;
-	// wire ifu2itcm_icb_rsp_err;
-	wire [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata; 
-
 
 
 
@@ -502,26 +492,25 @@ e203_lsu u_e203_lsu(
 	.agu_icb_rsp_rdata   (agu_icb_rsp_rdata),
 
 
-`ifdef E203_HAS_DTCM //{
-	.dtcm_region_indic   (dtcm_region_indic),
 
-	.dtcm_icb_cmd_valid  (lsu2dtcm_icb_cmd_valid),
-	.dtcm_icb_cmd_ready  (lsu2dtcm_icb_cmd_ready),
-	.dtcm_icb_cmd_addr   (lsu2dtcm_icb_cmd_addr ),
-	.dtcm_icb_cmd_read   (lsu2dtcm_icb_cmd_read ),
-	.dtcm_icb_cmd_wdata  (lsu2dtcm_icb_cmd_wdata),
-	.dtcm_icb_cmd_wmask  (lsu2dtcm_icb_cmd_wmask),
-	.dtcm_icb_cmd_lock   (lsu2dtcm_icb_cmd_lock ),
-	.dtcm_icb_cmd_excl   (lsu2dtcm_icb_cmd_excl ),
-	.dtcm_icb_cmd_size   (lsu2dtcm_icb_cmd_size ),
-	 
-	.dtcm_icb_rsp_valid  (lsu2dtcm_icb_rsp_valid),
-	.dtcm_icb_rsp_ready  (lsu2dtcm_icb_rsp_ready),
-	.dtcm_icb_rsp_err    (lsu2dtcm_icb_rsp_err  ),
-	.dtcm_icb_rsp_excl_ok(lsu2dtcm_icb_rsp_excl_ok  ),
-	.dtcm_icb_rsp_rdata  (lsu2dtcm_icb_rsp_rdata),
+// .dtcm_region_indic   (dtcm_region_indic),
 
-`endif//}
+// .dtcm_icb_cmd_valid  (lsu2dtcm_icb_cmd_valid),
+// .dtcm_icb_cmd_ready  (lsu2dtcm_icb_cmd_ready),
+// .dtcm_icb_cmd_addr   (lsu2dtcm_icb_cmd_addr ),
+// .dtcm_icb_cmd_read   (lsu2dtcm_icb_cmd_read ),
+// .dtcm_icb_cmd_wdata  (lsu2dtcm_icb_cmd_wdata),
+// .dtcm_icb_cmd_wmask  (lsu2dtcm_icb_cmd_wmask),
+// .dtcm_icb_cmd_lock   (lsu2dtcm_icb_cmd_lock ),
+// .dtcm_icb_cmd_excl   (lsu2dtcm_icb_cmd_excl ),
+// .dtcm_icb_cmd_size   (lsu2dtcm_icb_cmd_size ),
+ 
+// .dtcm_icb_rsp_valid  (lsu2dtcm_icb_rsp_valid),
+// .dtcm_icb_rsp_ready  (lsu2dtcm_icb_rsp_ready),
+// .dtcm_icb_rsp_err    (lsu2dtcm_icb_rsp_err  ),
+// .dtcm_icb_rsp_excl_ok(lsu2dtcm_icb_rsp_excl_ok  ),
+// .dtcm_icb_rsp_rdata  (lsu2dtcm_icb_rsp_rdata),
+
 
 	.biu_icb_cmd_valid  (lsu2biu_icb_cmd_valid),
 	.biu_icb_cmd_ready  (lsu2biu_icb_cmd_ready),
