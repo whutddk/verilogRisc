@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-23 11:51:43
+// Last Modified time: 2019-04-23 14:01:36
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_lsu
@@ -53,7 +53,7 @@ module e203_lsu(
 	output  lsu_active,
 
 
-	input [`E203_ADDR_SIZE-1:0] dtcm_region_indic,
+// input [`E203_ADDR_SIZE-1:0] dtcm_region_indic,
 
 	//////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////
@@ -105,22 +105,22 @@ module e203_lsu(
 	// The ICB Interface to DTCM
 	//
 	//    * Bus cmd channel
-	output                         dtcm_icb_cmd_valid,
-	input                          dtcm_icb_cmd_ready,
-	output [`E203_DTCM_ADDR_WIDTH-1:0]   dtcm_icb_cmd_addr, 
-	output                         dtcm_icb_cmd_read, 
-	output [`E203_XLEN-1:0]        dtcm_icb_cmd_wdata,
-	output [`E203_XLEN/8-1:0]      dtcm_icb_cmd_wmask,
-	output                         dtcm_icb_cmd_lock,
-	output                         dtcm_icb_cmd_excl,
-	output [1:0]                   dtcm_icb_cmd_size,
-	//
-	//    * Bus RSP channel
-	input                          dtcm_icb_rsp_valid,
-	output                         dtcm_icb_rsp_ready,
-	input                          dtcm_icb_rsp_err  ,
-	input                          dtcm_icb_rsp_excl_ok  ,
-	input  [`E203_XLEN-1:0]        dtcm_icb_rsp_rdata,
+// output                         dtcm_icb_cmd_valid,
+// input                          dtcm_icb_cmd_ready,
+// output [`E203_DTCM_ADDR_WIDTH-1:0]   dtcm_icb_cmd_addr, 
+// output                         dtcm_icb_cmd_read, 
+// output [`E203_XLEN-1:0]        dtcm_icb_cmd_wdata,
+// output [`E203_XLEN/8-1:0]      dtcm_icb_cmd_wmask,
+// output                         dtcm_icb_cmd_lock,
+// output                         dtcm_icb_cmd_excl,
+// output [1:0]                   dtcm_icb_cmd_size,
+// //
+// //    * Bus RSP channel
+// input                          dtcm_icb_rsp_valid,
+// output                         dtcm_icb_rsp_ready,
+// input                          dtcm_icb_rsp_err  ,
+// input                          dtcm_icb_rsp_excl_ok  ,
+// input  [`E203_XLEN-1:0]        dtcm_icb_rsp_rdata,
 
 
 	//////////////////////////////////////////////////////////////
@@ -158,7 +158,7 @@ module e203_lsu(
 		.commit_trap           (commit_trap),
 		.lsu_ctrl_active       (lsu_ctrl_active),
 
-		.dtcm_region_indic     (dtcm_region_indic),
+// .dtcm_region_indic     (dtcm_region_indic),
 
 		.lsu_o_valid           (lsu_o_valid ),
 		.lsu_o_ready           (lsu_o_ready ),
@@ -191,21 +191,21 @@ module e203_lsu(
 		.agu_icb_rsp_rdata     (agu_icb_rsp_rdata),
 
 
-		.dtcm_icb_cmd_valid    (dtcm_icb_cmd_valid),
-		.dtcm_icb_cmd_ready    (dtcm_icb_cmd_ready),
-		.dtcm_icb_cmd_addr     (dtcm_icb_cmd_addr ),
-		.dtcm_icb_cmd_read     (dtcm_icb_cmd_read ),
-		.dtcm_icb_cmd_wdata    (dtcm_icb_cmd_wdata),
-		.dtcm_icb_cmd_wmask    (dtcm_icb_cmd_wmask),
-		.dtcm_icb_cmd_lock     (dtcm_icb_cmd_lock),
-		.dtcm_icb_cmd_excl     (dtcm_icb_cmd_excl),
-		.dtcm_icb_cmd_size     (dtcm_icb_cmd_size),
-		
-		.dtcm_icb_rsp_valid    (dtcm_icb_rsp_valid),
-		.dtcm_icb_rsp_ready    (dtcm_icb_rsp_ready),
-		.dtcm_icb_rsp_err      (dtcm_icb_rsp_err  ),
-		.dtcm_icb_rsp_excl_ok  (dtcm_icb_rsp_excl_ok  ),
-		.dtcm_icb_rsp_rdata    (dtcm_icb_rsp_rdata),
+// .dtcm_icb_cmd_valid    (dtcm_icb_cmd_valid),
+// .dtcm_icb_cmd_ready    (dtcm_icb_cmd_ready),
+// .dtcm_icb_cmd_addr     (dtcm_icb_cmd_addr ),
+// .dtcm_icb_cmd_read     (dtcm_icb_cmd_read ),
+// .dtcm_icb_cmd_wdata    (dtcm_icb_cmd_wdata),
+// .dtcm_icb_cmd_wmask    (dtcm_icb_cmd_wmask),
+// .dtcm_icb_cmd_lock     (dtcm_icb_cmd_lock),
+// .dtcm_icb_cmd_excl     (dtcm_icb_cmd_excl),
+// .dtcm_icb_cmd_size     (dtcm_icb_cmd_size),
+
+// .dtcm_icb_rsp_valid    (dtcm_icb_rsp_valid),
+// .dtcm_icb_rsp_ready    (dtcm_icb_rsp_ready),
+// .dtcm_icb_rsp_err      (dtcm_icb_rsp_err  ),
+// .dtcm_icb_rsp_excl_ok  (dtcm_icb_rsp_excl_ok  ),
+// .dtcm_icb_rsp_rdata    (dtcm_icb_rsp_rdata),
 
 		
 		.biu_icb_cmd_valid     (biu_icb_cmd_valid),

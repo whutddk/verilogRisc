@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-04 17:23:37
+// Last Modified time: 2019-04-23 14:45:35
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_dtcm_ctrl
@@ -47,14 +47,14 @@
 // ====================================================================
 `include "e203_defines.v"
 
-	`ifdef E203_HAS_DTCM //{
+
 
 module e203_dtcm_ctrl(
-	output dtcm_active,
+	// output dtcm_active,
 	// The cgstop is coming from CSR (0xBFE mcgstop)'s filed 1
 	// // This register is our self-defined CSR register to disable the 
 	// DTCM SRAM clock gating for debugging purpose
-	input  tcm_cgstop,
+	// input  tcm_cgstop,
 	// Note: the DTCM ICB interface only support the single-transaction
 	
 	//////////////////////////////////////////////////////////////
@@ -213,7 +213,7 @@ module e203_dtcm_ctrl(
 	wire sram_icb_rsp_read;
 
 
- `ifndef E203_HAS_ECC //{
+
 	sirv_sram_icb_ctrl #(
 		.DW     (`E203_DTCM_DATA_WIDTH),
 		.AW     (`E203_DTCM_ADDR_WIDTH),
@@ -222,7 +222,7 @@ module e203_dtcm_ctrl(
 		.USR_W  (1) 
 	) u_sram_icb_ctrl (
 		.sram_ctrl_active (dtcm_sram_ctrl_active),
-		.tcm_cgstop       (tcm_cgstop),
+		// .tcm_cgstop       (tcm_cgstop),
 		 
 		.i_icb_cmd_valid (sram_icb_cmd_valid),
 		.i_icb_cmd_ready (sram_icb_cmd_ready),
@@ -251,7 +251,7 @@ module e203_dtcm_ctrl(
 	);
 
 	assign sram_icb_rsp_err = 1'b0;
-	`endif//}
+
 
 		
 
@@ -262,10 +262,9 @@ module e203_dtcm_ctrl(
 	assign arbt_icb_rsp_rdata = sram_icb_rsp_rdata;
 
 
-	assign dtcm_active = lsu2dtcm_icb_cmd_valid | dtcm_sram_ctrl_active;
+	// assign dtcm_active = lsu2dtcm_icb_cmd_valid | dtcm_sram_ctrl_active;
 
 
-`ifdef E203_HAS_DTCM
 	e203_dtcm_ram u_e203_dtcm_ram (
 		.cs   (dtcm_ram_cs),
 		.we   (dtcm_ram_we),
@@ -277,7 +276,6 @@ module e203_dtcm_ctrl(
 		.clk  (clk_dtcm_ram)
 	);
 
-`endif
 
 
 
@@ -285,4 +283,3 @@ module e203_dtcm_ctrl(
 
 endmodule
 
-	`endif//}

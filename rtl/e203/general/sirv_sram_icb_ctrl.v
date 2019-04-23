@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-09 21:14:53
+// Last Modified time: 2019-04-23 14:38:19
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: sirv_sram_icb_ctrl
@@ -60,7 +60,7 @@ module sirv_sram_icb_ctrl #(
 	// The cgstop is coming from CSR (0xBFE mcgstop)'s filed 1
 	// This register is our self-defined CSR register to disable the 
 	// ITCM SRAM clock gating for debugging purpose
-	input  tcm_cgstop,
+	// input  tcm_cgstop,
 	
 	//    * Cmd channel
 	input  i_icb_cmd_valid, // Handshake valid
@@ -145,7 +145,7 @@ module sirv_sram_icb_ctrl #(
 		.USR_W  (USR_W) 
 	) u_sirv_1cyc_sram_ctrl(
 		.sram_ctrl_active (sram_active),
-		.tcm_cgstop       (tcm_cgstop),
+		.tcm_cgstop       (1'b1),
 		 
 		.uop_cmd_valid (byp_icb_cmd_valid),
 		.uop_cmd_ready (byp_icb_cmd_ready),

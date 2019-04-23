@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-08 11:36:44
+// Last Modified time: 2019-04-23 14:24:06
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_clk_ctrl
@@ -66,10 +66,10 @@ module e203_clk_ctrl (
   input  core_lsu_active,
   input  core_biu_active,
 
-  `ifdef E203_HAS_DTCM
-  input  dtcm_active,
-  output dtcm_ls,
-  `endif
+  // `ifdef E203_HAS_DTCM
+  // input  dtcm_active,
+  // output dtcm_ls,
+  // `endif
 	// The core's clk and rst
   output clk_core_ifu,
   output clk_core_exu,
@@ -78,9 +78,9 @@ module e203_clk_ctrl (
 
 	// The ITCM/DTCM clk and rst
 
-  `ifdef E203_HAS_DTCM
-  output clk_dtcm,
-  `endif
+  // `ifdef E203_HAS_DTCM
+  // output clk_dtcm,
+  // `endif
 
   input  core_wfi
 );
@@ -130,19 +130,7 @@ module e203_clk_ctrl (
 
 
 
-  `ifdef E203_HAS_DTCM
-  wire dtcm_active_r;
-  sirv_gnrl_dffr #(1)dtcm_active_dffr(dtcm_active, dtcm_active_r, clk, rst_n);
-  wire dtcm_clk_en = core_cgstop | dtcm_active | dtcm_active_r;
-  assign dtcm_ls = ~dtcm_clk_en;
 
-  e203_clkgate u_dtcm_clkgate(
-	.clk_in   (clk        ),
-	.test_mode(test_mode  ),
-	.clock_en (dtcm_clk_en),
-	.clk_out  (clk_dtcm)
-  );
-  `endif
 
 
 

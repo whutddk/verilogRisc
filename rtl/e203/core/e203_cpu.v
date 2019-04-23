@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-21 17:31:38
+// Last Modified time: 2019-04-23 14:29:03
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_cpu
@@ -153,7 +153,7 @@ module e203_cpu #(
 	);
 
 	wire core_cgstop;
-	wire tcm_cgstop;
+// wire tcm_cgstop;
 	
 // wire core_ifu_active;
 	wire core_exu_active;
@@ -168,10 +168,10 @@ module e203_cpu #(
 	wire clk_core_biu;
 	
 
-	`ifdef E203_HAS_DTCM
-	wire clk_dtcm;
-	wire dtcm_active;
-	`endif
+
+// wire clk_dtcm;
+// wire dtcm_active;
+
 
 	// The Top always on clk and rst
 	wire rst_aon;
@@ -207,11 +207,11 @@ e203_clk_ctrl u_e203_clk_ctrl(
 	.clk_core_lsu (clk_core_lsu      ),
 	.clk_core_biu (clk_core_biu      ),
 
-`ifdef E203_HAS_DTCM
-	.clk_dtcm     (clk_dtcm     ),
-	.dtcm_active  (dtcm_active),
-	.dtcm_ls      ( ),
-`endif
+
+// .clk_dtcm     (clk_dtcm     ),
+// .dtcm_active  (dtcm_active),
+// .dtcm_ls      ( ),
+
 
 	.core_ifu_active(1'b1),
 	.core_exu_active(core_exu_active),
@@ -242,35 +242,35 @@ e203_irq_sync  #(.MASTER(MASTER)) u_e203_irq_sync(
 
 
 
-`ifdef E203_HAS_ITCM
-	wire ifu2itcm_holdup;
+// `ifdef E203_HAS_ITCM
+// 	wire ifu2itcm_holdup;
 
-	wire ifu2itcm_icb_cmd_valid;
-	wire ifu2itcm_icb_cmd_ready;
-	wire [`E203_ITCM_ADDR_WIDTH-1:0]   ifu2itcm_icb_cmd_addr;
+// 	wire ifu2itcm_icb_cmd_valid;
+// 	wire ifu2itcm_icb_cmd_ready;
+// 	wire [`E203_ITCM_ADDR_WIDTH-1:0]   ifu2itcm_icb_cmd_addr;
 
-	wire ifu2itcm_icb_rsp_valid;
-	wire ifu2itcm_icb_rsp_ready;
-	wire ifu2itcm_icb_rsp_err;
-	wire [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata; 
+// 	wire ifu2itcm_icb_rsp_valid;
+// 	wire ifu2itcm_icb_rsp_ready;
+// 	wire ifu2itcm_icb_rsp_err;
+// 	wire [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata; 
 
-`endif
+// `endif
 
-`ifdef E203_HAS_DTCM
-	wire                               lsu2dtcm_icb_cmd_valid;
-	wire                               lsu2dtcm_icb_cmd_ready;
-	wire [`E203_DTCM_ADDR_WIDTH-1:0]   lsu2dtcm_icb_cmd_addr; 
-	wire                               lsu2dtcm_icb_cmd_read; 
-	wire [`E203_XLEN-1:0]              lsu2dtcm_icb_cmd_wdata;
-	wire [`E203_XLEN/8-1:0]            lsu2dtcm_icb_cmd_wmask;
-	wire                               lsu2dtcm_icb_cmd_lock;
-	wire                               lsu2dtcm_icb_cmd_excl;
-	wire [1:0]                         lsu2dtcm_icb_cmd_size;
-	wire                               lsu2dtcm_icb_rsp_valid;
-	wire                               lsu2dtcm_icb_rsp_ready;
-	wire                               lsu2dtcm_icb_rsp_err  ;
-	wire [`E203_XLEN-1:0]              lsu2dtcm_icb_rsp_rdata;
-`endif
+
+	// wire                               lsu2dtcm_icb_cmd_valid;
+	// wire                               lsu2dtcm_icb_cmd_ready;
+	// wire [`E203_DTCM_ADDR_WIDTH-1:0]   lsu2dtcm_icb_cmd_addr; 
+	// wire                               lsu2dtcm_icb_cmd_read; 
+	// wire [`E203_XLEN-1:0]              lsu2dtcm_icb_cmd_wdata;
+	// wire [`E203_XLEN/8-1:0]            lsu2dtcm_icb_cmd_wmask;
+	// wire                               lsu2dtcm_icb_cmd_lock;
+	// wire                               lsu2dtcm_icb_cmd_excl;
+	// wire [1:0]                         lsu2dtcm_icb_cmd_size;
+	// wire                               lsu2dtcm_icb_rsp_valid;
+	// wire                               lsu2dtcm_icb_rsp_ready;
+	// wire                               lsu2dtcm_icb_rsp_err  ;
+	// wire [`E203_XLEN-1:0]              lsu2dtcm_icb_rsp_rdata;
+
 
 `ifdef E203_HAS_CSR_EAI//{
 	wire         eai_csr_valid;
@@ -307,7 +307,7 @@ e203_core u_e203_core(
 	.eai_csr_rdata (eai_csr_rdata),
 `endif
 
-	.tcm_cgstop              (tcm_cgstop),
+// .tcm_cgstop              (tcm_cgstop),
 	.core_cgstop             (core_cgstop),
 	.tm_stop                 (tm_stop),
 
@@ -348,33 +348,31 @@ e203_core u_e203_core(
 	.dbg_ebreakm_r           (dbg_ebreakm_r),
 	.dbg_stopcycle           (dbg_stopcycle),
 
-// `ifdef E203_HAS_ITCM //{
-// 	.itcm_region_indic       (`E203_ITCM_ADDR_BASE),
-// `endif//}
-	`ifdef E203_HAS_DTCM //{
-		.dtcm_region_indic       (`E203_DTCM_ADDR_BASE),
-	`endif//}
 
 
-`ifdef E203_HAS_DTCM //{
+		// .dtcm_region_indic       (`E203_DTCM_ADDR_BASE),
 
-	.lsu2dtcm_icb_cmd_valid  (lsu2dtcm_icb_cmd_valid),
-	.lsu2dtcm_icb_cmd_ready  (lsu2dtcm_icb_cmd_ready),
-	.lsu2dtcm_icb_cmd_addr   (lsu2dtcm_icb_cmd_addr ),
-	.lsu2dtcm_icb_cmd_read   (lsu2dtcm_icb_cmd_read ),
-	.lsu2dtcm_icb_cmd_wdata  (lsu2dtcm_icb_cmd_wdata),
-	.lsu2dtcm_icb_cmd_wmask  (lsu2dtcm_icb_cmd_wmask),
-	.lsu2dtcm_icb_cmd_lock   (lsu2dtcm_icb_cmd_lock ),
-	.lsu2dtcm_icb_cmd_excl   (lsu2dtcm_icb_cmd_excl ),
-	.lsu2dtcm_icb_cmd_size   (lsu2dtcm_icb_cmd_size ),
+
+
+
+
+	// .lsu2dtcm_icb_cmd_valid  (lsu2dtcm_icb_cmd_valid),
+	// .lsu2dtcm_icb_cmd_ready  (lsu2dtcm_icb_cmd_ready),
+	// .lsu2dtcm_icb_cmd_addr   (lsu2dtcm_icb_cmd_addr ),
+	// .lsu2dtcm_icb_cmd_read   (lsu2dtcm_icb_cmd_read ),
+	// .lsu2dtcm_icb_cmd_wdata  (lsu2dtcm_icb_cmd_wdata),
+	// .lsu2dtcm_icb_cmd_wmask  (lsu2dtcm_icb_cmd_wmask),
+	// .lsu2dtcm_icb_cmd_lock   (lsu2dtcm_icb_cmd_lock ),
+	// .lsu2dtcm_icb_cmd_excl   (lsu2dtcm_icb_cmd_excl ),
+	// .lsu2dtcm_icb_cmd_size   (lsu2dtcm_icb_cmd_size ),
 	
-	.lsu2dtcm_icb_rsp_valid  (lsu2dtcm_icb_rsp_valid),
-	.lsu2dtcm_icb_rsp_ready  (lsu2dtcm_icb_rsp_ready),
-	.lsu2dtcm_icb_rsp_err    (lsu2dtcm_icb_rsp_err  ),
-	.lsu2dtcm_icb_rsp_excl_ok(1'b0),
-	.lsu2dtcm_icb_rsp_rdata  (lsu2dtcm_icb_rsp_rdata),
+	// .lsu2dtcm_icb_rsp_valid  (lsu2dtcm_icb_rsp_valid),
+	// .lsu2dtcm_icb_rsp_ready  (lsu2dtcm_icb_rsp_ready),
+	// .lsu2dtcm_icb_rsp_err    (lsu2dtcm_icb_rsp_err  ),
+	// .lsu2dtcm_icb_rsp_excl_ok(1'b0),
+	// .lsu2dtcm_icb_rsp_rdata  (lsu2dtcm_icb_rsp_rdata),
 
-`endif//}
+
 
 	.plic_icb_enable        (plic_icb_enable),
 	.plic_region_indic      (plic_region_indic ),
@@ -423,28 +421,9 @@ e203_core u_e203_core(
 
 
 
-`ifdef E203_HAS_DTCM //{
-e203_dtcm_ctrl u_e203_dtcm_ctrl(
-	.tcm_cgstop   (tcm_cgstop),
 
-	.dtcm_active  (dtcm_active),
 
-	.lsu2dtcm_icb_cmd_valid  (lsu2dtcm_icb_cmd_valid),
-	.lsu2dtcm_icb_cmd_ready  (lsu2dtcm_icb_cmd_ready),
-	.lsu2dtcm_icb_cmd_addr   (lsu2dtcm_icb_cmd_addr ),
-	.lsu2dtcm_icb_cmd_read   (lsu2dtcm_icb_cmd_read ),
-	.lsu2dtcm_icb_cmd_wdata  (lsu2dtcm_icb_cmd_wdata),
-	.lsu2dtcm_icb_cmd_wmask  (lsu2dtcm_icb_cmd_wmask),
-	
-	.lsu2dtcm_icb_rsp_valid  (lsu2dtcm_icb_rsp_valid),
-	.lsu2dtcm_icb_rsp_ready  (lsu2dtcm_icb_rsp_ready),
-	.lsu2dtcm_icb_rsp_err    (lsu2dtcm_icb_rsp_err  ),
-	.lsu2dtcm_icb_rsp_rdata  (lsu2dtcm_icb_rsp_rdata),
 
-	.clk                     (clk_dtcm),
-	.rst_n                   (rst_sync_n) 
-);
-`endif//}
 
 
 	assign inspect_dbg_irq = dbg_irq_a;

@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-23 14:00:16
+// Last Modified time: 2019-04-23 14:44:31
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_lsu_ctrl
@@ -47,110 +47,95 @@
 `include "e203_defines.v"
 
 module e203_lsu_ctrl(
-	input  commit_mret,
-	input  commit_trap,
-	output lsu_ctrl_active,
+		input  commit_mret,
+		input  commit_trap,
+		output lsu_ctrl_active,
+
+		//////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////
+		// The LSU Write-Back Interface
+		output lsu_o_valid, // Handshake valid
+		input  lsu_o_ready, // Handshake ready
+		output [`E203_XLEN-1:0] lsu_o_wbck_wdat,
+		output [`E203_ITAG_WIDTH -1:0] lsu_o_wbck_itag,
+		output lsu_o_wbck_err , // The error no need to write back regfile
+		output lsu_o_cmt_buserr, // The bus-error exception generated
+		output [`E203_ADDR_SIZE -1:0] lsu_o_cmt_badaddr,
+		output lsu_o_cmt_ld,
+		output lsu_o_cmt_st,
+		
+
+		//////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////
+		// The AGU ICB Interface to LSU-ctrl
+		//    * Bus cmd channel
+		input                          agu_icb_cmd_valid, // Handshake valid
+		output                         agu_icb_cmd_ready, // Handshake ready
+		input  [`E203_ADDR_SIZE-1:0]   agu_icb_cmd_addr, // Bus transaction start addr 
+		input                          agu_icb_cmd_read,   // Read or write
+		input  [`E203_XLEN-1:0]        agu_icb_cmd_wdata, 
+		input  [`E203_XLEN/8-1:0]      agu_icb_cmd_wmask, 
+		input                          agu_icb_cmd_lock,
+		input                          agu_icb_cmd_excl,
+		input  [1:0]                   agu_icb_cmd_size,
+		// Several additional side channel signals
+		//   Indicate LSU-ctrl module to
+		//     return the ICB response channel back to AGU
+		//     this is only used by AMO or unaligned load/store 1st uop
+		//     to return the response
+		input                          agu_icb_cmd_back2agu, 
+						 //   Sign extension or not
+		input                          agu_icb_cmd_usign,
+						 //   RD Regfile index
+		input  [`E203_ITAG_WIDTH -1:0] agu_icb_cmd_itag,
+
+		//    * Bus RSP channel
+		output                         agu_icb_rsp_valid, // Response valid 
+		input                          agu_icb_rsp_ready, // Response ready
+		output                         agu_icb_rsp_err  , // Response error
+		output                         agu_icb_rsp_excl_ok,// Response exclusive okay
+		output [`E203_XLEN-1:0]        agu_icb_rsp_rdata,
+
+		//////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////
+		// The ICB Interface to BIU
+		//
+		//    * Bus cmd channel
+		output                         biu_icb_cmd_valid,
+		input                          biu_icb_cmd_ready,
+		output [`E203_ADDR_SIZE-1:0]   biu_icb_cmd_addr, 
+		output                         biu_icb_cmd_read, 
+		output [`E203_XLEN-1:0]        biu_icb_cmd_wdata,
+		output [`E203_XLEN/8-1:0]      biu_icb_cmd_wmask,
+		output                         biu_icb_cmd_lock,
+		output                         biu_icb_cmd_excl,
+		output [1:0]                   biu_icb_cmd_size,
+		//
+		//    * Bus RSP channel
+		input                          biu_icb_rsp_valid,
+		output                         biu_icb_rsp_ready,
+		input                          biu_icb_rsp_err,
+		input                          biu_icb_rsp_excl_ok,
+		input  [`E203_XLEN-1:0]        biu_icb_rsp_rdata,
 
 
-	input [`E203_ADDR_SIZE-1:0] dtcm_region_indic,
-
-
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// The LSU Write-Back Interface
-	output lsu_o_valid, // Handshake valid
-	input  lsu_o_ready, // Handshake ready
-	output [`E203_XLEN-1:0] lsu_o_wbck_wdat,
-	output [`E203_ITAG_WIDTH -1:0] lsu_o_wbck_itag,
-	output lsu_o_wbck_err , // The error no need to write back regfile
-	output lsu_o_cmt_buserr, // The bus-error exception generated
-	output [`E203_ADDR_SIZE -1:0] lsu_o_cmt_badaddr,
-	output lsu_o_cmt_ld,
-	output lsu_o_cmt_st,
-	
-
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// The AGU ICB Interface to LSU-ctrl
-	//    * Bus cmd channel
-	input                          agu_icb_cmd_valid, // Handshake valid
-	output                         agu_icb_cmd_ready, // Handshake ready
-	input  [`E203_ADDR_SIZE-1:0]   agu_icb_cmd_addr, // Bus transaction start addr 
-	input                          agu_icb_cmd_read,   // Read or write
-	input  [`E203_XLEN-1:0]        agu_icb_cmd_wdata, 
-	input  [`E203_XLEN/8-1:0]      agu_icb_cmd_wmask, 
-	input                          agu_icb_cmd_lock,
-	input                          agu_icb_cmd_excl,
-	input  [1:0]                   agu_icb_cmd_size,
-	// Several additional side channel signals
-	//   Indicate LSU-ctrl module to
-	//     return the ICB response channel back to AGU
-	//     this is only used by AMO or unaligned load/store 1st uop
-	//     to return the response
-	input                          agu_icb_cmd_back2agu, 
-					 //   Sign extension or not
-	input                          agu_icb_cmd_usign,
-					 //   RD Regfile index
-	input  [`E203_ITAG_WIDTH -1:0] agu_icb_cmd_itag,
-
-	//    * Bus RSP channel
-	output                         agu_icb_rsp_valid, // Response valid 
-	input                          agu_icb_rsp_ready, // Response ready
-	output                         agu_icb_rsp_err  , // Response error
-	output                         agu_icb_rsp_excl_ok,// Response exclusive okay
-	output [`E203_XLEN-1:0]        agu_icb_rsp_rdata,
-
-
-
-
-//////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////
-// The ICB Interface to DTCM
-//
-//    * Bus cmd channel
-output                         dtcm_icb_cmd_valid,
-input                          dtcm_icb_cmd_ready,
-output [`E203_DTCM_ADDR_WIDTH-1:0]   dtcm_icb_cmd_addr, 
-output                         dtcm_icb_cmd_read, 
-output [`E203_XLEN-1:0]        dtcm_icb_cmd_wdata,
-output [`E203_XLEN/8-1:0]      dtcm_icb_cmd_wmask,
-output                         dtcm_icb_cmd_lock,
-output                         dtcm_icb_cmd_excl,
-output [1:0]                   dtcm_icb_cmd_size,
-//
-//    * Bus RSP channel
-input                          dtcm_icb_rsp_valid,
-output                         dtcm_icb_rsp_ready,
-input                          dtcm_icb_rsp_err  ,
-input                          dtcm_icb_rsp_excl_ok,
-input  [`E203_XLEN-1:0]        dtcm_icb_rsp_rdata,
-
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// The ICB Interface to BIU
-	//
-	//    * Bus cmd channel
-	output                         biu_icb_cmd_valid,
-	input                          biu_icb_cmd_ready,
-	output [`E203_ADDR_SIZE-1:0]   biu_icb_cmd_addr, 
-	output                         biu_icb_cmd_read, 
-	output [`E203_XLEN-1:0]        biu_icb_cmd_wdata,
-	output [`E203_XLEN/8-1:0]      biu_icb_cmd_wmask,
-	output                         biu_icb_cmd_lock,
-	output                         biu_icb_cmd_excl,
-	output [1:0]                   biu_icb_cmd_size,
-	//
-	//    * Bus RSP channel
-	input                          biu_icb_rsp_valid,
-	output                         biu_icb_rsp_ready,
-	input                          biu_icb_rsp_err  ,
-	input                          biu_icb_rsp_excl_ok  ,
-	input  [`E203_XLEN-1:0]        biu_icb_rsp_rdata,
-
-
-	input  clk,
-	input  rst_n
+		input  clk,
+		input  rst_n
 	);
+
+	wire [`E203_ADDR_SIZE-1:0] dtcm_region_indic = `E203_DTCM_ADDR_BASE;
+	wire									dtcm_icb_cmd_valid;
+	wire									dtcm_icb_cmd_ready;
+	wire [`E203_DTCM_ADDR_WIDTH-1:0]		dtcm_icb_cmd_addr;
+	wire									dtcm_icb_cmd_read;
+	wire [`E203_XLEN-1:0]					dtcm_icb_cmd_wdata;
+	wire [`E203_XLEN/8-1:0]					dtcm_icb_cmd_wmask;
+	wire									dtcm_icb_rsp_valid;
+	wire									dtcm_icb_rsp_ready;
+	wire									dtcm_icb_rsp_err;
+	wire [`E203_XLEN-1:0]					dtcm_icb_rsp_rdata;
+
+
 
 	// The EAI mem holdup signal will override other request to LSU-Ctrl
 	wire agu_icb_cmd_valid_pos;
@@ -171,8 +156,8 @@ input  [`E203_XLEN-1:0]        dtcm_icb_rsp_rdata,
 			!!! ERROR: There must be something wrong, Either DCache, DTCM, ITCM or SystemITF is must to have. 
 								 Otherwise where to access the data?
 	`endif//}
-	//
-	//
+
+
 	wire                  pre_agu_icb_rsp_valid;
 	wire                  pre_agu_icb_rsp_ready;
 	wire                  pre_agu_icb_rsp_err  ;
@@ -190,27 +175,25 @@ input  [`E203_XLEN-1:0]        dtcm_icb_rsp_rdata,
 	localparam USR_W = (`E203_ITAG_WIDTH+6+`E203_ADDR_SIZE);
 	localparam USR_PACK_EXCL = 0;// The cmd_excl is in the user 0 bit
 	wire [USR_W-1:0] agu_icb_cmd_usr =
-			{
-				 agu_icb_cmd_back2agu  
-				,agu_icb_cmd_usign
-				,agu_icb_cmd_read
-				,agu_icb_cmd_size
-				,agu_icb_cmd_itag 
-				,agu_icb_cmd_addr 
-				,agu_icb_cmd_excl 
+			{	agu_icb_cmd_back2agu,
+				agu_icb_cmd_usign,
+				agu_icb_cmd_read,
+				agu_icb_cmd_size,
+				agu_icb_cmd_itag,
+				agu_icb_cmd_addr,
+				agu_icb_cmd_excl 
 			};
 	// wire [USR_W-1:0] eai_icb_cmd_usr = {USR_W-1{1'b0}};
-	wire [USR_W-1:0] fpu_icb_cmd_usr = {USR_W-1{1'b0}};
+	// wire [USR_W-1:0] fpu_icb_cmd_usr = {USR_W-1{1'b0}};
 
-	wire [USR_W-1:0]      pre_agu_icb_rsp_usr;
-	assign {
-				 pre_agu_icb_rsp_back2agu  
-				,pre_agu_icb_rsp_usign
-				,pre_agu_icb_rsp_read
-				,pre_agu_icb_rsp_size
-				,pre_agu_icb_rsp_itag 
-				,pre_agu_icb_rsp_addr
-				,pre_agu_icb_rsp_excl 
+	wire [USR_W-1:0] pre_agu_icb_rsp_usr;
+	assign {	pre_agu_icb_rsp_back2agu,
+				pre_agu_icb_rsp_usign,
+				pre_agu_icb_rsp_read,
+				pre_agu_icb_rsp_size,
+				pre_agu_icb_rsp_itag,
+				pre_agu_icb_rsp_addr,
+				pre_agu_icb_rsp_excl 
 			} = pre_agu_icb_rsp_usr;
 
 
@@ -362,12 +345,8 @@ input  [`E203_XLEN-1:0]        dtcm_icb_rsp_rdata,
 	//  * The FIFO will be pushed when a ICB CMD handshaked
 	//  * The FIFO will be poped  when a ICB RSP handshaked
 	
-// wire arbt_icb_cmd_itcm = 1'b0;
-	
 	wire arbt_icb_cmd_dtcm = (arbt_icb_cmd_addr[`E203_DTCM_BASE_REGION] ==  dtcm_region_indic[`E203_DTCM_BASE_REGION]);
 	
-// wire arbt_icb_cmd_dcache = 1'b0;
-
 	wire arbt_icb_cmd_biu = (~arbt_icb_cmd_dtcm) ;
 
 	wire splt_fifo_wen = arbt_icb_cmd_valid & arbt_icb_cmd_ready;
@@ -399,8 +378,6 @@ input  [`E203_XLEN-1:0]        dtcm_icb_rsp_rdata,
 	wire arbt_icb_cmd_scond = arbt_icb_cmd_usr[USR_PACK_EXCL] & (~arbt_icb_cmd_read);
 	wire arbt_icb_cmd_scond_true = arbt_icb_cmd_scond & icb_cmdaddr_eq_excladdr & excl_flg_r;
 
-	//
-
 	wire splt_fifo_i_ready;
 	wire splt_fifo_i_valid = splt_fifo_wen;
 	wire splt_fifo_full    = (~splt_fifo_i_ready);
@@ -409,9 +386,7 @@ input  [`E203_XLEN-1:0]        dtcm_icb_rsp_rdata,
 	wire splt_fifo_empty   = (~splt_fifo_o_valid);
 
 	wire arbt_icb_rsp_biu;
-// wire arbt_icb_rsp_dcache;
 	wire arbt_icb_rsp_dtcm;
-// wire arbt_icb_rsp_itcm;
 	wire arbt_icb_rsp_scond_true;
 
 
@@ -423,28 +398,22 @@ input  [`E203_XLEN-1:0]        dtcm_icb_rsp_rdata,
 	wire [SPLT_FIFO_W-1:0] splt_fifo_wdat;
 	wire [SPLT_FIFO_W-1:0] splt_fifo_rdat;
 
-	assign splt_fifo_wdat =  {
-					arbt_icb_cmd_biu,
+	assign splt_fifo_wdat = {
+								arbt_icb_cmd_biu,
+								arbt_icb_cmd_dtcm,
+								arbt_icb_cmd_scond_true,
+								arbt_icb_cmd_usr 
+							};
 
-					arbt_icb_cmd_dtcm,
-
-					arbt_icb_cmd_scond_true,
-
-					arbt_icb_cmd_usr 
-					};
-
-	assign   
-			{
-					arbt_icb_rsp_biu,
-
-					arbt_icb_rsp_dtcm,
-
-					arbt_icb_rsp_scond_true, 
-
-					arbt_icb_rsp_usr 
-					} = splt_fifo_rdat & {SPLT_FIFO_W{splt_fifo_o_valid}};
-					// The output signals will be used as 
-					//   control signals, so need to be masked
+	assign  {
+				arbt_icb_rsp_biu,
+				arbt_icb_rsp_dtcm,
+				arbt_icb_rsp_scond_true, 
+				arbt_icb_rsp_usr 
+			} = splt_fifo_rdat & {SPLT_FIFO_W{splt_fifo_o_valid}};
+					
+	// The output signals will be used as 
+	//   control signals, so need to be masked
 
 	
 	sirv_gnrl_pipe_stage # (
@@ -469,10 +438,8 @@ input  [`E203_XLEN-1:0]        dtcm_icb_rsp_rdata,
 	/////////////////////////////////////////////////////////////////////////////////
 	// Implement the ICB Splitting
 
-
-// wire cmd_diff_branch = 1'b0; // If the LSU outstanding is only 1, there is no chance to 
-															 //   happen several outsanding ops, not to mention 
-															 //   with different branches
+	//   happen several outsanding ops, not to mention 
+	//   with different branches
 	
 	wire arbt_icb_cmd_addi_condi = (~splt_fifo_full);
 	wire arbt_icb_cmd_ready_pos;
@@ -482,9 +449,9 @@ input  [`E203_XLEN-1:0]        dtcm_icb_rsp_rdata,
 
 	wire all_icb_cmd_ready;
 	wire all_icb_cmd_ready_excp_biu;
-	wire all_icb_cmd_ready_excp_dcach;
+	// wire all_icb_cmd_ready_excp_dcach;
 	wire all_icb_cmd_ready_excp_dtcm;
-	wire all_icb_cmd_ready_excp_itcm;
+	// wire all_icb_cmd_ready_excp_itcm;
 
 
 	assign dtcm_icb_cmd_valid = arbt_icb_cmd_valid_pos & arbt_icb_cmd_dtcm & all_icb_cmd_ready_excp_dtcm;
@@ -492,10 +459,6 @@ input  [`E203_XLEN-1:0]        dtcm_icb_rsp_rdata,
 	assign dtcm_icb_cmd_read  = arbt_icb_cmd_read ; 
 	assign dtcm_icb_cmd_wdata = arbt_icb_cmd_wdata;
 	assign dtcm_icb_cmd_wmask = arbt_icb_cmd_wmask_pos;
-	assign dtcm_icb_cmd_lock  = arbt_icb_cmd_lock ;
-	assign dtcm_icb_cmd_excl  = arbt_icb_cmd_excl ;
-	assign dtcm_icb_cmd_size  = arbt_icb_cmd_size ;
-
 
 	assign biu_icb_cmd_valid = arbt_icb_cmd_valid_pos & arbt_icb_cmd_biu & all_icb_cmd_ready_excp_biu;
 	assign biu_icb_cmd_addr  = arbt_icb_cmd_addr ; 
@@ -518,10 +481,10 @@ input  [`E203_XLEN-1:0]        dtcm_icb_rsp_rdata,
 
 	assign all_icb_cmd_ready_excp_biu = (dtcm_icb_cmd_ready);
 
-	assign all_icb_cmd_ready_excp_dcach = (biu_icb_cmd_ready ) & (dtcm_icb_cmd_ready);
+	// assign all_icb_cmd_ready_excp_dcach = (biu_icb_cmd_ready ) & (dtcm_icb_cmd_ready);
 	assign all_icb_cmd_ready_excp_dtcm = (biu_icb_cmd_ready );
 
-	assign all_icb_cmd_ready_excp_itcm = (biu_icb_cmd_ready ) & (dtcm_icb_cmd_ready);
+	// assign all_icb_cmd_ready_excp_itcm = (biu_icb_cmd_ready ) & (dtcm_icb_cmd_ready);
 
 	assign arbt_icb_cmd_ready_pos = all_icb_cmd_ready;  
 
@@ -540,13 +503,12 @@ input  [`E203_XLEN-1:0]        dtcm_icb_rsp_rdata,
 					| ({`E203_XLEN+3{arbt_icb_rsp_dtcm}} &
 												{ dtcm_icb_rsp_valid 
 												, dtcm_icb_rsp_err 
-												, dtcm_icb_rsp_excl_ok 
+												, 1'b0 
 												, dtcm_icb_rsp_rdata 
 												}
 						);
 
 	assign biu_icb_rsp_ready    = arbt_icb_rsp_biu    & arbt_icb_rsp_ready;
-
 	assign dtcm_icb_rsp_ready   = arbt_icb_rsp_dtcm   & arbt_icb_rsp_ready;
 
 	/////////////////////////////////////////////////////////////////////////////////
@@ -555,7 +517,7 @@ input  [`E203_XLEN-1:0]        dtcm_icb_rsp_rdata,
 	assign agu_icb_rsp_valid = pre_agu_icb_rsp_valid &   pre_agu_icb_rsp_back2agu;
 
 	assign pre_agu_icb_rsp_ready =
-			pre_agu_icb_rsp_back2agu ?  agu_icb_rsp_ready : lsu_o_ready; 
+			pre_agu_icb_rsp_back2agu ? agu_icb_rsp_ready : lsu_o_ready; 
 
 	assign agu_icb_rsp_err   = pre_agu_icb_rsp_err  ;
 	assign agu_icb_rsp_excl_ok = pre_agu_icb_rsp_excl_ok  ;
@@ -573,14 +535,12 @@ input  [`E203_XLEN-1:0]        dtcm_icb_rsp_rdata,
 	wire rsp_lw  = (pre_agu_icb_rsp_size == 2'b10);
 
 
-			 // In E200 single core config, we always assume the store-condition is checked by the core itself
-			 //    because no other core to race. So we dont use the returned excl-ok, but use the LSU tracked
-			 //    scond_true
+	// In E200 single core config, we always assume the store-condition is checked by the core itself
+	//    because no other core to race. So we dont use the returned excl-ok, but use the LSU tracked
+	//    scond_true
 	wire [`E203_XLEN-1:0] sc_excl_wdata = arbt_icb_rsp_scond_true ? `E203_XLEN'd0 : `E203_XLEN'd1; 
 								// If it is scond (excl-write), then need to update the regfile
-	assign lsu_o_wbck_wdat   = ((~pre_agu_icb_rsp_read) & pre_agu_icb_rsp_excl) ? sc_excl_wdata :
-
-
+	assign lsu_o_wbck_wdat = ((~pre_agu_icb_rsp_read) & pre_agu_icb_rsp_excl) ? sc_excl_wdata :
 					( ({`E203_XLEN{rsp_lbu}} & {{24{          1'b0}}, rdata_algn[ 7:0]})
 					| ({`E203_XLEN{rsp_lb }} & {{24{rdata_algn[ 7]}}, rdata_algn[ 7:0]})
 					| ({`E203_XLEN{rsp_lhu}} & {{16{          1'b0}}, rdata_algn[15:0]})
@@ -594,6 +554,38 @@ input  [`E203_XLEN-1:0]        dtcm_icb_rsp_rdata,
 	assign lsu_o_cmt_st= ~pre_agu_icb_rsp_read;
 
 	assign lsu_ctrl_active = (|arbt_bus_icb_cmd_valid_raw) | splt_fifo_o_valid;
+
+
+
+e203_dtcm_ctrl u_e203_dtcm_ctrl(
+
+	.lsu2dtcm_icb_cmd_valid  (lsu2dtcm_icb_cmd_valid),
+	.lsu2dtcm_icb_cmd_ready  (lsu2dtcm_icb_cmd_ready),
+	.lsu2dtcm_icb_cmd_addr   (lsu2dtcm_icb_cmd_addr ),
+	.lsu2dtcm_icb_cmd_read   (lsu2dtcm_icb_cmd_read ),
+	.lsu2dtcm_icb_cmd_wdata  (lsu2dtcm_icb_cmd_wdata),
+	.lsu2dtcm_icb_cmd_wmask  (lsu2dtcm_icb_cmd_wmask),
+	
+	.lsu2dtcm_icb_rsp_valid  (lsu2dtcm_icb_rsp_valid),
+	.lsu2dtcm_icb_rsp_ready  (lsu2dtcm_icb_rsp_ready),
+	.lsu2dtcm_icb_rsp_err    (lsu2dtcm_icb_rsp_err  ),
+	.lsu2dtcm_icb_rsp_rdata  (lsu2dtcm_icb_rsp_rdata),
+
+	.clk                     (clk),
+	.rst_n                   (rst_n) 
+);
+
+
+
+
+
+
+
+
+
+
+
+
 
 endmodule
 
