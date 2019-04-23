@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-23 16:03:11
+// Last Modified time: 2019-04-23 16:28:50
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_dtcm_ctrl
@@ -83,109 +83,6 @@ module e203_dtcm_ctrl(
 	wire clk_dtcm_ram;
 
 
-	wire arbt_icb_cmd_valid;
-	wire arbt_icb_cmd_ready;
-	wire [`E203_DTCM_ADDR_WIDTH-1:0] arbt_icb_cmd_addr;
-	wire arbt_icb_cmd_read;
-	wire [`E203_DTCM_DATA_WIDTH-1:0] arbt_icb_cmd_wdata;
-	wire [`E203_DTCM_WMSK_WIDTH-1:0] arbt_icb_cmd_wmask;
-
-	wire arbt_icb_rsp_valid;
-	wire arbt_icb_rsp_ready;
-	wire arbt_icb_rsp_err;
-	wire [`E203_DTCM_DATA_WIDTH-1:0] arbt_icb_rsp_rdata;
-
-
-	localparam DTCM_ARBT_I_NUM = 1;
-	localparam DTCM_ARBT_I_PTR_W = 1;
-
-
-	wire [DTCM_ARBT_I_NUM*1-1:0] arbt_bus_icb_cmd_valid;
-	wire [DTCM_ARBT_I_NUM*1-1:0] arbt_bus_icb_cmd_ready;
-	wire [DTCM_ARBT_I_NUM*`E203_DTCM_ADDR_WIDTH-1:0] arbt_bus_icb_cmd_addr;
-	wire [DTCM_ARBT_I_NUM*1-1:0] arbt_bus_icb_cmd_read;
-	wire [DTCM_ARBT_I_NUM*`E203_DTCM_DATA_WIDTH-1:0] arbt_bus_icb_cmd_wdata;
-	wire [DTCM_ARBT_I_NUM*`E203_DTCM_WMSK_WIDTH-1:0] arbt_bus_icb_cmd_wmask;
-
-	wire [DTCM_ARBT_I_NUM*1-1:0] arbt_bus_icb_rsp_valid;
-	wire [DTCM_ARBT_I_NUM*1-1:0] arbt_bus_icb_rsp_ready;
-	wire [DTCM_ARBT_I_NUM*1-1:0] arbt_bus_icb_rsp_err;
-	wire [DTCM_ARBT_I_NUM*`E203_DTCM_DATA_WIDTH-1:0] arbt_bus_icb_rsp_rdata;
-	
-	//LSU take higher priority
-	assign arbt_bus_icb_cmd_valid = lsu2dtcm_icb_cmd_valid;
-	assign arbt_bus_icb_cmd_addr = lsu2dtcm_icb_cmd_addr;
-	assign arbt_bus_icb_cmd_read = lsu2dtcm_icb_cmd_read;
-	assign arbt_bus_icb_cmd_wdata = lsu2dtcm_icb_cmd_wdata;
-	assign arbt_bus_icb_cmd_wmask = lsu2dtcm_icb_cmd_wmask;
-	assign lsu2dtcm_icb_cmd_ready = arbt_bus_icb_cmd_ready;
-
-
-	assign lsu2dtcm_icb_rsp_valid = arbt_bus_icb_rsp_valid;
-	assign lsu2dtcm_icb_rsp_err = arbt_bus_icb_rsp_err;
-	assign lsu2dtcm_icb_rsp_rdata = arbt_bus_icb_rsp_rdata;
-	assign arbt_bus_icb_rsp_ready = lsu2dtcm_icb_rsp_ready;
-
-	sirv_gnrl_icb_arbt # (
-		.ARBT_SCHEME (0),// Priority based
-		.ALLOW_0CYCL_RSP (0),// Dont allow the 0 cycle response because for ITCM and DTCM, 
-												 //   Dcache, .etc, definitely they cannot reponse as 0 cycle
-		.FIFO_OUTS_NUM   (`E203_DTCM_OUTS_NUM),
-		.FIFO_CUT_READY(0),
-		.USR_W      (1),
-		.ARBT_NUM   (DTCM_ARBT_I_NUM  ),
-		.ARBT_PTR_W (DTCM_ARBT_I_PTR_W),
-		.AW         (`E203_DTCM_ADDR_WIDTH),
-		.DW         (`E203_DTCM_DATA_WIDTH) 
-	) u_dtcm_icb_arbt(
-		.o_icb_cmd_valid        (arbt_icb_cmd_valid )     ,
-		.o_icb_cmd_ready        (arbt_icb_cmd_ready )     ,
-		.o_icb_cmd_read         (arbt_icb_cmd_read )      ,
-		.o_icb_cmd_addr         (arbt_icb_cmd_addr )      ,
-		.o_icb_cmd_wdata        (arbt_icb_cmd_wdata )     ,
-		.o_icb_cmd_wmask        (arbt_icb_cmd_wmask)      ,
-		.o_icb_cmd_burst        ()     ,
-		.o_icb_cmd_beat         ()     ,
-		.o_icb_cmd_lock         ()     ,
-		.o_icb_cmd_excl         ()     ,
-		.o_icb_cmd_size         ()     ,
-		.o_icb_cmd_usr          ()     ,
-																	
-		.o_icb_rsp_valid        (arbt_icb_rsp_valid )     ,
-		.o_icb_rsp_ready        (arbt_icb_rsp_ready )     ,
-		.o_icb_rsp_err          (arbt_icb_rsp_err)        ,
-		.o_icb_rsp_rdata        (arbt_icb_rsp_rdata )     ,
-		.o_icb_rsp_usr          (1'b0),
-		.o_icb_rsp_excl_ok      (1'b0),
-																 
-		.i_bus_icb_cmd_ready    (arbt_bus_icb_cmd_ready ) ,
-		.i_bus_icb_cmd_valid    (arbt_bus_icb_cmd_valid ) ,
-		.i_bus_icb_cmd_read     (arbt_bus_icb_cmd_read )  ,
-		.i_bus_icb_cmd_addr     (arbt_bus_icb_cmd_addr )  ,
-		.i_bus_icb_cmd_wdata    (arbt_bus_icb_cmd_wdata ) ,
-		.i_bus_icb_cmd_wmask    (arbt_bus_icb_cmd_wmask)  ,
-		.i_bus_icb_cmd_burst    ({2*DTCM_ARBT_I_NUM{1'b0}}) ,
-		.i_bus_icb_cmd_beat     ({2*DTCM_ARBT_I_NUM{1'b0}}) ,
-		.i_bus_icb_cmd_lock     ({1*DTCM_ARBT_I_NUM{1'b0}}),
-		.i_bus_icb_cmd_excl     ({1*DTCM_ARBT_I_NUM{1'b0}}),
-		.i_bus_icb_cmd_size     ({2*DTCM_ARBT_I_NUM{1'b0}}),
-		.i_bus_icb_cmd_usr      ({1*DTCM_ARBT_I_NUM{1'b0}}),
-
-																	
-		.i_bus_icb_rsp_valid    (arbt_bus_icb_rsp_valid ) ,
-		.i_bus_icb_rsp_ready    (arbt_bus_icb_rsp_ready ) ,
-		.i_bus_icb_rsp_err      (arbt_bus_icb_rsp_err)    ,
-		.i_bus_icb_rsp_rdata    (arbt_bus_icb_rsp_rdata ) ,
-		.i_bus_icb_rsp_usr      (),
-		.i_bus_icb_rsp_excl_ok  (),
-															 
-		.clk					(clk),
-		.rst_n					(rst_n)
-	);
-
-
-
-
 	wire sram_icb_cmd_ready;
 	wire sram_icb_cmd_valid;
 	wire [`E203_DTCM_ADDR_WIDTH-1:0] sram_icb_cmd_addr;
@@ -193,13 +90,6 @@ module e203_dtcm_ctrl(
 	wire [`E203_DTCM_DATA_WIDTH-1:0] sram_icb_cmd_wdata;
 	wire [`E203_DTCM_WMSK_WIDTH-1:0] sram_icb_cmd_wmask;
 
-	assign arbt_icb_cmd_ready = sram_icb_cmd_ready;
-
-	assign sram_icb_cmd_valid = arbt_icb_cmd_valid;
-	assign sram_icb_cmd_addr  = arbt_icb_cmd_addr;
-	assign sram_icb_cmd_read  = arbt_icb_cmd_read;
-	assign sram_icb_cmd_wdata = arbt_icb_cmd_wdata;
-	assign sram_icb_cmd_wmask = arbt_icb_cmd_wmask;
 
 	wire sram_icb_rsp_valid;
 	wire sram_icb_rsp_ready;
@@ -211,6 +101,21 @@ module e203_dtcm_ctrl(
 
 
 	wire sram_icb_rsp_read;
+
+	//LSU take higher priority
+	assign sram_icb_cmd_valid = lsu2dtcm_icb_cmd_valid;
+	assign sram_icb_cmd_addr = lsu2dtcm_icb_cmd_addr;
+	assign sram_icb_cmd_read = lsu2dtcm_icb_cmd_read;
+	assign sram_icb_cmd_wdata = lsu2dtcm_icb_cmd_wdata;
+	assign sram_icb_cmd_wmask = lsu2dtcm_icb_cmd_wmask;
+	assign lsu2dtcm_icb_cmd_ready = sram_icb_cmd_ready;
+
+
+	assign lsu2dtcm_icb_rsp_valid = sram_icb_rsp_valid;
+	assign lsu2dtcm_icb_rsp_err = 1'b0;
+	assign lsu2dtcm_icb_rsp_rdata = sram_icb_rsp_rdata;
+	assign sram_icb_rsp_ready = lsu2dtcm_icb_rsp_ready;
+
 
 
 
@@ -250,16 +155,7 @@ module e203_dtcm_ctrl(
 		.rst_n(rst_n)  
 	);
 
-	assign sram_icb_rsp_err = 1'b0;
 
-
-		
-
-	assign sram_icb_rsp_ready = arbt_icb_rsp_ready;
-
-	assign arbt_icb_rsp_valid = sram_icb_rsp_valid;
-	assign arbt_icb_rsp_err   = sram_icb_rsp_err;
-	assign arbt_icb_rsp_rdata = sram_icb_rsp_rdata;
 
 
 	// assign dtcm_active = lsu2dtcm_icb_cmd_valid | dtcm_sram_ctrl_active;
