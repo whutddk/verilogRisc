@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-23 11:33:05
+// Last Modified time: 2019-04-23 11:51:43
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_lsu
@@ -189,24 +189,7 @@ module e203_lsu(
 		.agu_icb_rsp_err       (agu_icb_rsp_err   ),
 		.agu_icb_rsp_excl_ok   (agu_icb_rsp_excl_ok),
 		.agu_icb_rsp_rdata     (agu_icb_rsp_rdata),
- 
-		.eai_mem_holdup        (1'b0),
-		.eai_icb_cmd_valid     (1'b0),
-		.eai_icb_cmd_ready     (),
-		.eai_icb_cmd_addr      (`E203_ADDR_SIZE'b0 ),
-		.eai_icb_cmd_read      (1'b0 ),
-		.eai_icb_cmd_wdata     (`E203_XLEN'b0),
-		.eai_icb_cmd_wmask     ({`E203_XLEN/8{1'b0}}),
-		.eai_icb_cmd_lock      (1'b0),
-		.eai_icb_cmd_excl      (1'b0),
-		.eai_icb_cmd_size      (2'b0),
-		
-		.eai_icb_rsp_valid     (),
-		.eai_icb_rsp_ready     (1'b0),
-		.eai_icb_rsp_err       (),
-		.eai_icb_rsp_excl_ok   (),
-		.eai_icb_rsp_rdata     (),
-        
+
 
 		.dtcm_icb_cmd_valid    (dtcm_icb_cmd_valid),
 		.dtcm_icb_cmd_ready    (dtcm_icb_cmd_ready),

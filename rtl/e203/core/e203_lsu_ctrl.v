@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-23 11:41:15
+// Last Modified time: 2019-04-23 11:54:41
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_lsu_ctrl
@@ -100,27 +100,7 @@ module e203_lsu_ctrl(
 	output                         agu_icb_rsp_excl_ok,// Response exclusive okay
 	output [`E203_XLEN-1:0]        agu_icb_rsp_rdata,
 
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// The EAI ICB Interface to LSU-ctrl
-	input                          eai_mem_holdup,
-	//    * Bus cmd channel
-	input                          eai_icb_cmd_valid,
-	output                         eai_icb_cmd_ready,
-	input  [`E203_ADDR_SIZE-1:0]   eai_icb_cmd_addr, 
-	input                          eai_icb_cmd_read, 
-	input  [`E203_XLEN-1:0]        eai_icb_cmd_wdata,
-	input  [`E203_XLEN/8-1:0]      eai_icb_cmd_wmask,
-	input                          eai_icb_cmd_lock,
-	input                          eai_icb_cmd_excl,
-	input  [1:0]                   eai_icb_cmd_size,
 
-	//    * Bus RSP channel
-	output                         eai_icb_rsp_valid,
-	input                          eai_icb_rsp_ready,
-	output                         eai_icb_rsp_err  ,
-	output                         eai_icb_rsp_excl_ok,
-	output [`E203_XLEN-1:0]        eai_icb_rsp_rdata,
 
 
 	//////////////////////////////////////////////////////////////
@@ -175,11 +155,11 @@ module e203_lsu_ctrl(
 	// The EAI mem holdup signal will override other request to LSU-Ctrl
 	wire agu_icb_cmd_valid_pos;
 	wire agu_icb_cmd_ready_pos;
-	assign agu_icb_cmd_valid_pos = (~eai_mem_holdup) & agu_icb_cmd_valid;
-	assign agu_icb_cmd_ready     = (~eai_mem_holdup) & agu_icb_cmd_ready_pos;
+	assign agu_icb_cmd_valid_pos =  agu_icb_cmd_valid;
+	assign agu_icb_cmd_ready     =  agu_icb_cmd_ready_pos;
 
 
-	localparam LSU_ARBT_I_NUM   = 2;
+	localparam LSU_ARBT_I_NUM   = 1;
 	localparam LSU_ARBT_I_PTR_W = 1;
 
 
@@ -219,7 +199,7 @@ module e203_lsu_ctrl(
 				,agu_icb_cmd_addr 
 				,agu_icb_cmd_excl 
 			};
-	wire [USR_W-1:0] eai_icb_cmd_usr = {USR_W-1{1'b0}};
+	// wire [USR_W-1:0] eai_icb_cmd_usr = {USR_W-1{1'b0}};
 	wire [USR_W-1:0] fpu_icb_cmd_usr = {USR_W-1{1'b0}};
 
 	wire [USR_W-1:0]      pre_agu_icb_rsp_usr;
@@ -232,8 +212,7 @@ module e203_lsu_ctrl(
 				,pre_agu_icb_rsp_addr
 				,pre_agu_icb_rsp_excl 
 			} = pre_agu_icb_rsp_usr;
-	wire [USR_W-1:0] eai_icb_rsp_usr;
-	wire [USR_W-1:0] fpu_icb_rsp_usr;
+
 
 	wire arbt_icb_cmd_valid;
 	wire arbt_icb_cmd_ready;
@@ -255,139 +234,68 @@ module e203_lsu_ctrl(
 	wire [`E203_XLEN-1:0] arbt_icb_rsp_rdata;
 	wire [USR_W-1:0] arbt_icb_rsp_usr;
 
-	wire [LSU_ARBT_I_NUM*1-1:0] arbt_bus_icb_cmd_valid;
-	wire [LSU_ARBT_I_NUM*1-1:0] arbt_bus_icb_cmd_ready;
-	wire [LSU_ARBT_I_NUM*`E203_ADDR_SIZE-1:0] arbt_bus_icb_cmd_addr;
-	wire [LSU_ARBT_I_NUM*1-1:0] arbt_bus_icb_cmd_read;
-	wire [LSU_ARBT_I_NUM*`E203_XLEN-1:0] arbt_bus_icb_cmd_wdata;
-	wire [LSU_ARBT_I_NUM*`E203_XLEN/8-1:0] arbt_bus_icb_cmd_wmask;
-	wire [LSU_ARBT_I_NUM*1-1:0] arbt_bus_icb_cmd_lock;
-	wire [LSU_ARBT_I_NUM*1-1:0] arbt_bus_icb_cmd_excl;
-	wire [LSU_ARBT_I_NUM*2-1:0] arbt_bus_icb_cmd_size;
-	wire [LSU_ARBT_I_NUM*USR_W-1:0] arbt_bus_icb_cmd_usr;
-	wire [LSU_ARBT_I_NUM*2-1:0] arbt_bus_icb_cmd_burst;
-	wire [LSU_ARBT_I_NUM*2-1:0] arbt_bus_icb_cmd_beat;
+	wire [1-1:0] arbt_bus_icb_cmd_valid;
+	wire [1-1:0] arbt_bus_icb_cmd_ready;
+	wire [`E203_ADDR_SIZE-1:0] arbt_bus_icb_cmd_addr;
+	wire [1-1:0] arbt_bus_icb_cmd_read;
+	wire [`E203_XLEN-1:0] arbt_bus_icb_cmd_wdata;
+	wire [`E203_XLEN/8-1:0] arbt_bus_icb_cmd_wmask;
+	wire [1-1:0] arbt_bus_icb_cmd_lock;
+	wire [1-1:0] arbt_bus_icb_cmd_excl;
+	wire [2-1:0] arbt_bus_icb_cmd_size;
+	wire [USR_W-1:0] arbt_bus_icb_cmd_usr;
+	wire [2-1:0] arbt_bus_icb_cmd_burst;
+	wire [2-1:0] arbt_bus_icb_cmd_beat;
 
-	wire [LSU_ARBT_I_NUM*1-1:0] arbt_bus_icb_rsp_valid;
-	wire [LSU_ARBT_I_NUM*1-1:0] arbt_bus_icb_rsp_ready;
-	wire [LSU_ARBT_I_NUM*1-1:0] arbt_bus_icb_rsp_err;
-	wire [LSU_ARBT_I_NUM*1-1:0] arbt_bus_icb_rsp_excl_ok;
-	wire [LSU_ARBT_I_NUM*`E203_XLEN-1:0] arbt_bus_icb_rsp_rdata;
-	wire [LSU_ARBT_I_NUM*USR_W-1:0] arbt_bus_icb_rsp_usr;
+	wire [1-1:0] arbt_bus_icb_rsp_valid;
+	wire [1-1:0] arbt_bus_icb_rsp_ready;
+	wire [1-1:0] arbt_bus_icb_rsp_err;
+	wire [1-1:0] arbt_bus_icb_rsp_excl_ok;
+	wire [`E203_XLEN-1:0] arbt_bus_icb_rsp_rdata;
+	wire [*USR_W-1:0] arbt_bus_icb_rsp_usr;
 
 	//CMD Channel
-	wire [LSU_ARBT_I_NUM*1-1:0] arbt_bus_icb_cmd_valid_raw;
-	assign arbt_bus_icb_cmd_valid_raw =
-			// The EAI take higher priority
-													 {
-														 agu_icb_cmd_valid
-													 , eai_icb_cmd_valid
-													 } ;
+	wire [1-1:0] arbt_bus_icb_cmd_valid_raw;
+	assign arbt_bus_icb_cmd_valid_raw = agu_icb_cmd_valid;
 
-	assign arbt_bus_icb_cmd_valid =
-			// The EAI take higher priority
-													 {
-														 agu_icb_cmd_valid_pos
-													 , eai_icb_cmd_valid
-													 } ;
+	assign arbt_bus_icb_cmd_valid = agu_icb_cmd_valid_pos;
 
-	assign arbt_bus_icb_cmd_addr =
-													 {
-														 agu_icb_cmd_addr
-													 , eai_icb_cmd_addr
-													 } ;
+	assign arbt_bus_icb_cmd_addr = agu_icb_cmd_addr;
 
-	assign arbt_bus_icb_cmd_read =
-													 {
-														 agu_icb_cmd_read
-													 , eai_icb_cmd_read
-													 } ;
+	assign arbt_bus_icb_cmd_read = agu_icb_cmd_read;
 
-	assign arbt_bus_icb_cmd_wdata =
-													 {
-														 agu_icb_cmd_wdata
-													 , eai_icb_cmd_wdata
-													 } ;
+	assign arbt_bus_icb_cmd_wdata = agu_icb_cmd_wdata;
 
-	assign arbt_bus_icb_cmd_wmask =
-													 {
-														 agu_icb_cmd_wmask
-													 , eai_icb_cmd_wmask
-													 } ;
+	assign arbt_bus_icb_cmd_wmask = agu_icb_cmd_wmask;
 												 
-	assign arbt_bus_icb_cmd_lock =
-													 {
-														 agu_icb_cmd_lock
-													 , eai_icb_cmd_lock
-													 } ;
+	assign arbt_bus_icb_cmd_lock = agu_icb_cmd_lock;
 
-	assign arbt_bus_icb_cmd_burst =
-													 {
-														 2'b0
-													 , 2'b0
-													 } ;
+	assign arbt_bus_icb_cmd_burst = 2'b0;
 
-	assign arbt_bus_icb_cmd_beat =
-													 {
-														 1'b0
-													 , 1'b0
-													 } ;
+	assign arbt_bus_icb_cmd_beat = 1'b0;
 
-	assign arbt_bus_icb_cmd_excl =
-													 {
-														 agu_icb_cmd_excl
-													 , eai_icb_cmd_excl
-													 } ;
+	assign arbt_bus_icb_cmd_excl = agu_icb_cmd_excl;
 													 
-	assign arbt_bus_icb_cmd_size =
-													 {
-														 agu_icb_cmd_size
-													 , eai_icb_cmd_size
-													 } ;
+	assign arbt_bus_icb_cmd_size = agu_icb_cmd_size;
 
-	assign arbt_bus_icb_cmd_usr =
-													 {
-														 agu_icb_cmd_usr
-													 , eai_icb_cmd_usr
-													 } ;
+	assign arbt_bus_icb_cmd_usr = agu_icb_cmd_usr;
 
-	assign                   {
-														 agu_icb_cmd_ready_pos
-													 , eai_icb_cmd_ready
-													 } = arbt_bus_icb_cmd_ready;
+	assign agu_icb_cmd_ready_pos = arbt_bus_icb_cmd_ready;
 													 
 
 	//RSP Channel
-	assign                   {
-														 pre_agu_icb_rsp_valid
-													 , eai_icb_rsp_valid
-													 } = arbt_bus_icb_rsp_valid;
+	assign pre_agu_icb_rsp_valid = arbt_bus_icb_rsp_valid;
 
-	assign                   {
-														 pre_agu_icb_rsp_err
-													 , eai_icb_rsp_err
-													 } = arbt_bus_icb_rsp_err;
+	assign pre_agu_icb_rsp_err = arbt_bus_icb_rsp_err;
 
-	assign                   {
-														 pre_agu_icb_rsp_excl_ok
-													 , eai_icb_rsp_excl_ok
-													 } = arbt_bus_icb_rsp_excl_ok;
+	assign pre_agu_icb_rsp_excl_ok = arbt_bus_icb_rsp_excl_ok;
 
 
-	assign                   {
-														 pre_agu_icb_rsp_rdata
-													 , eai_icb_rsp_rdata
-													 } = arbt_bus_icb_rsp_rdata;
+	assign pre_agu_icb_rsp_rdata = arbt_bus_icb_rsp_rdata;
 
-	assign                   {
-														 pre_agu_icb_rsp_usr
-													 , eai_icb_rsp_usr
-													 } = arbt_bus_icb_rsp_usr;
+	assign pre_agu_icb_rsp_usr = arbt_bus_icb_rsp_usr;
 
-	assign arbt_bus_icb_rsp_ready = {
-														 pre_agu_icb_rsp_ready
-													 , eai_icb_rsp_ready
-													 };
+	assign arbt_bus_icb_rsp_ready = pre_agu_icb_rsp_ready;
 
 	sirv_gnrl_icb_arbt # (
 	.ARBT_SCHEME (0),// Priority based
@@ -466,8 +374,8 @@ module e203_lsu_ctrl(
 	wire splt_fifo_ren = arbt_icb_rsp_valid & arbt_icb_rsp_ready;
 
 
-			 // In E200 single core config, we always assume the store-condition is checked by the core itself
-			 //    because no other core to race
+	// In E200 single core config, we always assume the store-condition is checked by the core itself
+	//    because no other core to race
 			 
 	wire excl_flg_r;
 	wire [`E203_ADDR_SIZE-1:0] excl_addr_r;
@@ -666,19 +574,15 @@ module e203_lsu_ctrl(
 	wire rsp_lh  = (pre_agu_icb_rsp_size == 2'b01) & (pre_agu_icb_rsp_usign == 1'b0);
 	wire rsp_lw  = (pre_agu_icb_rsp_size == 2'b10);
 
-	`ifdef E203_SUPPORT_AMO//{
+
 			 // In E200 single core config, we always assume the store-condition is checked by the core itself
 			 //    because no other core to race. So we dont use the returned excl-ok, but use the LSU tracked
 			 //    scond_true
 	wire [`E203_XLEN-1:0] sc_excl_wdata = arbt_icb_rsp_scond_true ? `E203_XLEN'd0 : `E203_XLEN'd1; 
 								// If it is scond (excl-write), then need to update the regfile
 	assign lsu_o_wbck_wdat   = ((~pre_agu_icb_rsp_read) & pre_agu_icb_rsp_excl) ? sc_excl_wdata :
-	`endif//E203_SUPPORT_AMO}
-	`ifndef E203_SUPPORT_AMO//{
-			 // If not support the store-condition instructions, then we have no chance to issue excl transaction
-					 // no need to consider the store-condition result write-back
-	assign lsu_o_wbck_wdat   = 
-	`endif
+
+
 					( ({`E203_XLEN{rsp_lbu}} & {{24{          1'b0}}, rdata_algn[ 7:0]})
 					| ({`E203_XLEN{rsp_lb }} & {{24{rdata_algn[ 7]}}, rdata_algn[ 7:0]})
 					| ({`E203_XLEN{rsp_lhu}} & {{16{          1'b0}}, rdata_algn[15:0]})
