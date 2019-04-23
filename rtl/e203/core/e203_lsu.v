@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-23 11:16:39
+// Last Modified time: 2019-04-23 11:23:30
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_lsu
@@ -52,12 +52,9 @@ module e203_lsu(
 	input  excp_active,
 	output  lsu_active,
 
-	`ifdef E203_HAS_ITCM //{
-	input [`E203_ADDR_SIZE-1:0] itcm_region_indic,
-	`endif//}
-	`ifdef E203_HAS_DTCM //{
+
 	input [`E203_ADDR_SIZE-1:0] dtcm_region_indic,
-	`endif//}
+
 	//////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////
 	// The LSU Write-Back Interface
@@ -105,32 +102,32 @@ module e203_lsu(
 
 	
 
-	`ifdef E203_HAS_ITCM //{
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// The ICB Interface to ITCM
-	//
-	//    * Bus cmd channel
-	output                         itcm_icb_cmd_valid,
-	input                          itcm_icb_cmd_ready,
-	output [`E203_ITCM_ADDR_WIDTH-1:0]   itcm_icb_cmd_addr, 
-	output                         itcm_icb_cmd_read, 
-	output [`E203_XLEN-1:0]        itcm_icb_cmd_wdata,
-	output [`E203_XLEN/8-1:0]      itcm_icb_cmd_wmask,
-	output                         itcm_icb_cmd_lock,
-	output                         itcm_icb_cmd_excl,
-	output [1:0]                   itcm_icb_cmd_size,
-	//
-	//    * Bus RSP channel
-	input                          itcm_icb_rsp_valid,
-	output                         itcm_icb_rsp_ready,
-	input                          itcm_icb_rsp_err  ,
-	input                          itcm_icb_rsp_excl_ok  ,
-	input  [`E203_XLEN-1:0]        itcm_icb_rsp_rdata,
-	`endif//}
+// `ifdef E203_HAS_ITCM //{
+// //////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////
+// // The ICB Interface to ITCM
+// //
+// //    * Bus cmd channel
+// output                         itcm_icb_cmd_valid,
+// input                          itcm_icb_cmd_ready,
+// output [`E203_ITCM_ADDR_WIDTH-1:0]   itcm_icb_cmd_addr, 
+// output                         itcm_icb_cmd_read, 
+// output [`E203_XLEN-1:0]        itcm_icb_cmd_wdata,
+// output [`E203_XLEN/8-1:0]      itcm_icb_cmd_wmask,
+// output                         itcm_icb_cmd_lock,
+// output                         itcm_icb_cmd_excl,
+// output [1:0]                   itcm_icb_cmd_size,
+// //
+// //    * Bus RSP channel
+// input                          itcm_icb_rsp_valid,
+// output                         itcm_icb_rsp_ready,
+// input                          itcm_icb_rsp_err  ,
+// input                          itcm_icb_rsp_excl_ok  ,
+// input  [`E203_XLEN-1:0]        itcm_icb_rsp_rdata,
+// `endif//}
 
 	
-	`ifdef E203_HAS_DTCM //{
+
 	//////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////
 	// The ICB Interface to DTCM
@@ -152,7 +149,7 @@ module e203_lsu(
 	input                          dtcm_icb_rsp_err  ,
 	input                          dtcm_icb_rsp_excl_ok  ,
 	input  [`E203_XLEN-1:0]        dtcm_icb_rsp_rdata,
-	`endif//}
+
 
 	//////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////
@@ -181,43 +178,43 @@ module e203_lsu(
 	input  rst_n
 	);
 
-		`ifdef E203_HAS_DCACHE //{
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// The ICB Interface to DCache
-	//
-	//    * Bus cmd channel
-	wire                          dcache_icb_cmd_valid;
-	wire                          dcache_icb_cmd_ready;
-	wire  [`E203_ADDR_SIZE-1:0]   dcache_icb_cmd_addr; 
-	wire                          dcache_icb_cmd_read; 
-	wire  [`E203_XLEN-1:0]        dcache_icb_cmd_wdata;
-	wire  [`E203_XLEN/8-1:0]      dcache_icb_cmd_wmask;
-	wire                          dcache_icb_cmd_lock;
-	wire                          dcache_icb_cmd_excl;
-	wire  [1:0]                   dcache_icb_cmd_size;
-	//
-	//    * Bus RSP channel
-	wire                          dcache_icb_rsp_valid;
-	wire                          dcache_icb_rsp_ready;
-	wire                          dcache_icb_rsp_err  ;
-	wire                          dcache_icb_rsp_excl_ok  ;
-	wire  [`E203_XLEN-1:0]        dcache_icb_rsp_rdata;
-	`endif//}
+// 	`ifdef E203_HAS_DCACHE //{
+// //////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////
+// // The ICB Interface to DCache
+// //
+// //    * Bus cmd channel
+// wire                          dcache_icb_cmd_valid;
+// wire                          dcache_icb_cmd_ready;
+// wire  [`E203_ADDR_SIZE-1:0]   dcache_icb_cmd_addr; 
+// wire                          dcache_icb_cmd_read; 
+// wire  [`E203_XLEN-1:0]        dcache_icb_cmd_wdata;
+// wire  [`E203_XLEN/8-1:0]      dcache_icb_cmd_wmask;
+// wire                          dcache_icb_cmd_lock;
+// wire                          dcache_icb_cmd_excl;
+// wire  [1:0]                   dcache_icb_cmd_size;
+// //
+// //    * Bus RSP channel
+// wire                          dcache_icb_rsp_valid;
+// wire                          dcache_icb_rsp_ready;
+// wire                          dcache_icb_rsp_err  ;
+// wire                          dcache_icb_rsp_excl_ok  ;
+// wire  [`E203_XLEN-1:0]        dcache_icb_rsp_rdata;
+// `endif//}
 
 	wire lsu_ctrl_active;
 
-
+(* DONT_TOUCH = "TRUE" *)
 	e203_lsu_ctrl u_e203_lsu_ctrl(
 		.commit_mret           (commit_mret),
 		.commit_trap           (commit_trap),
 		.lsu_ctrl_active       (lsu_ctrl_active),
-	`ifdef E203_HAS_ITCM //{
-		.itcm_region_indic     (itcm_region_indic),
-	`endif//}
-	`ifdef E203_HAS_DTCM //{
+	// `ifdef E203_HAS_ITCM //{
+	// 	.itcm_region_indic     (itcm_region_indic),
+	// `endif//}
+	// `ifdef E203_HAS_DTCM //{
 		.dtcm_region_indic     (dtcm_region_indic),
-	`endif//}
+	// `endif//}
 		.lsu_o_valid           (lsu_o_valid ),
 		.lsu_o_ready           (lsu_o_ready ),
 		.lsu_o_wbck_wdat       (lsu_o_wbck_wdat),
@@ -248,7 +245,6 @@ module e203_lsu(
 		.agu_icb_rsp_excl_ok   (agu_icb_rsp_excl_ok),
 		.agu_icb_rsp_rdata     (agu_icb_rsp_rdata),
  
-			`ifndef E203_HAS_EAI 
 		.eai_mem_holdup        (1'b0),
 		.eai_icb_cmd_valid     (1'b0),
 		.eai_icb_cmd_ready     (),
@@ -265,28 +261,28 @@ module e203_lsu(
 		.eai_icb_rsp_err       (),
 		.eai_icb_rsp_excl_ok   (),
 		.eai_icb_rsp_rdata     (),
-			`endif           
+          
 
 
-			`ifdef E203_HAS_DCACHE
-		.dcache_icb_cmd_valid  (dcache_icb_cmd_valid),
-		.dcache_icb_cmd_ready  (dcache_icb_cmd_ready),
-		.dcache_icb_cmd_addr   (dcache_icb_cmd_addr ),
-		.dcache_icb_cmd_read   (dcache_icb_cmd_read ),
-		.dcache_icb_cmd_wdata  (dcache_icb_cmd_wdata),
-		.dcache_icb_cmd_wmask  (dcache_icb_cmd_wmask),
-		.dcache_icb_cmd_lock   (dcache_icb_cmd_lock),
-		.dcache_icb_cmd_excl   (dcache_icb_cmd_excl),
-		.dcache_icb_cmd_size   (dcache_icb_cmd_size),
-		
-		.dcache_icb_rsp_valid  (dcache_icb_rsp_valid),
-		.dcache_icb_rsp_ready  (dcache_icb_rsp_ready),
-		.dcache_icb_rsp_err    (dcache_icb_rsp_err  ),
-		.dcache_icb_rsp_excl_ok(dcache_icb_rsp_excl_ok  ),
-		.dcache_icb_rsp_rdata  (dcache_icb_rsp_rdata),
-			`endif 
+// 	`ifdef E203_HAS_DCACHE
+// .dcache_icb_cmd_valid  (dcache_icb_cmd_valid),
+// .dcache_icb_cmd_ready  (dcache_icb_cmd_ready),
+// .dcache_icb_cmd_addr   (dcache_icb_cmd_addr ),
+// .dcache_icb_cmd_read   (dcache_icb_cmd_read ),
+// .dcache_icb_cmd_wdata  (dcache_icb_cmd_wdata),
+// .dcache_icb_cmd_wmask  (dcache_icb_cmd_wmask),
+// .dcache_icb_cmd_lock   (dcache_icb_cmd_lock),
+// .dcache_icb_cmd_excl   (dcache_icb_cmd_excl),
+// .dcache_icb_cmd_size   (dcache_icb_cmd_size),
 
-			`ifdef E203_HAS_DTCM
+// .dcache_icb_rsp_valid  (dcache_icb_rsp_valid),
+// .dcache_icb_rsp_ready  (dcache_icb_rsp_ready),
+// .dcache_icb_rsp_err    (dcache_icb_rsp_err  ),
+// .dcache_icb_rsp_excl_ok(dcache_icb_rsp_excl_ok  ),
+// .dcache_icb_rsp_rdata  (dcache_icb_rsp_rdata),
+// 	`endif 
+
+			// `ifdef E203_HAS_DTCM
 		.dtcm_icb_cmd_valid    (dtcm_icb_cmd_valid),
 		.dtcm_icb_cmd_ready    (dtcm_icb_cmd_ready),
 		.dtcm_icb_cmd_addr     (dtcm_icb_cmd_addr ),
@@ -302,25 +298,25 @@ module e203_lsu(
 		.dtcm_icb_rsp_err      (dtcm_icb_rsp_err  ),
 		.dtcm_icb_rsp_excl_ok  (dtcm_icb_rsp_excl_ok  ),
 		.dtcm_icb_rsp_rdata    (dtcm_icb_rsp_rdata),
-		 `endif            
+		 // `endif            
 		
-			`ifdef E203_HAS_ITCM
-		.itcm_icb_cmd_valid    (itcm_icb_cmd_valid),
-		.itcm_icb_cmd_ready    (itcm_icb_cmd_ready),
-		.itcm_icb_cmd_addr     (itcm_icb_cmd_addr ),
-		.itcm_icb_cmd_read     (itcm_icb_cmd_read ),
-		.itcm_icb_cmd_wdata    (itcm_icb_cmd_wdata),
-		.itcm_icb_cmd_wmask    (itcm_icb_cmd_wmask),
-		.itcm_icb_cmd_lock     (itcm_icb_cmd_lock),
-		.itcm_icb_cmd_excl     (itcm_icb_cmd_excl),
-		.itcm_icb_cmd_size     (itcm_icb_cmd_size),
+		// 	`ifdef E203_HAS_ITCM
+		// .itcm_icb_cmd_valid    (itcm_icb_cmd_valid),
+		// .itcm_icb_cmd_ready    (itcm_icb_cmd_ready),
+		// .itcm_icb_cmd_addr     (itcm_icb_cmd_addr ),
+		// .itcm_icb_cmd_read     (itcm_icb_cmd_read ),
+		// .itcm_icb_cmd_wdata    (itcm_icb_cmd_wdata),
+		// .itcm_icb_cmd_wmask    (itcm_icb_cmd_wmask),
+		// .itcm_icb_cmd_lock     (itcm_icb_cmd_lock),
+		// .itcm_icb_cmd_excl     (itcm_icb_cmd_excl),
+		// .itcm_icb_cmd_size     (itcm_icb_cmd_size),
 		
-		.itcm_icb_rsp_valid    (itcm_icb_rsp_valid),
-		.itcm_icb_rsp_ready    (itcm_icb_rsp_ready),
-		.itcm_icb_rsp_err      (itcm_icb_rsp_err  ),
-		.itcm_icb_rsp_excl_ok  (itcm_icb_rsp_excl_ok  ),
-		.itcm_icb_rsp_rdata    (itcm_icb_rsp_rdata),
-			`endif 
+		// .itcm_icb_rsp_valid    (itcm_icb_rsp_valid),
+		// .itcm_icb_rsp_ready    (itcm_icb_rsp_ready),
+		// .itcm_icb_rsp_err      (itcm_icb_rsp_err  ),
+		// .itcm_icb_rsp_excl_ok  (itcm_icb_rsp_excl_ok  ),
+		// .itcm_icb_rsp_rdata    (itcm_icb_rsp_rdata),
+		// 	`endif 
 		
 		.biu_icb_cmd_valid     (biu_icb_cmd_valid),
 		.biu_icb_cmd_ready     (biu_icb_cmd_ready),

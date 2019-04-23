@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-23 11:13:27
+// Last Modified time: 2019-04-23 11:19:47
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_core
@@ -200,16 +200,6 @@ module e203_core(
 	input test_mode,
 	input  rst_n
 	);
-
-	wire ifu2itcm_holdup;
-	wire ifu2itcm_icb_cmd_valid;
-	wire ifu2itcm_icb_cmd_ready;
-	wire [`E203_ITCM_ADDR_WIDTH-1:0]   ifu2itcm_icb_cmd_addr;
-	wire ifu2itcm_icb_rsp_valid;
-	wire ifu2itcm_icb_rsp_ready;
-	// wire ifu2itcm_icb_rsp_err;
-	wire [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata; 
-
 
 
 
