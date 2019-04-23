@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-23 11:54:41
+// Last Modified time: 2019-04-23 14:00:16
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_lsu_ctrl
@@ -103,27 +103,27 @@ module e203_lsu_ctrl(
 
 
 
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// The ICB Interface to DTCM
-	//
-	//    * Bus cmd channel
-	output                         dtcm_icb_cmd_valid,
-	input                          dtcm_icb_cmd_ready,
-	output [`E203_DTCM_ADDR_WIDTH-1:0]   dtcm_icb_cmd_addr, 
-	output                         dtcm_icb_cmd_read, 
-	output [`E203_XLEN-1:0]        dtcm_icb_cmd_wdata,
-	output [`E203_XLEN/8-1:0]      dtcm_icb_cmd_wmask,
-	output                         dtcm_icb_cmd_lock,
-	output                         dtcm_icb_cmd_excl,
-	output [1:0]                   dtcm_icb_cmd_size,
-	//
-	//    * Bus RSP channel
-	input                          dtcm_icb_rsp_valid,
-	output                         dtcm_icb_rsp_ready,
-	input                          dtcm_icb_rsp_err  ,
-	input                          dtcm_icb_rsp_excl_ok,
-	input  [`E203_XLEN-1:0]        dtcm_icb_rsp_rdata,
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+// The ICB Interface to DTCM
+//
+//    * Bus cmd channel
+output                         dtcm_icb_cmd_valid,
+input                          dtcm_icb_cmd_ready,
+output [`E203_DTCM_ADDR_WIDTH-1:0]   dtcm_icb_cmd_addr, 
+output                         dtcm_icb_cmd_read, 
+output [`E203_XLEN-1:0]        dtcm_icb_cmd_wdata,
+output [`E203_XLEN/8-1:0]      dtcm_icb_cmd_wmask,
+output                         dtcm_icb_cmd_lock,
+output                         dtcm_icb_cmd_excl,
+output [1:0]                   dtcm_icb_cmd_size,
+//
+//    * Bus RSP channel
+input                          dtcm_icb_rsp_valid,
+output                         dtcm_icb_rsp_ready,
+input                          dtcm_icb_rsp_err  ,
+input                          dtcm_icb_rsp_excl_ok,
+input  [`E203_XLEN-1:0]        dtcm_icb_rsp_rdata,
 
 	//////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////
@@ -362,13 +362,13 @@ module e203_lsu_ctrl(
 	//  * The FIFO will be pushed when a ICB CMD handshaked
 	//  * The FIFO will be poped  when a ICB RSP handshaked
 	
-	wire arbt_icb_cmd_itcm = 1'b0;
+// wire arbt_icb_cmd_itcm = 1'b0;
 	
 	wire arbt_icb_cmd_dtcm = (arbt_icb_cmd_addr[`E203_DTCM_BASE_REGION] ==  dtcm_region_indic[`E203_DTCM_BASE_REGION]);
 	
-	wire arbt_icb_cmd_dcache = 1'b0;
+// wire arbt_icb_cmd_dcache = 1'b0;
 
-	wire arbt_icb_cmd_biu    = (~arbt_icb_cmd_itcm) & (~arbt_icb_cmd_dtcm) & (~arbt_icb_cmd_dcache);
+	wire arbt_icb_cmd_biu = (~arbt_icb_cmd_dtcm) ;
 
 	wire splt_fifo_wen = arbt_icb_cmd_valid & arbt_icb_cmd_ready;
 	wire splt_fifo_ren = arbt_icb_rsp_valid & arbt_icb_rsp_ready;
@@ -409,13 +409,13 @@ module e203_lsu_ctrl(
 	wire splt_fifo_empty   = (~splt_fifo_o_valid);
 
 	wire arbt_icb_rsp_biu;
-	wire arbt_icb_rsp_dcache;
+// wire arbt_icb_rsp_dcache;
 	wire arbt_icb_rsp_dtcm;
-	wire arbt_icb_rsp_itcm;
+// wire arbt_icb_rsp_itcm;
 	wire arbt_icb_rsp_scond_true;
 
 
-	localparam SPLT_FIFO_W = (USR_W+5);
+	localparam SPLT_FIFO_W = (USR_W+3);
 	wire [`E203_XLEN/8-1:0] arbt_icb_cmd_wmask_pos = 
 			(arbt_icb_cmd_scond & (~arbt_icb_cmd_scond_true)) ? {`E203_XLEN/8{1'b0}} : arbt_icb_cmd_wmask;
 
@@ -425,9 +425,8 @@ module e203_lsu_ctrl(
 
 	assign splt_fifo_wdat =  {
 					arbt_icb_cmd_biu,
-					arbt_icb_cmd_dcache,
+
 					arbt_icb_cmd_dtcm,
-					arbt_icb_cmd_itcm,
 
 					arbt_icb_cmd_scond_true,
 
@@ -437,9 +436,8 @@ module e203_lsu_ctrl(
 	assign   
 			{
 					arbt_icb_rsp_biu,
-					arbt_icb_rsp_dcache,
+
 					arbt_icb_rsp_dtcm,
-					arbt_icb_rsp_itcm,
 
 					arbt_icb_rsp_scond_true, 
 
@@ -472,11 +470,11 @@ module e203_lsu_ctrl(
 	// Implement the ICB Splitting
 
 
-	wire cmd_diff_branch = 1'b0; // If the LSU outstanding is only 1, there is no chance to 
+// wire cmd_diff_branch = 1'b0; // If the LSU outstanding is only 1, there is no chance to 
 															 //   happen several outsanding ops, not to mention 
 															 //   with different branches
 	
-	wire arbt_icb_cmd_addi_condi = (~splt_fifo_full) & (~cmd_diff_branch);
+	wire arbt_icb_cmd_addi_condi = (~splt_fifo_full);
 	wire arbt_icb_cmd_ready_pos;
 
 	wire arbt_icb_cmd_valid_pos = arbt_icb_cmd_addi_condi & arbt_icb_cmd_valid;
