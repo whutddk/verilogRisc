@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-23 14:44:31
+// Last Modified time: 2019-04-23 14:57:43
 // Email: 295054118@whut.edu.cn
 // Design Name:   
 // Module Name: e203_lsu_ctrl
@@ -559,17 +559,17 @@ module e203_lsu_ctrl(
 
 e203_dtcm_ctrl u_e203_dtcm_ctrl(
 
-	.lsu2dtcm_icb_cmd_valid  (lsu2dtcm_icb_cmd_valid),
-	.lsu2dtcm_icb_cmd_ready  (lsu2dtcm_icb_cmd_ready),
-	.lsu2dtcm_icb_cmd_addr   (lsu2dtcm_icb_cmd_addr ),
-	.lsu2dtcm_icb_cmd_read   (lsu2dtcm_icb_cmd_read ),
-	.lsu2dtcm_icb_cmd_wdata  (lsu2dtcm_icb_cmd_wdata),
-	.lsu2dtcm_icb_cmd_wmask  (lsu2dtcm_icb_cmd_wmask),
+	.lsu2dtcm_icb_cmd_valid  (dtcm_icb_cmd_valid),
+	.lsu2dtcm_icb_cmd_ready  (dtcm_icb_cmd_ready),
+	.lsu2dtcm_icb_cmd_addr   (dtcm_icb_cmd_addr ),
+	.lsu2dtcm_icb_cmd_read   (dtcm_icb_cmd_read ),
+	.lsu2dtcm_icb_cmd_wdata  (dtcm_icb_cmd_wdata),
+	.lsu2dtcm_icb_cmd_wmask  (dtcm_icb_cmd_wmask),
 	
-	.lsu2dtcm_icb_rsp_valid  (lsu2dtcm_icb_rsp_valid),
-	.lsu2dtcm_icb_rsp_ready  (lsu2dtcm_icb_rsp_ready),
-	.lsu2dtcm_icb_rsp_err    (lsu2dtcm_icb_rsp_err  ),
-	.lsu2dtcm_icb_rsp_rdata  (lsu2dtcm_icb_rsp_rdata),
+	.lsu2dtcm_icb_rsp_valid  (dtcm_icb_rsp_valid),
+	.lsu2dtcm_icb_rsp_ready  (dtcm_icb_rsp_ready),
+	.lsu2dtcm_icb_rsp_err    (dtcm_icb_rsp_err  ),
+	.lsu2dtcm_icb_rsp_rdata  (dtcm_icb_rsp_rdata),
 
 	.clk                     (clk),
 	.rst_n                   (rst_n) 
