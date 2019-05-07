@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-23 19:53:51
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-05-07 11:37:20
+// Last Modified time: 2019-05-07 11:41:22
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -143,7 +143,7 @@ module e203_core(
 	input  clk_core_biu,
 	input  clk,
 
-	input test_mode,
+	// input test_mode,
 	input  rst_n
 	);
 
@@ -269,7 +269,7 @@ e203_exu u_e203_exu(
 	.excp_active            (excp_active),
 	.commit_mret            (commit_mret),
 	.commit_trap            (commit_trap),
-	.test_mode              (test_mode),
+	// .test_mode              (test_mode),
 	.core_wfi               (core_wfi),
 	.tm_stop                (tm_stop),
 	.itcm_nohold            (),
@@ -313,8 +313,8 @@ e203_exu u_e203_exu(
 	.i_ir                   (ifu_o_ir            ),
 	.i_pc                   (ifu_o_pc            ),
 	.i_pc_vld               (ifu_o_pc_vld        ),
-	.i_misalgn              (1'b0), 
-	.i_buserr               (1'b0), 
+	// .i_misalgn              (1'b0), 
+	// .i_buserr               (1'b0), 
 	.i_rs1idx               (ifu_o_rs1idx        ),
 	.i_rs2idx               (ifu_o_rs2idx        ),
 	.i_prdt_taken           (ifu_o_prdt_taken    ),
@@ -323,7 +323,7 @@ e203_exu u_e203_exu(
 	.wfi_halt_ifu_req       (wfi_halt_ifu_req),
 	.wfi_halt_ifu_ack       (wfi_halt_ifu_ack),
 
-	.pipe_flush_ack         (1'b1),
+	// .pipe_flush_ack         (1'b1),
 	.pipe_flush_req         (pipe_flush_req      ),
 	.pipe_flush_add_op1     (pipe_flush_add_op1  ),  
 	.pipe_flush_add_op2     (pipe_flush_add_op2  ),  

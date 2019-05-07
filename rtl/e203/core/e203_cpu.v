@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-23 19:53:51
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-05-07 10:55:26
+// Last Modified time: 2019-05-07 11:41:40
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -409,7 +409,7 @@ e203_core u_e203_core(
 	.clk_core_exu      (clk_core_exu      ),
 	.clk_core_lsu      (clk_core_lsu      ),
 	.clk_core_biu      (clk_core_biu      ),
-	.test_mode         (1'b0),
+	// .test_mode         (1'b0),
 	.rst_n             (rst_sync_n) 
 );
 

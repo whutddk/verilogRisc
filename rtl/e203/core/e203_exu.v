@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-01 16:33:19
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-05-07 11:36:41
+// Last Modified time: 2019-05-07 11:42:21
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -122,8 +122,8 @@ module e203_exu(
 	input  [`E203_INSTR_SIZE-1:0] i_ir,// The instruction register
 	input  [`E203_PC_SIZE-1:0] i_pc,   // The PC register along with
 	input  i_pc_vld,
-	input  i_misalgn,              // The fetch misalign
-	input  i_buserr,               // The fetch bus error
+// input  i_misalgn,              // The fetch misalign
+// input  i_buserr,               // The fetch bus error
 	input  i_prdt_taken,               
 	input  i_muldiv_b2b,               
 	input  [`E203_RFIDX_WIDTH-1:0] i_rs1idx,   // The RS1 index
@@ -139,7 +139,7 @@ module e203_exu(
 	//     to IFU, instead, we pass the flush-pc-adder-op1/op2 to IFU
 	//     and IFU will just use its adder to caculate the flush-pc-adder-result
 	//
-	input   pipe_flush_ack,
+// input   pipe_flush_ack,
 	output  pipe_flush_req,
 	output  [`E203_PC_SIZE-1:0] pipe_flush_add_op1,  
 	output  [`E203_PC_SIZE-1:0] pipe_flush_add_op2,  
@@ -204,7 +204,7 @@ module e203_exu(
 
 
 
-	input  test_mode,
+	// input  test_mode,
 	input  clk_aon,
 	input  clk,
 	input  rst_n
@@ -233,7 +233,7 @@ module e203_exu(
 		.wbck_dest_idx (rf_wbck_rdidx),
 		.wbck_dest_dat (rf_wbck_wdat),
 																 
-		.test_mode     (test_mode),
+		.test_mode     (1'b0),
 		.clk           (clk          ),
 		.rst_n         (rst_n        ) 
 	);
@@ -264,8 +264,8 @@ module e203_exu(
 
 		.i_instr      (i_ir    ),
 		.i_pc         (i_pc    ),
-		.i_misalgn    (i_misalgn),
-		.i_buserr     (i_buserr ),
+		.i_misalgn    (1'b0),
+		.i_buserr     (1'b0),
 		.i_prdt_taken (i_prdt_taken), 
 		.i_muldiv_b2b (i_muldiv_b2b), 
 			
@@ -320,19 +320,19 @@ module e203_exu(
 	wire [`E203_ITAG_WIDTH-1:0] disp_oitf_ptr;
 	wire disp_oitf_ready;
 
-	wire  disp_oitf_rs1fpu;
-	wire  disp_oitf_rs2fpu;
-	wire  disp_oitf_rs3fpu;
-	wire  disp_oitf_rdfpu;
-	wire  [`E203_RFIDX_WIDTH-1:0] disp_oitf_rs1idx;
-	wire  [`E203_RFIDX_WIDTH-1:0] disp_oitf_rs2idx;
-	wire  [`E203_RFIDX_WIDTH-1:0] disp_oitf_rs3idx;
-	wire  [`E203_RFIDX_WIDTH-1:0] disp_oitf_rdidx;
-	wire  disp_oitf_rs1en;
-	wire  disp_oitf_rs2en;
-	wire  disp_oitf_rs3en;
-	wire  disp_oitf_rdwen;
-	wire  [`E203_PC_SIZE-1:0] disp_oitf_pc;
+	wire disp_oitf_rs1fpu;
+	wire disp_oitf_rs2fpu;
+	wire disp_oitf_rs3fpu;
+	wire disp_oitf_rdfpu;
+	wire [`E203_RFIDX_WIDTH-1:0] disp_oitf_rs1idx;
+	wire [`E203_RFIDX_WIDTH-1:0] disp_oitf_rs2idx;
+	wire [`E203_RFIDX_WIDTH-1:0] disp_oitf_rs3idx;
+	wire [`E203_RFIDX_WIDTH-1:0] disp_oitf_rdidx;
+	wire disp_oitf_rs1en;
+	wire disp_oitf_rs2en;
+	wire disp_oitf_rs3en;
+	wire disp_oitf_rdwen;
+	wire [`E203_PC_SIZE-1:0] disp_oitf_pc;
 
 	wire oitfrd_match_disprs1;
 	wire oitfrd_match_disprs2;
@@ -823,7 +823,7 @@ module e203_exu(
 		.flush_pulse             (flush_pulse    ),
 		.flush_req           (flush_req      ),
 
-		.pipe_flush_ack          (pipe_flush_ack    ),
+		.pipe_flush_ack          (1'b1),
 		.pipe_flush_req          (pipe_flush_req    ),
 		.pipe_flush_add_op1      (pipe_flush_add_op1),  
 		.pipe_flush_add_op2      (pipe_flush_add_op2),  
