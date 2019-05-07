@@ -1,6 +1,29 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Company:   
 // Engineer: Ruige_Lee
+// Create Date: 2019-04-12 16:13:12
+// Last Modified by:   Ruige_Lee
+// Last Modified time: 2019-05-07 12:01:46
+// Email: 295054118@whut.edu.cn
+// page: https://whutddk.github.io/
+// Design Name:   
+// Module Name: e203_subsys_main
+// Project Name:   
+// Target Devices:   
+// Tool Versions:   
+// Description:   
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision:    -   
+// Additional Comments:  
+// 
+//
+//////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+// Company:   
+// Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
 // Last Modified time: 2019-04-21 16:57:36
@@ -194,7 +217,7 @@ e203_cpu_top u_e203_cpu_top(
 	.dpc_r           ({`E203_PC_SIZE{0}}),
 	.dscratch_r      (32'b0),
 
-	.dbg_mode        (1'b0),
+	// .dbg_mode        (1'b0),
 	.dbg_halt_r      (1'b0),
 	.dbg_step_r      (1'b0),
 	.dbg_ebreakm_r   (1'b0),

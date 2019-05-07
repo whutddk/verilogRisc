@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-05-07 11:50:25
+// Last Modified time: 2019-05-07 11:53:33
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -11,7 +11,7 @@
 // Project Name:   
 // Target Devices:   
 // Tool Versions:   
-// Description:   
+// Description:  implementence 32 reg， 2 ports read 1 port write    
 // 
 // Dependencies:   
 // 

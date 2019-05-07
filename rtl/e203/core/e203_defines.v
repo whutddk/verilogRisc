@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-15 20:39:35
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-05-07 10:55:16
+// Last Modified time: 2019-05-07 12:04:27
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -786,7 +786,7 @@
   //`endif//}
 
   `ifdef E203_CFG_SUPPORT_AMO//{
-     `define E203_SUPPORT_AMO
+     // `define E203_SUPPORT_AMO
   `endif//}
   // No unalign
   //`ifdef E203_CFG_SUPPORT_UNALGNLDST//{

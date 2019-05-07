@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-23 19:53:51
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-05-07 11:41:22
+// Last Modified time: 2019-05-07 12:02:14
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -85,7 +85,7 @@ module e203_core(
 	output  [3-1:0] cmt_dcause,
 	output  cmt_dcause_ena,
 
-	input  dbg_mode,
+	// input  dbg_mode,
 	input  dbg_halt_r,
 	input  dbg_step_r,
 	input  dbg_ebreakm_r,
@@ -302,7 +302,7 @@ e203_exu u_e203_exu(
 	.dpc_r           (dpc_r          ),
 	.dscratch_r      (dscratch_r     ),
 
-	.dbg_mode               (dbg_mode  ),
+	// .dbg_mode               (dbg_mode  ),
 	.dbg_halt_r             (dbg_halt_r),
 	.dbg_step_r             (dbg_step_r),
 	.dbg_ebreakm_r          (dbg_ebreakm_r),

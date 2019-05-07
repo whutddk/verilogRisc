@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-01 16:33:19
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-05-07 11:42:21
+// Last Modified time: 2019-05-07 12:02:31
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -110,7 +110,7 @@ module e203_exu(
 	input [`E203_PC_SIZE-1:0] dpc_r     ,
 	input [`E203_XLEN-1:0] dscratch_r,
 
-	input  dbg_mode,
+	// input  dbg_mode,
 	input  dbg_halt_r,
 	input  dbg_step_r,
 	input  dbg_ebreakm_r,
@@ -233,7 +233,7 @@ module e203_exu(
 		.wbck_dest_idx (rf_wbck_rdidx),
 		.wbck_dest_dat (rf_wbck_wdat),
 																 
-		.test_mode     (1'b0),
+		// .test_mode     (1'b0),
 		.clk           (clk          ),
 		.rst_n         (rst_n        ) 
 	);
@@ -252,20 +252,20 @@ module e203_exu(
 	wire dec_rs2x0;
 	wire dec_rdwen;
 	wire [`E203_RFIDX_WIDTH-1:0] dec_rdidx;
-	wire dec_misalgn;
-	wire dec_buserr;
+	// wire dec_misalgn;
+	// wire dec_buserr;
 	wire dec_ilegl;
 
 
 	//////////////////////////////////////////////////////////////
 	// The Decoded Info-Bus
 	e203_exu_decode u_e203_exu_decode (
-		.dbg_mode     (dbg_mode),
+		// .dbg_mode     (dbg_mode),
 
 		.i_instr      (i_ir    ),
 		.i_pc         (i_pc    ),
-		.i_misalgn    (1'b0),
-		.i_buserr     (1'b0),
+		// .i_misalgn    (1'b0),
+		// .i_buserr     (1'b0),
 		.i_prdt_taken (i_prdt_taken), 
 		.i_muldiv_b2b (i_muldiv_b2b), 
 			
@@ -292,8 +292,8 @@ module e203_exu(
 		.dec_rdwen (dec_rdwen),
 		.dec_rs1idx(),
 		.dec_rs2idx(),
-		.dec_misalgn(dec_misalgn),
-		.dec_buserr (dec_buserr ),
+		// .dec_misalgn(),
+		// .dec_buserr (),
 		.dec_ilegl  (dec_ilegl),
 		.dec_rdidx (dec_rdidx),
 		.dec_pc    (dec_pc),
@@ -369,8 +369,8 @@ module e203_exu(
 		.disp_i_rs2          (rf_rs2          ),
 		.disp_i_imm          (dec_imm        ),
 		.disp_i_pc           (dec_pc         ),
-		.disp_i_misalgn      (dec_misalgn    ),
-		.disp_i_buserr       (dec_buserr     ),
+		.disp_i_misalgn      (1'b0),
+		.disp_i_buserr       (1'b0),
 		.disp_i_ilegl        (dec_ilegl      ),
 
 
@@ -789,7 +789,7 @@ module e203_exu(
 		.longp_excp_i_insterr  (longp_excp_o_insterr),
 		.longp_excp_i_pc       (longp_excp_o_pc     ),
 
-		.dbg_mode              (dbg_mode),
+		// .dbg_mode              (dbg_mode),
 		.dbg_halt_r            (dbg_halt_r),
 		.dbg_step_r            (dbg_step_r),
 		.dbg_ebreakm_r         (dbg_ebreakm_r),
@@ -888,7 +888,7 @@ module e203_exu(
 		.dpc_r           (dpc_r          ),
 		.dscratch_r      (dscratch_r     ),
 																		
-		.dbg_mode       (dbg_mode       ),
+		// .dbg_mode       (dbg_mode       ),
 		.dbg_stopcycle  (dbg_stopcycle),
 
 		.u_mode        (u_mode),
