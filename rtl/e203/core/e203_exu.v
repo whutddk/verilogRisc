@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-01 16:33:19
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-05-07 11:12:55
+// Last Modified time: 2019-05-07 11:36:41
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -92,7 +92,6 @@ module e203_exu(
 	input  sft_irq_r,
 	input  tmr_irq_r,
 
-	//////////////////////////////////////////////////////////////
 	// From/To debug ctrl module
 	output  [`E203_PC_SIZE-1:0] cmt_dpc,
 	output  cmt_dpc_ena,
@@ -117,9 +116,6 @@ module e203_exu(
 	input  dbg_ebreakm_r,
 	input  dbg_stopcycle,
 
-
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
 	// The IFU IR stage to EXU interface
 	input  i_valid, // Handshake signals with EXU stage
 	output i_ready,
@@ -151,8 +147,6 @@ module e203_exu(
 	output  [`E203_PC_SIZE-1:0] pipe_flush_pc,  
 	`endif//}
 
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
 	// The LSU Write-Back Interface
 	input  lsu_o_valid, // Handshake valid
 	output lsu_o_ready, // Handshake ready
@@ -179,8 +173,7 @@ module e203_exu(
 	output dec2ifu_divu  ,
 	output dec2ifu_remu  ,
 
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
+
 	// The AGU ICB Interface to LSU-ctrl
 	//    * Bus cmd channel
 	output                         agu_icb_cmd_valid, // Handshake valid
@@ -192,13 +185,13 @@ module e203_exu(
 	output                         agu_icb_cmd_lock,
 	output                         agu_icb_cmd_excl,
 	output [1:0]                   agu_icb_cmd_size,
-					 // Several additional side channel signals
-					 //   Indicate LSU-ctrl module to
-					 //     return the ICB response channel back to AGU
-					 //     this is only used by AMO or unaligned load/store 1st uop
-					 //     to return the response
+	// Several additional side channel signals
+	//   Indicate LSU-ctrl module to
+	//     return the ICB response channel back to AGU
+	//     this is only used by AMO or unaligned load/store 1st uop
+	//     to return the response
 	output                         agu_icb_cmd_back2agu, 
-					 //   Sign extension or not
+	//   Sign extension or not
 	output                         agu_icb_cmd_usign,
 	output [`E203_ITAG_WIDTH -1:0] agu_icb_cmd_itag,
 
@@ -290,9 +283,6 @@ module e203_exu(
 		.dec_rem     (dec2ifu_rem   ),
 		.dec_divu    (dec2ifu_divu  ),
 		.dec_remu    (dec2ifu_remu  ),
-
-		
-
 
 		.dec_info  (dec_info ),
 		.dec_rs1x0 (dec_rs1x0),
@@ -531,8 +521,6 @@ module e203_exu(
 
 	e203_exu_alu u_e203_exu_alu(
 
-
-
 		.csr_access_ilgl     (csr_access_ilgl),
 		.nonflush_cmt_ena    (nonflush_cmt_ena),
 
@@ -616,9 +604,6 @@ module e203_exu(
 		.agu_icb_rsp_err     (agu_icb_rsp_err   ),
 		.agu_icb_rsp_excl_ok (agu_icb_rsp_excl_ok),
 		.agu_icb_rsp_rdata   (agu_icb_rsp_rdata),
-
-		
-
 
 		.mdv_nob2b         (mdv_nob2b),
 
@@ -724,7 +709,7 @@ module e203_exu(
 	wire cmt_instret_ena;
 	wire cmt_status_ena;
 
-	wire                      cmt_mret_ena;
+	wire cmt_mret_ena;
 
 	wire [`E203_PC_SIZE-1:0]  csr_epc_r;
 	wire [`E203_PC_SIZE-1:0]  csr_dpc_r;

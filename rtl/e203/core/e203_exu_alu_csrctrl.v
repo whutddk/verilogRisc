@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-01 16:33:19
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-05-07 11:17:58
+// Last Modified time: 2019-05-07 11:32:18
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -51,37 +51,34 @@
 
 module e203_exu_alu_csrctrl(
 
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// The Handshake Interface 
-	//
-	input  csr_i_valid, // Handshake valid
-	output csr_i_ready, // Handshake ready
+		// The Handshake Interface 
+		//
+		input  csr_i_valid, // Handshake valid
+		output csr_i_ready, // Handshake ready
 
-	input  [`E203_XLEN-1:0] csr_i_rs1,
-	input  [`E203_DECINFO_CSR_WIDTH-1:0] csr_i_info,
-	input  csr_i_rdwen,   
+		input  [`E203_XLEN-1:0] csr_i_rs1,
+		input  [`E203_DECINFO_CSR_WIDTH-1:0] csr_i_info,
+		input  csr_i_rdwen,   
 
-	output csr_ena,
-	output csr_wr_en,
-	output csr_rd_en,
-	output [12-1:0] csr_idx,
+		output csr_ena,
+		output csr_wr_en,
+		output csr_rd_en,
+		output [12-1:0] csr_idx,
 
-	input  csr_access_ilgl,
-	input  [`E203_XLEN-1:0] read_csr_dat,
-	output [`E203_XLEN-1:0] wbck_csr_dat,
+		input  csr_access_ilgl,
+		input  [`E203_XLEN-1:0] read_csr_dat,
+		output [`E203_XLEN-1:0] wbck_csr_dat,
 
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// The CSR Write-back/Commit Interface
-	output csr_o_valid, // Handshake valid
-	input  csr_o_ready, // Handshake ready
-	//   The Write-Back Interface for Special (unaligned ldst and AMO instructions) 
-	output [`E203_XLEN-1:0] csr_o_wbck_wdat,
-	output csr_o_wbck_err,   
 
-	input  clk,
-	input  rst_n
+		// The CSR Write-back/Commit Interface
+		output csr_o_valid, // Handshake valid
+		input  csr_o_ready, // Handshake ready
+		//   The Write-Back Interface for Special (unaligned ldst and AMO instructions) 
+		output [`E203_XLEN-1:0] csr_o_wbck_wdat,
+		output csr_o_wbck_err,   
+
+		input  clk,
+		input  rst_n
 	);
 
 
@@ -91,11 +88,11 @@ module e203_exu_alu_csrctrl(
 	assign csr_o_wbck_wdat  = read_csr_dat;
 
 
-	wire        csrrw  = csr_i_info[`E203_DECINFO_CSR_CSRRW ];
-	wire        csrrs  = csr_i_info[`E203_DECINFO_CSR_CSRRS ];
-	wire        csrrc  = csr_i_info[`E203_DECINFO_CSR_CSRRC ];
-	wire        rs1imm = csr_i_info[`E203_DECINFO_CSR_RS1IMM];
-	wire        rs1is0 = csr_i_info[`E203_DECINFO_CSR_RS1IS0];
+	wire csrrw  = csr_i_info[`E203_DECINFO_CSR_CSRRW ];
+	wire csrrs  = csr_i_info[`E203_DECINFO_CSR_CSRRS ];
+	wire csrrc  = csr_i_info[`E203_DECINFO_CSR_CSRRC ];
+	wire rs1imm = csr_i_info[`E203_DECINFO_CSR_RS1IMM];
+	wire rs1is0 = csr_i_info[`E203_DECINFO_CSR_RS1IS0];
 	wire [4:0]  zimm   = csr_i_info[`E203_DECINFO_CSR_ZIMMM ];
 	wire [11:0] csridx = csr_i_info[`E203_DECINFO_CSR_CSRIDX];
 
@@ -115,8 +112,7 @@ module e203_exu_alu_csrctrl(
 
 	assign csr_ena = csr_o_valid & csr_o_ready;
 
-	assign wbck_csr_dat = 
-							({`E203_XLEN{csrrw}} & csr_op1)
+	assign wbck_csr_dat = ({`E203_XLEN{csrrw}} & csr_op1)
 						| ({`E203_XLEN{csrrs}} & (  csr_op1  | read_csr_dat))
 						| ({`E203_XLEN{csrrc}} & ((~csr_op1) & read_csr_dat));
 
