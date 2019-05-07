@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-05-07 11:13:13
+// Last Modified time: 2019-05-07 15:45:51
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -206,54 +206,51 @@ module e203_exu_alu_dpath(
 
 	wire op_shift = op_sra | op_sll | op_srl; 
 	
-		 // Make sure to use logic-gating to gateoff the 
+	// Make sure to use logic-gating to gateoff the 
+	//   In order to save area and just use one left-shifter, we convert the right-shift op into left-shift operation
 	assign shifter_in1 = {`E203_XLEN{op_shift}} &
-					//   In order to save area and just use one left-shifter, we
-					//   convert the right-shift op into left-shift operation
-					 (
-							 (op_sra | op_srl) ? 
-								 {
-		shifter_op1[00],shifter_op1[01],shifter_op1[02],shifter_op1[03],
-		shifter_op1[04],shifter_op1[05],shifter_op1[06],shifter_op1[07],
-		shifter_op1[08],shifter_op1[09],shifter_op1[10],shifter_op1[11],
-		shifter_op1[12],shifter_op1[13],shifter_op1[14],shifter_op1[15],
-		shifter_op1[16],shifter_op1[17],shifter_op1[18],shifter_op1[19],
-		shifter_op1[20],shifter_op1[21],shifter_op1[22],shifter_op1[23],
-		shifter_op1[24],shifter_op1[25],shifter_op1[26],shifter_op1[27],
-		shifter_op1[28],shifter_op1[29],shifter_op1[30],shifter_op1[31]
-								 } : shifter_op1
-					 );
+						(
+							(op_sra | op_srl) ? 
+								{
+								shifter_op1[00],shifter_op1[01],shifter_op1[02],shifter_op1[03],
+								shifter_op1[04],shifter_op1[05],shifter_op1[06],shifter_op1[07],
+								shifter_op1[08],shifter_op1[09],shifter_op1[10],shifter_op1[11],
+								shifter_op1[12],shifter_op1[13],shifter_op1[14],shifter_op1[15],
+								shifter_op1[16],shifter_op1[17],shifter_op1[18],shifter_op1[19],
+								shifter_op1[20],shifter_op1[21],shifter_op1[22],shifter_op1[23],
+								shifter_op1[24],shifter_op1[25],shifter_op1[26],shifter_op1[27],
+								shifter_op1[28],shifter_op1[29],shifter_op1[30],shifter_op1[31]
+								} 
+								: shifter_op1
+						);
 	assign shifter_in2 = {5{op_shift}} & shifter_op2[4:0];
 
 	assign shifter_res = (shifter_in1 << shifter_in2);
 
 	wire [`E203_XLEN-1:0] sll_res = shifter_res;
 	wire [`E203_XLEN-1:0] srl_res =  
-								 {
-		shifter_res[00],shifter_res[01],shifter_res[02],shifter_res[03],
-		shifter_res[04],shifter_res[05],shifter_res[06],shifter_res[07],
-		shifter_res[08],shifter_res[09],shifter_res[10],shifter_res[11],
-		shifter_res[12],shifter_res[13],shifter_res[14],shifter_res[15],
-		shifter_res[16],shifter_res[17],shifter_res[18],shifter_res[19],
-		shifter_res[20],shifter_res[21],shifter_res[22],shifter_res[23],
-		shifter_res[24],shifter_res[25],shifter_res[26],shifter_res[27],
-		shifter_res[28],shifter_res[29],shifter_res[30],shifter_res[31]
-								 };
+							{
+								shifter_res[00],shifter_res[01],shifter_res[02],shifter_res[03],
+								shifter_res[04],shifter_res[05],shifter_res[06],shifter_res[07],
+								shifter_res[08],shifter_res[09],shifter_res[10],shifter_res[11],
+								shifter_res[12],shifter_res[13],shifter_res[14],shifter_res[15],
+								shifter_res[16],shifter_res[17],shifter_res[18],shifter_res[19],
+								shifter_res[20],shifter_res[21],shifter_res[22],shifter_res[23],
+								shifter_res[24],shifter_res[25],shifter_res[26],shifter_res[27],
+								shifter_res[28],shifter_res[29],shifter_res[30],shifter_res[31]
+							};
 	
 	wire [`E203_XLEN-1:0] eff_mask = (~(`E203_XLEN'b0)) >> shifter_in2;
-	wire [`E203_XLEN-1:0] sra_res =
-							 (srl_res & eff_mask) | ({32{shifter_op1[31]}} & (~eff_mask));
-
+	wire [`E203_XLEN-1:0] sra_res = (srl_res & eff_mask) | ({32{shifter_op1[31]}} & (~eff_mask));
 
 
 	//////////////////////////////////////////////////////////////
 	// Impelment the Adder
-	//
 	// The Adder will be reused to handle the add/sub/compare op
 
-		 // Only the MULDIV request ALU-adder with 35bits operand with sign extended 
-		 // already, all other unit request ALU-adder with 32bits opereand without sign extended
-		 //   For non-MULDIV operands
+	// Only the MULDIV request ALU-adder with 35bits operand with sign extended already,
+	// all other unit request ALU-adder with 32bits opereand without sign extended
+	// For non-MULDIV operands
 	wire op_unsigned = op_sltu | op_cmp_ltu | op_cmp_gtu | op_maxu | op_minu;
 	wire [`E203_ALU_ADDER_WIDTH-1:0] misc_adder_op1 =
 			{{`E203_ALU_ADDER_WIDTH-`E203_XLEN{(~op_unsigned) & misc_op1[`E203_XLEN-1]}},misc_op1};
@@ -303,7 +300,7 @@ module e203_exu_alu_dpath(
 	wire adder_addsub = adder_add | adder_sub; 
 	
 
-		 // Make sure to use logic-gating to gateoff the 
+	// Make sure to use logic-gating to gateoff the 
 	assign adder_in1 = {`E203_ALU_ADDER_WIDTH{adder_addsub}} & (adder_op1);
 	assign adder_in2 = {`E203_ALU_ADDER_WIDTH{adder_addsub}} & (adder_sub ? (~adder_op2) : adder_op2);
 	assign adder_cin = adder_addsub & adder_sub;
@@ -320,10 +317,7 @@ module e203_exu_alu_dpath(
 	wire [`E203_XLEN-1:0] xorer_in1;
 	wire [`E203_XLEN-1:0] xorer_in2;
 
-	wire xorer_op = 
-							 op_xor
-									 // The compare eq or ne instruction
-						 | (op_cmp_eq | op_cmp_ne); 
+	wire xorer_op = op_xor | (op_cmp_eq | op_cmp_ne); // The compare eq or ne instruction
 
 		 // Make sure to use logic-gating to gateoff the 
 	assign xorer_in1 = {`E203_XLEN{xorer_op}} & misc_op1;

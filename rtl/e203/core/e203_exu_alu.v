@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-01 16:33:19
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-05-07 11:35:11
+// Last Modified time: 2019-05-07 15:27:58
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -60,19 +60,8 @@ module e203_exu_alu(
 	output i_ready, 
 
 	output i_longpipe, // Indicate this instruction is 
-										 //   issued as a long pipe instruction
+						//   issued as a long pipe instruction
 
-	// `ifdef E203_HAS_CSR_EAI//{
-	// `ifndef E203_HAS_EAI
-	// input  eai_xs_off,
-	// `endif//
-	// output         eai_csr_valid,
-	// input          eai_csr_ready,
-	// output  [31:0] eai_csr_addr,
-	// output         eai_csr_wr,
-	// output  [31:0] eai_csr_wdata,
-	// input   [31:0] eai_csr_rdata,
-	// `endif//}
 
 	output amo_wait,
 	input  oitf_empty,
@@ -186,6 +175,7 @@ module e203_exu_alu(
 	wire agu_op = (~ifu_excp_op) & (i_info[`E203_DECINFO_GRP] == `E203_DECINFO_GRP_AGU); 
 	wire bjp_op = (~ifu_excp_op) & (i_info[`E203_DECINFO_GRP] == `E203_DECINFO_GRP_BJP); 
 	wire csr_op = (~ifu_excp_op) & (i_info[`E203_DECINFO_GRP] == `E203_DECINFO_GRP_CSR); 
+
 `ifdef E203_SUPPORT_SHARE_MULDIV //{
 	wire mdv_op = (~ifu_excp_op) & (i_info[`E203_DECINFO_GRP] == `E203_DECINFO_GRP_MULDIV); 
 `endif//E203_SUPPORT_SHARE_MULDIV}
@@ -199,6 +189,7 @@ module e203_exu_alu(
 `ifdef E203_SUPPORT_SHARE_MULDIV //{
 	wire mdv_i_valid = i_valid & mdv_op;
 `endif//E203_SUPPORT_SHARE_MULDIV}
+	
 	wire agu_i_valid = i_valid & agu_op;
 	wire alu_i_valid = i_valid & alu_op;
 	wire bjp_i_valid = i_valid & bjp_op;
@@ -208,6 +199,7 @@ module e203_exu_alu(
 `ifdef E203_SUPPORT_SHARE_MULDIV //{
 	wire mdv_i_ready;
 `endif//E203_SUPPORT_SHARE_MULDIV}
+	
 	wire agu_i_ready;
 	wire alu_i_ready;
 	wire bjp_i_ready;
@@ -225,6 +217,7 @@ module e203_exu_alu(
 										 ;
 
 	wire agu_i_longpipe;
+	
 `ifdef E203_SUPPORT_SHARE_MULDIV //{
 	wire mdv_i_longpipe;
 `endif//E203_SUPPORT_SHARE_MULDIV}
@@ -249,10 +242,10 @@ module e203_exu_alu(
 	wire  [`E203_DECINFO_WIDTH-1:0]  csr_i_info  = {`E203_DECINFO_WIDTH{csr_op}} & i_info;  
 	wire                             csr_i_rdwen =                      csr_op   & i_rdwen;  
 
-	`ifndef E203_HAS_EAI//{
-	wire eai_o_cmt_wr_reg;
-	wire csr_sel_eai;
-	`endif//}
+	// `ifndef E203_HAS_EAI//{
+	// wire eai_o_cmt_wr_reg;
+	// wire csr_sel_eai;
+	// `endif//}
 
 	e203_exu_alu_csrctrl u_e203_exu_alu_csrctrl(
 
@@ -314,40 +307,40 @@ module e203_exu_alu(
 	wire  [`E203_PC_SIZE-1:0]        bjp_i_pc   = {`E203_PC_SIZE      {bjp_op}} & i_pc;  
 
 	e203_exu_alu_bjp u_e203_exu_alu_bjp(
-			.bjp_i_valid         (bjp_i_valid         ),
-			.bjp_i_ready         (bjp_i_ready         ),
-			.bjp_i_rs1           (bjp_i_rs1           ),
-			.bjp_i_rs2           (bjp_i_rs2           ),
-			.bjp_i_info          (bjp_i_info[`E203_DECINFO_BJP_WIDTH-1:0]),
-			.bjp_i_imm           (bjp_i_imm           ),
-			.bjp_i_pc            (bjp_i_pc            ),
+		.bjp_i_valid         (bjp_i_valid         ),
+		.bjp_i_ready         (bjp_i_ready         ),
+		.bjp_i_rs1           (bjp_i_rs1           ),
+		.bjp_i_rs2           (bjp_i_rs2           ),
+		.bjp_i_info          (bjp_i_info[`E203_DECINFO_BJP_WIDTH-1:0]),
+		.bjp_i_imm           (bjp_i_imm           ),
+		.bjp_i_pc            (bjp_i_pc            ),
 
-			.bjp_o_valid         (bjp_o_valid      ),
-			.bjp_o_ready         (bjp_o_ready      ),
-			.bjp_o_wbck_wdat     (bjp_o_wbck_wdat  ),
-			.bjp_o_wbck_err      (bjp_o_wbck_err   ),
+		.bjp_o_valid         (bjp_o_valid      ),
+		.bjp_o_ready         (bjp_o_ready      ),
+		.bjp_o_wbck_wdat     (bjp_o_wbck_wdat  ),
+		.bjp_o_wbck_err      (bjp_o_wbck_err   ),
 
-			.bjp_o_cmt_bjp       (bjp_o_cmt_bjp    ),
-			.bjp_o_cmt_mret      (bjp_o_cmt_mret    ),
-			.bjp_o_cmt_dret      (bjp_o_cmt_dret    ),
-			.bjp_o_cmt_fencei    (bjp_o_cmt_fencei  ),
-			.bjp_o_cmt_prdt      (bjp_o_cmt_prdt   ),
-			.bjp_o_cmt_rslv      (bjp_o_cmt_rslv   ),
+		.bjp_o_cmt_bjp       (bjp_o_cmt_bjp    ),
+		.bjp_o_cmt_mret      (bjp_o_cmt_mret    ),
+		.bjp_o_cmt_dret      (bjp_o_cmt_dret    ),
+		.bjp_o_cmt_fencei    (bjp_o_cmt_fencei  ),
+		.bjp_o_cmt_prdt      (bjp_o_cmt_prdt   ),
+		.bjp_o_cmt_rslv      (bjp_o_cmt_rslv   ),
 
-			.bjp_req_alu_op1     (bjp_req_alu_op1       ),
-			.bjp_req_alu_op2     (bjp_req_alu_op2       ),
-			.bjp_req_alu_cmp_eq  (bjp_req_alu_cmp_eq    ),
-			.bjp_req_alu_cmp_ne  (bjp_req_alu_cmp_ne    ),
-			.bjp_req_alu_cmp_lt  (bjp_req_alu_cmp_lt    ),
-			.bjp_req_alu_cmp_gt  (bjp_req_alu_cmp_gt    ),
-			.bjp_req_alu_cmp_ltu (bjp_req_alu_cmp_ltu   ),
-			.bjp_req_alu_cmp_gtu (bjp_req_alu_cmp_gtu   ),
-			.bjp_req_alu_add     (bjp_req_alu_add       ),
-			.bjp_req_alu_cmp_res (bjp_req_alu_cmp_res   ),
-			.bjp_req_alu_add_res (bjp_req_alu_add_res   ),
+		.bjp_req_alu_op1     (bjp_req_alu_op1       ),
+		.bjp_req_alu_op2     (bjp_req_alu_op2       ),
+		.bjp_req_alu_cmp_eq  (bjp_req_alu_cmp_eq    ),
+		.bjp_req_alu_cmp_ne  (bjp_req_alu_cmp_ne    ),
+		.bjp_req_alu_cmp_lt  (bjp_req_alu_cmp_lt    ),
+		.bjp_req_alu_cmp_gt  (bjp_req_alu_cmp_gt    ),
+		.bjp_req_alu_cmp_ltu (bjp_req_alu_cmp_ltu   ),
+		.bjp_req_alu_cmp_gtu (bjp_req_alu_cmp_gtu   ),
+		.bjp_req_alu_add     (bjp_req_alu_add       ),
+		.bjp_req_alu_cmp_res (bjp_req_alu_cmp_res   ),
+		.bjp_req_alu_add_res (bjp_req_alu_add_res   ),
 
-			.clk                 (clk),
-			.rst_n               (rst_n)
+		.clk                 (clk),
+		.rst_n               (rst_n)
 	);
 
 
@@ -498,39 +491,39 @@ module e203_exu_alu(
 
 	e203_exu_alu_rglr u_e203_exu_alu_rglr(
 
-			.alu_i_valid         (alu_i_valid     ),
-			.alu_i_ready         (alu_i_ready     ),
-			.alu_i_rs1           (alu_i_rs1           ),
-			.alu_i_rs2           (alu_i_rs2           ),
-			.alu_i_info          (alu_i_info[`E203_DECINFO_ALU_WIDTH-1:0]),
-			.alu_i_imm           (alu_i_imm           ),
-			.alu_i_pc            (alu_i_pc            ),
+		.alu_i_valid         (alu_i_valid     ),
+		.alu_i_ready         (alu_i_ready     ),
+		.alu_i_rs1           (alu_i_rs1           ),
+		.alu_i_rs2           (alu_i_rs2           ),
+		.alu_i_info          (alu_i_info[`E203_DECINFO_ALU_WIDTH-1:0]),
+		.alu_i_imm           (alu_i_imm           ),
+		.alu_i_pc            (alu_i_pc            ),
 
-			.alu_o_valid         (alu_o_valid         ),
-			.alu_o_ready         (alu_o_ready         ),
-			.alu_o_wbck_wdat     (alu_o_wbck_wdat     ),
-			.alu_o_wbck_err      (alu_o_wbck_err      ),
-			.alu_o_cmt_ecall     (alu_o_cmt_ecall ),
-			.alu_o_cmt_ebreak    (alu_o_cmt_ebreak),
-			.alu_o_cmt_wfi       (alu_o_cmt_wfi   ),
+		.alu_o_valid         (alu_o_valid         ),
+		.alu_o_ready         (alu_o_ready         ),
+		.alu_o_wbck_wdat     (alu_o_wbck_wdat     ),
+		.alu_o_wbck_err      (alu_o_wbck_err      ),
+		.alu_o_cmt_ecall     (alu_o_cmt_ecall ),
+		.alu_o_cmt_ebreak    (alu_o_cmt_ebreak),
+		.alu_o_cmt_wfi       (alu_o_cmt_wfi   ),
 
-			.alu_req_alu_add     (alu_req_alu_add       ),
-			.alu_req_alu_sub     (alu_req_alu_sub       ),
-			.alu_req_alu_xor     (alu_req_alu_xor       ),
-			.alu_req_alu_sll     (alu_req_alu_sll       ),
-			.alu_req_alu_srl     (alu_req_alu_srl       ),
-			.alu_req_alu_sra     (alu_req_alu_sra       ),
-			.alu_req_alu_or      (alu_req_alu_or        ),
-			.alu_req_alu_and     (alu_req_alu_and       ),
-			.alu_req_alu_slt     (alu_req_alu_slt       ),
-			.alu_req_alu_sltu    (alu_req_alu_sltu      ),
-			.alu_req_alu_lui     (alu_req_alu_lui       ),
-			.alu_req_alu_op1     (alu_req_alu_op1       ),
-			.alu_req_alu_op2     (alu_req_alu_op2       ),
-			.alu_req_alu_res     (alu_req_alu_res       ),
+		.alu_req_alu_add     (alu_req_alu_add       ),
+		.alu_req_alu_sub     (alu_req_alu_sub       ),
+		.alu_req_alu_xor     (alu_req_alu_xor       ),
+		.alu_req_alu_sll     (alu_req_alu_sll       ),
+		.alu_req_alu_srl     (alu_req_alu_srl       ),
+		.alu_req_alu_sra     (alu_req_alu_sra       ),
+		.alu_req_alu_or      (alu_req_alu_or        ),
+		.alu_req_alu_and     (alu_req_alu_and       ),
+		.alu_req_alu_slt     (alu_req_alu_slt       ),
+		.alu_req_alu_sltu    (alu_req_alu_sltu      ),
+		.alu_req_alu_lui     (alu_req_alu_lui       ),
+		.alu_req_alu_op1     (alu_req_alu_op1       ),
+		.alu_req_alu_op2     (alu_req_alu_op2       ),
+		.alu_req_alu_res     (alu_req_alu_res       ),
 
-			.clk                 (clk           ),
-			.rst_n               (rst_n         ) 
+		.clk                 (clk           ),
+		.rst_n               (rst_n         ) 
 	);
 
 `ifdef E203_SUPPORT_SHARE_MULDIV //{
@@ -562,42 +555,42 @@ module e203_exu_alu(
 	wire [33-1:0] muldiv_sbf_1_r;
 
 	e203_exu_alu_muldiv u_e203_exu_alu_muldiv(
-			.mdv_nob2b           (mdv_nob2b),
+		.mdv_nob2b           (mdv_nob2b),
 
-			.muldiv_i_valid      (mdv_i_valid    ),
-			.muldiv_i_ready      (mdv_i_ready    ),
-													 
-			.muldiv_i_rs1        (mdv_i_rs1      ),
-			.muldiv_i_rs2        (mdv_i_rs2      ),
-			.muldiv_i_imm        (mdv_i_imm      ),
-			.muldiv_i_info       (mdv_i_info[`E203_DECINFO_MULDIV_WIDTH-1:0]),
-			.muldiv_i_longpipe   (mdv_i_longpipe ),
-			.muldiv_i_itag       (mdv_i_itag     ),
-													
+		.muldiv_i_valid      (mdv_i_valid    ),
+		.muldiv_i_ready      (mdv_i_ready    ),
+												 
+		.muldiv_i_rs1        (mdv_i_rs1      ),
+		.muldiv_i_rs2        (mdv_i_rs2      ),
+		.muldiv_i_imm        (mdv_i_imm      ),
+		.muldiv_i_info       (mdv_i_info[`E203_DECINFO_MULDIV_WIDTH-1:0]),
+		.muldiv_i_longpipe   (mdv_i_longpipe ),
+		.muldiv_i_itag       (mdv_i_itag     ),
+												
 
-			.flush_pulse         (flush_pulse    ),
+		.flush_pulse         (flush_pulse    ),
 
-			.muldiv_o_valid      (mdv_o_valid    ),
-			.muldiv_o_ready      (mdv_o_ready    ),
-			.muldiv_o_wbck_wdat  (mdv_o_wbck_wdat),
-			.muldiv_o_wbck_err   (mdv_o_wbck_err ),
+		.muldiv_o_valid      (mdv_o_valid    ),
+		.muldiv_o_ready      (mdv_o_ready    ),
+		.muldiv_o_wbck_wdat  (mdv_o_wbck_wdat),
+		.muldiv_o_wbck_err   (mdv_o_wbck_err ),
 
-			.muldiv_req_alu_op1  (muldiv_req_alu_op1),
-			.muldiv_req_alu_op2  (muldiv_req_alu_op2),
-			.muldiv_req_alu_add  (muldiv_req_alu_add),
-			.muldiv_req_alu_sub  (muldiv_req_alu_sub),
-			.muldiv_req_alu_res  (muldiv_req_alu_res),
-			
-			.muldiv_sbf_0_ena    (muldiv_sbf_0_ena  ),
-			.muldiv_sbf_0_nxt    (muldiv_sbf_0_nxt  ),
-			.muldiv_sbf_0_r      (muldiv_sbf_0_r    ),
-		 
-			.muldiv_sbf_1_ena    (muldiv_sbf_1_ena  ),
-			.muldiv_sbf_1_nxt    (muldiv_sbf_1_nxt  ),
-			.muldiv_sbf_1_r      (muldiv_sbf_1_r    ),
+		.muldiv_req_alu_op1  (muldiv_req_alu_op1),
+		.muldiv_req_alu_op2  (muldiv_req_alu_op2),
+		.muldiv_req_alu_add  (muldiv_req_alu_add),
+		.muldiv_req_alu_sub  (muldiv_req_alu_sub),
+		.muldiv_req_alu_res  (muldiv_req_alu_res),
+		
+		.muldiv_sbf_0_ena    (muldiv_sbf_0_ena  ),
+		.muldiv_sbf_0_nxt    (muldiv_sbf_0_nxt  ),
+		.muldiv_sbf_0_r      (muldiv_sbf_0_r    ),
+	 
+		.muldiv_sbf_1_ena    (muldiv_sbf_1_ena  ),
+		.muldiv_sbf_1_nxt    (muldiv_sbf_1_nxt  ),
+		.muldiv_sbf_1_r      (muldiv_sbf_1_r    ),
 
-			.clk                 (clk               ),
-			.rst_n               (rst_n             ) 
+		.clk                 (clk               ),
+		.rst_n               (rst_n             ) 
 	);
 `endif//E203_SUPPORT_SHARE_MULDIV}
 
