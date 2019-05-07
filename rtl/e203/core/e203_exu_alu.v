@@ -1,3 +1,26 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Company:   
+// Engineer: Ruige_Lee
+// Create Date: 2019-04-01 16:33:19
+// Last Modified by:   Ruige_Lee
+// Last Modified time: 2019-05-07 10:58:06
+// Email: 295054118@whut.edu.cn
+// page: https://whutddk.github.io/
+// Design Name:   
+// Module Name: e203_exu_alu
+// Project Name:   
+// Target Devices:   
+// Tool Versions:   
+// Description:   
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision:    -   
+// Additional Comments:  
+// 
+//
+//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -39,17 +62,17 @@ module e203_exu_alu(
   output i_longpipe, // Indicate this instruction is 
                      //   issued as a long pipe instruction
 
-  `ifdef E203_HAS_CSR_EAI//{
-  `ifndef E203_HAS_EAI
-  input  eai_xs_off,
-  `endif//
-  output         eai_csr_valid,
-  input          eai_csr_ready,
-  output  [31:0] eai_csr_addr,
-  output         eai_csr_wr,
-  output  [31:0] eai_csr_wdata,
-  input   [31:0] eai_csr_rdata,
-  `endif//}
+  // `ifdef E203_HAS_CSR_EAI//{
+  // `ifndef E203_HAS_EAI
+  // input  eai_xs_off,
+  // `endif//
+  // output         eai_csr_valid,
+  // input          eai_csr_ready,
+  // output  [31:0] eai_csr_addr,
+  // output         eai_csr_wr,
+  // output  [31:0] eai_csr_wdata,
+  // input   [31:0] eai_csr_rdata,
+  // `endif//}
 
   output amo_wait,
   input  oitf_empty,
@@ -235,16 +258,16 @@ module e203_exu_alu(
 
 
 
-  `ifdef E203_HAS_CSR_EAI//{
-    .csr_sel_eai      (csr_sel_eai),
-    .eai_xs_off       (eai_xs_off),
-    .eai_csr_valid    (eai_csr_valid),
-    .eai_csr_ready    (eai_csr_ready),
-    .eai_csr_addr     (eai_csr_addr ),
-    .eai_csr_wr       (eai_csr_wr ),
-    .eai_csr_wdata    (eai_csr_wdata),
-    .eai_csr_rdata    (eai_csr_rdata),
-  `endif//}
+  // `ifdef E203_HAS_CSR_EAI//{
+  //   .csr_sel_eai      (csr_sel_eai),
+  //   .eai_xs_off       (eai_xs_off),
+  //   .eai_csr_valid    (eai_csr_valid),
+  //   .eai_csr_ready    (eai_csr_ready),
+  //   .eai_csr_addr     (eai_csr_addr ),
+  //   .eai_csr_wr       (eai_csr_wr ),
+  //   .eai_csr_wdata    (eai_csr_wdata),
+  //   .eai_csr_rdata    (eai_csr_rdata),
+  // `endif//}
     .csr_access_ilgl  (csr_access_ilgl),
 
     .csr_i_valid      (csr_i_valid),

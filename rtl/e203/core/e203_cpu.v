@@ -1,6 +1,29 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Company:   
 // Engineer: Ruige_Lee
+// Create Date: 2019-04-23 19:53:51
+// Last Modified by:   Ruige_Lee
+// Last Modified time: 2019-05-07 10:55:26
+// Email: 295054118@whut.edu.cn
+// page: https://whutddk.github.io/
+// Design Name:   
+// Module Name: e203_cpu
+// Project Name:   
+// Target Devices:   
+// Tool Versions:   
+// Description:   
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision:    -   
+// Additional Comments:  
+// 
+//
+//////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+// Company:   
+// Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
 // Last Modified time: 2019-04-23 14:29:03
@@ -272,40 +295,11 @@ e203_irq_sync  #(.MASTER(MASTER)) u_e203_irq_sync(
 	// wire [`E203_XLEN-1:0]              lsu2dtcm_icb_rsp_rdata;
 
 
-`ifdef E203_HAS_CSR_EAI//{
-	wire         eai_csr_valid;
-	wire         eai_csr_ready;
-	wire  [31:0] eai_csr_addr;
-	wire         eai_csr_wr;
-	wire  [31:0] eai_csr_wdata;
-	wire  [31:0] eai_csr_rdata;
 
-	// This is an empty module to just connect the EAI CSR interface, 
-	//  user can hack it to become a real one
-e203_extend_csr u_e203_extend_csr(
-	.eai_csr_valid (eai_csr_valid),
-	.eai_csr_ready (eai_csr_ready),
-	.eai_csr_addr  (eai_csr_addr ),
-	.eai_csr_wr    (eai_csr_wr   ),
-	.eai_csr_wdata (eai_csr_wdata),
-	.eai_csr_rdata (eai_csr_rdata),
-	.clk           (clk_core_exu ),
-	.rst_n         (rst_sync_n) 
- );
-`endif//}
 
  
 (* DONT_TOUCH = "TRUE" *)
 e203_core u_e203_core(
-
-`ifdef E203_HAS_CSR_EAI
-	.eai_csr_valid (eai_csr_valid),
-	.eai_csr_ready (eai_csr_ready),
-	.eai_csr_addr  (eai_csr_addr ),
-	.eai_csr_wr    (eai_csr_wr   ),
-	.eai_csr_wdata (eai_csr_wdata),
-	.eai_csr_rdata (eai_csr_rdata),
-`endif
 
 // .tcm_cgstop              (tcm_cgstop),
 	.core_cgstop             (core_cgstop),

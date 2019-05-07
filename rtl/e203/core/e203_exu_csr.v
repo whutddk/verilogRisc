@@ -1,3 +1,26 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Company:   
+// Engineer: Ruige_Lee
+// Create Date: 2019-04-01 16:33:19
+// Last Modified by:   Ruige_Lee
+// Last Modified time: 2019-05-07 10:57:33
+// Email: 295054118@whut.edu.cn
+// page: https://whutddk.github.io/
+// Design Name:   
+// Module Name: e203_exu_csr
+// Project Name:   
+// Target Devices:   
+// Tool Versions:   
+// Description:   
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision:    -   
+// Additional Comments:  
+// 
+//
+//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -28,7 +51,7 @@
 
 module e203_exu_csr(
   input nonflush_cmt_ena,
-  output eai_xs_off,
+  //output eai_xs_off,
 
   input csr_ena,
   input csr_wr_en,
@@ -203,7 +226,7 @@ wire status_sd_r = (status_fs_r == 2'b11) | (status_xs_r == 2'b11);
 `ifndef E203_HAS_EAI
    // If no EAI coprocessor interface configured, the XS is just hardwired to 0
 assign status_xs_r = 2'b0; 
-assign eai_xs_off = 1'b0;// We just make this signal to 0
+//assign eai_xs_off = 1'b0;// We just make this signal to 0
 `endif
 
 //////////////////////////

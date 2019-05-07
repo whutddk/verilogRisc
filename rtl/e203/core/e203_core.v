@@ -1,10 +1,11 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Company:   
 // Engineer: Ruige_Lee
-// Create Date: 2019-02-17 17:25:12
+// Create Date: 2019-04-23 19:53:51
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-23 14:29:13
+// Last Modified time: 2019-05-07 10:55:38
 // Email: 295054118@whut.edu.cn
+// page: https://whutddk.github.io/
 // Design Name:   
 // Module Name: e203_core
 // Project Name:   
@@ -18,29 +19,8 @@
 // Revision:    -   
 // Additional Comments:  
 // 
+//
 //////////////////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////////////////////////////////////////////////////
-// Company:    
-// Engineer: 29505
-// Create Date: 2019-01-28 20:59:01
-// Last Modified by:   29505
-// Last Modified time: 2019-02-01 18:08:08
-// Email: 295054118@whut.edu.cn
-// Design Name: e203_core.v  
-// Module Name: e203_core
-// Project Name:    
-// Target Devices:    
-// Tool Versions:    
-// Description:    
-// 
-// Dependencies:    
-// 
-// Revision:   
-// Revision  
-// Additional Comments:   
-// 
-////////////////////////////////////////////////////////////////////////////////// 
 
 /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
@@ -73,14 +53,6 @@
 
 module e203_core(
 
-`ifdef E203_HAS_CSR_EAI//{
-	output         eai_csr_valid,
-	input          eai_csr_ready,
-	output  [31:0] eai_csr_addr,
-	output         eai_csr_wr,
-	output  [31:0] eai_csr_wdata,
-	input   [31:0] eai_csr_rdata,
-`endif//}
 	output core_wfi,
 	output tm_stop,
 	output core_cgstop,
@@ -158,32 +130,6 @@ module e203_core(
 	input                          plic_icb_rsp_err  ,
 	input                          plic_icb_rsp_excl_ok  ,
 	input  [`E203_XLEN-1:0]        plic_icb_rsp_rdata,
-
-
-
-
-// input [`E203_ADDR_SIZE-1:0] dtcm_region_indic,
-// 	//////////////////////////////////////////////////////////////
-// 	//////////////////////////////////////////////////////////////
-// 	// The ICB Interface to DTCM
-// 	//
-// 	//    * Bus cmd channel
-// output                         lsu2dtcm_icb_cmd_valid,
-// input                          lsu2dtcm_icb_cmd_ready,
-// output [`E203_DTCM_ADDR_WIDTH-1:0]   lsu2dtcm_icb_cmd_addr, 
-// output                         lsu2dtcm_icb_cmd_read, 
-// output [`E203_XLEN-1:0]        lsu2dtcm_icb_cmd_wdata,
-// output [`E203_XLEN/8-1:0]      lsu2dtcm_icb_cmd_wmask,
-// output                         lsu2dtcm_icb_cmd_lock,
-// output                         lsu2dtcm_icb_cmd_excl,
-// output [1:0]                   lsu2dtcm_icb_cmd_size,
-// //
-// //    * Bus RSP channel
-// input                          lsu2dtcm_icb_rsp_valid,
-// output                         lsu2dtcm_icb_rsp_ready,
-// input                          lsu2dtcm_icb_rsp_err  ,
-// input                          lsu2dtcm_icb_rsp_excl_ok,
-// input  [`E203_XLEN-1:0]        lsu2dtcm_icb_rsp_rdata,
 
 
 	output exu_active,
@@ -318,15 +264,6 @@ e203_ifu u_e203_ifu(
 	wire excp_active;
 
 e203_exu u_e203_exu(
-
-`ifdef E203_HAS_CSR_EAI//{
-	.eai_csr_valid (eai_csr_valid),
-	.eai_csr_ready (eai_csr_ready),
-	.eai_csr_addr  (eai_csr_addr ),
-	.eai_csr_wr    (eai_csr_wr   ),
-	.eai_csr_wdata (eai_csr_wdata),
-	.eai_csr_rdata (eai_csr_rdata),
-`endif//}
 
 
 	.excp_active            (excp_active),
