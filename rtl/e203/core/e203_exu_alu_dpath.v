@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-05-07 15:45:51
+// Last Modified time: 2019-05-07 15:59:23
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -333,27 +333,29 @@ module e203_exu_alu_dpath(
 	// Generate the CMP operation result
 			 // It is Non-Equal if the XOR result have any bit non-zero
 	wire neq  = (|xorer_res); 
-	wire cmp_res_ne  = (op_cmp_ne  & neq);
-			 // It is Equal if it is not Non-Equal
-	wire cmp_res_eq  = op_cmp_eq  & (~neq);
-			 // It is Less-Than if the adder result is negative
+	wire cmp_res_ne  = (op_cmp_ne & neq);
+	// It is Equal if it is not Non-Equal
+	wire cmp_res_eq  = op_cmp_eq & (~neq);
+	// It is Less-Than if the adder result is negative
 	wire cmp_res_lt  = op_cmp_lt  & adder_res[`E203_XLEN];
 	wire cmp_res_ltu = op_cmp_ltu & adder_res[`E203_XLEN];
-			 // It is Greater-Than if the adder result is postive
+	// It is Greater-Than if the adder result is postive
 	wire op1_gt_op2  = (~adder_res[`E203_XLEN]);
 	wire cmp_res_gt  = op_cmp_gt  & op1_gt_op2;
 	wire cmp_res_gtu = op_cmp_gtu & op1_gt_op2;
 
 	assign cmp_res = cmp_res_eq 
-								 | cmp_res_ne 
-								 | cmp_res_lt 
-								 | cmp_res_gt  
-								 | cmp_res_ltu 
-								 | cmp_res_gtu; 
+					| cmp_res_ne 
+					| cmp_res_lt 
+					| cmp_res_gt  
+					| cmp_res_ltu 
+					| cmp_res_gtu; 
+
+
 
 	//////////////////////////////////////////////////////////////
 	// Generate the mvop2 result
-	//   Just directly use op2 since the op2 will be the immediate
+	// Just directly use op2 since the op2 will be the immediate
 	wire [`E203_XLEN-1:0] mvop2_res = misc_op2;
 
 	//////////////////////////////////////////////////////////////
@@ -367,6 +369,7 @@ module e203_exu_alu_dpath(
 							 slttu_cmp_lt ?
 							 `E203_XLEN'b1 : `E203_XLEN'b0;
 
+
 	//////////////////////////////////////////////////////////////
 	// Generate the Max/Min result
 	wire maxmin_sel_op1 =  ((op_max | op_maxu) &   op1_gt_op2) 
@@ -374,10 +377,12 @@ module e203_exu_alu_dpath(
 
 	wire [`E203_XLEN-1:0] maxmin_res  = maxmin_sel_op1 ? misc_op1 : misc_op2;  
 
+
+
 	//////////////////////////////////////////////////////////////
 	// Generate the final result
 	wire [`E203_XLEN-1:0] alu_dpath_res = 
-				({`E203_XLEN{op_or       }} & orer_res )
+			({`E203_XLEN{op_or       }} & orer_res )
 			| ({`E203_XLEN{op_and      }} & ander_res)
 			| ({`E203_XLEN{op_xor      }} & xorer_res)
 			| ({`E203_XLEN{op_addsub   }} & adder_res[`E203_XLEN-1:0])
@@ -427,83 +432,91 @@ module e203_exu_alu_dpath(
 		,op_cmp_gtu
 		}
 		= 
-				({DPATH_MUX_WIDTH{alu_req_alu}} & {
-						 alu_req_alu_op1
-						,alu_req_alu_op2
-						,1'b0
-						,1'b0
-						,1'b0
-						,1'b0
-						,alu_req_alu_add
-						,alu_req_alu_sub
-						,alu_req_alu_or
-						,alu_req_alu_xor
-						,alu_req_alu_and
-						,alu_req_alu_sll
-						,alu_req_alu_srl
-						,alu_req_alu_sra
-						,alu_req_alu_slt
-						,alu_req_alu_sltu
-						,alu_req_alu_lui// LUI just move-Op2 operation
-						,1'b0
-						,1'b0
-						,1'b0
-						,1'b0
-						,1'b0
-						,1'b0
-				})
-			| ({DPATH_MUX_WIDTH{bjp_req_alu}} & {
-						 bjp_req_alu_op1
-						,bjp_req_alu_op2
-						,1'b0
-						,1'b0
-						,1'b0
-						,1'b0
-						,bjp_req_alu_add
-						,1'b0
-						,1'b0
-						,1'b0
-						,1'b0
-						,1'b0
-						,1'b0
-						,1'b0
-						,1'b0
-						,1'b0
-						,1'b0
-						,bjp_req_alu_cmp_eq 
-						,bjp_req_alu_cmp_ne 
-						,bjp_req_alu_cmp_lt 
-						,bjp_req_alu_cmp_gt 
-						,bjp_req_alu_cmp_ltu
-						,bjp_req_alu_cmp_gtu
-
-				})
-			| ({DPATH_MUX_WIDTH{agu_req_alu}} & {
-						 agu_req_alu_op1
-						,agu_req_alu_op2
-						,agu_req_alu_max  
-						,agu_req_alu_min  
-						,agu_req_alu_maxu 
-						,agu_req_alu_minu 
-						,agu_req_alu_add
-						,1'b0
-						,agu_req_alu_or
-						,agu_req_alu_xor
-						,agu_req_alu_and
-						,1'b0
-						,1'b0
-						,1'b0
-						,1'b0
-						,1'b0
-						,agu_req_alu_swap// SWAP just move-Op2 operation
-						,1'b0
-						,1'b0
-						,1'b0
-						,1'b0
-						,1'b0
-						,1'b0
-				})
-				;
+			(
+				{DPATH_MUX_WIDTH{alu_req_alu}} 
+				& 
+				{
+					 alu_req_alu_op1
+					,alu_req_alu_op2
+					,1'b0
+					,1'b0
+					,1'b0
+					,1'b0
+					,alu_req_alu_add
+					,alu_req_alu_sub
+					,alu_req_alu_or
+					,alu_req_alu_xor
+					,alu_req_alu_and
+					,alu_req_alu_sll
+					,alu_req_alu_srl
+					,alu_req_alu_sra
+					,alu_req_alu_slt
+					,alu_req_alu_sltu
+					,alu_req_alu_lui// LUI just move-Op2 operation
+					,1'b0
+					,1'b0
+					,1'b0
+					,1'b0
+					,1'b0
+					,1'b0
+				}
+			)
+			| (
+				{DPATH_MUX_WIDTH{bjp_req_alu}} 
+				& {
+					 bjp_req_alu_op1
+					,bjp_req_alu_op2
+					,1'b0
+					,1'b0
+					,1'b0
+					,1'b0
+					,bjp_req_alu_add
+					,1'b0
+					,1'b0
+					,1'b0
+					,1'b0
+					,1'b0
+					,1'b0
+					,1'b0
+					,1'b0
+					,1'b0
+					,1'b0
+					,bjp_req_alu_cmp_eq 
+					,bjp_req_alu_cmp_ne 
+					,bjp_req_alu_cmp_lt 
+					,bjp_req_alu_cmp_gt 
+					,bjp_req_alu_cmp_ltu
+					,bjp_req_alu_cmp_gtu
+				}
+			)
+			| (
+				{DPATH_MUX_WIDTH{agu_req_alu}} 
+				& {
+					 agu_req_alu_op1
+					,agu_req_alu_op2
+					,agu_req_alu_max  
+					,agu_req_alu_min  
+					,agu_req_alu_maxu 
+					,agu_req_alu_minu 
+					,agu_req_alu_add
+					,1'b0
+					,agu_req_alu_or
+					,agu_req_alu_xor
+					,agu_req_alu_and
+					,1'b0
+					,1'b0
+					,1'b0
+					,1'b0
+					,1'b0
+					,agu_req_alu_swap// SWAP just move-Op2 operation
+					,1'b0
+					,1'b0
+					,1'b0
+					,1'b0
+					,1'b0
+					,1'b0
+				}
+			);
 				
 	assign alu_req_alu_res     = alu_dpath_res[`E203_XLEN-1:0];
 	assign agu_req_alu_res     = alu_dpath_res[`E203_XLEN-1:0];
