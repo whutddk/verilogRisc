@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-15 20:39:35
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-05-07 14:50:33
+// Last Modified time: 2019-05-07 14:53:48
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -209,11 +209,6 @@ module e203_exu_decode(
 	wire rv32_resved0  = opcode_6_5_11 & opcode_4_2_010;// & opcode_1_0_11; 
 
 	wire rv32_miscmem  = opcode_6_5_00 & opcode_4_2_011;// & opcode_1_0_11; 
-	// `ifdef E203_SUPPORT_AMO//{
-	// wire rv32_amo      = opcode_6_5_01 & opcode_4_2_011;// & opcode_1_0_11; 
-	// `endif//E203_SUPPORT_AMO}
-
-	// wire rv32_amo      = 1'b0;
 
 	wire rv32_nmadd    = opcode_6_5_10 & opcode_4_2_011;// & opcode_1_0_11; 
 	wire rv32_jal      = opcode_6_5_11 & opcode_4_2_011;// & opcode_1_0_11; 
@@ -397,13 +392,8 @@ module e203_exu_decode(
 	wire rv32_rem      = rv32_op     & rv32_func3_110 & rv32_func7_0000001;
 	wire rv32_remu     = rv32_op     & rv32_func3_111 & rv32_func7_0000001;
 	
-	// The MULDIV group of instructions will be handled by MUL-DIV-datapath
-	// `ifdef E203_SUPPORT_MULDIV//{
+
 	wire muldiv_op = rv32_op & rv32_func7_0000001;
-	// `endif//}
-	// `ifndef E203_SUPPORT_MULDIV//{
-	// wire muldiv_op = 1'b0;
-	// `endif//}
 
 	wire [`E203_DECINFO_MULDIV_WIDTH-1:0] muldiv_info_bus;
 	assign muldiv_info_bus[`E203_DECINFO_GRP          ] = `E203_DECINFO_GRP_MULDIV;
@@ -436,38 +426,6 @@ module e203_exu_decode(
 	wire rv32_sb       = rv32_store  & rv32_func3_000;
 	wire rv32_sh       = rv32_store  & rv32_func3_001;
 	wire rv32_sw       = rv32_store  & rv32_func3_010;
-
-
-	// ===========================================================================
-	// Atomic Instructions
-	// `ifdef E203_SUPPORT_AMO//{
-	// wire rv32_lr_w      = rv32_amo & rv32_func3_010 & (rv32_func7[6:2] == 5'b00010);
-	// wire rv32_sc_w      = rv32_amo & rv32_func3_010 & (rv32_func7[6:2] == 5'b00011);
-	// wire rv32_amoswap_w = rv32_amo & rv32_func3_010 & (rv32_func7[6:2] == 5'b00001);
-	// wire rv32_amoadd_w  = rv32_amo & rv32_func3_010 & (rv32_func7[6:2] == 5'b00000);
-	// wire rv32_amoxor_w  = rv32_amo & rv32_func3_010 & (rv32_func7[6:2] == 5'b00100);
-	// wire rv32_amoand_w  = rv32_amo & rv32_func3_010 & (rv32_func7[6:2] == 5'b01100);
-	// wire rv32_amoor_w   = rv32_amo & rv32_func3_010 & (rv32_func7[6:2] == 5'b01000);
-	// wire rv32_amomin_w  = rv32_amo & rv32_func3_010 & (rv32_func7[6:2] == 5'b10000);
-	// wire rv32_amomax_w  = rv32_amo & rv32_func3_010 & (rv32_func7[6:2] == 5'b10100);
-	// wire rv32_amominu_w = rv32_amo & rv32_func3_010 & (rv32_func7[6:2] == 5'b11000);
-	// wire rv32_amomaxu_w = rv32_amo & rv32_func3_010 & (rv32_func7[6:2] == 5'b11100);
-
-	// `endif//E203_SUPPORT_AMO}
-	// `ifndef E203_SUPPORT_AMO//{
-// wire rv32_lr_w      = 1'b0;
-	// wire rv32_sc_w      = 1'b0;
-	// wire rv32_amoswap_w = 1'b0;
-	// wire rv32_amoadd_w  = 1'b0;
-	// wire rv32_amoxor_w  = 1'b0;
-	// wire rv32_amoand_w  = 1'b0;
-	// wire rv32_amoor_w   = 1'b0;
-	// wire rv32_amomin_w  = 1'b0;
-	// wire rv32_amomax_w  = 1'b0;
-	// wire rv32_amominu_w = 1'b0;
-	// wire rv32_amomaxu_w = 1'b0;
-
-	// `endif//}
 
 	wire amoldst_op = rv32_load | rv32_store ;
 
