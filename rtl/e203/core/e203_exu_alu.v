@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-01 16:33:19
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-05-07 15:27:58
+// Last Modified time: 2019-05-07 16:00:52
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -217,7 +217,7 @@ module e203_exu_alu(
 										 ;
 
 	wire agu_i_longpipe;
-	
+
 `ifdef E203_SUPPORT_SHARE_MULDIV //{
 	wire mdv_i_longpipe;
 `endif//E203_SUPPORT_SHARE_MULDIV}
@@ -602,9 +602,11 @@ module e203_exu_alu(
 	// Instantiate the Shared Datapath module
 	//
 	wire alu_req_alu = alu_op & i_rdwen;// Regular ALU only req datapath when it need to write-back
+
 `ifdef E203_SUPPORT_SHARE_MULDIV //{
 	wire muldiv_req_alu = mdv_op;// Since MULDIV have no point to let rd=0, so always need ALU datapath
 `endif//E203_SUPPORT_SHARE_MULDIV}
+	
 	wire bjp_req_alu = bjp_op;// Since BJP may not write-back, but still need ALU datapath
 	wire agu_req_alu = agu_op;// Since AGU may have some other features, so always need ALU datapath
 
@@ -703,6 +705,7 @@ module e203_exu_alu(
 	wire o_sel_bjp = bjp_op;
 	wire o_sel_csr = csr_op;
 	wire o_sel_agu = agu_op;
+
 `ifdef E203_SUPPORT_SHARE_MULDIV //{
 	wire o_sel_mdv = mdv_op;
 `endif//E203_SUPPORT_SHARE_MULDIV}
@@ -720,9 +723,11 @@ module e203_exu_alu(
 	assign ifu_excp_o_ready = o_sel_ifu_excp & o_ready;
 	assign alu_o_ready      = o_sel_alu & o_ready;
 	assign agu_o_ready      = o_sel_agu & o_ready;
+
 `ifdef E203_SUPPORT_SHARE_MULDIV //{
 	assign mdv_o_ready      = o_sel_mdv & o_ready;
 `endif//E203_SUPPORT_SHARE_MULDIV}
+
 	assign bjp_o_ready      = o_sel_bjp & o_ready;
 	assign csr_o_ready      = o_sel_csr & o_ready;
 
