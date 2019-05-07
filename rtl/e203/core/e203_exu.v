@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-01 16:33:19
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-05-07 10:55:59
+// Last Modified time: 2019-05-07 11:12:28
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -542,7 +542,7 @@ module e203_exu(
     .i_itag              (disp_alu_itag    ),
     .i_rs1               (disp_alu_rs1     ),
     .i_rs2               (disp_alu_rs2     ),
-    .eai_xs_off          (eai_xs_off),
+    //.eai_xs_off          (eai_xs_off),
     .i_rdwen             (disp_alu_rdwen   ),
     .i_rdidx             (disp_alu_rdidx   ),
     .i_info              (disp_alu_info    ),
@@ -864,7 +864,7 @@ module e203_exu(
 
   e203_exu_csr u_e203_exu_csr(
     .csr_access_ilgl     (csr_access_ilgl),
-    .eai_xs_off          (eai_xs_off),
+    //.eai_xs_off          (eai_xs_off),
     .nonflush_cmt_ena    (nonflush_cmt_ena),
     .tm_stop             (tm_stop),
     .itcm_nohold         (itcm_nohold),
