@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-05-24 21:39:36
+// Last Modified by:   29505
+// Last Modified time: 2019-05-25 09:45:06
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_cpu.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 // Company:   
 // Engineer: Ruige_Lee
@@ -6,7 +28,7 @@
 // Last Modified time: 2019-05-07 12:02:04
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
-// Design Name:   
+// Design Name: e203_cpu.v  
 // Module Name: e203_cpu
 // Project Name:   
 // Target Devices:   
@@ -116,16 +138,16 @@ module e203_cpu #(
 	input  [32-1:0] dscratch_r,
 
 	// input  dbg_mode,
-	input  dbg_halt_r,
-	input  dbg_step_r,
-	input  dbg_ebreakm_r,
-	input  dbg_stopcycle,
+	// input  dbg_halt_r,
+	// input  dbg_step_r,
+	// input  dbg_ebreakm_r,
+	// input  dbg_stopcycle,
 
 
 	/////////////////////////////////////////////////////
 	input [`E203_HART_ID_W-1:0] core_mhartid,  
 
-	input  dbg_irq_a,
+	// input  dbg_irq_a,
 	input  ext_irq_a,
 	input  sft_irq_a,
 	input  tmr_irq_a,
@@ -252,8 +274,8 @@ e203_irq_sync  #(.MASTER(MASTER)) u_e203_irq_sync(
 	.rst_n     (rst_sync_n),
 											 
 
-	.dbg_irq_a (dbg_irq_a),
-	.dbg_irq_r (dbg_irq_r),
+	// .dbg_irq_a (dbg_irq_a),
+	// .dbg_irq_r (dbg_irq_r),
 
 	.ext_irq_a   (ext_irq_a),
 	.sft_irq_a   (sft_irq_a),
@@ -314,7 +336,7 @@ e203_core u_e203_core(
 	.core_wfi                (core_wfi),
 
 	.core_mhartid            (core_mhartid),  
-	.dbg_irq_r               (dbg_irq_r),
+	// .dbg_irq_r               (dbg_irq_r),
 	.lcl_irq_r               (`E203_LIRQ_NUM'b0),// Not implemented now
 	.ext_irq_r               (ext_irq_r),
 	.sft_irq_r               (sft_irq_r),
@@ -337,10 +359,10 @@ e203_core u_e203_core(
 	.dscratch_r      (dscratch_r     ),
 																					 
 	// .dbg_mode                (dbg_mode       ),
-	.dbg_halt_r              (dbg_halt_r     ),
-	.dbg_step_r              (dbg_step_r     ),
-	.dbg_ebreakm_r           (dbg_ebreakm_r),
-	.dbg_stopcycle           (dbg_stopcycle),
+	// .dbg_halt_r              (dbg_halt_r     ),
+	// .dbg_step_r              (dbg_step_r     ),
+	// .dbg_ebreakm_r           (dbg_ebreakm_r),
+	// .dbg_stopcycle           (dbg_stopcycle),
 
 
 

@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-05-24 21:39:36
+// Last Modified by:   29505
+// Last Modified time: 2019-05-25 09:45:23
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_core.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 // Company:   
 // Engineer: Ruige_Lee
@@ -6,7 +28,7 @@
 // Last Modified time: 2019-05-07 12:02:14
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
-// Design Name:   
+// Design Name: e203_core.v  
 // Module Name: e203_core
 // Project Name:   
 // Target Devices:   
@@ -61,7 +83,7 @@ module e203_core(
 	input  [`E203_PC_SIZE-1:0] pc_rtvec,
 
 	input  [`E203_HART_ID_W-1:0] core_mhartid,
-	input  dbg_irq_r,
+	// input  dbg_irq_r,
 	input  [`E203_LIRQ_NUM-1:0] lcl_irq_r,
 	input  [`E203_EVT_NUM-1:0] evt_r,
 	input  ext_irq_r,
@@ -86,10 +108,10 @@ module e203_core(
 	output  cmt_dcause_ena,
 
 	// input  dbg_mode,
-	input  dbg_halt_r,
-	input  dbg_step_r,
-	input  dbg_ebreakm_r,
-	input  dbg_stopcycle,
+	// input  dbg_halt_r,
+	// input  dbg_step_r,
+	// input  dbg_ebreakm_r,
+	// input  dbg_stopcycle,
 
 	input [`E203_ADDR_SIZE-1:0]    clint_region_indic,
 	input                          clint_icb_enable,

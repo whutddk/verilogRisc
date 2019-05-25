@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-05-24 21:39:36
+// Last Modified by:   29505
+// Last Modified time: 2019-05-25 09:50:56
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_exu.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 // Company:   
 // Engineer: Ruige_Lee
@@ -6,7 +28,7 @@
 // Last Modified time: 2019-05-07 12:02:31
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
-// Design Name:   
+// Design Name: e203_exu.v  
 // Module Name: e203_exu
 // Project Name:   
 // Target Devices:   
@@ -85,7 +107,7 @@ module e203_exu(
 	output tcm_cgstop,
 
 	input  [`E203_HART_ID_W-1:0] core_mhartid,
-	input  dbg_irq_r,
+	// input  dbg_irq_r,
 	input  [`E203_LIRQ_NUM-1:0] lcl_irq_r,
 	input  [`E203_EVT_NUM-1:0] evt_r,
 	input  ext_irq_r,
@@ -111,10 +133,10 @@ module e203_exu(
 	input [`E203_XLEN-1:0] dscratch_r,
 
 	// input  dbg_mode,
-	input  dbg_halt_r,
-	input  dbg_step_r,
-	input  dbg_ebreakm_r,
-	input  dbg_stopcycle,
+	// input  dbg_halt_r,
+	// input  dbg_step_r,
+	// input  dbg_ebreakm_r,
+	// input  dbg_stopcycle,
 
 	// The IFU IR stage to EXU interface
 	input  i_valid, // Handshake signals with EXU stage
@@ -715,10 +737,10 @@ module e203_exu(
 	wire [`E203_PC_SIZE-1:0]  csr_dpc_r;
 	wire [`E203_XLEN-1:0]     csr_mtvec_r;
 
-	wire u_mode;
-	wire s_mode;
-	wire h_mode;
-	wire m_mode;
+	// wire u_mode;
+	// wire s_mode;
+	// wire h_mode;
+	// wire m_mode;
 
 	wire status_mie_r;
 	wire mtie_r;
@@ -742,7 +764,7 @@ module e203_exu(
 		.wfi_halt_ifu_req    (wfi_halt_ifu_req),
 		.wfi_halt_ifu_ack    (wfi_halt_ifu_ack),
 
-		.dbg_irq_r               (dbg_irq_r),
+		// .dbg_irq_r               (dbg_irq_r),
 		.lcl_irq_r               (lcl_irq_r),
 		.ext_irq_r               (ext_irq_r),
 		.sft_irq_r               (sft_irq_r),
@@ -790,16 +812,16 @@ module e203_exu(
 		.longp_excp_i_pc       (longp_excp_o_pc     ),
 
 		// .dbg_mode              (dbg_mode),
-		.dbg_halt_r            (dbg_halt_r),
-		.dbg_step_r            (dbg_step_r),
-		.dbg_ebreakm_r         (dbg_ebreakm_r),
+		// .dbg_halt_r            (dbg_halt_r),
+		// .dbg_step_r            (dbg_step_r),
+		// .dbg_ebreakm_r         (dbg_ebreakm_r),
 
 
 		.oitf_empty            (oitf_empty),
-		.u_mode                (u_mode),
-		.s_mode                (s_mode),
-		.h_mode                (h_mode),
-		.m_mode                (m_mode),
+		// .u_mode                (u_mode),
+		// .s_mode                (s_mode),
+		// .h_mode                (h_mode),
+		// .m_mode                (m_mode),
 
 		.cmt_badaddr           (cmt_badaddr    ), 
 		.cmt_badaddr_ena       (cmt_badaddr_ena),
@@ -889,12 +911,12 @@ module e203_exu(
 		.dscratch_r      (dscratch_r     ),
 																		
 		// .dbg_mode       (dbg_mode       ),
-		.dbg_stopcycle  (dbg_stopcycle),
+		// .dbg_stopcycle  (dbg_stopcycle),
 
-		.u_mode        (u_mode),
-		.s_mode        (s_mode),
-		.h_mode        (h_mode),
-		.m_mode        (m_mode),
+		// .u_mode        (u_mode),
+		// .s_mode        (s_mode),
+		// .h_mode        (h_mode),
+		// .m_mode        (m_mode),
 
 		.core_mhartid  (core_mhartid),
 

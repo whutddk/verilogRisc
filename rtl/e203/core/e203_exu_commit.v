@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-05-24 21:39:36
+// Last Modified by:   29505
+// Last Modified time: 2019-05-25 09:53:24
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_exu_commit.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 // Company:   
 // Engineer: Ruige_Lee
@@ -6,7 +28,7 @@
 // Last Modified time: 2019-05-07 11:13:43
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
-// Design Name:   
+// Design Name: e203_exu_commit.v  
 // Module Name: e203_exu_commit
 // Project Name:   
 // Target Devices:   
@@ -66,7 +88,7 @@ module e203_exu_commit(
 	input   wfi_halt_ifu_ack,
 	input   wfi_halt_exu_ack,
 
-	input  dbg_irq_r,
+	// input  dbg_irq_r,
 	input  [`E203_LIRQ_NUM-1:0] lcl_irq_r,
 	input  ext_irq_r,
 	input  sft_irq_r,
@@ -125,18 +147,18 @@ module e203_exu_commit(
 	input [`E203_PC_SIZE-1:0]  csr_dpc_r,
 	input [`E203_XLEN-1:0]     csr_mtvec_r,
 
-	input   dbg_mode,
-	input   dbg_halt_r,
-	input   dbg_step_r,
-	input   dbg_ebreakm_r,
+	// input   dbg_mode,
+	// input   dbg_halt_r,
+	// input   dbg_step_r,
+	// input   dbg_ebreakm_r,
 
 
 	input   oitf_empty,
 	
-	input   u_mode,
-	input   s_mode,
-	input   h_mode,
-	input   m_mode,
+	// input   u_mode,
+	// input   s_mode,
+	// input   h_mode,
+	// input   m_mode,
 
 	output                     longp_excp_i_ready,
 	input                      longp_excp_i_valid,
@@ -283,7 +305,7 @@ module e203_exu_commit(
 
 		.csr_mtvec_r           (csr_mtvec_r       ),
 
-		.dbg_irq_r             (dbg_irq_r),
+		// .dbg_irq_r             (dbg_irq_r),
 		.lcl_irq_r             (lcl_irq_r),
 		.ext_irq_r             (ext_irq_r),
 		.sft_irq_r             (sft_irq_r),
@@ -295,16 +317,16 @@ module e203_exu_commit(
 		.meie_r                (meie_r      ),
 
 
-		.dbg_mode              (dbg_mode),
-		.dbg_halt_r            (dbg_halt_r),
-		.dbg_step_r            (dbg_step_r),
-		.dbg_ebreakm_r         (dbg_ebreakm_r),
+		// .dbg_mode              (dbg_mode),
+		// .dbg_halt_r            (dbg_halt_r),
+		// .dbg_step_r            (dbg_step_r),
+		// .dbg_ebreakm_r         (dbg_ebreakm_r),
 		.oitf_empty            (oitf_empty),
 
-		.u_mode                (u_mode),
-		.s_mode                (s_mode),
-		.h_mode                (h_mode),
-		.m_mode                (m_mode),
+		// .u_mode                (u_mode),
+		// .s_mode                (s_mode),
+		// .h_mode                (h_mode),
+		// .m_mode                (m_mode),
 
 		.excpirq_flush_ack        (excpirq_flush_ack       ),
 		.excpirq_flush_req        (excpirq_flush_req       ),

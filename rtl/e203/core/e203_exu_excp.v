@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-05-24 21:39:36
+// Last Modified by:   29505
+// Last Modified time: 2019-05-25 09:58:09
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_exu_excp.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 // Company:   
 // Engineer: Ruige_Lee
@@ -6,7 +28,7 @@
 // Last Modified time: 2019-05-07 11:14:06
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
-// Design Name:   
+// Design Name: e203_exu_excp.v  
 // Module Name: e203_exu_excp
 // Project Name:   
 // Target Devices:   
@@ -112,7 +134,7 @@ module e203_exu_excp(
 	output  cmt_dcause_ena,
 
 
-	input   dbg_irq_r,
+	// input   dbg_irq_r,
 	input   [`E203_LIRQ_NUM-1:0] lcl_irq_r,
 	input   ext_irq_r,
 	input   sft_irq_r,
@@ -123,18 +145,18 @@ module e203_exu_excp(
 	input   msie_r,
 	input   meie_r,
 
-	input   dbg_mode,
-	input   dbg_halt_r,
-	input   dbg_step_r,
-	input   dbg_ebreakm_r,
+	// input   dbg_mode=1'b0,
+	// input   dbg_halt_r=1'b0,
+	// input   dbg_step_r=1'b0,
+	// input   dbg_ebreakm_r=1'b0,
 
 
 	input   oitf_empty,
 
-	input   u_mode,
-	input   s_mode,
-	input   h_mode,
-	input   m_mode,
+	// input   u_mode,
+	// input   s_mode,
+	// input   h_mode,
+	// input   m_mode,
 
 	output  excp_active,
 
@@ -496,10 +518,10 @@ module e203_exu_excp(
 		: (longp_excp_flush_req_ld_buserr | alu_excp_flush_req_ld_buserr) ? 5'd5 //load access fault
 		: alu_excp_flush_req_stamo_misalgn ? 5'd6 //Store/AMO address misalign
 		: (longp_excp_flush_req_st_buserr | alu_excp_flush_req_stamo_buserr) ? 5'd7 //Store/AMO access fault
-		: (alu_excp_flush_req_ecall & u_mode) ? 5'd8 //Environment call from U-mode
-		: (alu_excp_flush_req_ecall & s_mode) ? 5'd9 //Environment call from S-mode
-		: (alu_excp_flush_req_ecall & h_mode) ? 5'd10 //Environment call from H-mode
-		: (alu_excp_flush_req_ecall & m_mode) ? 5'd11 //Environment call from M-mode
+		// : (alu_excp_flush_req_ecall & u_mode) ? 5'd8 //Environment call from U-mode
+		// : (alu_excp_flush_req_ecall & s_mode) ? 5'd9 //Environment call from S-mode
+		// : (alu_excp_flush_req_ecall & h_mode) ? 5'd10 //Environment call from H-mode
+		: (alu_excp_flush_req_ecall & 1;b1) ? 5'd11 //Environment call from M-mode
 		: longp_excp_flush_req_insterr ? 5'd16// This only happened for the EAI long instructions actually  
 		: 5'h1F;//Otherwise a reserved value
 

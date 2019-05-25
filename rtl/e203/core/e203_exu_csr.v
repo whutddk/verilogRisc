@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-05-24 21:39:36
 // Last Modified by:   29505
-// Last Modified time: 2019-05-25 09:22:54
+// Last Modified time: 2019-05-25 09:54:49
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_exu_csr.v  
 // Module Name:  
@@ -112,13 +112,13 @@ module e203_exu_csr(
 
 	output [`E203_XLEN-1:0] wr_csr_nxt    ,
 
-	input  dbg_mode,
-	input  dbg_stopcycle,
+	// input  dbg_mode = 1'b0,
+	// input  dbg_stopcycle = 1'b0,
 
-	output u_mode,
-	output s_mode,
-	output h_mode,
-	output m_mode,
+	// output u_mode,
+	// output s_mode,
+	// output h_mode,
+	// output m_mode,
 
 	input [`E203_ADDR_SIZE-1:0] cmt_badaddr,
 	input cmt_badaddr_ena,
@@ -150,11 +150,16 @@ assign csr_access_ilgl = 1'b0
 wire wbck_csr_wen = csr_wr_en & csr_ena;
 wire read_csr_ena = csr_rd_en & csr_ena;
 
-wire [1:0] priv_mode = u_mode ? 2'b00 : 
-										s_mode ? 2'b01 :
-										h_mode ? 2'b10 : 
-										m_mode ? 2'b11 : 
-										2'b11;
+// wire [1:0] priv_mode = u_mode ? 2'b00 : 
+// 										s_mode ? 2'b01 :
+// 										h_mode ? 2'b10 : 
+// 										m_mode ? 2'b11 : 
+// 										2'b11;
+
+// wire [1:0] priv_mode = 2'b11;
+
+
+
 
 //0x000 URW ustatus User status register.
 //    * Since we support the user-level interrupt, hence we need to support UIE
@@ -660,27 +665,20 @@ assign wr_csr_nxt     = wbck_csr_dat;
 
 
 wire [`E203_XLEN-1:0] csr_dcsr     = dcsr_r    ;
-`ifdef E203_PC_SIZE_IS_16
-wire [`E203_XLEN-1:0] csr_dpc      = {{`E203_XLEN-`E203_PC_SIZE{1'b0}},dpc_r};
-`endif
-`ifdef E203_PC_SIZE_IS_24
-wire [`E203_XLEN-1:0] csr_dpc      = {{`E203_XLEN-`E203_PC_SIZE{1'b0}},dpc_r};
-`endif
-`ifdef E203_PC_SIZE_IS_32
 wire [`E203_XLEN-1:0] csr_dpc      = dpc_r     ;
-`endif
+
 wire [`E203_XLEN-1:0] csr_dscratch = dscratch_r;
 
 assign csr_dpc_r = dpc_r;
 
 /////////////////////////////////////////////////////////////////////
 //  Generate the Read path
-	//Currently we only support the M mode to simplify the implementation and 
-	//      reduce the gatecount because we are a privite core
-assign u_mode = 1'b0;
-assign s_mode = 1'b0;
-assign h_mode = 1'b0;
-assign m_mode = 1'b1;
+//Currently we only support the M mode to simplify the implementation and 
+//      reduce the gatecount because we are a privite core
+// assign u_mode = 1'b0;
+// assign s_mode = 1'b0;
+// assign h_mode = 1'b0;
+// assign m_mode = 1'b1;
 assign read_csr_dat = `E203_XLEN'b0 
 							 //| ({`E203_XLEN{rd_ustatus  }} & csr_ustatus  )
 							 | ({`E203_XLEN{rd_mstatus  }} & csr_mstatus  )
