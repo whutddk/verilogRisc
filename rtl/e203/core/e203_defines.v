@@ -2,11 +2,11 @@
 // Company:   
 // Engineer: Ruige_Lee
 // Create Date: 2019-04-15 20:39:35
-// Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-05-07 12:04:27
+// Last Modified by:   29505
+// Last Modified time: 2019-05-25 09:23:16
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
-// Design Name:   
+// Design Name: e203_defines.v  
 // Module Name: e203_defines
 // Project Name:   
 // Target Devices:   
