@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-05-24 21:39:36
 // Last Modified by:   29505
-// Last Modified time: 2019-05-25 09:50:56
+// Last Modified time: 2019-05-25 17:11:11
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_exu.v  
 // Module Name:  
@@ -336,8 +336,8 @@ module e203_exu(
 	wire [`E203_RFIDX_WIDTH-1:0] disp_alu_rdidx;
 	wire disp_alu_rdwen;
 	wire disp_alu_ilegl;
-	wire disp_alu_misalgn;
-	wire disp_alu_buserr;
+	// wire disp_alu_misalgn;
+	// wire disp_alu_buserr;
 
 	wire [`E203_ITAG_WIDTH-1:0] disp_oitf_ptr;
 	wire disp_oitf_ready;
@@ -391,8 +391,8 @@ module e203_exu(
 		.disp_i_rs2          (rf_rs2          ),
 		.disp_i_imm          (dec_imm        ),
 		.disp_i_pc           (dec_pc         ),
-		.disp_i_misalgn      (1'b0),
-		.disp_i_buserr       (1'b0),
+		// .disp_i_misalgn      (1'b0),
+		// .disp_i_buserr       (1'b0),
 		.disp_i_ilegl        (dec_ilegl      ),
 
 
@@ -407,8 +407,8 @@ module e203_exu(
 		.disp_o_alu_info     (disp_alu_info    ),
 		.disp_o_alu_pc       (disp_alu_pc      ),
 		.disp_o_alu_imm      (disp_alu_imm     ),
-		.disp_o_alu_misalgn  (disp_alu_misalgn    ),
-		.disp_o_alu_buserr   (disp_alu_buserr     ),
+// .disp_o_alu_misalgn  (disp_alu_misalgn    ),
+// .disp_o_alu_buserr   (disp_alu_buserr     ),
 		.disp_o_alu_ilegl    (disp_alu_ilegl      ),
 
 		.disp_oitf_ena       (disp_oitf_ena    ),
@@ -560,8 +560,8 @@ module e203_exu(
 		.i_pc_vld            (i_pc_vld),
 		.i_instr             (i_ir    ),
 		.i_imm               (disp_alu_imm     ),
-		.i_misalgn           (disp_alu_misalgn    ),
-		.i_buserr            (disp_alu_buserr     ),
+		.i_misalgn           (1'b0),
+		.i_buserr            (1'b0),
 		.i_ilegl             (disp_alu_ilegl      ),
 
 		.flush_pulse         (flush_pulse    ),
@@ -627,7 +627,7 @@ module e203_exu(
 		.agu_icb_rsp_excl_ok (agu_icb_rsp_excl_ok),
 		.agu_icb_rsp_rdata   (agu_icb_rsp_rdata),
 
-		.mdv_nob2b         (mdv_nob2b),
+		.mdv_nob2b			(mdv_nob2b),
 
 		.clk                 (clk          ),
 		.rst_n               (rst_n        ) 

@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-05-24 21:39:36
 // Last Modified by:   29505
-// Last Modified time: 2019-05-25 09:45:06
+// Last Modified time: 2019-05-25 16:59:36
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_cpu.v  
 // Module Name:  
@@ -123,7 +123,7 @@ module e203_cpu #(
 	output  [3-1:0] cmt_dcause,
 	output  cmt_dcause_ena,
 
-	output  dbg_irq_r,
+	// output  dbg_irq_r,
 
 	// The interface with CSR control 
 	output  wr_dcsr_ena    ,
