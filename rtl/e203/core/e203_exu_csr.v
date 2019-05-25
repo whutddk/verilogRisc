@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-05-24 21:39:36
 // Last Modified by:   29505
-// Last Modified time: 2019-05-25 09:54:49
+// Last Modified time: 2019-05-25 10:54:59
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_exu_csr.v  
 // Module Name:  
@@ -436,7 +436,7 @@ wire [`E203_XLEN-1:0] minstreth_r;
 wire cy_stop;
 wire ir_stop;
 
-wire stop_cycle_in_dbg = dbg_stopcycle & dbg_mode;
+wire stop_cycle_in_dbg = 1'b0;
 wire mcycle_ena    = mcycle_wr_ena    | 
 										 ((~cy_stop) & (~stop_cycle_in_dbg) & (1'b1));
 wire mcycleh_ena   = mcycleh_wr_ena   | 
@@ -651,14 +651,14 @@ wire sel_dcsr     = (csr_idx == 12'h7b0);
 wire sel_dpc      = (csr_idx == 12'h7b1);
 wire sel_dscratch = (csr_idx == 12'h7b2);
 
-wire rd_dcsr     = dbg_mode & csr_rd_en & sel_dcsr    ;
-wire rd_dpc      = dbg_mode & csr_rd_en & sel_dpc     ;
-wire rd_dscratch = dbg_mode & csr_rd_en & sel_dscratch;
+wire rd_dcsr     = 1'b0;
+wire rd_dpc      = 1'b0;
+wire rd_dscratch = 1'b0;
 
 
-assign wr_dcsr_ena     = dbg_mode & csr_wr_en & sel_dcsr    ;
-assign wr_dpc_ena      = dbg_mode & csr_wr_en & sel_dpc     ;
-assign wr_dscratch_ena = dbg_mode & csr_wr_en & sel_dscratch;
+assign wr_dcsr_ena     = 1'b0;
+assign wr_dpc_ena      = 1'b0;
+assign wr_dscratch_ena = 1'b0;
 
 
 assign wr_csr_nxt     = wbck_csr_dat;
