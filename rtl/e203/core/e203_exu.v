@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-05-24 21:39:36
 // Last Modified by:   29505
-// Last Modified time: 2019-05-26 11:28:43
+// Last Modified time: 2019-05-26 11:44:31
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_exu.v  
 // Module Name:  
@@ -395,7 +395,7 @@ module e203_exu(
 	wire [`E203_RFIDX_WIDTH-1:0] oitf_ret_rdidx;
 	wire [`E203_PC_SIZE-1:0] oitf_ret_pc;
 	wire oitf_ret_rdwen;
-	wire oitf_ret_rdfpu;
+	// wire oitf_ret_rdfpu;
 
 
 	e203_exu_oitf u_e203_exu_oitf(
@@ -408,7 +408,7 @@ module e203_exu(
 		.ret_ptr              (oitf_ret_ptr  ),
 		.ret_rdidx            (oitf_ret_rdidx),
 		.ret_rdwen            (oitf_ret_rdwen),
-		.ret_rdfpu            (oitf_ret_rdfpu),
+		// .ret_rdfpu            (oitf_ret_rdfpu),
 		.ret_pc               (oitf_ret_pc),
 
 		.disp_i_rs1en         (dec_rs1en),
@@ -419,10 +419,10 @@ module e203_exu(
 		.disp_i_rs2idx        (i_rs2idx),
 		.disp_i_rs3idx        (`E203_RFIDX_WIDTH'b0),
 		.disp_i_rdidx         (dec_rdidx ),
-		.disp_i_rs1fpu        (1'b0),
-		.disp_i_rs2fpu        (1'b0),
-		.disp_i_rs3fpu        (1'b0),
-		.disp_i_rdfpu         (1'b0),
+// .disp_i_rs1fpu        (1'b0),
+// .disp_i_rs2fpu        (1'b0),
+// .disp_i_rs3fpu        (1'b0),
+// .disp_i_rdfpu         (1'b0),
 		.disp_i_pc            (dec_pc ),
 
 		.oitfrd_match_disprs1 (oitfrd_match_disprs1),
@@ -630,7 +630,7 @@ module e203_exu(
 
 		.oitf_ret_rdidx      (oitf_ret_rdidx),
 		.oitf_ret_rdwen      (oitf_ret_rdwen),
-		.oitf_ret_rdfpu      (oitf_ret_rdfpu),
+		.oitf_ret_rdfpu      (1'b0),
 		.oitf_ret_pc         (oitf_ret_pc),
 		.oitf_empty          (oitf_empty    ),
 		.oitf_ret_ptr        (oitf_ret_ptr  ),

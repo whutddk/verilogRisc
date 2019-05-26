@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-05-24 21:39:36
+// Last Modified by:   29505
+// Last Modified time: 2019-05-26 11:43:56
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_exu_oitf.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 // Company:   
 // Engineer: Ruige_Lee
@@ -6,7 +28,7 @@
 // Last Modified time: 2019-05-07 11:14:17
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
-// Design Name:   
+// Design Name: e203_exu_oitf.v  
 // Module Name: e203_exu_oitf
 // Project Name:   
 // Target Devices:   
@@ -47,6 +69,8 @@
 //  pipeline instruction's status and information
 //
 // ====================================================================
+
+
 `include "e203_defines.v"
 
 module e203_exu_oitf (
@@ -60,17 +84,17 @@ module e203_exu_oitf (
 
 	output [`E203_RFIDX_WIDTH-1:0] ret_rdidx,
 	output ret_rdwen,
-	output ret_rdfpu,
+	// output ret_rdfpu,
 	output [`E203_PC_SIZE-1:0] ret_pc,
 
 	input  disp_i_rs1en,
 	input  disp_i_rs2en,
 	input  disp_i_rs3en,
 	input  disp_i_rdwen,
-	input  disp_i_rs1fpu,
-	input  disp_i_rs2fpu,
-	input  disp_i_rs3fpu,
-	input  disp_i_rdfpu,
+// input  disp_i_rs1fpu,
+// input  disp_i_rs2fpu,
+// input  disp_i_rs3fpu,
+// input  disp_i_rdfpu,
 	input  [`E203_RFIDX_WIDTH-1:0] disp_i_rs1idx,
 	input  [`E203_RFIDX_WIDTH-1:0] disp_i_rs2idx,
 	input  [`E203_RFIDX_WIDTH-1:0] disp_i_rs3idx,
@@ -93,7 +117,7 @@ module e203_exu_oitf (
 	wire [`E203_OITF_DEPTH-1:0] vld_nxt;
 	wire [`E203_OITF_DEPTH-1:0] vld_r;
 	wire [`E203_OITF_DEPTH-1:0] rdwen_r;
-	wire [`E203_OITF_DEPTH-1:0] rdfpu_r;
+	// wire [`E203_OITF_DEPTH-1:0] rdfpu_r;
 	wire [`E203_RFIDX_WIDTH-1:0] rdidx_r[`E203_OITF_DEPTH-1:0];
 	// The PC here is to be used at wback stage to track out the
 	//  PC of exception of long-pipe instruction
@@ -148,12 +172,12 @@ module e203_exu_oitf (
 	assign ret_ptr = ret_ptr_r;
 	assign dis_ptr = alc_ptr_r;
 
- //// 
- //// // If the OITF is not full, or it is under retiring, then it is ready to accept new dispatch
- //// assign dis_ready = (~oitf_full) | ret_ena;
- // To cut down the loop between ALU write-back valid --> oitf_ret_ena --> oitf_ready ---> dispatch_ready --- > alu_i_valid
- //   we exclude the ret_ena from the ready signal
- assign dis_ready = (~oitf_full);
+
+// If the OITF is not full, or it is under retiring, then it is ready to accept new dispatch
+// assign dis_ready = (~oitf_full) | ret_ena;
+// To cut down the loop between ALU write-back valid --> oitf_ret_ena --> oitf_ready ---> dispatch_ready --- > alu_i_valid
+//   we exclude the ret_ena from the ready signal
+	assign dis_ready = (~oitf_full);
 	
 	wire [`E203_OITF_DEPTH-1:0] rd_match_rs1idx;
 	wire [`E203_OITF_DEPTH-1:0] rd_match_rs2idx;
@@ -174,12 +198,12 @@ module e203_exu_oitf (
 				sirv_gnrl_dffl #(`E203_RFIDX_WIDTH) rdidx_dfflrs(vld_set[i], disp_i_rdidx, rdidx_r[i], clk);
 				sirv_gnrl_dffl #(`E203_PC_SIZE    ) pc_dfflrs   (vld_set[i], disp_i_pc   , pc_r[i]   , clk);
 				sirv_gnrl_dffl #(1)                 rdwen_dfflrs(vld_set[i], disp_i_rdwen, rdwen_r[i], clk);
-				sirv_gnrl_dffl #(1)                 rdfpu_dfflrs(vld_set[i], disp_i_rdfpu, rdfpu_r[i], clk);
+				// sirv_gnrl_dffl #(1)                 rdfpu_dfflrs(vld_set[i], 1'b0, rdfpu_r[i], clk);
 
-				assign rd_match_rs1idx[i] = vld_r[i] & rdwen_r[i] & disp_i_rs1en & (rdfpu_r[i] == disp_i_rs1fpu) & (rdidx_r[i] == disp_i_rs1idx);
-				assign rd_match_rs2idx[i] = vld_r[i] & rdwen_r[i] & disp_i_rs2en & (rdfpu_r[i] == disp_i_rs2fpu) & (rdidx_r[i] == disp_i_rs2idx);
-				assign rd_match_rs3idx[i] = vld_r[i] & rdwen_r[i] & disp_i_rs3en & (rdfpu_r[i] == disp_i_rs3fpu) & (rdidx_r[i] == disp_i_rs3idx);
-				assign rd_match_rdidx [i] = vld_r[i] & rdwen_r[i] & disp_i_rdwen & (rdfpu_r[i] == disp_i_rdfpu ) & (rdidx_r[i] == disp_i_rdidx );
+				assign rd_match_rs1idx[i] = vld_r[i] & rdwen_r[i] & disp_i_rs1en & (rdidx_r[i] == disp_i_rs1idx);
+				assign rd_match_rs2idx[i] = vld_r[i] & rdwen_r[i] & disp_i_rs2en & (rdidx_r[i] == disp_i_rs2idx);
+				assign rd_match_rs3idx[i] = vld_r[i] & rdwen_r[i] & disp_i_rs3en & (rdidx_r[i] == disp_i_rs3idx);
+				assign rd_match_rdidx [i] = vld_r[i] & rdwen_r[i] & disp_i_rdwen & (rdidx_r[i] == disp_i_rdidx );
 	
 			end//}
 	endgenerate//}
@@ -192,7 +216,7 @@ module e203_exu_oitf (
 	assign ret_rdidx = rdidx_r[ret_ptr];
 	assign ret_pc    = pc_r [ret_ptr];
 	assign ret_rdwen = rdwen_r[ret_ptr];
-	assign ret_rdfpu = rdfpu_r[ret_ptr];
+	// assign ret_rdfpu = rdfpu_r[ret_ptr];
 
 endmodule
 
