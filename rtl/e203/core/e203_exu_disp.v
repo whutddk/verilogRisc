@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-05-24 21:39:36
 // Last Modified by:   29505
-// Last Modified time: 2019-05-26 11:24:17
+// Last Modified time: 2019-05-26 11:35:49
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_exu_disp.v  
 // Module Name:  
@@ -77,7 +77,7 @@ module e203_exu_disp(
 
 		input  oitf_empty,
 		input  amo_wait,
-		//////////////////////////////////////////////////////////////
+
 		// The operands and decode info from dispatch
 		input  disp_i_valid, // Handshake valid
 		output disp_i_ready, // Handshake ready 
@@ -85,68 +85,29 @@ module e203_exu_disp(
 		// The operand 1/2 read-enable signals and indexes
 		input  disp_i_rs1x0,
 		input  disp_i_rs2x0,
-// input  disp_i_rs1en,
-// input  disp_i_rs2en,
-// input  [`E203_RFIDX_WIDTH-1:0] disp_i_rs1idx,
-// input  [`E203_RFIDX_WIDTH-1:0] disp_i_rs2idx,
 		input  [`E203_XLEN-1:0] disp_i_rs1,
 		input  [`E203_XLEN-1:0] disp_i_rs2,
-// input  disp_i_rdwen,
-//input  [`E203_RFIDX_WIDTH-1:0] disp_i_rdidx,
 		input  [`E203_DECINFO_WIDTH-1:0]  disp_i_info,  
-//input  [`E203_XLEN-1:0] disp_i_imm,
-//input  [`E203_PC_SIZE-1:0] disp_i_pc,
-		// input  disp_i_misalgn,
-		// input  disp_i_buserr ,
-// input  disp_i_ilegl  ,
 
-
-		//////////////////////////////////////////////////////////////
 		// Dispatch to ALU
 		output disp_o_alu_valid, 
 		input  disp_o_alu_ready,
-
 		input  disp_o_alu_longpipe,
-
 		output [`E203_XLEN-1:0] disp_o_alu_rs1,
 		output [`E203_XLEN-1:0] disp_o_alu_rs2,
-		// output disp_o_alu_rdwen,
-// output [`E203_RFIDX_WIDTH-1:0] disp_o_alu_rdidx,
 		output [`E203_DECINFO_WIDTH-1:0]  disp_o_alu_info,  
-// output [`E203_XLEN-1:0] disp_o_alu_imm,
 		output [`E203_PC_SIZE-1:0] disp_o_alu_pc,
-// output [`E203_ITAG_WIDTH-1:0] disp_o_alu_itag,
-		// output disp_o_alu_misalgn,
-		// output disp_o_alu_buserr ,
-// output disp_o_alu_ilegl  ,
 
-		//////////////////////////////////////////////////////////////
+
 		// Dispatch to OITF
 		input oitfrd_match_disprs1,
 		input oitfrd_match_disprs2,
 		input oitfrd_match_disprs3,
 		input oitfrd_match_disprd,
-// input [`E203_ITAG_WIDTH-1:0] disp_oitf_ptr ,
+
 
 		output disp_oitf_ena,
 		input  disp_oitf_ready,
-
-		// output disp_oitf_rs1fpu,
-		// output disp_oitf_rs2fpu,
-		// output disp_oitf_rs3fpu,
-		// output disp_oitf_rdfpu ,
-
-// output disp_oitf_rs1en ,
-// output disp_oitf_rs2en ,
-// output disp_oitf_rs3en ,
-// output disp_oitf_rdwen ,
-
-// output [`E203_RFIDX_WIDTH-1:0] disp_oitf_rs1idx,
-//output [`E203_RFIDX_WIDTH-1:0] disp_oitf_rs2idx,
-//output [`E203_RFIDX_WIDTH-1:0] disp_oitf_rs3idx,
-// output [`E203_RFIDX_WIDTH-1:0] disp_oitf_rdidx ,
-
-//output [`E203_PC_SIZE-1:0] disp_oitf_pc ,
 
 		
 		input clk,
@@ -160,30 +121,18 @@ module e203_exu_disp(
 	//   to be commited via ALU interface, so every instruction need to be dispatched to ALU,
 	//   regardless it is long pipe or not, and inside ALU it will issue instructions to different
 	//   other longpipes
-	//wire disp_alu  = (disp_i_info_grp == `E203_DECINFO_GRP_ALU) 
-	//               | (disp_i_info_grp == `E203_DECINFO_GRP_BJP) 
-	//               | (disp_i_info_grp == `E203_DECINFO_GRP_CSR) 
-	//              `ifdef E203_SUPPORT_SHARE_MULDIV //{
-	//               | (disp_i_info_grp == `E203_DECINFO_GRP_MULDIV) 
-	//              `endif//E203_SUPPORT_SHARE_MULDIV}
-	//               | (disp_i_info_grp == `E203_DECINFO_GRP_AGU);
 
 	wire disp_csr = (disp_i_info_grp == `E203_DECINFO_GRP_CSR); 
 
 	wire disp_alu_longp_prdt = (disp_i_info_grp == `E203_DECINFO_GRP_AGU)  
-														 ;
-
 	wire disp_alu_longp_real = disp_o_alu_longpipe;
 
 	// Both fence and fencei need to make sure all outstanding instruction have been completed
 	wire disp_fence_fencei   = (disp_i_info_grp == `E203_DECINFO_GRP_BJP) & 
 															 ( disp_i_info [`E203_DECINFO_BJP_FENCE] | disp_i_info [`E203_DECINFO_BJP_FENCEI]);   
 
-	// Since any instruction will need to be dispatched to ALU, we dont need the gate here
-	//   wire   disp_i_ready_pos = disp_alu & disp_o_alu_ready;
-	//   assign disp_o_alu_valid = disp_alu & disp_i_valid_pos; 
 	wire disp_i_valid_pos; 
-	wire   disp_i_ready_pos = disp_o_alu_ready;
+	wire disp_i_ready_pos = disp_o_alu_ready;
 	assign disp_o_alu_valid = disp_i_valid_pos; 
 	
 	//////////////////////////////////////////////////////////////
@@ -241,7 +190,6 @@ module e203_exu_disp(
 	
 	//wire alu_waw_dep = (~disp_alu_longp_prdt) & (oitfrd_match_disprd & disp_i_rdwen); 
 	wire waw_dep = (oitfrd_match_disprd); 
-
 	wire dep = raw_dep | waw_dep;
 
 	// The WFI halt exu ack will be asserted when the OITF is empty
@@ -274,63 +222,17 @@ module e203_exu_disp(
 
 	wire [`E203_XLEN-1:0] disp_i_rs1_msked = disp_i_rs1 & {`E203_XLEN{~disp_i_rs1x0}};
 	wire [`E203_XLEN-1:0] disp_i_rs2_msked = disp_i_rs2 & {`E203_XLEN{~disp_i_rs2x0}};
-		// Since we always dispatch any instructions into ALU, so we dont need to gate ops here
-	//assign disp_o_alu_rs1   = {`E203_XLEN{disp_alu}} & disp_i_rs1_msked;
-	//assign disp_o_alu_rs2   = {`E203_XLEN{disp_alu}} & disp_i_rs2_msked;
-	//assign disp_o_alu_rdwen = disp_alu & disp_i_rdwen;
-	//assign disp_o_alu_rdidx = {`E203_RFIDX_WIDTH{disp_alu}} & disp_i_rdidx;
-	//assign disp_o_alu_info  = {`E203_DECINFO_WIDTH{disp_alu}} & disp_i_info;  
+
 	assign disp_o_alu_rs1   = disp_i_rs1_msked;
 	assign disp_o_alu_rs2   = disp_i_rs2_msked;
-	// assign disp_o_alu_rdwen = disp_i_rdwen;
-// assign disp_o_alu_rdidx = disp_i_rdidx;
+
 	assign disp_o_alu_info  = disp_i_info;  
 	
-		// Why we use precise version of disp_longp here, because
-		//   only when it is really dispatched as long pipe then allocate the OITF
+	// Why we use precise version of disp_longp here, because
+	//   only when it is really dispatched as long pipe then allocate the OITF
 	assign disp_oitf_ena = disp_o_alu_valid & disp_o_alu_ready & disp_alu_longp_real;
 
-// assign disp_o_alu_imm  = disp_i_imm;
-// assign disp_o_alu_pc   = disp_i_pc;
-// assign disp_o_alu_itag = disp_oitf_ptr;
-// assign disp_o_alu_misalgn = 1'b0;
-// assign disp_o_alu_buserr = 1'b0 ;
-// assign disp_o_alu_ilegl  = disp_i_ilegl  ;
 
-
-
-	// wire disp_i_fpu       = 1'b0;
-	// wire disp_i_fpu_rs1en = 1'b0;
-	// wire disp_i_fpu_rs2en = 1'b0;
-	// wire disp_i_fpu_rs3en = 1'b0;
-	// wire disp_i_fpu_rdwen = 1'b0;
-	// wire [`E203_RFIDX_WIDTH-1:0] disp_i_fpu_rs1idx = `E203_RFIDX_WIDTH'b0;
-	// wire [`E203_RFIDX_WIDTH-1:0] disp_i_fpu_rs2idx = `E203_RFIDX_WIDTH'b0;
-	// wire [`E203_RFIDX_WIDTH-1:0] disp_i_fpu_rs3idx = `E203_RFIDX_WIDTH'b0;
-	// wire [`E203_RFIDX_WIDTH-1:0] disp_i_fpu_rdidx  = `E203_RFIDX_WIDTH'b0;
-	// wire disp_i_fpu_rs1fpu = 1'b0;
-	// wire disp_i_fpu_rs2fpu = 1'b0;
-	// wire disp_i_fpu_rs3fpu = 1'b0;
-	// wire disp_i_fpu_rdfpu  = 1'b0;
-
-
-
-	// assign disp_oitf_rs1fpu = 1'b0;
-	// assign disp_oitf_rs2fpu = 1'b0;
-	// assign disp_oitf_rs3fpu = 1'b0;
-	// assign disp_oitf_rdfpu  = 1'b0;
-
-// assign disp_oitf_rs1en  = disp_i_rs1en;
-// assign disp_oitf_rs2en  = disp_i_rs2en;
-	// assign disp_oitf_rs3en  = 1'b0;
-	// assign disp_oitf_rdwen  = disp_i_rdwen;
-
-// assign disp_oitf_rs1idx = disp_i_rs1idx;
-//assign disp_oitf_rs2idx = disp_i_rs2idx;
-	// assign disp_oitf_rs3idx = `E203_RFIDX_WIDTH'b0;
-	// assign disp_oitf_rdidx  = disp_i_rdidx;
-
-//assign disp_oitf_pc  = disp_i_pc;
 
 endmodule                                      
 																							 

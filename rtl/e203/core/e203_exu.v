@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-05-24 21:39:36
 // Last Modified by:   29505
-// Last Modified time: 2019-05-26 11:22:15
+// Last Modified time: 2019-05-26 11:28:43
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_exu.v  
 // Module Name:  
@@ -322,39 +322,20 @@ module e203_exu(
 		.dec_imm   (dec_imm)
 	);
 
-	//////////////////////////////////////////////////////////////
+
 	// Instantiate the Dispatch
 	wire disp_alu_valid; 
 	wire disp_alu_ready; 
 	wire disp_alu_longpipe;
-	// wire [`E203_ITAG_WIDTH-1:0] disp_alu_itag;
+
 	wire [`E203_XLEN-1:0] disp_alu_rs1;
 	wire [`E203_XLEN-1:0] disp_alu_rs2;
-	// wire [`E203_XLEN-1:0] disp_alu_imm;
+
 	wire [`E203_DECINFO_WIDTH-1:0]  disp_alu_info;  
-	// wire [`E203_PC_SIZE-1:0] disp_alu_pc;
-	// wire [`E203_RFIDX_WIDTH-1:0] disp_alu_rdidx;
-	// wire disp_alu_rdwen;
-	// wire disp_alu_ilegl;
-	// wire disp_alu_misalgn;
-	// wire disp_alu_buserr;
+
 
 	wire [`E203_ITAG_WIDTH-1:0] disp_oitf_ptr;
 	wire disp_oitf_ready;
-
-	// wire disp_oitf_rs1fpu;
-	// wire disp_oitf_rs2fpu;
-	// wire disp_oitf_rs3fpu;
-	// wire disp_oitf_rdfpu;
-	// wire [`E203_RFIDX_WIDTH-1:0] disp_oitf_rs1idx;
-	// wire [`E203_RFIDX_WIDTH-1:0] disp_oitf_rs2idx;
-	// wire [`E203_RFIDX_WIDTH-1:0] disp_oitf_rs3idx;
-	// wire [`E203_RFIDX_WIDTH-1:0] disp_oitf_rdidx;
-	// wire disp_oitf_rs1en;
-	// wire disp_oitf_rs2en;
-	// wire disp_oitf_rs3en;
-	// wire disp_oitf_rdwen;
-	// wire [`E203_PC_SIZE-1:0] disp_oitf_pc;
 
 	wire oitfrd_match_disprs1;
 	wire oitfrd_match_disprs2;
@@ -380,55 +361,23 @@ module e203_exu(
 																			 
 		.disp_i_rs1x0        (dec_rs1x0       ),
 		.disp_i_rs2x0        (dec_rs2x0       ),
-// .disp_i_rs1en        (dec_rs1en       ),
-// .disp_i_rs2en        (dec_rs2en       ),
-// .disp_i_rs1idx       (i_rs1idx      ),
-//.disp_i_rs2idx       (i_rs2idx      ),
-// .disp_i_rdwen        (dec_rdwen       ),
-// .disp_i_rdidx        (dec_rdidx       ),
+
 		.disp_i_info         (dec_info        ),
 		.disp_i_rs1          (rf_rs1          ),
 		.disp_i_rs2          (rf_rs2          ),
-// .disp_i_imm          (dec_imm        ),
-// .disp_i_pc           (dec_pc         ),
-		// .disp_i_misalgn      (1'b0),
-		// .disp_i_buserr       (1'b0),
-// .disp_i_ilegl        (dec_ilegl      ),
-
 
 		.disp_o_alu_valid    (disp_alu_valid   ),
 		.disp_o_alu_ready    (disp_alu_ready   ),
 		.disp_o_alu_longpipe (disp_alu_longpipe),
-// .disp_o_alu_itag     (disp_alu_itag    ),
+
 		.disp_o_alu_rs1      (disp_alu_rs1     ),
 		.disp_o_alu_rs2      (disp_alu_rs2     ),
-// .disp_o_alu_rdwen    (disp_alu_rdwen    ),
-// .disp_o_alu_rdidx    (disp_alu_rdidx   ),
+
 		.disp_o_alu_info     (disp_alu_info    ),
-// .disp_o_alu_pc       (disp_alu_pc      ),
-// .disp_o_alu_imm      (disp_alu_imm     ),
-// .disp_o_alu_misalgn  (disp_alu_misalgn    ),
-// .disp_o_alu_buserr   (disp_alu_buserr     ),
-// .disp_o_alu_ilegl    (disp_alu_ilegl      ),
 
 		.disp_oitf_ena       (disp_oitf_ena    ),
-// .disp_oitf_ptr       (disp_oitf_ptr    ),
+
 		.disp_oitf_ready     (disp_oitf_ready  ),
-
-// .disp_oitf_rs1en     (disp_oitf_rs1en),
-// .disp_oitf_rs2en     (disp_oitf_rs2en),
-// .disp_oitf_rs3en     (disp_oitf_rs3en),
-// .disp_oitf_rdwen     (disp_oitf_rdwen ),
-// .disp_oitf_rs1idx    (disp_oitf_rs1idx),
-// .disp_oitf_rs2idx    (disp_oitf_rs2idx),
-// .disp_oitf_rs3idx    (disp_oitf_rs3idx),
-// .disp_oitf_rdidx     (disp_oitf_rdidx ),
-		// .disp_oitf_rs1fpu    (disp_oitf_rs1fpu), = 1'b0
-		// .disp_oitf_rs2fpu    (disp_oitf_rs2fpu), = 1'b0
-		// .disp_oitf_rs3fpu    (disp_oitf_rs3fpu), = 1'b0
-		// .disp_oitf_rdfpu     (disp_oitf_rdfpu), = 1'b0
-// .disp_oitf_pc        (disp_oitf_pc),
-
 	
 		.oitfrd_match_disprs1(oitfrd_match_disprs1),
 		.oitfrd_match_disprs2(oitfrd_match_disprs2),
