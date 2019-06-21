@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-05-24 21:39:36
 // Last Modified by:   29505
-// Last Modified time: 2019-05-26 11:43:56
+// Last Modified time: 2019-06-21 21:22:07
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_exu_oitf.v  
 // Module Name:  
@@ -20,30 +20,8 @@
 // Additional Comments:   
 // 
 //////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////
-// Company:   
-// Engineer: Ruige_Lee
-// Create Date: 2019-02-17 17:25:12
-// Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-05-07 11:14:17
-// Email: 295054118@whut.edu.cn
-// page: https://whutddk.github.io/
-// Design Name: e203_exu_oitf.v  
-// Module Name: e203_exu_oitf
-// Project Name:   
-// Target Devices:   
-// Tool Versions:   
-// Description:   
-// 
-// Dependencies:   
-// 
-// Revision:  
-// Revision:    -   
-// Additional Comments:  
-// 
-//
-//////////////////////////////////////////////////////////////////////////////////
- /*                                                                      
+
+/*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
 																																				 
  Licensed under the Apache License, Version 2.0 (the "License");         
