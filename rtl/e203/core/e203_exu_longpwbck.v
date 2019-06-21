@@ -1,27 +1,28 @@
+
 //////////////////////////////////////////////////////////////////////////////////
-// Company:   
-// Engineer: Ruige_Lee
-// Create Date: 2019-02-17 17:25:12
-// Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-05-07 11:14:12
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-05-24 21:39:36
+// Last Modified by:   29505
+// Last Modified time: 2019-06-21 21:56:09
 // Email: 295054118@whut.edu.cn
-// page: https://whutddk.github.io/
-// Design Name:   
-// Module Name: e203_exu_longpwbck
-// Project Name:   
-// Target Devices:   
-// Tool Versions:   
-// Description:   
+// Design Name: e203_exu_longpwbck.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
 // 
 // Dependencies:   
 // 
 // Revision:  
-// Revision:    -   
-// Additional Comments:  
+// Revision  
+// Additional Comments:   
 // 
-//
 //////////////////////////////////////////////////////////////////////////////////
- /*                                                                      
+
+
+/*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
 																																				 
  Licensed under the Apache License, Version 2.0 (the "License");         
