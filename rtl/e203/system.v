@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-01-24 08:57:00
 // Last Modified by:   29505
-// Last Modified time: 2019-06-26 20:04:58
+// Last Modified time: 2019-06-26 22:02:46
 // Email: 295054118@whut.edu.cn
 // Design Name: system.v  
 // Module Name: system
@@ -24,7 +24,7 @@
 module system
 (
   input wire CLK100MHZ,//GCLK-W19
-  // input wire CLK32768KHZ,//RTC_CLK-Y18
+  input wire CLK32768KHZ,//RTC_CLK-Y18
 
   input wire fpga_rst,//FPGA_RESET-T6
   input wire mcu_rst,//MCU_RESET-P20
@@ -1008,7 +1008,7 @@ module system
     .hfextclk(clk_16M),
     .hfxoscen(),
 
-    .lfextclk(1'b0), 
+    .lfextclk(CLK32768KHZ), 
     .lfxoscen(),
 
        // Note: this is the real SoC top AON domain slow clock
