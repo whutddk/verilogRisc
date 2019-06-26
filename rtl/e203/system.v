@@ -2,11 +2,11 @@
 // Company:   
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-25 19:07:21
-// Last Modified by:   29505
-// Last Modified time: 2019-06-25 22:22:10
+// Last Modified by:   Ruige_Lee
+// Last Modified time: 2019-06-25 20:17:24
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
-// Design Name: system.v  
+// Design Name:   
 // Module Name: system
 // Project Name:   
 // Target Devices:   
@@ -347,7 +347,7 @@ wire qspi_sck;
     .locked(mmcm_locked)
   );
 
-  assign ck_rst = 1'b1;
+  assign ck_rst = 1'b0;
 
   
 
