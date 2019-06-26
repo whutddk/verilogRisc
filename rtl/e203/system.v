@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-01-24 08:57:00
 // Last Modified by:   29505
-// Last Modified time: 2019-06-26 09:56:14
+// Last Modified time: 2019-06-26 20:04:58
 // Email: 295054118@whut.edu.cn
 // Design Name: system.v  
 // Module Name: system
@@ -24,16 +24,16 @@
 module system
 (
   input wire CLK100MHZ,//GCLK-W19
-  input wire CLK32768KHZ,//RTC_CLK-Y18
+  // input wire CLK32768KHZ,//RTC_CLK-Y18
 
   input wire fpga_rst,//FPGA_RESET-T6
   input wire mcu_rst,//MCU_RESET-P20
 
 
   // Dedicated QSPI interface
-  output wire qspi_cs,
-  output wire qspi_sck,
-  inout wire [3:0] qspi_dq,
+  // output wire qspi_cs,
+  // output wire qspi_sck,
+  // inout wire [3:0] qspi_dq,
                            
                            
                            
@@ -340,20 +340,20 @@ module system
   // SPI Interface
 
   wire [3:0] qspi_ui_dq_o, qspi_ui_dq_oe;
-  wire [3:0] qspi_ui_dq_i;
+  wire [3:0] qspi_ui_dq_i = 4'b0;
 
-  PULLUP qspi_pullup[3:0]
-  (
-    .O(qspi_dq)
-  );
+  // PULLUP qspi_pullup[3:0]
+  // (
+  //   .O(qspi_dq)
+  // );
 
-  IOBUF qspi_iobuf[3:0]
-  (
-    .IO(qspi_dq),
-    .O(qspi_ui_dq_i),
-    .I(qspi_ui_dq_o),
-    .T(~qspi_ui_dq_oe)
-  );
+  // IOBUF qspi_iobuf[3:0]
+  // (
+  //   .IO(qspi_dq),
+  //   .O(qspi_ui_dq_i),
+  //   .I(qspi_ui_dq_o),
+  //   .T(~qspi_ui_dq_oe)
+  // );
 
   //=================================================
   // IOBUF instantiation for GPIOs
@@ -1008,7 +1008,7 @@ module system
     .hfextclk(clk_16M),
     .hfxoscen(),
 
-    .lfextclk(CLK32768KHZ), 
+    .lfextclk(1'b0), 
     .lfxoscen(),
 
        // Note: this is the real SoC top AON domain slow clock
@@ -1272,7 +1272,7 @@ module system
 
   assign dut_io_pads_aon_pmu_vddpaden_i_ival = 1'b1;
 
-  assign qspi_cs = dut_io_pads_qspi_cs_0_o_oval;
+  // assign qspi_cs = dut_io_pads_qspi_cs_0_o_oval;
   assign qspi_ui_dq_o = {
     dut_io_pads_qspi_dq_3_o_oval,
     dut_io_pads_qspi_dq_2_o_oval,
@@ -1289,7 +1289,7 @@ module system
   assign dut_io_pads_qspi_dq_1_i_ival = qspi_ui_dq_i[1];
   assign dut_io_pads_qspi_dq_2_i_ival = qspi_ui_dq_i[2];
   assign dut_io_pads_qspi_dq_3_i_ival = qspi_ui_dq_i[3];
-  assign qspi_sck = dut_io_pads_qspi_sck_o_oval;
+  // assign qspi_sck = dut_io_pads_qspi_sck_o_oval;
 
 endmodule
 
