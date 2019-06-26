@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-25 19:07:21
 // Last Modified by:   29505
-// Last Modified time: 2019-06-25 23:10:53
+// Last Modified time: 2019-06-25 22:22:10
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name: system.v  
@@ -72,12 +72,12 @@ module system
   inout wire mcu_TDO,//MCU_TDO-N17
   inout wire mcu_TCK,//MCU_TCK-P15 
   inout wire mcu_TDI,//MCU_TDI-T18
-  inout wire mcu_TMS,//MCU_TMS-P17
+  inout wire mcu_TMS//MCU_TMS-P17
 
   //pmu_wakeup
 
-  output pmu_paden,  //PMU_VDDPADEN-U15
-  output pmu_padrst //PMU_VADDPARST_V15
+  // inout wire pmu_paden,  //PMU_VDDPADEN-U15
+  // inout wire pmu_padrst, //PMU_VADDPARST_V15
   // inout wire mcu_wakeup  //MCU_WAKE-N15
 );
 
