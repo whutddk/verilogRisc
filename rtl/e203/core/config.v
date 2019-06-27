@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-06-26 09:51:22
+// Last Modified by:   29505
+// Last Modified time: 2019-06-27 16:39:11
+// Email: 295054118@whut.edu.cn
+// Design Name: config.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -94,7 +116,7 @@
 
 
 `define E203_CFG_HAS_ECC
-`define E203_CFG_HAS_EAI
+// `define E203_CFG_HAS_EAI
 `define E203_CFG_SUPPORT_SHARE_MULDIV
-`define E203_CFG_SUPPORT_AMO
+// `define E203_CFG_SUPPORT_AMO
 `define E203_CFG_DTCM_ADDR_WIDTH 16

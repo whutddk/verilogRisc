@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-06-26 09:51:22
+// Last Modified by:   29505
+// Last Modified time: 2019-06-27 16:45:25
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_defines.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -134,7 +156,7 @@
    `define E203_DEBUG_HAS_JTAG 
 `endif//}
 
-`define E203_HAS_MEM_ITF
+// `define E203_HAS_MEM_ITF
 `define E203_CFG_SYSMEM_DATA_WIDTH_IS_32
 `ifdef E203_CFG_SYSMEM_DATA_WIDTH_IS_32
     `define E203_SYSMEM_DATA_WIDTH_IS_32
