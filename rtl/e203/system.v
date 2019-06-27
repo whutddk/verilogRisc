@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-01-24 08:57:00
 // Last Modified by:   29505
-// Last Modified time: 2019-06-26 22:02:46
+// Last Modified time: 2019-06-27 13:01:15
 // Email: 295054118@whut.edu.cn
 // Design Name: system.v  
 // Module Name: system
@@ -24,9 +24,9 @@
 module system
 (
   input wire CLK100MHZ,//GCLK-W19
-  input wire CLK32768KHZ,//RTC_CLK-Y18
+  // input wire CLK32768KHZ,//RTC_CLK-Y18
 
-  input wire fpga_rst,//FPGA_RESET-T6
+  // input wire fpga_rst,//FPGA_RESET-T6
   input wire mcu_rst,//MCU_RESET-P20
 
 
@@ -313,14 +313,26 @@ module system
   (
     .resetn(ck_rst),
     .clk_in1(CLK100MHZ),
-    
+    .clk_out1(clk_8388),
     .clk_out2(clk_16M), // 16 MHz, this clock we set to 16MHz 
     .locked(mmcm_locked)
   );
 
-  assign ck_rst = fpga_rst & mcu_rst;
+  assign ck_rst = mcu_rst;
 
-  
+reg [7:0] rtcCLK_cnt;
+  always @(posedge clk_8388 or negedge ck_rst) begin
+  	if (!ck_rst) begin
+  		rtcCLK_cnt <= 8'b0;
+  		
+  	end
+  	else begin
+  		rtcCLK_cnt <= rtcCLK_cnt + 8'b1;
+  	end
+  end
+
+
+
 
   reset_sys ip_reset_sys
   (
@@ -1008,7 +1020,7 @@ module system
     .hfextclk(clk_16M),
     .hfxoscen(),
 
-    .lfextclk(CLK32768KHZ), 
+    .lfextclk(rtcCLK_cnt[7]), 
     .lfxoscen(),
 
        // Note: this is the real SoC top AON domain slow clock
