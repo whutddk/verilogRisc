@@ -1,3 +1,26 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Company:   
+// Engineer: Ruige_Lee
+// Create Date: 2019-06-27 19:52:33
+// Last Modified by:   Ruige_Lee
+// Last Modified time: 2019-06-27 19:53:51
+// Email: 295054118@whut.edu.cn
+// page: https://whutddk.github.io/
+// Design Name:   
+// Module Name: e203_defines
+// Project Name:   
+// Target Devices:   
+// Tool Versions:   
+// Description:   
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision:    -   
+// Additional Comments:  
+// 
+//
+//////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////
 // Company:    
@@ -7,7 +30,7 @@
 // Last Modified time: 2019-06-27 17:21:28
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_defines.v  
-// Module Name:  
+// Module Name: e203_defines
 // Project Name:  
 // Target Devices:  
 // Tool Versions:  
@@ -214,7 +237,7 @@
     `define E203_ITCM_OUTS_NUM 1 // If no-ECC, ITCM is 1 cycle latency then only allow 1 oustanding for external agent
   `endif//}
 
-  `define E203_HAS_ITCM_EXTITF
+  // `define E203_HAS_ITCM_EXTITF
 `endif//}
 
 /////////////////////////////////////////////////////////////////////////////
