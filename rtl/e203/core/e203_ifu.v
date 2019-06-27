@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-06-26 09:51:22
+// Last Modified by:   29505
+// Last Modified time: 2019-06-27 17:35:59
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_ifu.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -57,26 +79,26 @@ module e203_ifu(
   input  [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata, 
   `endif//}
 
-  `ifdef E203_HAS_MEM_ITF //{
-  //////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////
-  // Bus Interface to System Memory, internal protocol called ICB (Internal Chip Bus)
-  //    * Bus cmd channel
-  output ifu2biu_icb_cmd_valid, // Handshake valid
-  input  ifu2biu_icb_cmd_ready, // Handshake ready
-            // Note: The data on rdata or wdata channel must be naturally
-            //       aligned, this is in line with the AXI definition
-  output [`E203_ADDR_SIZE-1:0]   ifu2biu_icb_cmd_addr, // Bus transaction start addr 
+  // `ifdef E203_HAS_MEM_ITF //{
+  // //////////////////////////////////////////////////////////////
+  // //////////////////////////////////////////////////////////////
+  // // Bus Interface to System Memory, internal protocol called ICB (Internal Chip Bus)
+  // //    * Bus cmd channel
+  // output ifu2biu_icb_cmd_valid, // Handshake valid
+  // input  ifu2biu_icb_cmd_ready, // Handshake ready
+  //           // Note: The data on rdata or wdata channel must be naturally
+  //           //       aligned, this is in line with the AXI definition
+  // output [`E203_ADDR_SIZE-1:0]   ifu2biu_icb_cmd_addr, // Bus transaction start addr 
 
-  //    * Bus RSP channel
-  input  ifu2biu_icb_rsp_valid, // Response valid 
-  output ifu2biu_icb_rsp_ready, // Response ready
-  input  ifu2biu_icb_rsp_err,   // Response error
-            // Note: the RSP rdata is inline with AXI definition
-  input  [`E203_SYSMEM_DATA_WIDTH-1:0] ifu2biu_icb_rsp_rdata, 
+  // //    * Bus RSP channel
+  // input  ifu2biu_icb_rsp_valid, // Response valid 
+  // output ifu2biu_icb_rsp_ready, // Response ready
+  // input  ifu2biu_icb_rsp_err,   // Response error
+  //           // Note: the RSP rdata is inline with AXI definition
+  // input  [`E203_SYSMEM_DATA_WIDTH-1:0] ifu2biu_icb_rsp_rdata, 
 
-  //input  ifu2biu_replay,
-  `endif//}
+  // //input  ifu2biu_replay,
+  // `endif//}
 
   //////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////
@@ -218,16 +240,16 @@ module e203_ifu(
   `endif//}
 
 
-  `ifdef E203_HAS_MEM_ITF //{
-    .ifu2biu_icb_cmd_valid(ifu2biu_icb_cmd_valid),
-    .ifu2biu_icb_cmd_ready(ifu2biu_icb_cmd_ready),
-    .ifu2biu_icb_cmd_addr (ifu2biu_icb_cmd_addr ),
-    .ifu2biu_icb_rsp_valid(ifu2biu_icb_rsp_valid),
-    .ifu2biu_icb_rsp_ready(ifu2biu_icb_rsp_ready),
-    .ifu2biu_icb_rsp_err  (ifu2biu_icb_rsp_err  ),
-    .ifu2biu_icb_rsp_rdata(ifu2biu_icb_rsp_rdata),
-    //.ifu2biu_replay (ifu2biu_replay),
-  `endif//}
+  // `ifdef E203_HAS_MEM_ITF //{
+  //   .ifu2biu_icb_cmd_valid(ifu2biu_icb_cmd_valid),
+  //   .ifu2biu_icb_cmd_ready(ifu2biu_icb_cmd_ready),
+  //   .ifu2biu_icb_cmd_addr (ifu2biu_icb_cmd_addr ),
+  //   .ifu2biu_icb_rsp_valid(ifu2biu_icb_rsp_valid),
+  //   .ifu2biu_icb_rsp_ready(ifu2biu_icb_rsp_ready),
+  //   .ifu2biu_icb_rsp_err  (ifu2biu_icb_rsp_err  ),
+  //   .ifu2biu_icb_rsp_rdata(ifu2biu_icb_rsp_rdata),
+  //   //.ifu2biu_replay (ifu2biu_replay),
+  // `endif//}
 
   `ifdef E203_HAS_ITCM //{
     .ifu2itcm_holdup (ifu2itcm_holdup),
