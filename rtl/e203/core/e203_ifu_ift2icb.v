@@ -1,25 +1,3 @@
-
-//////////////////////////////////////////////////////////////////////////////////
-// Company:    
-// Engineer: 29505
-// Create Date: 2019-06-26 09:51:22
-// Last Modified by:   29505
-// Last Modified time: 2019-06-27 17:44:23
-// Email: 295054118@whut.edu.cn
-// Design Name: e203_ifu_ift2icb.v  
-// Module Name:  
-// Project Name:  
-// Target Devices:  
-// Tool Versions:  
-// Description:  
-// 
-// Dependencies:   
-// 
-// Revision:  
-// Revision  
-// Additional Comments:   
-// 
-//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -103,26 +81,26 @@ module e203_ifu_ift2icb(
   `endif//}
 
 
-  // `ifdef E203_HAS_MEM_ITF //{
-  // //////////////////////////////////////////////////////////////
-  // //////////////////////////////////////////////////////////////
-  // // Bus Interface to System Memory, internal protocol called ICB (Internal Chip Bus)
-  // //    * Bus cmd channel
-  // output ifu2biu_icb_cmd_valid, // Handshake valid
-  // input  ifu2biu_icb_cmd_ready, // Handshake ready
-  //           // Note: The data on rdata or wdata channel must be naturally
-  //           //       aligned, this is in line with the AXI definition
-  // output [`E203_ADDR_SIZE-1:0]   ifu2biu_icb_cmd_addr, // Bus transaction start addr 
+  `ifdef E203_HAS_MEM_ITF //{
+  //////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////
+  // Bus Interface to System Memory, internal protocol called ICB (Internal Chip Bus)
+  //    * Bus cmd channel
+  output ifu2biu_icb_cmd_valid, // Handshake valid
+  input  ifu2biu_icb_cmd_ready, // Handshake ready
+            // Note: The data on rdata or wdata channel must be naturally
+            //       aligned, this is in line with the AXI definition
+  output [`E203_ADDR_SIZE-1:0]   ifu2biu_icb_cmd_addr, // Bus transaction start addr 
 
-  // //    * Bus RSP channel
-  // input  ifu2biu_icb_rsp_valid, // Response valid 
-  // output ifu2biu_icb_rsp_ready, // Response ready
-  // input  ifu2biu_icb_rsp_err,   // Response error
-  //           // Note: the RSP rdata is inline with AXI definition
-  // input  [`E203_SYSMEM_DATA_WIDTH-1:0] ifu2biu_icb_rsp_rdata, 
+  //    * Bus RSP channel
+  input  ifu2biu_icb_rsp_valid, // Response valid 
+  output ifu2biu_icb_rsp_ready, // Response ready
+  input  ifu2biu_icb_rsp_err,   // Response error
+            // Note: the RSP rdata is inline with AXI definition
+  input  [`E203_SYSMEM_DATA_WIDTH-1:0] ifu2biu_icb_rsp_rdata, 
   
-  // //input  ifu2biu_replay,
-  // `endif//}
+  //input  ifu2biu_replay,
+  `endif//}
 
 
   // The holdup indicating the target is not accessed by other agents 
@@ -308,13 +286,13 @@ module e203_ifu_ift2icb(
   wire ifu_req_pc2itcm = (ifu_req_pc[`E203_ITCM_BASE_REGION] == itcm_region_indic[`E203_ITCM_BASE_REGION]); 
   `endif//}
 
-  // `ifdef E203_HAS_MEM_ITF //{
-  // wire ifu_req_pc2mem = 1'b1
-  //           `ifdef E203_HAS_ITCM //{
-  //             & ~(ifu_req_pc2itcm)
-  //           `endif//}
-  //             ;
-  // `endif//}
+  `ifdef E203_HAS_MEM_ITF //{
+  wire ifu_req_pc2mem = 1'b1
+            `ifdef E203_HAS_ITCM //{
+              & ~(ifu_req_pc2itcm)
+            `endif//}
+              ;
+  `endif//}
 
   // The current accessing PC is crossing the lane boundry
   wire ifu_req_lane_cross = 1'b0
@@ -329,17 +307,17 @@ module e203_ifu_ift2icb(
                          `endif//}
                            )
                     `endif//}
-                    // `ifdef E203_HAS_MEM_ITF //{
-                    //      | (
-                    //         ifu_req_pc2mem   
-                    //      `ifdef E203_SYSMEM_DATA_WIDTH_IS_32 //{
-                    //         & (ifu_req_pc[1] == 1'b1)
-                    //      `endif//}
-                    //      `ifdef E203_SYSMEM_DATA_WIDTH_IS_64 //{
-                    //         & (ifu_req_pc[2:1] == 2'b11)
-                    //      `endif//}
-                    //        )
-                    // `endif//}
+                    `ifdef E203_HAS_MEM_ITF //{
+                         | (
+                            ifu_req_pc2mem   
+                         `ifdef E203_SYSMEM_DATA_WIDTH_IS_32 //{
+                            & (ifu_req_pc[1] == 1'b1)
+                         `endif//}
+                         `ifdef E203_SYSMEM_DATA_WIDTH_IS_64 //{
+                            & (ifu_req_pc[2:1] == 2'b11)
+                         `endif//}
+                           )
+                    `endif//}
                     ;
 
   // The current accessing PC is begining of the lane boundry
@@ -355,17 +333,17 @@ module e203_ifu_ift2icb(
                          `endif//}
                            )
                     `endif//}
-                    // `ifdef E203_HAS_MEM_ITF //{
-                    //      | (
-                    //         ifu_req_pc2mem   
-                    //      `ifdef E203_SYSMEM_DATA_WIDTH_IS_32 //{
-                    //         & (ifu_req_pc[1] == 1'b0)
-                    //      `endif//}
-                    //      `ifdef E203_SYSMEM_DATA_WIDTH_IS_64 //{
-                    //         & (ifu_req_pc[2:1] == 2'b00)
-                    //      `endif//}
-                    //        )
-                    // `endif//}
+                    `ifdef E203_HAS_MEM_ITF //{
+                         | (
+                            ifu_req_pc2mem   
+                         `ifdef E203_SYSMEM_DATA_WIDTH_IS_32 //{
+                            & (ifu_req_pc[1] == 1'b0)
+                         `endif//}
+                         `ifdef E203_SYSMEM_DATA_WIDTH_IS_64 //{
+                            & (ifu_req_pc[2:1] == 2'b00)
+                         `endif//}
+                           )
+                    `endif//}
                     ;
   
 
@@ -517,11 +495,11 @@ module e203_ifu_ift2icb(
   wire icb_cmd2itcm_r;
   sirv_gnrl_dfflr #(1) icb2itcm_dfflr(ifu_icb_cmd_hsked, ifu_icb_cmd2itcm, icb_cmd2itcm_r, clk, rst_n);
   `endif//}
-  // `ifdef E203_HAS_MEM_ITF //{
-  // wire ifu_icb_cmd2biu ;
-  // wire icb_cmd2biu_r;
-  // sirv_gnrl_dfflr #(1) icb2mem_dfflr (ifu_icb_cmd_hsked, ifu_icb_cmd2biu , icb_cmd2biu_r,  clk, rst_n);
-  // `endif//}
+  `ifdef E203_HAS_MEM_ITF //{
+  wire ifu_icb_cmd2biu ;
+  wire icb_cmd2biu_r;
+  sirv_gnrl_dfflr #(1) icb2mem_dfflr (ifu_icb_cmd_hsked, ifu_icb_cmd2biu , icb_cmd2biu_r,  clk, rst_n);
+  `endif//}
   wire icb_cmd_addr_2_1_ena = ifu_icb_cmd_hsked | ifu_req_hsked;
   wire [1:0] icb_cmd_addr_2_1_r;
   sirv_gnrl_dffl #(2)icb_addr_2_1_dffl(icb_cmd_addr_2_1_ena, ifu_icb_cmd_addr[2:1], icb_cmd_addr_2_1_r, clk);
@@ -545,9 +523,9 @@ module e203_ifu_ift2icb(
                      `ifdef E203_HAS_ITCM //{
                       | ({16{icb_cmd2itcm_r}} & ifu2itcm_icb_rsp_rdata[`E203_ITCM_DATA_WIDTH-1:`E203_ITCM_DATA_WIDTH-16]) 
                      `endif//}
-                     // `ifdef E203_HAS_MEM_ITF //{
-                     //  | ({16{icb_cmd2biu_r}} & ifu2biu_icb_rsp_rdata [`E203_SYSMEM_DATA_WIDTH-1:`E203_SYSMEM_DATA_WIDTH-16]) 
-                     // `endif//}
+                     `ifdef E203_HAS_MEM_ITF //{
+                      | ({16{icb_cmd2biu_r}} & ifu2biu_icb_rsp_rdata [`E203_SYSMEM_DATA_WIDTH-1:`E203_SYSMEM_DATA_WIDTH-16]) 
+                     `endif//}
                       ;
 
   wire uop1st2leftover_sel = ifu_icb_rsp2leftover;
@@ -566,9 +544,9 @@ module e203_ifu_ift2icb(
                      `ifdef E203_HAS_ITCM //{
                       | (icb_cmd2itcm_r & ifu2itcm_icb_rsp_err)
                      `endif//}
-                     // `ifdef E203_HAS_MEM_ITF //{
-                     //  | (icb_cmd2biu_r & ifu2biu_icb_rsp_err)
-                     // `endif//}
+                     `ifdef E203_HAS_MEM_ITF //{
+                      | (icb_cmd2biu_r & ifu2biu_icb_rsp_err)
+                     `endif//}
                       ;
 
   assign leftover_ena = holdup2leftover_ena 
@@ -609,9 +587,9 @@ module e203_ifu_ift2icb(
                      `ifdef E203_HAS_ITCM //{
                        | ({16{icb_cmd2itcm_r}} & ifu2itcm_icb_rsp_rdata[15:0])
                      `endif//}
-                     // `ifdef E203_HAS_MEM_ITF //{
-                     //   | ({16{icb_cmd2biu_r}}  & ifu2biu_icb_rsp_rdata[15:0])
-                     // `endif//}
+                     `ifdef E203_HAS_MEM_ITF //{
+                       | ({16{icb_cmd2biu_r}}  & ifu2biu_icb_rsp_rdata[15:0])
+                     `endif//}
                         ;
 
 
@@ -634,40 +612,40 @@ module e203_ifu_ift2icb(
      `endif//}
   `endif//}
 
-  // `ifdef E203_HAS_MEM_ITF //{
-  // wire[31:0] ifu2biu_icb_rsp_instr = 
-  //    `ifdef E203_SYSMEM_DATA_WIDTH_IS_32 //{
-  //                   ifu2biu_icb_rsp_rdata;
-  //    `else//}{
-  //       `ifdef E203_SYSMEM_DATA_WIDTH_IS_64//{
-  //                   ({32{icb_cmd_addr_2_1_r == 2'b00}} & ifu2biu_icb_rsp_rdata[31: 0]) 
-  //                   ({32{icb_cmd_addr_2_1_r == 2'b01}} & ifu2biu_icb_rsp_rdata[47:16]) 
-  //                   ({32{icb_cmd_addr_2_1_r == 2'b10}} & ifu2biu_icb_rsp_rdata[63:32])
-  //                    ;
-  //       `else//}{
-  //           !!! ERROR: There must be something wrong, we dont support the width 
-  //           other than 32bits and 64bits, leave this message to catch this error by 
-  //           compilation message.
-  //       `endif//}
-  //    `endif//}
-  // `endif//}
+  `ifdef E203_HAS_MEM_ITF //{
+  wire[31:0] ifu2biu_icb_rsp_instr = 
+     `ifdef E203_SYSMEM_DATA_WIDTH_IS_32 //{
+                    ifu2biu_icb_rsp_rdata;
+     `else//}{
+        `ifdef E203_SYSMEM_DATA_WIDTH_IS_64//{
+                    ({32{icb_cmd_addr_2_1_r == 2'b00}} & ifu2biu_icb_rsp_rdata[31: 0]) 
+                    ({32{icb_cmd_addr_2_1_r == 2'b01}} & ifu2biu_icb_rsp_rdata[47:16]) 
+                    ({32{icb_cmd_addr_2_1_r == 2'b10}} & ifu2biu_icb_rsp_rdata[63:32])
+                     ;
+        `else//}{
+            !!! ERROR: There must be something wrong, we dont support the width 
+            other than 32bits and 64bits, leave this message to catch this error by 
+            compilation message.
+        `endif//}
+     `endif//}
+  `endif//}
 
   wire [32-1:0] ifu_icb_rsp_instr = 32'b0
                      `ifdef E203_HAS_ITCM //{
                        | ({32{icb_cmd2itcm_r}} & ifu2itcm_icb_rsp_instr)
                      `endif//}
-                     // `ifdef E203_HAS_MEM_ITF //{
-                     //   | ({32{icb_cmd2biu_r}}  & ifu2biu_icb_rsp_instr)
-                     // `endif//}
+                     `ifdef E203_HAS_MEM_ITF //{
+                       | ({32{icb_cmd2biu_r}}  & ifu2biu_icb_rsp_instr)
+                     `endif//}
                         ;
 
   wire ifu_icb_rsp_err = 1'b0
                      `ifdef E203_HAS_ITCM //{
                        | (icb_cmd2itcm_r & ifu2itcm_icb_rsp_err)
                      `endif//}
-                     // `ifdef E203_HAS_MEM_ITF //{
-                     //   | (icb_cmd2biu_r  & ifu2biu_icb_rsp_err)
-                     // `endif//}
+                     `ifdef E203_HAS_MEM_ITF //{
+                       | (icb_cmd2biu_r  & ifu2biu_icb_rsp_err)
+                     `endif//}
                         ;
 
   assign i_ifu_rsp_instr = 
@@ -715,9 +693,9 @@ module e203_ifu_ift2icb(
                      `ifdef E203_HAS_ITCM //{
                        | (icb_cmd2itcm_r & ifu2itcm_icb_rsp_valid)
                      `endif//}
-                     // `ifdef E203_HAS_MEM_ITF //{
-                     //   | (icb_cmd2biu_r  & ifu2biu_icb_rsp_valid)
-                     // `endif//}
+                     `ifdef E203_HAS_MEM_ITF //{
+                       | (icb_cmd2biu_r  & ifu2biu_icb_rsp_valid)
+                     `endif//}
                         ;
  
    //  //   Explain the performance impacts
@@ -821,57 +799,57 @@ module e203_ifu_ift2icb(
   assign ifu2itcm_icb_rsp_ready = ifu_icb_rsp_ready;
   `endif//}
 
-  // `ifdef E203_HAS_MEM_ITF //{
-  // assign ifu_icb_cmd2biu = 1'b1
-  //           `ifdef E203_HAS_ITCM //{
-  //             & ~(ifu_icb_cmd2itcm)
-  //           `endif//}
-  //             ;
-  // wire ifu2biu_icb_cmd_valid_pre  = ifu_icb_cmd_valid & ifu_icb_cmd2biu;
-  // wire [`E203_ADDR_SIZE-1:0]   ifu2biu_icb_cmd_addr_pre = ifu_icb_cmd_addr[`E203_ADDR_SIZE-1:0];
+  `ifdef E203_HAS_MEM_ITF //{
+  assign ifu_icb_cmd2biu = 1'b1
+            `ifdef E203_HAS_ITCM //{
+              & ~(ifu_icb_cmd2itcm)
+            `endif//}
+              ;
+  wire ifu2biu_icb_cmd_valid_pre  = ifu_icb_cmd_valid & ifu_icb_cmd2biu;
+  wire [`E203_ADDR_SIZE-1:0]   ifu2biu_icb_cmd_addr_pre = ifu_icb_cmd_addr[`E203_ADDR_SIZE-1:0];
 
-  // assign ifu2biu_icb_rsp_ready = ifu_icb_rsp_ready;
+  assign ifu2biu_icb_rsp_ready = ifu_icb_rsp_ready;
 
-  // wire ifu2biu_icb_cmd_ready_pre;
-  // `endif//}
+  wire ifu2biu_icb_cmd_ready_pre;
+  `endif//}
 
   assign ifu_icb_cmd_ready = 1'b0
     `ifdef E203_HAS_ITCM //{
         | (ifu_icb_cmd2itcm & ifu2itcm_icb_cmd_ready) 
     `endif//}
-    // `ifdef E203_HAS_MEM_ITF //{
-    //     | (ifu_icb_cmd2biu  & ifu2biu_icb_cmd_ready_pre ) 
-    // `endif//}
+    `ifdef E203_HAS_MEM_ITF //{
+        | (ifu_icb_cmd2biu  & ifu2biu_icb_cmd_ready_pre ) 
+    `endif//}
         ;
 
-  //   `ifdef E203_HAS_MEM_ITF //{
-  // //sirv_gnrl_pipe_stage # (
-  // //      // We must not cut ready, otherwise it cannot accept ifetch back-to-back,
-  // //      //   and then when the external bus is 0 cycle response, it will trigger 
-  // //      //   the replay scheme time by time, and never end, endup with a deadlock replay
-  // //      .CUT_READY (0),
-  // //      // We must have this stage and configure DP as 1, otherwise the BIU only 
-  // //      //   have 1 DP entry stage and with CUT_READY=1, and then when the external bus 
-  // //      //   is 0 cycle response, it will trigger the replay scheme time by time,
-  // //      //   and never end, endup with a deadlock replay
-  // //      .DP  (1),
-  // //      .DW  (`E203_ADDR_SIZE)
-  // //    ) u_e203_ifu2biu_cmd_stage (
-  // //      .i_vld(ifu2biu_icb_cmd_valid_pre),
-  // //      .i_rdy(ifu2biu_icb_cmd_ready_pre),
-  // //      .i_dat(ifu2biu_icb_cmd_addr_pre),
-  // //      .o_vld(ifu2biu_icb_cmd_valid),
-  // //      .o_rdy(ifu2biu_icb_cmd_ready),  
-  // //      .o_dat(ifu2biu_icb_cmd_addr),
-  // //    
-  // //      .clk  (clk),
-  // //      .rst_n(rst_n)
-  // //    );
+    `ifdef E203_HAS_MEM_ITF //{
+  //sirv_gnrl_pipe_stage # (
+  //      // We must not cut ready, otherwise it cannot accept ifetch back-to-back,
+  //      //   and then when the external bus is 0 cycle response, it will trigger 
+  //      //   the replay scheme time by time, and never end, endup with a deadlock replay
+  //      .CUT_READY (0),
+  //      // We must have this stage and configure DP as 1, otherwise the BIU only 
+  //      //   have 1 DP entry stage and with CUT_READY=1, and then when the external bus 
+  //      //   is 0 cycle response, it will trigger the replay scheme time by time,
+  //      //   and never end, endup with a deadlock replay
+  //      .DP  (1),
+  //      .DW  (`E203_ADDR_SIZE)
+  //    ) u_e203_ifu2biu_cmd_stage (
+  //      .i_vld(ifu2biu_icb_cmd_valid_pre),
+  //      .i_rdy(ifu2biu_icb_cmd_ready_pre),
+  //      .i_dat(ifu2biu_icb_cmd_addr_pre),
+  //      .o_vld(ifu2biu_icb_cmd_valid),
+  //      .o_rdy(ifu2biu_icb_cmd_ready),  
+  //      .o_dat(ifu2biu_icb_cmd_addr),
+  //    
+  //      .clk  (clk),
+  //      .rst_n(rst_n)
+  //    );
 
-  //    assign ifu2biu_icb_cmd_addr      = ifu2biu_icb_cmd_addr_pre;
-  //    assign ifu2biu_icb_cmd_valid     = ifu2biu_icb_cmd_valid_pre;
-  //    assign ifu2biu_icb_cmd_ready_pre = ifu2biu_icb_cmd_ready;
-  //   `endif//}
+     assign ifu2biu_icb_cmd_addr      = ifu2biu_icb_cmd_addr_pre;
+     assign ifu2biu_icb_cmd_valid     = ifu2biu_icb_cmd_valid_pre;
+     assign ifu2biu_icb_cmd_ready_pre = ifu2biu_icb_cmd_ready;
+    `endif//}
 
 
 endmodule

@@ -1,25 +1,3 @@
-
-//////////////////////////////////////////////////////////////////////////////////
-// Company:    
-// Engineer: 29505
-// Create Date: 2019-06-26 09:51:22
-// Last Modified by:   29505
-// Last Modified time: 2019-06-27 17:36:25
-// Email: 295054118@whut.edu.cn
-// Design Name: e203_core.v  
-// Module Name:  
-// Project Name:  
-// Target Devices:  
-// Tool Versions:  
-// Description:  
-// 
-// Dependencies:   
-// 
-// Revision:  
-// Revision  
-// Additional Comments:   
-// 
-//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -308,17 +286,17 @@ module e203_core(
   input  rst_n
   );
 
-  //   `ifdef E203_HAS_MEM_ITF //{
-  // wire                         ifu2biu_icb_cmd_valid;
-  // wire                         ifu2biu_icb_cmd_ready;
-  // wire [`E203_ADDR_SIZE-1:0]   ifu2biu_icb_cmd_addr; 
-  // wire                         ifu2biu_icb_rsp_valid;
-  // wire                         ifu2biu_icb_rsp_ready;
-  // wire                         ifu2biu_icb_rsp_err  ;
-  // wire                         ifu2biu_icb_rsp_excl_ok;
-  // wire [`E203_XLEN-1:0]        ifu2biu_icb_rsp_rdata;
+    `ifdef E203_HAS_MEM_ITF //{
+  wire                         ifu2biu_icb_cmd_valid;
+  wire                         ifu2biu_icb_cmd_ready;
+  wire [`E203_ADDR_SIZE-1:0]   ifu2biu_icb_cmd_addr; 
+  wire                         ifu2biu_icb_rsp_valid;
+  wire                         ifu2biu_icb_rsp_ready;
+  wire                         ifu2biu_icb_rsp_err  ;
+  wire                         ifu2biu_icb_rsp_excl_ok;
+  wire [`E203_XLEN-1:0]        ifu2biu_icb_rsp_rdata;
    
-  // `endif//}
+  `endif//}
 
 
 
@@ -384,17 +362,17 @@ module e203_core(
     .ifu2itcm_icb_rsp_rdata(ifu2itcm_icb_rsp_rdata),
   `endif//}
 
-  // `ifdef E203_HAS_MEM_ITF //{
-  //   .ifu2biu_icb_cmd_valid  (ifu2biu_icb_cmd_valid),
-  //   .ifu2biu_icb_cmd_ready  (ifu2biu_icb_cmd_ready),
-  //   .ifu2biu_icb_cmd_addr   (ifu2biu_icb_cmd_addr ),
+  `ifdef E203_HAS_MEM_ITF //{
+    .ifu2biu_icb_cmd_valid  (ifu2biu_icb_cmd_valid),
+    .ifu2biu_icb_cmd_ready  (ifu2biu_icb_cmd_ready),
+    .ifu2biu_icb_cmd_addr   (ifu2biu_icb_cmd_addr ),
     
-  //   .ifu2biu_icb_rsp_valid  (ifu2biu_icb_rsp_valid),
-  //   .ifu2biu_icb_rsp_ready  (ifu2biu_icb_rsp_ready),
-  //   .ifu2biu_icb_rsp_err    (ifu2biu_icb_rsp_err  ),
-  //   .ifu2biu_icb_rsp_rdata  (ifu2biu_icb_rsp_rdata),
+    .ifu2biu_icb_rsp_valid  (ifu2biu_icb_rsp_valid),
+    .ifu2biu_icb_rsp_ready  (ifu2biu_icb_rsp_ready),
+    .ifu2biu_icb_rsp_err    (ifu2biu_icb_rsp_err  ),
+    .ifu2biu_icb_rsp_rdata  (ifu2biu_icb_rsp_rdata),
 
-  // `endif//}
+  `endif//}
 
 
     .ifu_o_valid            (ifu_o_valid         ),
@@ -731,26 +709,26 @@ module e203_core(
     .lsu2biu_icb_rsp_excl_ok(lsu2biu_icb_rsp_excl_ok),
     .lsu2biu_icb_rsp_rdata  (lsu2biu_icb_rsp_rdata),
 
-  // `ifdef E203_HAS_MEM_ITF //{
-  //   .ifu2biu_icb_cmd_valid  (ifu2biu_icb_cmd_valid),
-  //   .ifu2biu_icb_cmd_ready  (ifu2biu_icb_cmd_ready),
-  //   .ifu2biu_icb_cmd_addr   (ifu2biu_icb_cmd_addr ),
-  //   .ifu2biu_icb_cmd_read   (1'b1 ),
-  //   .ifu2biu_icb_cmd_wdata  (`E203_XLEN'b0),
-  //   .ifu2biu_icb_cmd_wmask  ({`E203_XLEN/8{1'b0}}),
-  //   .ifu2biu_icb_cmd_lock   (1'b0 ),
-  //   .ifu2biu_icb_cmd_excl   (1'b0 ),
-  //   .ifu2biu_icb_cmd_size   (2'b10),
-  //   .ifu2biu_icb_cmd_burst  (2'b0),
-  //   .ifu2biu_icb_cmd_beat   (2'b0),
+  `ifdef E203_HAS_MEM_ITF //{
+    .ifu2biu_icb_cmd_valid  (ifu2biu_icb_cmd_valid),
+    .ifu2biu_icb_cmd_ready  (ifu2biu_icb_cmd_ready),
+    .ifu2biu_icb_cmd_addr   (ifu2biu_icb_cmd_addr ),
+    .ifu2biu_icb_cmd_read   (1'b1 ),
+    .ifu2biu_icb_cmd_wdata  (`E203_XLEN'b0),
+    .ifu2biu_icb_cmd_wmask  ({`E203_XLEN/8{1'b0}}),
+    .ifu2biu_icb_cmd_lock   (1'b0 ),
+    .ifu2biu_icb_cmd_excl   (1'b0 ),
+    .ifu2biu_icb_cmd_size   (2'b10),
+    .ifu2biu_icb_cmd_burst  (2'b0),
+    .ifu2biu_icb_cmd_beat   (2'b0),
     
-  //   .ifu2biu_icb_rsp_valid  (ifu2biu_icb_rsp_valid),
-  //   .ifu2biu_icb_rsp_ready  (ifu2biu_icb_rsp_ready),
-  //   .ifu2biu_icb_rsp_err    (ifu2biu_icb_rsp_err  ),
-  //   .ifu2biu_icb_rsp_excl_ok(ifu2biu_icb_rsp_excl_ok),
-  //   .ifu2biu_icb_rsp_rdata  (ifu2biu_icb_rsp_rdata),
+    .ifu2biu_icb_rsp_valid  (ifu2biu_icb_rsp_valid),
+    .ifu2biu_icb_rsp_ready  (ifu2biu_icb_rsp_ready),
+    .ifu2biu_icb_rsp_err    (ifu2biu_icb_rsp_err  ),
+    .ifu2biu_icb_rsp_excl_ok(ifu2biu_icb_rsp_excl_ok),
+    .ifu2biu_icb_rsp_rdata  (ifu2biu_icb_rsp_rdata),
 
-  // `endif//}
+  `endif//}
 
     .ppi_region_indic      (ppi_region_indic ),
     .ppi_icb_enable        (ppi_icb_enable),
