@@ -1,3 +1,26 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Company:   
+// Engineer: Ruige_Lee
+// Create Date: 2019-06-25 19:07:21
+// Last Modified by:   Ruige_Lee
+// Last Modified time: 2019-06-27 20:08:51
+// Email: 295054118@whut.edu.cn
+// page: https://whutddk.github.io/
+// Design Name:   
+// Module Name: e203_exu_decode
+// Project Name:   
+// Target Devices:   
+// Tool Versions:   
+// Description:   
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision:    -   
+// Additional Comments:  
+// 
+//
+//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -86,7 +109,8 @@ module e203_exu_decode(
   wire opcode_1_0_10  = (opcode[1:0] == 2'b10);
   wire opcode_1_0_11  = (opcode[1:0] == 2'b11);
 
-  wire rv32 = (~(i_instr[4:2] == 3'b111)) & opcode_1_0_11;
+  // wire rv32 = (~(i_instr[4:2] == 3'b111)) & opcode_1_0_11;
+  wire rv32 = 1'b1;
 
   wire [4:0]  rv32_rd     = rv32_instr[11:7];
   wire [2:0]  rv32_func3  = rv32_instr[14:12];
