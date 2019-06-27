@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-06-27 23:19:52
 // Last Modified by:   29505
-// Last Modified time: 2019-06-27 23:21:29
+// Last Modified time: 2019-06-27 23:29:30
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_itcm_ctrl.v  
 // Module Name:  
@@ -114,74 +114,6 @@ module e203_itcm_ctrl(
   input  rst_n
   );
 
-    // LSU2ITCM converted to ICM data width
-  //    * Bus cmd channel
-  wire lsu_icb_cmd_valid;
-  wire lsu_icb_cmd_ready;
-  wire [`E203_ITCM_ADDR_WIDTH-1:0] lsu_icb_cmd_addr;
-  wire lsu_icb_cmd_read;
-  wire [`E203_ITCM_DATA_WIDTH-1:0] lsu_icb_cmd_wdata;
-  wire [`E203_ITCM_DATA_WIDTH/8-1:0] lsu_icb_cmd_wmask;
-
-  //    * Bus RSP channel
-  wire lsu_icb_rsp_valid;
-  wire lsu_icb_rsp_ready;
-  wire lsu_icb_rsp_err;
-  wire [`E203_ITCM_DATA_WIDTH-1:0] lsu_icb_rsp_rdata; 
-
-  sirv_gnrl_icb_n2w # (
-  .FIFO_OUTS_NUM   (`E203_ITCM_OUTS_NUM),
-  .FIFO_CUT_READY  (0),
-  .USR_W      (1),
-  .AW         (`E203_ITCM_ADDR_WIDTH),
-  .X_W        (32),
-  .Y_W        (`E203_ITCM_DATA_WIDTH) 
-  ) u_itcm_icb_lsu2itcm_n2w(
-  .i_icb_cmd_valid        (lsu2itcm_icb_cmd_valid ),  
-  .i_icb_cmd_ready        (lsu2itcm_icb_cmd_ready ),
-  .i_icb_cmd_read         (lsu2itcm_icb_cmd_read ) ,
-  .i_icb_cmd_addr         (lsu2itcm_icb_cmd_addr ) ,
-  .i_icb_cmd_wdata        (lsu2itcm_icb_cmd_wdata ),
-  .i_icb_cmd_wmask        (lsu2itcm_icb_cmd_wmask) ,
-  .i_icb_cmd_burst        (2'b0)                   ,
-  .i_icb_cmd_beat         (2'b0)                   ,
-  .i_icb_cmd_lock         (1'b0),
-  .i_icb_cmd_excl         (1'b0),
-  .i_icb_cmd_size         (2'b0),
-  .i_icb_cmd_usr          (1'b0),
-   
-  .i_icb_rsp_valid        (lsu2itcm_icb_rsp_valid ),
-  .i_icb_rsp_ready        (lsu2itcm_icb_rsp_ready ),
-  .i_icb_rsp_err          (lsu2itcm_icb_rsp_err)   ,
-  .i_icb_rsp_excl_ok      ()   ,
-  .i_icb_rsp_rdata        (lsu2itcm_icb_rsp_rdata ),
-  .i_icb_rsp_usr          (),
-                                                
-  .o_icb_cmd_valid        (lsu_icb_cmd_valid ),  
-  .o_icb_cmd_ready        (lsu_icb_cmd_ready ),
-  .o_icb_cmd_read         (lsu_icb_cmd_read ) ,
-  .o_icb_cmd_addr         (lsu_icb_cmd_addr ) ,
-  .o_icb_cmd_wdata        (lsu_icb_cmd_wdata ),
-  .o_icb_cmd_wmask        (lsu_icb_cmd_wmask) ,
-  .o_icb_cmd_burst        ()                   ,
-  .o_icb_cmd_beat         ()                   ,
-  .o_icb_cmd_lock         (),
-  .o_icb_cmd_excl         (),
-  .o_icb_cmd_size         (),
-  .o_icb_cmd_usr          (),
-   
-  .o_icb_rsp_valid        (lsu_icb_rsp_valid ),
-  .o_icb_rsp_ready        (lsu_icb_rsp_ready ),
-  .o_icb_rsp_err          (lsu_icb_rsp_err)   ,
-  .o_icb_rsp_excl_ok      (1'b0)   ,
-  .o_icb_rsp_rdata        (lsu_icb_rsp_rdata ),
-  .o_icb_rsp_usr          (1'b0),
-
-  .clk                    (clk   )                  ,
-  .rst_n                  (rst_n )                 
-  );
-
-  
 
   wire arbt_icb_cmd_valid;
   wire arbt_icb_cmd_ready;
@@ -215,40 +147,40 @@ module e203_itcm_ctrl(
   assign arbt_bus_icb_cmd_valid =
       // LSU take higher priority
                            {
-                             lsu_icb_cmd_valid
+                             lsu2itcm_icb_cmd_valid
                            } ;
   assign arbt_bus_icb_cmd_addr =
                            {
-                             lsu_icb_cmd_addr
+                             lsu2itcm_icb_cmd_addr
                            } ;
   assign arbt_bus_icb_cmd_read =
                            {
-                             lsu_icb_cmd_read
+                             lsu2itcm_icb_cmd_read
                            } ;
   assign arbt_bus_icb_cmd_wdata =
                            {
-                             lsu_icb_cmd_wdata
+                             lsu2itcm_icb_cmd_wdata
                            } ;
   assign arbt_bus_icb_cmd_wmask =
                            {
-                             lsu_icb_cmd_wmask
+                             lsu2itcm_icb_cmd_wmask
                            } ;
   assign                   {
-                             lsu_icb_cmd_ready
+                             lsu2itcm_icb_cmd_ready
                            } = arbt_bus_icb_cmd_ready;
 
 
   assign                   {
-                             lsu_icb_rsp_valid
+                             lsu2itcm_icb_rsp_valid
                            } = arbt_bus_icb_rsp_valid;
   assign                   {
-                             lsu_icb_rsp_err
+                             lsu2itcm_icb_rsp_err
                            } = arbt_bus_icb_rsp_err;
   assign                   {
-                             lsu_icb_rsp_rdata
+                             lsu2itcm_icb_rsp_rdata
                            } = arbt_bus_icb_rsp_rdata;
   assign arbt_bus_icb_rsp_ready = {
-                             lsu_icb_rsp_ready
+                             lsu2itcm_icb_rsp_ready
                            };
 
   sirv_gnrl_icb_arbt # (
