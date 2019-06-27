@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-06-26 09:51:22
+// Last Modified by:   29505
+// Last Modified time: 2019-06-27 16:53:01
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_subsys_top.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -867,7 +889,7 @@ module e203_subsys_top(
     .sysfio_icb_rsp_rdata     (sysfio_icb_rsp_rdata),
 
 
-
+`ifdef E203_HAS_MEM_ITF //{
     .sysmem_icb_cmd_valid  (sysmem_icb_cmd_valid),
     .sysmem_icb_cmd_ready  (sysmem_icb_cmd_ready),
     .sysmem_icb_cmd_addr   (sysmem_icb_cmd_addr ),
@@ -879,6 +901,7 @@ module e203_subsys_top(
     .sysmem_icb_rsp_ready  (sysmem_icb_rsp_ready),
     .sysmem_icb_rsp_err    (sysmem_icb_rsp_err  ),
     .sysmem_icb_rsp_rdata  (sysmem_icb_rsp_rdata),
+`endif
 
     .test_mode     (test_mode), 
     .hfclk           (hfclk   ),
