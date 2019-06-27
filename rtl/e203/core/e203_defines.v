@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-27 19:52:33
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-27 19:53:51
+// Last Modified time: 2019-06-27 20:33:34
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -222,14 +222,22 @@
   `define E203_ITCM_RAM_AW          (`E203_CFG_ITCM_ADDR_WIDTH-3) 
   `define E203_ITCM_BASE_REGION  `E203_ADDR_SIZE-1:`E203_ITCM_ADDR_WIDTH
   
-  `define E203_CFG_ITCM_DATA_WIDTH_IS_64
+  // `define E203_CFG_ITCM_DATA_WIDTH_IS_64
   `ifdef E203_CFG_ITCM_DATA_WIDTH_IS_64
     `define E203_ITCM_DATA_WIDTH_IS_64
     `define E203_ITCM_DATA_WIDTH  64
     `define E203_ITCM_WMSK_WIDTH  8
   
-    `define E203_ITCM_RAM_ECC_DW  8
-    `define E203_ITCM_RAM_ECC_MW  1
+    // `define E203_ITCM_RAM_ECC_DW  8
+    // `define E203_ITCM_RAM_ECC_MW  1
+  `endif
+
+  `define E203_CFG_ITCM_DATA_WIDTH_IS_32
+  `ifdef E203_CFG_ITCM_DATA_WIDTH_IS_32
+    `define E203_ITCM_DATA_WIDTH_IS_32
+    `define E203_ITCM_DATA_WIDTH  32
+    `define E203_ITCM_WMSK_WIDTH  4
+  
   `endif
   `ifndef E203_HAS_ECC //{
     `define E203_ITCM_RAM_DW      `E203_ITCM_DATA_WIDTH
