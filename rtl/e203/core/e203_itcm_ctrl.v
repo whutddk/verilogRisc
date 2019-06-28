@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-06-27 23:19:52
 // Last Modified by:   29505
-// Last Modified time: 2019-06-27 23:29:30
+// Last Modified time: 2019-06-28 09:35:30
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_itcm_ctrl.v  
 // Module Name:  
@@ -303,7 +303,7 @@ module e203_itcm_ctrl(
       .DW     (`E203_ITCM_DATA_WIDTH),
       .AW     (`E203_ITCM_ADDR_WIDTH),
       .MW     (`E203_ITCM_WMSK_WIDTH),
-      .AW_LSB (3),// ITCM is 64bits wide, so the LSB is 3
+      .AW_LSB (2),// ITCM is 64bits wide, so the LSB is 3
       .USR_W  (2) 
   ) u_sram_icb_ctrl(
      .sram_ctrl_active (itcm_sram_ctrl_active),
