@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-06-27 21:03:47
 // Last Modified by:   29505
-// Last Modified time: 2019-06-28 13:10:20
+// Last Modified time: 2019-06-28 17:29:04
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_exu_decode.v  
 // Module Name:  
@@ -166,7 +166,8 @@ module e203_exu_decode(
 
   wire rv32_func7_0000000 = (rv32_func7 == 7'b0000000);
   wire rv32_func7_0100000 = (rv32_func7 == 7'b0100000);
-  wire rv32_func7_0000001 = (rv32_func7 == 7'b0000001);
+  // wire rv32_func7_0000001 = (rv32_func7 == 7'b0000001);
+  wire rv32_func7_0000001 = 1'b0;
   wire rv32_func7_0000101 = (rv32_func7 == 7'b0000101);
   wire rv32_func7_0001001 = (rv32_func7 == 7'b0001001);
   wire rv32_func7_0001101 = (rv32_func7 == 7'b0001101);
