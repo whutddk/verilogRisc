@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-06-26 09:51:22
+// Last Modified by:   29505
+// Last Modified time: 2019-06-27 16:51:16
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_cpu.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -791,10 +813,36 @@ module e203_cpu #(
 
 
   assign inspect_dbg_irq       = dbg_irq_a;
-  assign inspect_mem_cmd_valid = mem_icb_cmd_valid;
-  assign inspect_mem_cmd_ready = mem_icb_cmd_ready;
-  assign inspect_mem_rsp_valid = mem_icb_rsp_valid;
-  assign inspect_mem_rsp_ready = mem_icb_rsp_ready;
+
+
+  assign inspect_mem_cmd_valid = 
+  `ifdef E203_HAS_MEM_ITF
+  mem_icb_cmd_valid;
+   `else 
+    1'b0;
+  `endif
+
+  assign inspect_mem_cmd_ready = 
+  `ifdef E203_HAS_MEM_ITF
+  mem_icb_cmd_ready;
+   `else 
+    1'b0;
+  `endif
+
+  assign inspect_mem_rsp_valid = 
+  `ifdef E203_HAS_MEM_ITF
+  mem_icb_rsp_valid;
+   `else 
+    1'b0;
+  `endif
+
+  assign inspect_mem_rsp_ready = 
+  `ifdef E203_HAS_MEM_ITF
+  mem_icb_rsp_ready;
+  `else 
+    1'b0;
+  `endif
+
   assign inspect_core_clk   = clk;
   assign core_csr_clk       = clk_core_exu;
 

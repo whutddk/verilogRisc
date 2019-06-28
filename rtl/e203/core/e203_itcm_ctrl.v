@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-06-27 23:19:52
+// Last Modified by:   29505
+// Last Modified time: 2019-06-28 09:35:30
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_itcm_ctrl.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -79,30 +101,6 @@ module e203_itcm_ctrl(
             // Note: the RSP rdata is inline with AXI definition
   output [32-1:0] lsu2itcm_icb_rsp_rdata, 
 
-
-
-  `ifdef E203_HAS_ITCM_EXTITF //{
-  //////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////
-  // External-agent ICB to ITCM
-  //    * Bus cmd channel
-  input  ext2itcm_icb_cmd_valid, // Handshake valid
-  output ext2itcm_icb_cmd_ready, // Handshake ready
-            // Note: The data on rdata or wdata channel must be naturally
-            //       aligned, this is in line with the AXI definition
-  input  [`E203_ITCM_ADDR_WIDTH-1:0]   ext2itcm_icb_cmd_addr, // Bus transaction start addr 
-  input  ext2itcm_icb_cmd_read,   // Read or write
-  input  [32-1:0] ext2itcm_icb_cmd_wdata, 
-  input  [ 4-1:0] ext2itcm_icb_cmd_wmask, 
-
-  //    * Bus RSP channel
-  output ext2itcm_icb_rsp_valid, // Response valid 
-  input  ext2itcm_icb_rsp_ready, // Response ready
-  output ext2itcm_icb_rsp_err,   // Response error
-            // Note: the RSP rdata is inline with AXI definition
-  output [32-1:0] ext2itcm_icb_rsp_rdata, 
-  `endif//}
-
   output                         itcm_ram_cs,  
   output                         itcm_ram_we,  
   output [`E203_ITCM_RAM_AW-1:0] itcm_ram_addr, 
@@ -116,150 +114,6 @@ module e203_itcm_ctrl(
   input  rst_n
   );
 
-    // LSU2ITCM converted to ICM data width
-  //    * Bus cmd channel
-  wire lsu_icb_cmd_valid;
-  wire lsu_icb_cmd_ready;
-  wire [`E203_ITCM_ADDR_WIDTH-1:0] lsu_icb_cmd_addr;
-  wire lsu_icb_cmd_read;
-  wire [`E203_ITCM_DATA_WIDTH-1:0] lsu_icb_cmd_wdata;
-  wire [`E203_ITCM_DATA_WIDTH/8-1:0] lsu_icb_cmd_wmask;
-
-  //    * Bus RSP channel
-  wire lsu_icb_rsp_valid;
-  wire lsu_icb_rsp_ready;
-  wire lsu_icb_rsp_err;
-  wire [`E203_ITCM_DATA_WIDTH-1:0] lsu_icb_rsp_rdata; 
-
-  sirv_gnrl_icb_n2w # (
-  .FIFO_OUTS_NUM   (`E203_ITCM_OUTS_NUM),
-  .FIFO_CUT_READY  (0),
-  .USR_W      (1),
-  .AW         (`E203_ITCM_ADDR_WIDTH),
-  .X_W        (32),
-  .Y_W        (`E203_ITCM_DATA_WIDTH) 
-  ) u_itcm_icb_lsu2itcm_n2w(
-  .i_icb_cmd_valid        (lsu2itcm_icb_cmd_valid ),  
-  .i_icb_cmd_ready        (lsu2itcm_icb_cmd_ready ),
-  .i_icb_cmd_read         (lsu2itcm_icb_cmd_read ) ,
-  .i_icb_cmd_addr         (lsu2itcm_icb_cmd_addr ) ,
-  .i_icb_cmd_wdata        (lsu2itcm_icb_cmd_wdata ),
-  .i_icb_cmd_wmask        (lsu2itcm_icb_cmd_wmask) ,
-  .i_icb_cmd_burst        (2'b0)                   ,
-  .i_icb_cmd_beat         (2'b0)                   ,
-  .i_icb_cmd_lock         (1'b0),
-  .i_icb_cmd_excl         (1'b0),
-  .i_icb_cmd_size         (2'b0),
-  .i_icb_cmd_usr          (1'b0),
-   
-  .i_icb_rsp_valid        (lsu2itcm_icb_rsp_valid ),
-  .i_icb_rsp_ready        (lsu2itcm_icb_rsp_ready ),
-  .i_icb_rsp_err          (lsu2itcm_icb_rsp_err)   ,
-  .i_icb_rsp_excl_ok      ()   ,
-  .i_icb_rsp_rdata        (lsu2itcm_icb_rsp_rdata ),
-  .i_icb_rsp_usr          (),
-                                                
-  .o_icb_cmd_valid        (lsu_icb_cmd_valid ),  
-  .o_icb_cmd_ready        (lsu_icb_cmd_ready ),
-  .o_icb_cmd_read         (lsu_icb_cmd_read ) ,
-  .o_icb_cmd_addr         (lsu_icb_cmd_addr ) ,
-  .o_icb_cmd_wdata        (lsu_icb_cmd_wdata ),
-  .o_icb_cmd_wmask        (lsu_icb_cmd_wmask) ,
-  .o_icb_cmd_burst        ()                   ,
-  .o_icb_cmd_beat         ()                   ,
-  .o_icb_cmd_lock         (),
-  .o_icb_cmd_excl         (),
-  .o_icb_cmd_size         (),
-  .o_icb_cmd_usr          (),
-   
-  .o_icb_rsp_valid        (lsu_icb_rsp_valid ),
-  .o_icb_rsp_ready        (lsu_icb_rsp_ready ),
-  .o_icb_rsp_err          (lsu_icb_rsp_err)   ,
-  .o_icb_rsp_excl_ok      (1'b0)   ,
-  .o_icb_rsp_rdata        (lsu_icb_rsp_rdata ),
-  .o_icb_rsp_usr          (1'b0),
-
-  .clk                    (clk   )                  ,
-  .rst_n                  (rst_n )                 
-  );
-
-  `ifdef E203_HAS_ITCM_EXTITF //{
-  //////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////
-  // EXTITF converted to ICM data width
-  //    * Bus cmd channel
-  wire ext_icb_cmd_valid;
-  wire ext_icb_cmd_ready;
-  wire [`E203_ITCM_ADDR_WIDTH-1:0] ext_icb_cmd_addr;
-  wire ext_icb_cmd_read;
-  wire [`E203_ITCM_DATA_WIDTH-1:0] ext_icb_cmd_wdata;
-  wire [`E203_ITCM_WMSK_WIDTH-1:0] ext_icb_cmd_wmask;
-
-  //    * Bus RSP channel
-  wire ext_icb_rsp_valid;
-  wire ext_icb_rsp_ready;
-  wire ext_icb_rsp_err;
-  wire [`E203_ITCM_DATA_WIDTH-1:0] ext_icb_rsp_rdata; 
-
-  `ifdef E203_SYSMEM_DATA_WIDTH_IS_32 //{
-  `ifdef E203_ITCM_DATA_WIDTH_IS_64 //{
-  sirv_gnrl_icb_n2w # (
-  .USR_W      (1),
-  .FIFO_OUTS_NUM   (`E203_ITCM_OUTS_NUM),
-  .FIFO_CUT_READY  (0),
-  .AW         (`E203_ITCM_ADDR_WIDTH),
-  .X_W        (`E203_SYSMEM_DATA_WIDTH), 
-  .Y_W        (`E203_ITCM_DATA_WIDTH) 
-  ) u_itcm_icb_ext2itcm_n2w(
-  .i_icb_cmd_valid        (ext2itcm_icb_cmd_valid ),  
-  .i_icb_cmd_ready        (ext2itcm_icb_cmd_ready ),
-  .i_icb_cmd_read         (ext2itcm_icb_cmd_read ) ,
-  .i_icb_cmd_addr         (ext2itcm_icb_cmd_addr ) ,
-  .i_icb_cmd_wdata        (ext2itcm_icb_cmd_wdata ),
-  .i_icb_cmd_wmask        (ext2itcm_icb_cmd_wmask) ,
-  .i_icb_cmd_burst        (2'b0)                   ,
-  .i_icb_cmd_beat         (2'b0)                   ,
-  .i_icb_cmd_lock         (1'b0),
-  .i_icb_cmd_excl         (1'b0),
-  .i_icb_cmd_size         (2'b0),
-  .i_icb_cmd_usr          (1'b0),
-   
-  .i_icb_rsp_valid        (ext2itcm_icb_rsp_valid ),
-  .i_icb_rsp_ready        (ext2itcm_icb_rsp_ready ),
-  .i_icb_rsp_err          (ext2itcm_icb_rsp_err)   ,
-  .i_icb_rsp_excl_ok      ()   ,
-  .i_icb_rsp_rdata        (ext2itcm_icb_rsp_rdata ),
-  .i_icb_rsp_usr          (),
-                                                
-  .o_icb_cmd_valid        (ext_icb_cmd_valid ),  
-  .o_icb_cmd_ready        (ext_icb_cmd_ready ),
-  .o_icb_cmd_read         (ext_icb_cmd_read ) ,
-  .o_icb_cmd_addr         (ext_icb_cmd_addr ) ,
-  .o_icb_cmd_wdata        (ext_icb_cmd_wdata ),
-  .o_icb_cmd_wmask        (ext_icb_cmd_wmask) ,
-  .o_icb_cmd_burst        ()                   ,
-  .o_icb_cmd_beat         ()                   ,
-  .o_icb_cmd_lock         (),
-  .o_icb_cmd_excl         (),
-  .o_icb_cmd_size         (),
-  .o_icb_cmd_usr          (),
-   
-  .o_icb_rsp_valid        (ext_icb_rsp_valid ),
-  .o_icb_rsp_ready        (ext_icb_rsp_ready ),
-  .o_icb_rsp_err          (ext_icb_rsp_err)   ,
-  .o_icb_rsp_excl_ok      (1'b0),
-  .o_icb_rsp_rdata        (ext_icb_rsp_rdata ),
-  .o_icb_rsp_usr          (1'b0),
-
-  .clk                    (clk  ) ,
-  .rst_n                  (rst_n)                 
-  );
-  `endif//}
-  `else//}{
-      !!! ERROR: There must be something wrong, our System interface
-                must be 32bits and ITCM must be 64bits to save area and powers!!!
-  `endif//}
-  `endif//}
 
   wire arbt_icb_cmd_valid;
   wire arbt_icb_cmd_ready;
@@ -273,13 +127,10 @@ module e203_itcm_ctrl(
   wire arbt_icb_rsp_err;
   wire [`E203_ITCM_DATA_WIDTH-1:0] arbt_icb_rsp_rdata;
 
-  `ifdef E203_HAS_ITCM_EXTITF //{
-      localparam ITCM_ARBT_I_NUM = 2;
-      localparam ITCM_ARBT_I_PTR_W = 1;
-  `else//}{
+  
       localparam ITCM_ARBT_I_NUM = 1;
       localparam ITCM_ARBT_I_PTR_W = 1;
-  `endif//}
+
 
   wire [ITCM_ARBT_I_NUM*1-1:0] arbt_bus_icb_cmd_valid;
   wire [ITCM_ARBT_I_NUM*1-1:0] arbt_bus_icb_cmd_ready;
@@ -296,70 +147,40 @@ module e203_itcm_ctrl(
   assign arbt_bus_icb_cmd_valid =
       // LSU take higher priority
                            {
-                      `ifdef E203_HAS_ITCM_EXTITF //{
-                             ext_icb_cmd_valid,
-                      `endif//}
-                             lsu_icb_cmd_valid
+                             lsu2itcm_icb_cmd_valid
                            } ;
   assign arbt_bus_icb_cmd_addr =
                            {
-                      `ifdef E203_HAS_ITCM_EXTITF //{
-                             ext_icb_cmd_addr,
-                      `endif//}
-                             lsu_icb_cmd_addr
+                             lsu2itcm_icb_cmd_addr
                            } ;
   assign arbt_bus_icb_cmd_read =
                            {
-                      `ifdef E203_HAS_ITCM_EXTITF //{
-                             ext_icb_cmd_read,
-                      `endif//}
-                             lsu_icb_cmd_read
+                             lsu2itcm_icb_cmd_read
                            } ;
   assign arbt_bus_icb_cmd_wdata =
                            {
-                      `ifdef E203_HAS_ITCM_EXTITF //{
-                             ext_icb_cmd_wdata,
-                      `endif//}
-                             lsu_icb_cmd_wdata
+                             lsu2itcm_icb_cmd_wdata
                            } ;
   assign arbt_bus_icb_cmd_wmask =
                            {
-                      `ifdef E203_HAS_ITCM_EXTITF //{
-                             ext_icb_cmd_wmask,
-                      `endif//}
-                             lsu_icb_cmd_wmask
+                             lsu2itcm_icb_cmd_wmask
                            } ;
   assign                   {
-                      `ifdef E203_HAS_ITCM_EXTITF //{
-                             ext_icb_cmd_ready,
-                      `endif//}
-                             lsu_icb_cmd_ready
+                             lsu2itcm_icb_cmd_ready
                            } = arbt_bus_icb_cmd_ready;
 
 
   assign                   {
-                      `ifdef E203_HAS_ITCM_EXTITF //{
-                             ext_icb_rsp_valid,
-                      `endif//}
-                             lsu_icb_rsp_valid
+                             lsu2itcm_icb_rsp_valid
                            } = arbt_bus_icb_rsp_valid;
   assign                   {
-                      `ifdef E203_HAS_ITCM_EXTITF //{
-                             ext_icb_rsp_err,
-                      `endif//}
-                             lsu_icb_rsp_err
+                             lsu2itcm_icb_rsp_err
                            } = arbt_bus_icb_rsp_err;
   assign                   {
-                      `ifdef E203_HAS_ITCM_EXTITF //{
-                             ext_icb_rsp_rdata,
-                      `endif//}
-                             lsu_icb_rsp_rdata
+                             lsu2itcm_icb_rsp_rdata
                            } = arbt_bus_icb_rsp_rdata;
   assign arbt_bus_icb_rsp_ready = {
-                      `ifdef E203_HAS_ITCM_EXTITF //{
-                             ext_icb_rsp_ready,
-                      `endif//}
-                             lsu_icb_rsp_ready
+                             lsu2itcm_icb_rsp_ready
                            };
 
   sirv_gnrl_icb_arbt # (
@@ -482,7 +303,7 @@ module e203_itcm_ctrl(
       .DW     (`E203_ITCM_DATA_WIDTH),
       .AW     (`E203_ITCM_ADDR_WIDTH),
       .MW     (`E203_ITCM_WMSK_WIDTH),
-      .AW_LSB (3),// ITCM is 64bits wide, so the LSB is 3
+      .AW_LSB (2),// ITCM is 64bits wide, so the LSB is 3
       .USR_W  (2) 
   ) u_sram_icb_ctrl(
      .sram_ctrl_active (itcm_sram_ctrl_active),
@@ -560,11 +381,7 @@ module e203_itcm_ctrl(
                             ;
 
 
-  assign itcm_active = ifu2itcm_icb_cmd_valid | lsu2itcm_icb_cmd_valid | itcm_sram_ctrl_active
-                  `ifdef E203_HAS_ITCM_EXTITF //{
-                      | ext2itcm_icb_cmd_valid
-                  `endif//}
-                      ;
+  assign itcm_active = ifu2itcm_icb_cmd_valid | lsu2itcm_icb_cmd_valid | itcm_sram_ctrl_active;
 
 endmodule
 

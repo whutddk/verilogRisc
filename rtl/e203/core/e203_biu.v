@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-06-26 09:51:22
+// Last Modified by:   29505
+// Last Modified time: 2019-06-27 16:48:18
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_biu.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -929,7 +951,11 @@ module e203_biu(
   );
 
 
-  assign biu_active = ifu2biu_icb_cmd_valid | lsu2biu_icb_cmd_valid | icb_buffer_active; 
+  assign biu_active = 
+  `ifdef E203_HAS_MEM_ITF //{
+  ifu2biu_icb_cmd_valid | 
+  `endif
+  lsu2biu_icb_cmd_valid | icb_buffer_active; 
 
   ///////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////

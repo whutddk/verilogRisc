@@ -1,3 +1,48 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Company:   
+// Engineer: Ruige_Lee
+// Create Date: 2019-06-27 19:52:33
+// Last Modified by:   29505
+// Last Modified time: 2019-06-28 09:26:29
+// Email: 295054118@whut.edu.cn
+// page: https://whutddk.github.io/
+// Design Name: e203_defines.v  
+// Module Name: e203_defines
+// Project Name:   
+// Target Devices:   
+// Tool Versions:   
+// Description:   
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision:    -   
+// Additional Comments:  
+// 
+//
+//////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-06-26 09:51:22
+// Last Modified by:   29505
+// Last Modified time: 2019-06-27 17:21:28
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_defines.v  
+// Module Name: e203_defines
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -170,6 +215,10 @@
 `ifdef E203_CFG_HAS_ITCM//{
   `define E203_HAS_ITCM 1
   `define E203_ITCM_ADDR_WIDTH  `E203_CFG_ITCM_ADDR_WIDTH
+
+
+  // `define E203_CFG_ITCM_DATA_WIDTH_IS_64
+  `ifdef E203_CFG_ITCM_DATA_WIDTH_IS_64
   // The ITCM size is 2^addr_width bytes, and ITCM is 64bits wide (8 bytes)
   //  so the DP is 2^addr_wdith/8
   //  so the AW is addr_wdith - 3
@@ -177,14 +226,29 @@
   `define E203_ITCM_RAM_AW          (`E203_CFG_ITCM_ADDR_WIDTH-3) 
   `define E203_ITCM_BASE_REGION  `E203_ADDR_SIZE-1:`E203_ITCM_ADDR_WIDTH
   
-  `define E203_CFG_ITCM_DATA_WIDTH_IS_64
-  `ifdef E203_CFG_ITCM_DATA_WIDTH_IS_64
+
+  
     `define E203_ITCM_DATA_WIDTH_IS_64
     `define E203_ITCM_DATA_WIDTH  64
     `define E203_ITCM_WMSK_WIDTH  8
   
-    `define E203_ITCM_RAM_ECC_DW  8
-    `define E203_ITCM_RAM_ECC_MW  1
+    // `define E203_ITCM_RAM_ECC_DW  8
+    // `define E203_ITCM_RAM_ECC_MW  1
+  `endif
+
+  `define E203_CFG_ITCM_DATA_WIDTH_IS_32
+
+   // The ITCM size is 2^addr_width bytes, and ITCM is 32bits wide (4 bytes)
+  //  so the DP is 2^addr_wdith/4
+  //  so the AW is addr_wdith - 2
+  `define E203_ITCM_RAM_DP      (1<<(`E203_CFG_ITCM_ADDR_WIDTH-2)) 
+  `define E203_ITCM_RAM_AW          (`E203_CFG_ITCM_ADDR_WIDTH-2) 
+  `define E203_ITCM_BASE_REGION  `E203_ADDR_SIZE-1:`E203_ITCM_ADDR_WIDTH
+  `ifdef E203_CFG_ITCM_DATA_WIDTH_IS_32
+    `define E203_ITCM_DATA_WIDTH_IS_32
+    `define E203_ITCM_DATA_WIDTH  32
+    `define E203_ITCM_WMSK_WIDTH  4
+  
   `endif
   `ifndef E203_HAS_ECC //{
     `define E203_ITCM_RAM_DW      `E203_ITCM_DATA_WIDTH
@@ -192,7 +256,7 @@
     `define E203_ITCM_OUTS_NUM 1 // If no-ECC, ITCM is 1 cycle latency then only allow 1 oustanding for external agent
   `endif//}
 
-  `define E203_HAS_ITCM_EXTITF
+  // `define E203_HAS_ITCM_EXTITF
 `endif//}
 
 /////////////////////////////////////////////////////////////////////////////
