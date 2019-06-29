@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-27 19:06:59
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-29 10:02:15
+// Last Modified time: 2019-06-29 16:16:08
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -346,37 +346,6 @@ module e203_soc_top(
  e203_subsys_top u_e203_subsys_top(
 		.core_mhartid      (1'b0),
 	
-
-
-
-	`ifdef E203_HAS_ITCM_EXTITF //{
-		.ext2itcm_icb_cmd_valid  (1'b0),
-		.ext2itcm_icb_cmd_ready  (),
-		.ext2itcm_icb_cmd_addr   (`E203_ITCM_ADDR_WIDTH'b0 ),
-		.ext2itcm_icb_cmd_read   (1'b0 ),
-		.ext2itcm_icb_cmd_wdata  (32'b0),
-		.ext2itcm_icb_cmd_wmask  (4'b0),
-		
-		.ext2itcm_icb_rsp_valid  (),
-		.ext2itcm_icb_rsp_ready  (1'b0),
-		.ext2itcm_icb_rsp_err    (),
-		.ext2itcm_icb_rsp_rdata  (),
-	`endif//}
-
-	`ifdef E203_HAS_DTCM_EXTITF //{
-		.ext2dtcm_icb_cmd_valid  (1'b0),
-		.ext2dtcm_icb_cmd_ready  (),
-		.ext2dtcm_icb_cmd_addr   (`E203_DTCM_ADDR_WIDTH'b0 ),
-		.ext2dtcm_icb_cmd_read   (1'b0 ),
-		.ext2dtcm_icb_cmd_wdata  (32'b0),
-		.ext2dtcm_icb_cmd_wmask  (4'b0),
-		
-		.ext2dtcm_icb_rsp_valid  (),
-		.ext2dtcm_icb_rsp_ready  (1'b0),
-		.ext2dtcm_icb_rsp_err    (),
-		.ext2dtcm_icb_rsp_rdata  (),
-	`endif//}
-
 	.sysper_icb_cmd_valid (sysper_icb_cmd_valid),
 	.sysper_icb_cmd_ready (sysper_icb_cmd_ready),
 	.sysper_icb_cmd_read  (), 

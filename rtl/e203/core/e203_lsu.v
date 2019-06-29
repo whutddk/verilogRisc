@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-25 19:07:21
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-29 10:00:37
+// Last Modified time: 2019-06-29 16:27:45
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -250,43 +250,8 @@ module e203_lsu(
 		.agu_icb_rsp_excl_ok   (agu_icb_rsp_excl_ok),
 		.agu_icb_rsp_rdata     (agu_icb_rsp_rdata),
  
-			`ifndef E203_HAS_EAI 
-		.eai_mem_holdup        (1'b0),
-		.eai_icb_cmd_valid     (1'b0),
-		.eai_icb_cmd_ready     (),
-		.eai_icb_cmd_addr      (`E203_ADDR_SIZE'b0 ),
-		.eai_icb_cmd_read      (1'b0 ),
-		.eai_icb_cmd_wdata     (`E203_XLEN'b0),
-		.eai_icb_cmd_wmask     ({`E203_XLEN/8{1'b0}}),
-		.eai_icb_cmd_lock      (1'b0),
-		.eai_icb_cmd_excl      (1'b0),
-		.eai_icb_cmd_size      (2'b0),
-		
-		.eai_icb_rsp_valid     (),
-		.eai_icb_rsp_ready     (1'b0),
-		.eai_icb_rsp_err       (),
-		.eai_icb_rsp_excl_ok   (),
-		.eai_icb_rsp_rdata     (),
-			`endif           
+          
 
-
-			`ifdef E203_HAS_DCACHE
-		.dcache_icb_cmd_valid  (dcache_icb_cmd_valid),
-		.dcache_icb_cmd_ready  (dcache_icb_cmd_ready),
-		.dcache_icb_cmd_addr   (dcache_icb_cmd_addr ),
-		.dcache_icb_cmd_read   (dcache_icb_cmd_read ),
-		.dcache_icb_cmd_wdata  (dcache_icb_cmd_wdata),
-		.dcache_icb_cmd_wmask  (dcache_icb_cmd_wmask),
-		.dcache_icb_cmd_lock   (dcache_icb_cmd_lock),
-		.dcache_icb_cmd_excl   (dcache_icb_cmd_excl),
-		.dcache_icb_cmd_size   (dcache_icb_cmd_size),
-		
-		.dcache_icb_rsp_valid  (dcache_icb_rsp_valid),
-		.dcache_icb_rsp_ready  (dcache_icb_rsp_ready),
-		.dcache_icb_rsp_err    (dcache_icb_rsp_err  ),
-		.dcache_icb_rsp_excl_ok(dcache_icb_rsp_excl_ok  ),
-		.dcache_icb_rsp_rdata  (dcache_icb_rsp_rdata),
-			`endif 
 
 			`ifdef E203_HAS_DTCM
 		.dtcm_icb_cmd_valid    (dtcm_icb_cmd_valid),

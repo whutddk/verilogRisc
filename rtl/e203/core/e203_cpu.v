@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-27 19:06:59
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-29 09:59:57
+// Last Modified time: 2019-06-29 16:14:19
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -141,44 +141,6 @@ module e203_cpu #(
 
 	`ifdef E203_HAS_DTCM //{
 	//input [`E203_ADDR_SIZE-1:0] dtcm_region_indic,
-	`endif//}
-
-	`ifdef E203_HAS_ITCM_EXTITF //{
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// External-agent ICB to ITCM
-	//    * Bus cmd channel
-	input                          ext2itcm_icb_cmd_valid,
-	output                         ext2itcm_icb_cmd_ready,
-	input  [`E203_ITCM_ADDR_WIDTH-1:0]   ext2itcm_icb_cmd_addr, 
-	input                          ext2itcm_icb_cmd_read, 
-	input  [`E203_XLEN-1:0]        ext2itcm_icb_cmd_wdata,
-	input  [`E203_XLEN/8-1:0]      ext2itcm_icb_cmd_wmask,
-	//
-	//    * Bus RSP channel
-	output                         ext2itcm_icb_rsp_valid,
-	input                          ext2itcm_icb_rsp_ready,
-	output                         ext2itcm_icb_rsp_err  ,
-	output [`E203_XLEN-1:0]        ext2itcm_icb_rsp_rdata,
-	`endif//}
-
-	`ifdef E203_HAS_DTCM_EXTITF //{
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// External-agent ICB to DTCM
-	//    * Bus cmd channel
-	input                          ext2dtcm_icb_cmd_valid,
-	output                         ext2dtcm_icb_cmd_ready,
-	input  [`E203_DTCM_ADDR_WIDTH-1:0]   ext2dtcm_icb_cmd_addr, 
-	input                          ext2dtcm_icb_cmd_read, 
-	input  [`E203_XLEN-1:0]        ext2dtcm_icb_cmd_wdata,
-	input  [`E203_XLEN/8-1:0]      ext2dtcm_icb_cmd_wmask,
-	//
-	//    * Bus RSP channel
-	output                         ext2dtcm_icb_rsp_valid,
-	input                          ext2dtcm_icb_rsp_ready,
-	output                         ext2dtcm_icb_rsp_err  ,
-	output [`E203_XLEN-1:0]        ext2dtcm_icb_rsp_rdata,
 	`endif//}
 
 	
@@ -813,20 +775,6 @@ module e203_cpu #(
 		.dtcm_ram_din            (dtcm_ram_din ),         
 		.dtcm_ram_dout           (dtcm_ram_dout),
 		.clk_dtcm_ram            (clk_dtcm_ram ),
-
-	`ifdef E203_HAS_DTCM_EXTITF //{
-		.ext2dtcm_icb_cmd_valid  (ext2dtcm_icb_cmd_valid),
-		.ext2dtcm_icb_cmd_ready  (ext2dtcm_icb_cmd_ready),
-		.ext2dtcm_icb_cmd_addr   (ext2dtcm_icb_cmd_addr ),
-		.ext2dtcm_icb_cmd_read   (ext2dtcm_icb_cmd_read ),
-		.ext2dtcm_icb_cmd_wdata  (ext2dtcm_icb_cmd_wdata),
-		.ext2dtcm_icb_cmd_wmask  (ext2dtcm_icb_cmd_wmask),
-		
-		.ext2dtcm_icb_rsp_valid  (ext2dtcm_icb_rsp_valid),
-		.ext2dtcm_icb_rsp_ready  (ext2dtcm_icb_rsp_ready),
-		.ext2dtcm_icb_rsp_err    (ext2dtcm_icb_rsp_err  ),
-		.ext2dtcm_icb_rsp_rdata  (ext2dtcm_icb_rsp_rdata),
-	`endif//}
 
 		.test_mode               (test_mode),
 		.clk                     (clk_dtcm),

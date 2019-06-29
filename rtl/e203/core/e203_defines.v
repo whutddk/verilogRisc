@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-27 19:52:33
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-29 10:02:43
+// Last Modified time: 2019-06-29 16:11:36
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name: e203_defines.v  
@@ -287,7 +287,7 @@
 	`endif//}
 
 
-	`define E203_HAS_DTCM_EXTITF
+	// `define E203_HAS_DTCM_EXTITF
 `endif//}
 
 

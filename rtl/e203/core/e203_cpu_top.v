@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-25 19:07:21
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-29 10:00:06
+// Last Modified time: 2019-06-29 16:14:58
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -119,45 +119,6 @@ module e203_cpu_top(
 	input tcm_sd,
 		// The PMU control signal from PMU to control the TCM Deep-Sleep
 	input tcm_ds,
-		
-	`ifdef E203_HAS_ITCM_EXTITF //{
-	//////////////////////////////////////////////////////////////
-	// External interface (ICB) to access ITCM: Begin
-	//    * Bus cmd channel
-	input                          ext2itcm_icb_cmd_valid,
-	output                         ext2itcm_icb_cmd_ready,
-	input  [`E203_ITCM_ADDR_WIDTH-1:0]   ext2itcm_icb_cmd_addr, 
-	input                          ext2itcm_icb_cmd_read, 
-	input  [`E203_XLEN-1:0]        ext2itcm_icb_cmd_wdata,
-	input  [`E203_XLEN/8-1:0]      ext2itcm_icb_cmd_wmask,
-	//
-	//    * Bus RSP channel
-	output                         ext2itcm_icb_rsp_valid,
-	input                          ext2itcm_icb_rsp_ready,
-	output                         ext2itcm_icb_rsp_err  ,
-	output [`E203_XLEN-1:0]        ext2itcm_icb_rsp_rdata,
-	// External interface (ICB) to access ITCM: End
-	`endif//}
-
-	`ifdef E203_HAS_DTCM_EXTITF //{
-	//////////////////////////////////////////////////////////////
-	// External interface (ICB) to access DTCM: Start
-	//    * Bus cmd channel
-	input                          ext2dtcm_icb_cmd_valid,
-	output                         ext2dtcm_icb_cmd_ready,
-	input  [`E203_DTCM_ADDR_WIDTH-1:0]   ext2dtcm_icb_cmd_addr, 
-	input                          ext2dtcm_icb_cmd_read, 
-	input  [`E203_XLEN-1:0]        ext2dtcm_icb_cmd_wdata,
-	input  [`E203_XLEN/8-1:0]      ext2dtcm_icb_cmd_wmask,
-	//
-	//    * Bus RSP channel
-	output                         ext2dtcm_icb_rsp_valid,
-	input                          ext2dtcm_icb_rsp_ready,
-	output                         ext2dtcm_icb_rsp_err  ,
-	output [`E203_XLEN-1:0]        ext2dtcm_icb_rsp_rdata,
-	// External interface (ICB) to access DTCM: End
-	`endif//}
-
 	
 	//////////////////////////////////////////////////////////////
 	// The Private Peripheral Interface (ICB): Begin
@@ -417,35 +378,6 @@ module e203_cpu_top(
 		.ext_irq_a       (ext_irq_a),
 		.sft_irq_a       (sft_irq_a),
 		.tmr_irq_a       (tmr_irq_a),
-
-	`ifdef E203_HAS_ITCM_EXTITF //{
-		.ext2itcm_icb_cmd_valid  (ext2itcm_icb_cmd_valid),
-		.ext2itcm_icb_cmd_ready  (ext2itcm_icb_cmd_ready),
-		.ext2itcm_icb_cmd_addr   (ext2itcm_icb_cmd_addr ),
-		.ext2itcm_icb_cmd_read   (ext2itcm_icb_cmd_read ),
-		.ext2itcm_icb_cmd_wdata  (ext2itcm_icb_cmd_wdata),
-		.ext2itcm_icb_cmd_wmask  (ext2itcm_icb_cmd_wmask),
-		
-		.ext2itcm_icb_rsp_valid  (ext2itcm_icb_rsp_valid),
-		.ext2itcm_icb_rsp_ready  (ext2itcm_icb_rsp_ready),
-		.ext2itcm_icb_rsp_err    (ext2itcm_icb_rsp_err  ),
-		.ext2itcm_icb_rsp_rdata  (ext2itcm_icb_rsp_rdata),
-	`endif//}
-
-	`ifdef E203_HAS_DTCM_EXTITF //{
-		.ext2dtcm_icb_cmd_valid  (ext2dtcm_icb_cmd_valid),
-		.ext2dtcm_icb_cmd_ready  (ext2dtcm_icb_cmd_ready),
-		.ext2dtcm_icb_cmd_addr   (ext2dtcm_icb_cmd_addr ),
-		.ext2dtcm_icb_cmd_read   (ext2dtcm_icb_cmd_read ),
-		.ext2dtcm_icb_cmd_wdata  (ext2dtcm_icb_cmd_wdata),
-		.ext2dtcm_icb_cmd_wmask  (ext2dtcm_icb_cmd_wmask),
-		
-		.ext2dtcm_icb_rsp_valid  (ext2dtcm_icb_rsp_valid),
-		.ext2dtcm_icb_rsp_ready  (ext2dtcm_icb_rsp_ready),
-		.ext2dtcm_icb_rsp_err    (ext2dtcm_icb_rsp_err  ),
-		.ext2dtcm_icb_rsp_rdata  (ext2dtcm_icb_rsp_rdata),
-	`endif//}
-
 
 		.ppi_region_indic      (ppi_region_indic),
 		.ppi_icb_enable        (ppi_icb_enable),
