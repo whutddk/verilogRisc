@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-29 09:10:45
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-29 09:58:09
+// Last Modified time: 2019-06-29 13:26:03
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -418,12 +418,6 @@ module e203_ifu_ift2icb(
 	wire icb_cmd2biu_r;
 	sirv_gnrl_dfflr #(1) icb2mem_dfflr (ifu_icb_cmd_hsked, ifu_icb_cmd2biu , icb_cmd2biu_r,  clk, rst_n);
 	`endif//}
-	wire icb_cmd_addr_2_1_ena = ifu_icb_cmd_hsked | ifu_req_hsked;
-	wire [1:0] icb_cmd_addr_2_1_r;
-	sirv_gnrl_dffl #(2)icb_addr_2_1_dffl(icb_cmd_addr_2_1_ena, ifu_icb_cmd_addr[2:1], icb_cmd_addr_2_1_r, clk);
-
-
-
 
 	
 	/////////////////////////////////////////////////////////////////////////////////

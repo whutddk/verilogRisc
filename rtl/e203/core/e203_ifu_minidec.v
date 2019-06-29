@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-25 19:07:21
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-29 09:59:32
+// Last Modified time: 2019-06-29 13:32:06
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -82,7 +82,7 @@ module e203_ifu_minidec(
 
 	e203_exu_decode u_e203_exu_decode(
 
-	.i_instr(instr),
+	.i_instr({instr[31:2] , 2'b11}),
 	.i_pc(`E203_PC_SIZE'b0),
 	.i_prdt_taken(1'b0), 
 	.i_muldiv_b2b(1'b0), 

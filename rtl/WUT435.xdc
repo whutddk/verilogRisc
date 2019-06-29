@@ -28,8 +28,8 @@ set_property PACKAGE_PIN P3 [get_ports mcu_TMS]
 
 
 #####                gpio define              #####
-set_property PACKAGE_PIN M2 [get_ports {gpio[1]}]
-set_property PACKAGE_PIN M1 [get_ports {gpio[0]}]
+set_property PACKAGE_PIN M1 [get_ports {gpio[1]}]
+set_property PACKAGE_PIN M2 [get_ports {gpio[0]}]
 
 
 

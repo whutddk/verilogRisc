@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-25 19:07:21
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-29 09:58:41
+// Last Modified time: 2019-06-29 13:23:07
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -487,12 +487,12 @@ module e203_ifu_ifetch(
 
 	assign pc_nxt_pre = pc_add_op1 + pc_add_op2;
 	`ifndef E203_TIMING_BOOST//}
-	assign pc_nxt = {pc_nxt_pre[`E203_PC_SIZE-1:1],1'b0};
+	assign pc_nxt = {pc_nxt_pre[`E203_PC_SIZE-1:2],2'b0};
 	`else//}{
 	assign pc_nxt = 
-							 pipe_flush_req ? {pipe_flush_pc[`E203_PC_SIZE-1:1],1'b0} :
-							 dly_pipe_flush_req ? {pc_r[`E203_PC_SIZE-1:1],1'b0} :
-							 {pc_nxt_pre[`E203_PC_SIZE-1:1],1'b0};
+							 pipe_flush_req ? {pipe_flush_pc[`E203_PC_SIZE-1:2],2'b0} :
+							 dly_pipe_flush_req ? {pc_r[`E203_PC_SIZE-1:2],2'b0} :
+							 {pc_nxt_pre[`E203_PC_SIZE-1:2],2'b0};
 	`endif//}
 
 	// The Ifetch issue new ifetch request when
