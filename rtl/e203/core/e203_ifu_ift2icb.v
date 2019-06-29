@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-29 09:10:45
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-29 09:58:09
+// Last Modified time: 2019-06-29 10:06:55
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -105,28 +105,6 @@ module e203_ifu_ift2icb(
 	`endif//}
 
 
-	`ifdef E203_HAS_MEM_ITF //{
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// Bus Interface to System Memory, internal protocol called ICB (Internal Chip Bus)
-	//    * Bus cmd channel
-	output ifu2biu_icb_cmd_valid, // Handshake valid
-	input  ifu2biu_icb_cmd_ready, // Handshake ready
-						// Note: The data on rdata or wdata channel must be naturally
-						//       aligned, this is in line with the AXI definition
-	output [`E203_ADDR_SIZE-1:0]   ifu2biu_icb_cmd_addr, // Bus transaction start addr 
-
-	//    * Bus RSP channel
-	input  ifu2biu_icb_rsp_valid, // Response valid 
-	output ifu2biu_icb_rsp_ready, // Response ready
-	input  ifu2biu_icb_rsp_err,   // Response error
-						// Note: the RSP rdata is inline with AXI definition
-	input  [`E203_SYSMEM_DATA_WIDTH-1:0] ifu2biu_icb_rsp_rdata, 
-	
-	//input  ifu2biu_replay,
-	`endif//}
-
-
 	// The holdup indicating the target is not accessed by other agents 
 	// since last accessed by IFU, and the output of it is holding up
 	// last value. 
@@ -140,9 +118,7 @@ module e203_ifu_ift2icb(
 	);
 
 `ifndef E203_HAS_ITCM
-	`ifndef E203_HAS_MEM_ITF
 		!!! ERROR: There is no ITCM and no System interface, where to fetch the instructions? must be wrong configuration.
-	`endif//}
 `endif//}
 
 
@@ -413,11 +389,7 @@ module e203_ifu_ift2icb(
 	wire icb_cmd2itcm_r;
 	sirv_gnrl_dfflr #(1) icb2itcm_dfflr(ifu_icb_cmd_hsked, ifu_icb_cmd2itcm, icb_cmd2itcm_r, clk, rst_n);
 	`endif//}
-	`ifdef E203_HAS_MEM_ITF //{
-	wire ifu_icb_cmd2biu ;
-	wire icb_cmd2biu_r;
-	sirv_gnrl_dfflr #(1) icb2mem_dfflr (ifu_icb_cmd_hsked, ifu_icb_cmd2biu , icb_cmd2biu_r,  clk, rst_n);
-	`endif//}
+
 	wire icb_cmd_addr_2_1_ena = ifu_icb_cmd_hsked | ifu_req_hsked;
 	wire [1:0] icb_cmd_addr_2_1_r;
 	sirv_gnrl_dffl #(2)icb_addr_2_1_dffl(icb_cmd_addr_2_1_ena, ifu_icb_cmd_addr[2:1], icb_cmd_addr_2_1_r, clk);
@@ -445,28 +417,19 @@ module e203_ifu_ift2icb(
 		 
 	`endif//}
 
-	`ifdef E203_HAS_MEM_ITF //{
-	wire[31:0] ifu2biu_icb_rsp_instr = 
-										ifu2biu_icb_rsp_rdata;  
-	`endif//}
+	
 
 	wire [32-1:0] ifu_icb_rsp_instr = 32'b0
 										 `ifdef E203_HAS_ITCM //{
 											 | ({32{icb_cmd2itcm_r}} & ifu2itcm_icb_rsp_instr)
 										 `endif//}
-										 `ifdef E203_HAS_MEM_ITF //{
-											 | ({32{icb_cmd2biu_r}}  & ifu2biu_icb_rsp_instr)
-										 `endif//}
-												;
+										 ;
 
 	wire ifu_icb_rsp_err = 1'b0
 										 `ifdef E203_HAS_ITCM //{
 											 | (icb_cmd2itcm_r & ifu2itcm_icb_rsp_err)
 										 `endif//}
-										 `ifdef E203_HAS_MEM_ITF //{
-											 | (icb_cmd2biu_r  & ifu2biu_icb_rsp_err)
-										 `endif//}
-												;
+										 ;
 
 	assign i_ifu_rsp_instr = (ifu_icb_rsp_instr);
 	assign i_ifu_rsp_err = (ifu_icb_rsp_err);
@@ -500,13 +463,10 @@ module e203_ifu_ift2icb(
 	//    * Case #1: The itf need two uops, and it is in 2ND state response
 	//    * Case #2: The itf need only one uop, and it is in 1ND state response
 	assign ifu_icb_rsp_valid = 1'b0
-										 `ifdef E203_HAS_ITCM //{
-											 | (icb_cmd2itcm_r & ifu2itcm_icb_rsp_valid)
-										 `endif//}
-										 `ifdef E203_HAS_MEM_ITF //{
-											 | (icb_cmd2biu_r  & ifu2biu_icb_rsp_valid)
-										 `endif//}
-												;
+		 `ifdef E203_HAS_ITCM //{
+			 | (icb_cmd2itcm_r & ifu2itcm_icb_rsp_valid)
+		 `endif//}
+				;
  
 	 //  //   Explain the performance impacts
 	 //  //      because there is a over killing, that the very 1st time ifu to access ITCM it actually
@@ -514,9 +474,6 @@ module e203_ifu_ift2icb(
 	 //assign ifu_icb_rsp_replay = 1'b0
 	 //                  `ifdef E203_HAS_ITCM //{
 	 //                    | (icb_cmd2itcm_r & ifu2itcm_replay)
-	 //                  `endif//}
-	 //                  `ifdef E203_HAS_MEM_ITF //{
-	 //                    | (icb_cmd2biu_r & ifu2biu_replay)
 	 //                  `endif//}
 	 //                     ;
 
@@ -542,8 +499,7 @@ module e203_ifu_ift2icb(
 	//                 ** It is not above two cases
 
 	wire [`E203_PC_SIZE-1:0] nxtalgn_plus_offset = 
-							 ifu_req_seq_rv32        ? `E203_PC_SIZE'd6 :
-																				 `E203_PC_SIZE'd4;
+							 ifu_req_seq_rv32  ? `E203_PC_SIZE'd6 :  `E203_PC_SIZE'd4;
 	// Since we always fetch 32bits
 	wire [`E203_PC_SIZE-1:0] icb_algn_nxt_lane_addr = ifu_req_last_pc + nxtalgn_plus_offset;
 
@@ -579,35 +535,13 @@ module e203_ifu_ift2icb(
 	assign ifu2itcm_icb_rsp_ready = ifu_icb_rsp_ready;
 	`endif//}
 
-	`ifdef E203_HAS_MEM_ITF //{
-	assign ifu_icb_cmd2biu = 1'b1
-						`ifdef E203_HAS_ITCM //{
-							& ~(ifu_icb_cmd2itcm)
-						`endif//}
-							;
-	wire ifu2biu_icb_cmd_valid_pre  = ifu_icb_cmd_valid & ifu_icb_cmd2biu;
-	wire [`E203_ADDR_SIZE-1:0]   ifu2biu_icb_cmd_addr_pre = ifu_icb_cmd_addr[`E203_ADDR_SIZE-1:0];
 
-	assign ifu2biu_icb_rsp_ready = ifu_icb_rsp_ready;
-
-	wire ifu2biu_icb_cmd_ready_pre;
-	`endif//}
 
 	assign ifu_icb_cmd_ready = 1'b0
 		`ifdef E203_HAS_ITCM //{
 				| (ifu_icb_cmd2itcm & ifu2itcm_icb_cmd_ready) 
 		`endif//}
-		`ifdef E203_HAS_MEM_ITF //{
-				| (ifu_icb_cmd2biu  & ifu2biu_icb_cmd_ready_pre ) 
-		`endif//}
 				;
-
-		`ifdef E203_HAS_MEM_ITF 
-
-		 assign ifu2biu_icb_cmd_addr      = ifu2biu_icb_cmd_addr_pre;
-		 assign ifu2biu_icb_cmd_valid     = ifu2biu_icb_cmd_valid_pre;
-		 assign ifu2biu_icb_cmd_ready_pre = ifu2biu_icb_cmd_ready;
-		`endif//}
 
 
 endmodule

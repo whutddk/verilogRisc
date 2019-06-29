@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-27 19:17:11
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-29 09:58:18
+// Last Modified time: 2019-06-29 10:13:00
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -74,36 +74,7 @@ module e203_biu(
 	output                         lsu2biu_icb_rsp_excl_ok,
 	output [`E203_XLEN-1:0]        lsu2biu_icb_rsp_rdata,
 
-	`ifdef E203_HAS_MEM_ITF //{
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// the icb interface from ifetch 
-	//
-	//    * bus cmd channel
-	input                          ifu2biu_icb_cmd_valid,
-	output                         ifu2biu_icb_cmd_ready,
-	input  [`E203_ADDR_SIZE-1:0]   ifu2biu_icb_cmd_addr, 
-	input                          ifu2biu_icb_cmd_read, 
-	input  [`E203_XLEN-1:0]        ifu2biu_icb_cmd_wdata,
-	input  [`E203_XLEN/8-1:0]      ifu2biu_icb_cmd_wmask,
-	input  [1:0]                   ifu2biu_icb_cmd_burst,
-	input  [1:0]                   ifu2biu_icb_cmd_beat,
-	input                          ifu2biu_icb_cmd_lock,
-	input                          ifu2biu_icb_cmd_excl,
-	input  [1:0]                   ifu2biu_icb_cmd_size,
-	//
-	//    * bus rsp channel
-	output                         ifu2biu_icb_rsp_valid,
-	input                          ifu2biu_icb_rsp_ready,
-	output                         ifu2biu_icb_rsp_err  ,
-	output                         ifu2biu_icb_rsp_excl_ok,
-	output [`E203_XLEN-1:0]        ifu2biu_icb_rsp_rdata,
-
-	//output                         ifu2biu_replay,
-	`endif//}
-
-
-
+	
 	//////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////
 	// The ICB Interface to Private Peripheral Interface
@@ -237,24 +208,19 @@ module e203_biu(
 	);
 
 
-	`ifdef E203_HAS_MEM_ITF //{
-			localparam BIU_ARBT_I_NUM = 2;
-			localparam BIU_ARBT_I_PTR_W = 1;
-	`else//}{
+
 			localparam BIU_ARBT_I_NUM = 1;
 			localparam BIU_ARBT_I_PTR_W = 1;
-	`endif//}
+
 
 	
 	// The SPLT_NUM is the sum of following components
 	//   * ppi, clint, plic, SystemITF, Fast-IO, IFU-err 
 			localparam BIU_SPLT_I_NUM_0 = 4;
 
-	`ifdef E203_HAS_MEM_ITF //{
-			localparam BIU_SPLT_I_NUM_1 = (BIU_SPLT_I_NUM_0 + 1);
-	`else//}{
+
 			localparam BIU_SPLT_I_NUM_1 = BIU_SPLT_I_NUM_0;
-	`endif//}
+
 
 	`ifdef E203_HAS_FIO //{
 			localparam BIU_SPLT_I_NUM_2 = (BIU_SPLT_I_NUM_1 + 1);
@@ -325,81 +291,51 @@ module e203_biu(
 	assign arbt_bus_icb_cmd_valid =
 			// The  LSU take higher priority
 													 {
-													 `ifdef E203_HAS_MEM_ITF //{
-														 ifu2biu_icb_cmd_valid,
-													 `endif//}
 														 lsu2biu_icb_cmd_valid
 													 } ;
 
 	assign arbt_bus_icb_cmd_addr =
 													 {
-													 `ifdef E203_HAS_MEM_ITF //{
-														 ifu2biu_icb_cmd_addr,
-													 `endif//}
 														 lsu2biu_icb_cmd_addr
 													 } ;
 
 	assign arbt_bus_icb_cmd_read =
 													 {
-													 `ifdef E203_HAS_MEM_ITF //{
-														 ifu2biu_icb_cmd_read,
-													 `endif//}
 														 lsu2biu_icb_cmd_read
 													 } ;
 
 	assign arbt_bus_icb_cmd_wdata =
 													 {
-													 `ifdef E203_HAS_MEM_ITF //{
-														 ifu2biu_icb_cmd_wdata,
-													 `endif//}
 														 lsu2biu_icb_cmd_wdata
 													 } ;
 
 	assign arbt_bus_icb_cmd_wmask =
 													 {
-													 `ifdef E203_HAS_MEM_ITF //{
-														 ifu2biu_icb_cmd_wmask,
-													 `endif//}
 														 lsu2biu_icb_cmd_wmask
 													 } ;
 												 
 	assign arbt_bus_icb_cmd_burst =
 													 {
-													 `ifdef E203_HAS_MEM_ITF //{
-														 ifu2biu_icb_cmd_burst,
-													 `endif//}
 														 lsu2biu_icb_cmd_burst
 													 } ;
 												 
 	assign arbt_bus_icb_cmd_beat =
 													 {
-													 `ifdef E203_HAS_MEM_ITF //{
-														 ifu2biu_icb_cmd_beat,
-													 `endif//}
 														 lsu2biu_icb_cmd_beat
 													 } ;
 												 
 	assign arbt_bus_icb_cmd_lock =
 													 {
-													 `ifdef E203_HAS_MEM_ITF //{
-														 ifu2biu_icb_cmd_lock,
-													 `endif//}
 														 lsu2biu_icb_cmd_lock
 													 } ;
 
 	assign arbt_bus_icb_cmd_excl =
 													 {
-													 `ifdef E203_HAS_MEM_ITF //{
-														 ifu2biu_icb_cmd_excl,
-													 `endif//}
 														 lsu2biu_icb_cmd_excl
 													 } ;
 													 
 	assign arbt_bus_icb_cmd_size =
 													 {
-													 `ifdef E203_HAS_MEM_ITF //{
-														 ifu2biu_icb_cmd_size,
-													 `endif//}
 														 lsu2biu_icb_cmd_size
 													 } ;
 
@@ -407,52 +343,31 @@ module e203_biu(
  wire lsu2biu_icb_cmd_ifu = 1'b0;
  assign arbt_bus_icb_cmd_usr =
 													 {
-													 `ifdef E203_HAS_MEM_ITF //{
-														 ifu2biu_icb_cmd_ifu,
-													 `endif//}
 														 lsu2biu_icb_cmd_ifu
 													 } ;
 
 	assign                   {
-													 `ifdef E203_HAS_MEM_ITF //{
-														 ifu2biu_icb_cmd_ready,
-													 `endif//}
 														 lsu2biu_icb_cmd_ready
 													 } = arbt_bus_icb_cmd_ready;
 
 	//RSP Channel
 	assign                   {
-													 `ifdef E203_HAS_MEM_ITF //{
-														 ifu2biu_icb_rsp_valid,
-													 `endif//}
 														 lsu2biu_icb_rsp_valid
 													 } = arbt_bus_icb_rsp_valid;
 
 	assign                   {
-													 `ifdef E203_HAS_MEM_ITF //{
-														 ifu2biu_icb_rsp_err,
-													 `endif//}
 														 lsu2biu_icb_rsp_err
 													 } = arbt_bus_icb_rsp_err;
 
 	assign                   {
-													 `ifdef E203_HAS_MEM_ITF //{
-														 ifu2biu_icb_rsp_excl_ok,
-													 `endif//}
 														 lsu2biu_icb_rsp_excl_ok
 													 } = arbt_bus_icb_rsp_excl_ok;
 													 
 	assign                   {
-													 `ifdef E203_HAS_MEM_ITF //{
-														 ifu2biu_icb_rsp_rdata,
-													 `endif//}
 														 lsu2biu_icb_rsp_rdata
 													 } = arbt_bus_icb_rsp_rdata;
 
 	assign arbt_bus_icb_rsp_ready = {
-													 `ifdef E203_HAS_MEM_ITF //{
-														 ifu2biu_icb_rsp_ready,
-													 `endif//}
 														 lsu2biu_icb_rsp_ready
 													 };
 
@@ -954,9 +869,7 @@ module e203_biu(
 
 
 	assign biu_active = 
-	`ifdef E203_HAS_MEM_ITF //{
-	ifu2biu_icb_cmd_valid | 
-	`endif
+
 	lsu2biu_icb_cmd_valid | icb_buffer_active; 
 
 	///////////////////////////////////////////////////////////////

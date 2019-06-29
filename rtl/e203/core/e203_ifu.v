@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-27 19:17:11
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-29 09:58:31
+// Last Modified time: 2019-06-29 10:07:35
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -78,27 +78,6 @@ module e203_ifu(
 	input  ifu2itcm_icb_rsp_err,   // Response error
 						// Note: the RSP rdata is inline with AXI definition
 	input  [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata, 
-	`endif//}
-
-	`ifdef E203_HAS_MEM_ITF //{
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// Bus Interface to System Memory, internal protocol called ICB (Internal Chip Bus)
-	//    * Bus cmd channel
-	output ifu2biu_icb_cmd_valid, // Handshake valid
-	input  ifu2biu_icb_cmd_ready, // Handshake ready
-						// Note: The data on rdata or wdata channel must be naturally
-						//       aligned, this is in line with the AXI definition
-	output [`E203_ADDR_SIZE-1:0]   ifu2biu_icb_cmd_addr, // Bus transaction start addr 
-
-	//    * Bus RSP channel
-	input  ifu2biu_icb_rsp_valid, // Response valid 
-	output ifu2biu_icb_rsp_ready, // Response ready
-	input  ifu2biu_icb_rsp_err,   // Response error
-						// Note: the RSP rdata is inline with AXI definition
-	input  [`E203_SYSMEM_DATA_WIDTH-1:0] ifu2biu_icb_rsp_rdata, 
-
-	//input  ifu2biu_replay,
 	`endif//}
 
 	//////////////////////////////////////////////////////////////
@@ -240,17 +219,6 @@ module e203_ifu(
 		.ifu2itcm_icb_rsp_rdata(ifu2itcm_icb_rsp_rdata),
 	`endif//}
 
-
-	`ifdef E203_HAS_MEM_ITF //{
-		.ifu2biu_icb_cmd_valid(ifu2biu_icb_cmd_valid),
-		.ifu2biu_icb_cmd_ready(ifu2biu_icb_cmd_ready),
-		.ifu2biu_icb_cmd_addr (ifu2biu_icb_cmd_addr ),
-		.ifu2biu_icb_rsp_valid(ifu2biu_icb_rsp_valid),
-		.ifu2biu_icb_rsp_ready(ifu2biu_icb_rsp_ready),
-		.ifu2biu_icb_rsp_err  (ifu2biu_icb_rsp_err  ),
-		.ifu2biu_icb_rsp_rdata(ifu2biu_icb_rsp_rdata),
-		//.ifu2biu_replay (ifu2biu_replay),
-	`endif//}
 
 	`ifdef E203_HAS_ITCM //{
 		.ifu2itcm_holdup (ifu2itcm_holdup),
