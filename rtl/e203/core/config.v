@@ -2,11 +2,11 @@
 // Company:   
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-27 19:06:59
-// Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-29 10:02:51
+// Last Modified by:   29505
+// Last Modified time: 2019-06-30 15:09:27
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
-// Design Name:   
+// Design Name: config.v  
 // Module Name: config
 // Project Name:   
 // Target Devices:   

@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-06-25 22:13:16
+// Last Modified by:   29505
+// Last Modified time: 2019-06-30 15:07:46
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_exu_alu.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -38,18 +60,6 @@ module e203_exu_alu(
 
   output i_longpipe, // Indicate this instruction is 
                      //   issued as a long pipe instruction
-
-  `ifdef E203_HAS_CSR_EAI//{
-  `ifndef E203_HAS_EAI
-  input  eai_xs_off,
-  `endif//
-  output         eai_csr_valid,
-  input          eai_csr_ready,
-  output  [31:0] eai_csr_addr,
-  output         eai_csr_wr,
-  output  [31:0] eai_csr_wdata,
-  input   [31:0] eai_csr_rdata,
-  `endif//}
 
   output amo_wait,
   input  oitf_empty,
@@ -234,17 +244,6 @@ module e203_exu_alu(
   e203_exu_alu_csrctrl u_e203_exu_alu_csrctrl(
 
 
-
-  `ifdef E203_HAS_CSR_EAI//{
-    .csr_sel_eai      (csr_sel_eai),
-    .eai_xs_off       (eai_xs_off),
-    .eai_csr_valid    (eai_csr_valid),
-    .eai_csr_ready    (eai_csr_ready),
-    .eai_csr_addr     (eai_csr_addr ),
-    .eai_csr_wr       (eai_csr_wr ),
-    .eai_csr_wdata    (eai_csr_wdata),
-    .eai_csr_rdata    (eai_csr_rdata),
-  `endif//}
     .csr_access_ilgl  (csr_access_ilgl),
 
     .csr_i_valid      (csr_i_valid),

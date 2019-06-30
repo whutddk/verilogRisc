@@ -2,8 +2,8 @@
 // Company:   
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-27 19:52:33
-// Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-29 16:11:36
+// Last Modified by:   29505
+// Last Modified time: 2019-06-30 15:09:22
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name: e203_defines.v  
@@ -197,12 +197,12 @@
 `define E203_HAS_PPI 
 `define E203_HAS_PLIC 
 `define E203_HAS_CLINT 
-`define E203_HAS_FIO 
+// `define E203_HAS_FIO 
 
-`ifdef E203_CFG_HAS_ECC//{
-`endif//}
-`ifdef E203_CFG_HAS_EAI//{
-`endif//}
+// `ifdef E203_CFG_HAS_ECC//{
+// `endif//}
+// `ifdef E203_CFG_HAS_EAI//{
+// `endif//}
 
 `ifdef E203_CFG_HAS_LOCKSTEP//{
 `endif//}
@@ -845,4 +845,4 @@
 		`define E203_BIU_RSP_DP        0
 	`endif
 
-	`define E203_HAS_CSR_EAI  1
+	// `define E203_HAS_CSR_EAI  1

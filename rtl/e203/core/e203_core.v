@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-06-30 14:05:03
 // Last Modified by:   29505
-// Last Modified time: 2019-06-30 14:17:48
+// Last Modified time: 2019-06-30 15:07:06
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_core.v  
 // Module Name:  
@@ -75,14 +75,6 @@
 module e203_core(
 	output[`E203_PC_SIZE-1:0] inspect_pc,
 
-	`ifdef E203_HAS_CSR_EAI//{
-	output         eai_csr_valid,
-	input          eai_csr_ready,
-	output  [31:0] eai_csr_addr,
-	output         eai_csr_wr,
-	output  [31:0] eai_csr_wdata,
-	input   [31:0] eai_csr_rdata,
-	`endif//}
 	output core_wfi,
 	output tm_stop,
 	output core_cgstop,
@@ -468,16 +460,6 @@ module e203_core(
 	wire excp_active;
 
 	e203_exu u_e203_exu(
-
-	`ifdef E203_HAS_CSR_EAI//{
-		.eai_csr_valid (eai_csr_valid),
-		.eai_csr_ready (eai_csr_ready),
-		.eai_csr_addr  (eai_csr_addr ),
-		.eai_csr_wr    (eai_csr_wr   ),
-		.eai_csr_wdata (eai_csr_wdata),
-		.eai_csr_rdata (eai_csr_rdata),
-	`endif//}
-
 
 		.excp_active            (excp_active),
 		.commit_mret            (commit_mret),

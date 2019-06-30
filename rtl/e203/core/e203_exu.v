@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-06-30 14:05:03
+// Last Modified by:   29505
+// Last Modified time: 2019-06-30 15:07:56
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_exu.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 // Company:   
 // Engineer: Ruige_Lee
@@ -6,7 +28,7 @@
 // Last Modified time: 2019-06-29 14:13:07
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
-// Design Name:   
+// Design Name: e203_exu.v  
 // Module Name: e203_exu
 // Project Name:   
 // Target Devices:   
@@ -185,17 +207,6 @@ module e203_exu(
   input                          agu_icb_rsp_err  , // Response error
   input                          agu_icb_rsp_excl_ok,
   input  [`E203_XLEN-1:0]        agu_icb_rsp_rdata,
-
-  `ifdef E203_HAS_CSR_EAI//{
-  output         eai_csr_valid,
-  input          eai_csr_ready,
-  output  [31:0] eai_csr_addr,
-  output         eai_csr_wr,
-  output  [31:0] eai_csr_wdata,
-  input   [31:0] eai_csr_rdata,
-  `endif//}
-
-
 
 
   input  test_mode,
@@ -518,15 +529,6 @@ module e203_exu(
 
   e203_exu_alu u_e203_exu_alu(
 
-
-  `ifdef E203_HAS_CSR_EAI//{
-    .eai_csr_valid (eai_csr_valid),
-    .eai_csr_ready (eai_csr_ready),
-    .eai_csr_addr  (eai_csr_addr ),
-    .eai_csr_wr    (eai_csr_wr   ),
-    .eai_csr_wdata (eai_csr_wdata),
-    .eai_csr_rdata (eai_csr_rdata),
-  `endif//}
     .csr_access_ilgl     (csr_access_ilgl),
     .nonflush_cmt_ena    (nonflush_cmt_ena),
 
