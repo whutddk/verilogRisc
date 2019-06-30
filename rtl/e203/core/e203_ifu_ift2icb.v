@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-29 09:10:45
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-29 13:26:03
+// Last Modified time: 2019-06-30 21:08:27
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -324,13 +324,6 @@ module e203_ifu_ift2icb(
 	//  
 
 	
-	// The current accessing PC is same as last accessed ICB address
-	wire ifu_req_lane_holdup = 1'b0
-						`ifdef E203_HAS_ITCM //{
-						| ( ifu2itcm_holdup & (~itcm_nohold)) 
-						`endif//}
-						;
-
 	wire ifu_req_hsked = ifu_req_valid & ifu_req_ready;
 	wire i_ifu_rsp_hsked = i_ifu_rsp_valid & i_ifu_rsp_ready;
 	wire ifu_icb_cmd_valid;
@@ -347,11 +340,11 @@ module e203_ifu_ift2icb(
 
 
 
-	localparam ICB_STATE_WIDTH  = 2;
+	localparam ICB_STATE_WIDTH  = 1;
 	// State 0: The idle state, means there is no any oustanding ifetch request
-	localparam ICB_STATE_IDLE = 2'd0;
+	localparam ICB_STATE_IDLE = 1'd0;
 	// State 1: Issued first request and wait response
-	localparam ICB_STATE_1ST  = 2'd1;
+	localparam ICB_STATE_1ST  = 1'd1;
 
 	
 	wire [ICB_STATE_WIDTH-1:0] icb_state_nxt;
@@ -529,18 +522,6 @@ module e203_ifu_ift2icb(
 									 (ifu_req_valid_pos)
 								 ;
 										 
-	// The ICB cmd address will be generated in 3 cases:
-
-	//
-	//   * Case #3: Use current ifetch address in 1st uop, when 
-	//                 ** It is not above two cases
-
-	wire [`E203_PC_SIZE-1:0] nxtalgn_plus_offset = 
-							 ifu_req_seq_rv32        ? `E203_PC_SIZE'd6 :
-																				 `E203_PC_SIZE'd4;
-	// Since we always fetch 32bits
-	wire [`E203_PC_SIZE-1:0] icb_algn_nxt_lane_addr = ifu_req_last_pc + nxtalgn_plus_offset;
-
 	assign ifu_icb_cmd_addr = ( ifu_req_pc);
 
 	/////////////////////////////////////////////////////////////////////////////////

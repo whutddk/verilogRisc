@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-25 19:07:21
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-30 20:34:41
+// Last Modified time: 2019-06-30 21:18:30
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -275,13 +275,13 @@ module e203_ifu_ifetch(
 	wire ifu_muldiv_b2b_nxt;
 	wire ifu_muldiv_b2b_r;
 	sirv_gnrl_dfflr #(1) ir_muldiv_b2b_dfflr (ir_valid_set, ifu_muldiv_b2b_nxt, ifu_muldiv_b2b_r, clk, rst_n);
-		 //To save power the H-16bits only loaded when it is 32bits length instru 
+		 
+
 	wire [`E203_INSTR_SIZE-1:0] ifu_ir_r;// The instruction register
-	wire minidec_rv32;
-	wire ir_hi_ena = ir_valid_set & minidec_rv32;
-	wire ir_lo_ena = ir_valid_set;
-	sirv_gnrl_dfflr #(`E203_INSTR_SIZE/2) ifu_hi_ir_dfflr (ir_hi_ena, ifu_ir_nxt[31:16], ifu_ir_r[31:16], clk, rst_n);
-	sirv_gnrl_dfflr #(`E203_INSTR_SIZE/2) ifu_lo_ir_dfflr (ir_lo_ena, ifu_ir_nxt[15: 0], ifu_ir_r[15: 0], clk, rst_n);
+	wire ir_ena = ir_valid_set;
+	// wire ir_lo_ena = ir_valid_set;
+	sirv_gnrl_dfflr #(`E203_INSTR_SIZE) ifu_ir_dfflr (ir_ena, {ifu_ir_nxt[`E203_INSTR_SIZE-1:2],2'b11}, ifu_ir_r, clk, rst_n);
+	// sirv_gnrl_dfflr #(`E203_INSTR_SIZE/2) ifu_lo_ir_dfflr (ir_lo_ena, ifu_ir_nxt[15: 0], ifu_ir_r[15: 0], clk, rst_n);
 
 	wire minidec_rs1en;
 	wire minidec_rs2en;
@@ -305,7 +305,7 @@ module e203_ifu_ifetch(
 	wire [`E203_PC_SIZE-1:0] ifu_pc_r;
 	sirv_gnrl_dfflr #(`E203_PC_SIZE) ifu_pc_dfflr (ir_pc_vld_set, ifu_pc_nxt,  ifu_pc_r, clk, rst_n);
 
-	assign ifu_o_ir  = ifu_ir_r;
+	assign ifu_o_ir  = {ifu_ir_r[`E203_INSTR_SIZE-1:2],2'b11};
 	assign ifu_o_pc  = ifu_pc_r;
 		// Instruction fetch misaligned exceptions are not possible on machines that support extensions
 		// with 16-bit aligned instructions, such as the compressed instruction set extension, C.
@@ -384,7 +384,7 @@ module e203_ifu_ifetch(
 			.dec_rs1idx  (minidec_rs1idx     ),
 			.dec_rs2idx  (minidec_rs2idx     ),
 
-			.dec_rv32    (minidec_rv32       ),
+			.dec_rv32    (),
 			.dec_bjp     (minidec_bjp        ),
 			.dec_jal     (minidec_jal        ),
 			.dec_jalr    (minidec_jalr       ),
