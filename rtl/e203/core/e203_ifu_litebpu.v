@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-25 19:07:21
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-30 20:27:32
+// Last Modified time: 2019-06-30 20:30:31
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -146,8 +146,7 @@ module e203_ifu_litebpu(
 									)
 									| 
 									(
-										{`E203_PC_SIZE{dec_jalr_rs1xn}} & rf2bpu_rs1[`E203_PC_SIZE-1:0]
-											
+										{`E203_PC_SIZE{dec_jalr_rs1xn}} & rf2bpu_rs1[`E203_PC_SIZE-1:0]			
 									)
 							); 
 

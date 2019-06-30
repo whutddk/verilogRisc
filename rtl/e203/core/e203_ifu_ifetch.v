@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-25 19:07:21
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-30 20:21:24
+// Last Modified time: 2019-06-30 20:34:41
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -440,7 +440,7 @@ module e203_ifu_ifetch(
 		.rst_n                    (rst_n )                 
 	);
 	// If the instruciton is 32bits length, increament 4, otherwise 2
-	wire [2:0] pc_incr_ofst = minidec_rv32 ? 3'd4 : 3'd2;
+	// wire [2:0] pc_incr_ofst = 3'd4;
 
 	wire [`E203_PC_SIZE-1:0] pc_nxt_pre;
 	wire [`E203_PC_SIZE-1:0] pc_nxt;
@@ -453,7 +453,7 @@ module e203_ifu_ifetch(
 
 	wire [`E203_PC_SIZE-1:0] pc_add_op2 = bjp_req ? {prdt_pc_add_op2[`E203_PC_SIZE-1:2],2'b0} :
 										 ifu_reset_req ? `E203_PC_SIZE'b0 :
-												{pc_incr_ofst[2],2'b0} ;
+												`E203_PC_SIZE'd4 ;
 
 
 
