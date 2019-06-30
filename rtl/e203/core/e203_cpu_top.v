@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-06-30 14:05:03
+// Last Modified by:   29505
+// Last Modified time: 2019-06-30 14:21:16
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_cpu_top.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 // Company:   
 // Engineer: Ruige_Lee
@@ -6,7 +28,7 @@
 // Last Modified time: 2019-06-29 16:14:58
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
-// Design Name:   
+// Design Name: e203_cpu_top.v  
 // Module Name: e203_cpu_top
 // Project Name:   
 // Target Devices:   
@@ -172,24 +194,6 @@ module e203_cpu_top(
 
 
 	//////////////////////////////////////////////////////////////
-	// The Fast IO Interface (ICB): Begin
-	//
-	//    * Bus cmd channel
-	output                         fio_icb_cmd_valid,
-	input                          fio_icb_cmd_ready,
-	output [`E203_ADDR_SIZE-1:0]   fio_icb_cmd_addr, 
-	output                         fio_icb_cmd_read, 
-	output [`E203_XLEN-1:0]        fio_icb_cmd_wdata,
-	output [`E203_XLEN/8-1:0]      fio_icb_cmd_wmask,
-	//
-	//    * Bus RSP channel
-	input                          fio_icb_rsp_valid,
-	output                         fio_icb_rsp_ready,
-	input                          fio_icb_rsp_err  ,
-	input  [`E203_XLEN-1:0]        fio_icb_rsp_rdata,
-	// The Fast IO Interface (ICB): End
-
-	//////////////////////////////////////////////////////////////
 	// The System Memory Interface (ICB): Begin
 	//
 	//    * Bus cmd channel
@@ -253,7 +257,6 @@ module e203_cpu_top(
 
 `ifndef E203_HAS_LOCKSTEP//{
 	wire ppi_icb_rsp_excl_ok   ;
-	wire fio_icb_rsp_excl_ok   ;
 	wire plic_icb_rsp_excl_ok  ;
 	wire clint_icb_rsp_excl_ok ;
 	wire mem_icb_rsp_excl_ok   ;
@@ -278,15 +281,10 @@ module e203_cpu_top(
 	wire mem_icb_enable;
 		`endif
 
-		`ifdef E203_HAS_FIO
-	wire fio_icb_enable;
-	wire [`E203_ADDR_SIZE-1:0] fio_region_indic;
-		`endif
 
 `endif//}
 
 		assign ppi_icb_rsp_excl_ok   = 1'b0;
-		assign fio_icb_rsp_excl_ok   = 1'b0;
 		assign plic_icb_rsp_excl_ok  = 1'b0;
 		assign clint_icb_rsp_excl_ok = 1'b0;
 		assign mem_icb_rsp_excl_ok   = 1'b0;
@@ -319,12 +317,7 @@ module e203_cpu_top(
 		assign mem_icb_enable = 1'b0;
 		`endif
 
-		`ifdef E203_HAS_FIO
-		assign fio_icb_enable = 1'b1;
-		assign fio_region_indic = `E203_FIO_ADDR_BASE;
-		`else
-		assign fio_icb_enable = 1'b0;
-		`endif
+		
 
 	e203_cpu #(.MASTER(1)) u_e203_cpu(
 		.inspect_pc               (inspect_pc), 
@@ -434,25 +427,6 @@ module e203_cpu_top(
 		.plic_icb_rsp_rdata     (plic_icb_rsp_rdata),
 
 
-	`ifdef E203_HAS_FIO //{
-		.fio_icb_enable        (fio_icb_enable),
-		.fio_region_indic      (fio_region_indic),
-		.fio_icb_cmd_valid     (fio_icb_cmd_valid),
-		.fio_icb_cmd_ready     (fio_icb_cmd_ready),
-		.fio_icb_cmd_addr      (fio_icb_cmd_addr ),
-		.fio_icb_cmd_read      (fio_icb_cmd_read ),
-		.fio_icb_cmd_wdata     (fio_icb_cmd_wdata),
-		.fio_icb_cmd_wmask     (fio_icb_cmd_wmask),
-		.fio_icb_cmd_lock      (),
-		.fio_icb_cmd_excl      (),
-		.fio_icb_cmd_size      (),
-		
-		.fio_icb_rsp_valid     (fio_icb_rsp_valid),
-		.fio_icb_rsp_ready     (fio_icb_rsp_ready),
-		.fio_icb_rsp_err       (fio_icb_rsp_err  ),
-		.fio_icb_rsp_excl_ok   (fio_icb_rsp_excl_ok  ),
-		.fio_icb_rsp_rdata     (fio_icb_rsp_rdata),
-	`endif//}
 
 	`ifdef E203_HAS_MEM_ITF //{
 		.mem_icb_enable     (mem_icb_enable),

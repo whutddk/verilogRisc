@@ -2,11 +2,11 @@
 // Company:   
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-27 19:06:59
-// Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-29 16:16:08
+// Last Modified by:   29505
+// Last Modified time: 2019-06-30 14:24:56
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
-// Design Name:   
+// Design Name: e203_soc_top.v  
 // Module Name: e203_soc_top
 // Project Name:   
 // Target Devices:   
@@ -335,9 +335,6 @@ module e203_soc_top(
  wire sysper_icb_cmd_valid;
  wire sysper_icb_cmd_ready;
 
- wire sysfio_icb_cmd_valid;
- wire sysfio_icb_cmd_ready;
-
 `ifdef E203_HAS_MEM_ITF
  wire sysmem_icb_cmd_valid;
  wire sysmem_icb_cmd_ready;
@@ -357,19 +354,6 @@ module e203_soc_top(
 	.sysper_icb_rsp_ready (sysper_icb_cmd_ready),
 	.sysper_icb_rsp_err   (1'b0  ),
 	.sysper_icb_rsp_rdata (32'b0),
-
-
-	.sysfio_icb_cmd_valid(sysfio_icb_cmd_valid),
-	.sysfio_icb_cmd_ready(sysfio_icb_cmd_ready),
-	.sysfio_icb_cmd_read (), 
-	.sysfio_icb_cmd_addr (), 
-	.sysfio_icb_cmd_wdata(), 
-	.sysfio_icb_cmd_wmask(), 
-	 
-	.sysfio_icb_rsp_valid(sysfio_icb_cmd_valid),
-	.sysfio_icb_rsp_ready(sysfio_icb_cmd_ready),
-	.sysfio_icb_rsp_err  (1'b0  ),
-	.sysfio_icb_rsp_rdata(32'b0),
 
 `ifdef E203_HAS_MEM_ITF
 	.sysmem_icb_cmd_valid(sysmem_icb_cmd_valid),

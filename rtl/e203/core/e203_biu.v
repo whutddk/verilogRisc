@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-06-30 14:05:03
+// Last Modified by:   29505
+// Last Modified time: 2019-06-30 14:20:05
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_biu.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 // Company:   
 // Engineer: Ruige_Lee
@@ -6,7 +28,7 @@
 // Last Modified time: 2019-06-29 09:58:18
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
-// Design Name:   
+// Design Name: e203_biu.v  
 // Module Name: e203_biu
 // Project Name:   
 // Target Devices:   
@@ -177,34 +199,6 @@ module e203_biu(
 	input  [`E203_XLEN-1:0]        plic_icb_rsp_rdata,
 
 
-	`ifdef E203_HAS_FIO //{
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// The ICB Interface to Fast I/O
-	input [`E203_ADDR_SIZE-1:0]    fio_region_indic,
-	input                          fio_icb_enable,
-	//
-	//    * Bus cmd channel
-	output                         fio_icb_cmd_valid,
-	input                          fio_icb_cmd_ready,
-	output [`E203_ADDR_SIZE-1:0]   fio_icb_cmd_addr, 
-	output                         fio_icb_cmd_read, 
-	output [`E203_XLEN-1:0]        fio_icb_cmd_wdata,
-	output [`E203_XLEN/8-1:0]      fio_icb_cmd_wmask,
-	output [1:0]                   fio_icb_cmd_burst,
-	output [1:0]                   fio_icb_cmd_beat,
-	output                         fio_icb_cmd_lock,
-	output                         fio_icb_cmd_excl,
-	output [1:0]                   fio_icb_cmd_size,
-	//
-	//    * Bus RSP channel
-	input                          fio_icb_rsp_valid,
-	output                         fio_icb_rsp_ready,
-	input                          fio_icb_rsp_err  ,
-	input                          fio_icb_rsp_excl_ok,
-	input  [`E203_XLEN-1:0]        fio_icb_rsp_rdata,
-	`endif//}
-
 	`ifdef E203_HAS_MEM_ITF //{
 	//////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////
@@ -256,11 +250,9 @@ module e203_biu(
 			localparam BIU_SPLT_I_NUM_1 = BIU_SPLT_I_NUM_0;
 	`endif//}
 
-	`ifdef E203_HAS_FIO //{
-			localparam BIU_SPLT_I_NUM_2 = (BIU_SPLT_I_NUM_1 + 1);
-	`else//}{
+	
 			localparam BIU_SPLT_I_NUM_2 = BIU_SPLT_I_NUM_1;
-	`endif//}
+
 
 			localparam BIU_SPLT_I_NUM   = BIU_SPLT_I_NUM_2;
 
@@ -639,9 +631,6 @@ module e203_biu(
 													 , ppi_icb_cmd_valid
 													 , clint_icb_cmd_valid
 													 , plic_icb_cmd_valid
-													 `ifdef E203_HAS_FIO //{
-													 , fio_icb_cmd_valid
-													 `endif//}
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_cmd_valid
 													 `endif//}
@@ -652,9 +641,6 @@ module e203_biu(
 													 , ppi_icb_cmd_addr
 													 , clint_icb_cmd_addr
 													 , plic_icb_cmd_addr
-													 `ifdef E203_HAS_FIO //{
-													 , fio_icb_cmd_addr
-													 `endif//}
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_cmd_addr
 													 `endif//}
@@ -665,9 +651,6 @@ module e203_biu(
 													 , ppi_icb_cmd_read
 													 , clint_icb_cmd_read
 													 , plic_icb_cmd_read
-													 `ifdef E203_HAS_FIO //{
-													 , fio_icb_cmd_read
-													 `endif//}
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_cmd_read
 													 `endif//}
@@ -678,9 +661,6 @@ module e203_biu(
 													 , ppi_icb_cmd_wdata
 													 , clint_icb_cmd_wdata
 													 , plic_icb_cmd_wdata
-													 `ifdef E203_HAS_FIO //{
-													 , fio_icb_cmd_wdata
-													 `endif//}
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_cmd_wdata
 													 `endif//}
@@ -691,9 +671,6 @@ module e203_biu(
 													 , ppi_icb_cmd_wmask
 													 , clint_icb_cmd_wmask
 													 , plic_icb_cmd_wmask
-													 `ifdef E203_HAS_FIO //{
-													 , fio_icb_cmd_wmask
-													 `endif//}
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_cmd_wmask
 													 `endif//}
@@ -704,9 +681,6 @@ module e203_biu(
 													 , ppi_icb_cmd_burst
 													 , clint_icb_cmd_burst
 													 , plic_icb_cmd_burst
-													 `ifdef E203_HAS_FIO //{
-													 , fio_icb_cmd_burst
-													 `endif//}
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_cmd_burst
 													 `endif//}
@@ -717,9 +691,6 @@ module e203_biu(
 													 , ppi_icb_cmd_beat
 													 , clint_icb_cmd_beat
 													 , plic_icb_cmd_beat
-													 `ifdef E203_HAS_FIO //{
-													 , fio_icb_cmd_beat
-													 `endif//}
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_cmd_beat
 													 `endif//}
@@ -730,9 +701,6 @@ module e203_biu(
 													 , ppi_icb_cmd_lock
 													 , clint_icb_cmd_lock
 													 , plic_icb_cmd_lock
-													 `ifdef E203_HAS_FIO //{
-													 , fio_icb_cmd_lock
-													 `endif//}
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_cmd_lock
 													 `endif//}
@@ -743,9 +711,6 @@ module e203_biu(
 													 , ppi_icb_cmd_excl
 													 , clint_icb_cmd_excl
 													 , plic_icb_cmd_excl
-													 `ifdef E203_HAS_FIO //{
-													 , fio_icb_cmd_excl
-													 `endif//}
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_cmd_excl
 													 `endif//}
@@ -756,9 +721,6 @@ module e203_biu(
 													 , ppi_icb_cmd_size
 													 , clint_icb_cmd_size
 													 , plic_icb_cmd_size
-													 `ifdef E203_HAS_FIO //{
-													 , fio_icb_cmd_size
-													 `endif//}
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_cmd_size
 													 `endif//}
@@ -769,9 +731,6 @@ module e203_biu(
 													 , ppi_icb_cmd_ready
 													 , clint_icb_cmd_ready
 													 , plic_icb_cmd_ready
-													 `ifdef E203_HAS_FIO //{
-													 , fio_icb_cmd_ready
-													 `endif//}
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_cmd_ready
 													 `endif//}
@@ -783,9 +742,6 @@ module e203_biu(
 													 , ppi_icb_rsp_valid
 													 , clint_icb_rsp_valid
 													 , plic_icb_rsp_valid
-													 `ifdef E203_HAS_FIO //{
-													 , fio_icb_rsp_valid
-													 `endif//}
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_rsp_valid
 													 `endif//}
@@ -796,9 +752,6 @@ module e203_biu(
 													 , ppi_icb_rsp_err
 													 , clint_icb_rsp_err
 													 , plic_icb_rsp_err
-													 `ifdef E203_HAS_FIO //{
-													 , fio_icb_rsp_err
-													 `endif//}
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_rsp_err
 													 `endif//}
@@ -809,9 +762,6 @@ module e203_biu(
 													 , ppi_icb_rsp_excl_ok
 													 , clint_icb_rsp_excl_ok
 													 , plic_icb_rsp_excl_ok
-													 `ifdef E203_HAS_FIO //{
-													 , fio_icb_rsp_excl_ok
-													 `endif//}
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_rsp_excl_ok
 													 `endif//}
@@ -822,9 +772,6 @@ module e203_biu(
 													 , ppi_icb_rsp_rdata
 													 , clint_icb_rsp_rdata
 													 , plic_icb_rsp_rdata
-													 `ifdef E203_HAS_FIO //{
-													 , fio_icb_rsp_rdata
-													 `endif//}
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_rsp_rdata
 													 `endif//}
@@ -835,9 +782,6 @@ module e203_biu(
 													 , ppi_icb_rsp_ready
 													 , clint_icb_rsp_ready
 													 , plic_icb_rsp_ready
-													 `ifdef E203_HAS_FIO //{
-													 , fio_icb_rsp_ready
-													 `endif//}
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_rsp_ready
 													 `endif//}
@@ -852,18 +796,11 @@ module e203_biu(
 	wire buf_icb_cmd_plic = plic_icb_enable & (buf_icb_cmd_addr[`E203_PLIC_BASE_REGION] ==  plic_region_indic[`E203_PLIC_BASE_REGION]);
 	wire buf_icb_sel_plic = buf_icb_cmd_plic & (~buf_icb_cmd_ifu);
 
-	`ifdef E203_HAS_FIO //{
-	wire buf_icb_cmd_fio = fio_icb_enable & (buf_icb_cmd_addr[`E203_FIO_BASE_REGION] ==  fio_region_indic[`E203_FIO_BASE_REGION]);
-	wire buf_icb_sel_fio = buf_icb_cmd_fio & (~buf_icb_cmd_ifu);
-	`endif//}
 
 	wire buf_icb_sel_ifuerr =(
 														buf_icb_cmd_ppi 
 													| buf_icb_cmd_clint 
 													| buf_icb_cmd_plic
-													 `ifdef E203_HAS_FIO //{
-													| buf_icb_cmd_fio
-													 `endif//}
 													 ) & buf_icb_cmd_ifu;
 
 	`ifdef E203_HAS_MEM_ITF //{
@@ -872,9 +809,6 @@ module e203_biu(
 														 & (~buf_icb_sel_ppi)
 														 & (~buf_icb_sel_clint)
 														 & (~buf_icb_sel_plic)
-													`ifdef E203_HAS_FIO //{
-														 & (~buf_icb_sel_fio)
-													`endif//}
 														 ;
 	`endif//}
 
@@ -884,9 +818,6 @@ module e203_biu(
 													 , buf_icb_sel_ppi
 													 , buf_icb_sel_clint
 													 , buf_icb_sel_plic
-													 `ifdef E203_HAS_FIO //{
-													 , buf_icb_sel_fio
-													 `endif//}
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , buf_icb_sel_mem
 													 `endif//}

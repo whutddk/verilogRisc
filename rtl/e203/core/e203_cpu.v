@@ -2,11 +2,11 @@
 // Company:   
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-27 19:06:59
-// Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-29 16:14:19
+// Last Modified by:   29505
+// Last Modified time: 2019-06-30 14:17:15
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
-// Design Name:   
+// Design Name: e203_cpu.v  
 // Module Name: e203_cpu
 // Project Name:   
 // Target Devices:   
@@ -209,32 +209,6 @@ module e203_cpu #(
 	input                          plic_icb_rsp_excl_ok  ,
 	input  [`E203_XLEN-1:0]        plic_icb_rsp_rdata,
 
-
-	`ifdef E203_HAS_FIO //{
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// The ICB Interface to Fast I/O
-	input [`E203_ADDR_SIZE-1:0]    fio_region_indic,
-	//
-	input                          fio_icb_enable,
-	//    * Bus cmd channel
-	output                         fio_icb_cmd_valid,
-	input                          fio_icb_cmd_ready,
-	output [`E203_ADDR_SIZE-1:0]   fio_icb_cmd_addr, 
-	output                         fio_icb_cmd_read, 
-	output [`E203_XLEN-1:0]        fio_icb_cmd_wdata,
-	output [`E203_XLEN/8-1:0]      fio_icb_cmd_wmask,
-	output                         fio_icb_cmd_lock,
-	output                         fio_icb_cmd_excl,
-	output [1:0]                   fio_icb_cmd_size,
-	//
-	//    * Bus RSP channel
-	input                          fio_icb_rsp_valid,
-	output                         fio_icb_rsp_ready,
-	input                          fio_icb_rsp_err  ,
-	input                          fio_icb_rsp_excl_ok  ,
-	input  [`E203_XLEN-1:0]        fio_icb_rsp_rdata,
-	`endif//}
 
 	`ifdef E203_HAS_MEM_ITF //{
 	//////////////////////////////////////////////////////////////
@@ -638,26 +612,6 @@ module e203_cpu #(
 		.clint_icb_rsp_err       (clint_icb_rsp_err  ),
 		.clint_icb_rsp_excl_ok   (clint_icb_rsp_excl_ok),
 		.clint_icb_rsp_rdata     (clint_icb_rsp_rdata),
-
-	`ifdef E203_HAS_FIO //{
-		.fio_icb_enable        (fio_icb_enable),
-		.fio_region_indic      (fio_region_indic ),
-		.fio_icb_cmd_valid     (fio_icb_cmd_valid),
-		.fio_icb_cmd_ready     (fio_icb_cmd_ready),
-		.fio_icb_cmd_addr      (fio_icb_cmd_addr ),
-		.fio_icb_cmd_read      (fio_icb_cmd_read ),
-		.fio_icb_cmd_wdata     (fio_icb_cmd_wdata),
-		.fio_icb_cmd_wmask     (fio_icb_cmd_wmask),
-		.fio_icb_cmd_lock      (fio_icb_cmd_lock ),
-		.fio_icb_cmd_excl      (fio_icb_cmd_excl ),
-		.fio_icb_cmd_size      (fio_icb_cmd_size ),
-		
-		.fio_icb_rsp_valid     (fio_icb_rsp_valid),
-		.fio_icb_rsp_ready     (fio_icb_rsp_ready),
-		.fio_icb_rsp_err       (fio_icb_rsp_err  ),
-		.fio_icb_rsp_excl_ok   (fio_icb_rsp_excl_ok),
-		.fio_icb_rsp_rdata     (fio_icb_rsp_rdata),
-	`endif//}
 
 	`ifdef E203_HAS_MEM_ITF //{
 		.mem_icb_enable     (mem_icb_enable),

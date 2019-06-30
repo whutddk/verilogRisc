@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-06-30 14:05:03
+// Last Modified by:   29505
+// Last Modified time: 2019-06-30 14:07:06
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_lsu.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 // Company:   
 // Engineer: Ruige_Lee
@@ -6,7 +28,7 @@
 // Last Modified time: 2019-06-29 16:27:45
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
-// Design Name:   
+// Design Name: e203_lsu.v  
 // Module Name: e203_lsu
 // Project Name:   
 // Target Devices:   
@@ -183,29 +205,6 @@ module e203_lsu(
 	input  rst_n
 	);
 
-		`ifdef E203_HAS_DCACHE //{
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// The ICB Interface to DCache
-	//
-	//    * Bus cmd channel
-	wire                          dcache_icb_cmd_valid;
-	wire                          dcache_icb_cmd_ready;
-	wire  [`E203_ADDR_SIZE-1:0]   dcache_icb_cmd_addr; 
-	wire                          dcache_icb_cmd_read; 
-	wire  [`E203_XLEN-1:0]        dcache_icb_cmd_wdata;
-	wire  [`E203_XLEN/8-1:0]      dcache_icb_cmd_wmask;
-	wire                          dcache_icb_cmd_lock;
-	wire                          dcache_icb_cmd_excl;
-	wire  [1:0]                   dcache_icb_cmd_size;
-	//
-	//    * Bus RSP channel
-	wire                          dcache_icb_rsp_valid;
-	wire                          dcache_icb_rsp_ready;
-	wire                          dcache_icb_rsp_err  ;
-	wire                          dcache_icb_rsp_excl_ok  ;
-	wire  [`E203_XLEN-1:0]        dcache_icb_rsp_rdata;
-	`endif//}
 
 	wire lsu_ctrl_active;
 

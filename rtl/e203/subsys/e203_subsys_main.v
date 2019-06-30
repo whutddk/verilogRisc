@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-06-30 14:05:03
+// Last Modified by:   29505
+// Last Modified time: 2019-06-30 14:28:38
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_subsys_main.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 // Company:   
 // Engineer: Ruige_Lee
@@ -6,7 +28,7 @@
 // Last Modified time: 2019-06-29 16:15:24
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
-// Design Name:   
+// Design Name: e203_subsys_main.v  
 // Module Name: e203_subsys_main
 // Project Name:   
 // Target Devices:   
@@ -376,25 +398,6 @@ module e203_subsys_main(
   input                          sysper_icb_rsp_err  ,
   input  [`E203_XLEN-1:0]        sysper_icb_rsp_rdata,
 
-  `ifdef E203_HAS_FIO //{
-  //////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////
-  // The ICB Interface to Fast I/O
-  //
-  //    * Bus cmd channel
-  output                         sysfio_icb_cmd_valid,
-  input                          sysfio_icb_cmd_ready,
-  output [`E203_ADDR_SIZE-1:0]   sysfio_icb_cmd_addr, 
-  output                         sysfio_icb_cmd_read, 
-  output [`E203_XLEN-1:0]        sysfio_icb_cmd_wdata,
-  output [`E203_XLEN/8-1:0]      sysfio_icb_cmd_wmask,
-  //
-  //    * Bus RSP channel
-  input                          sysfio_icb_rsp_valid,
-  output                         sysfio_icb_rsp_ready,
-  input                          sysfio_icb_rsp_err  ,
-  input  [`E203_XLEN-1:0]        sysfio_icb_rsp_rdata,
-  `endif//}
 
   `ifdef E203_HAS_MEM_ITF //{
   //////////////////////////////////////////////////////////////
@@ -856,31 +859,6 @@ module e203_subsys_main(
   wire                         plic_icb_rsp_err  ;
   wire [`E203_XLEN-1:0]        plic_icb_rsp_rdata;
 
-  `ifdef E203_HAS_FIO //{
-  wire                         fio_icb_cmd_valid;
-  wire                         fio_icb_cmd_ready;
-  wire [`E203_ADDR_SIZE-1:0]   fio_icb_cmd_addr; 
-  wire                         fio_icb_cmd_read; 
-  wire [`E203_XLEN-1:0]        fio_icb_cmd_wdata;
-  wire [`E203_XLEN/8-1:0]      fio_icb_cmd_wmask;
-
-  wire                         fio_icb_rsp_valid;
-  wire                         fio_icb_rsp_ready;
-  wire                         fio_icb_rsp_err  ;
-  wire [`E203_XLEN-1:0]        fio_icb_rsp_rdata;
-
-  assign sysfio_icb_cmd_valid = fio_icb_cmd_valid;
-  assign fio_icb_cmd_ready    = sysfio_icb_cmd_ready;
-  assign sysfio_icb_cmd_addr  = fio_icb_cmd_addr ; 
-  assign sysfio_icb_cmd_read  = fio_icb_cmd_read ; 
-  assign sysfio_icb_cmd_wdata = fio_icb_cmd_wdata;
-  assign sysfio_icb_cmd_wmask = fio_icb_cmd_wmask;
-                           
-  assign fio_icb_rsp_valid    = sysfio_icb_rsp_valid;
-  assign sysfio_icb_rsp_ready = fio_icb_rsp_ready;
-  assign fio_icb_rsp_err      = sysfio_icb_rsp_err  ;
-  assign fio_icb_rsp_rdata    = sysfio_icb_rsp_rdata;
-  `endif//}
 
   wire                         mem_icb_cmd_valid;
   wire                         mem_icb_cmd_ready;
@@ -997,17 +975,6 @@ module e203_subsys_main(
     .clint_icb_rsp_err       (clint_icb_rsp_err  ),
     .clint_icb_rsp_rdata     (clint_icb_rsp_rdata),
 
-    .fio_icb_cmd_valid     (fio_icb_cmd_valid),
-    .fio_icb_cmd_ready     (fio_icb_cmd_ready),
-    .fio_icb_cmd_addr      (fio_icb_cmd_addr ),
-    .fio_icb_cmd_read      (fio_icb_cmd_read ),
-    .fio_icb_cmd_wdata     (fio_icb_cmd_wdata),
-    .fio_icb_cmd_wmask     (fio_icb_cmd_wmask),
-    
-    .fio_icb_rsp_valid     (fio_icb_rsp_valid),
-    .fio_icb_rsp_ready     (fio_icb_rsp_ready),
-    .fio_icb_rsp_err       (fio_icb_rsp_err  ),
-    .fio_icb_rsp_rdata     (fio_icb_rsp_rdata),
 
     .mem_icb_cmd_valid  (mem_icb_cmd_valid),
     .mem_icb_cmd_ready  (mem_icb_cmd_ready),

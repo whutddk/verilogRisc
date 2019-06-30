@@ -2,11 +2,11 @@
 // Company:   
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-27 19:06:59
-// Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-29 16:15:53
+// Last Modified by:   29505
+// Last Modified time: 2019-06-30 14:25:24
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
-// Design Name:   
+// Design Name: e203_subsys_top.v  
 // Module Name: e203_subsys_top
 // Project Name:   
 // Target Devices:   
@@ -143,25 +143,6 @@ module e203_subsys_top(
 	input                          sysper_icb_rsp_err  ,
 	input  [`E203_XLEN-1:0]        sysper_icb_rsp_rdata,
 
-	`ifdef E203_HAS_FIO //{
-	//////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////
-	// The ICB Interface to Fast I/O
-	//
-	//    * Bus cmd channel
-	output                         sysfio_icb_cmd_valid,
-	input                          sysfio_icb_cmd_ready,
-	output [`E203_ADDR_SIZE-1:0]   sysfio_icb_cmd_addr, 
-	output                         sysfio_icb_cmd_read, 
-	output [`E203_XLEN-1:0]        sysfio_icb_cmd_wdata,
-	output [`E203_XLEN/8-1:0]      sysfio_icb_cmd_wmask,
-	//
-	//    * Bus RSP channel
-	input                          sysfio_icb_rsp_valid,
-	output                         sysfio_icb_rsp_ready,
-	input                          sysfio_icb_rsp_err  ,
-	input  [`E203_XLEN-1:0]        sysfio_icb_rsp_rdata,
-	`endif//}
 
 	`ifdef E203_HAS_MEM_ITF //{
 	//////////////////////////////////////////////////////////////
@@ -831,19 +812,6 @@ module e203_subsys_top(
 		.sysper_icb_rsp_ready     (sysper_icb_rsp_ready),
 		.sysper_icb_rsp_err       (sysper_icb_rsp_err  ),
 		.sysper_icb_rsp_rdata     (sysper_icb_rsp_rdata),
-
-		.sysfio_icb_cmd_valid     (sysfio_icb_cmd_valid),
-		.sysfio_icb_cmd_ready     (sysfio_icb_cmd_ready),
-		.sysfio_icb_cmd_addr      (sysfio_icb_cmd_addr ),
-		.sysfio_icb_cmd_read      (sysfio_icb_cmd_read ),
-		.sysfio_icb_cmd_wdata     (sysfio_icb_cmd_wdata),
-		.sysfio_icb_cmd_wmask     (sysfio_icb_cmd_wmask),
-		
-		.sysfio_icb_rsp_valid     (sysfio_icb_rsp_valid),
-		.sysfio_icb_rsp_ready     (sysfio_icb_rsp_ready),
-		.sysfio_icb_rsp_err       (sysfio_icb_rsp_err  ),
-		.sysfio_icb_rsp_rdata     (sysfio_icb_rsp_rdata),
-
 
 `ifdef E203_HAS_MEM_ITF //{
 		.sysmem_icb_cmd_valid  (sysmem_icb_cmd_valid),
