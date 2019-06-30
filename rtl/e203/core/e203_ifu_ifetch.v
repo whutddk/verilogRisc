@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-06-30 22:13:07
+// Last Modified by:   29505
+// Last Modified time: 2019-06-30 22:16:35
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_ifu_ifetch.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 // Company:   
 // Engineer: Ruige_Lee
@@ -6,7 +28,7 @@
 // Last Modified time: 2019-06-30 21:18:30
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
-// Design Name:   
+// Design Name: e203_ifu_ifetch.v  
 // Module Name: e203_ifu_ifetch
 // Project Name:   
 // Target Devices:   
@@ -467,7 +489,7 @@ module e203_ifu_ifetch(
 	// 											pc_incr_ofst ;
 
 	assign ifu_req_seq = (~pipe_flush_req_real) & (~ifu_reset_req) & (~bjp_req);
-	assign ifu_req_seq_rv32 = minidec_rv32;
+	assign ifu_req_seq_rv32 = 1'b1;
 	assign ifu_req_last_pc = pc_r;
 
 	assign pc_nxt_pre = pc_add_op1 + pc_add_op2;
