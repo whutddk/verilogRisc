@@ -1,3 +1,26 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Company:   
+// Engineer: Ruige_Lee
+// Create Date: 2019-06-25 19:07:21
+// Last Modified by:   Ruige_Lee
+// Last Modified time: 2019-06-29 16:17:32
+// Email: 295054118@whut.edu.cn
+// page: https://whutddk.github.io/
+// Design Name:   
+// Module Name: e203_dtcm_ctrl
+// Project Name:   
+// Target Devices:   
+// Tool Versions:   
+// Description:   
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision:    -   
+// Additional Comments:  
+// 
+//
+//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -57,29 +80,6 @@ module e203_dtcm_ctrl(
   output [32-1:0] lsu2dtcm_icb_rsp_rdata, 
 
 
-
-  `ifdef E203_HAS_DTCM_EXTITF //{
-  //////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////
-  // External-agent ICB to DTCM
-  //    * Bus cmd channel
-  input  ext2dtcm_icb_cmd_valid, // Handshake valid
-  output ext2dtcm_icb_cmd_ready, // Handshake ready
-            // Note: The data on rdata or wdata channel must be naturally
-            //       aligned, this is in line with the AXI definition
-  input  [`E203_DTCM_ADDR_WIDTH-1:0]   ext2dtcm_icb_cmd_addr, // Bus transaction start addr 
-  input  ext2dtcm_icb_cmd_read,   // Read or write
-  input  [32-1:0] ext2dtcm_icb_cmd_wdata, 
-  input  [ 4-1:0] ext2dtcm_icb_cmd_wmask, 
-
-  //    * Bus RSP channel
-  output ext2dtcm_icb_rsp_valid, // Response valid 
-  input  ext2dtcm_icb_rsp_ready, // Response ready
-  output ext2dtcm_icb_rsp_err,   // Response error
-            // Note: the RSP rdata is inline with AXI definition
-  output [32-1:0] ext2dtcm_icb_rsp_rdata, 
-  `endif//}
-
   output                         dtcm_ram_cs,  
   output                         dtcm_ram_we,  
   output [`E203_DTCM_RAM_AW-1:0] dtcm_ram_addr, 
@@ -106,13 +106,10 @@ module e203_dtcm_ctrl(
   wire arbt_icb_rsp_err;
   wire [`E203_DTCM_DATA_WIDTH-1:0] arbt_icb_rsp_rdata;
 
-  `ifdef E203_HAS_DTCM_EXTITF //{
-      localparam DTCM_ARBT_I_NUM = 2;
-      localparam DTCM_ARBT_I_PTR_W = 1;
-  `else//}{
-      localparam DTCM_ARBT_I_NUM = 1;
-      localparam DTCM_ARBT_I_PTR_W = 1;
-  `endif//}
+
+  localparam DTCM_ARBT_I_NUM = 1;
+  localparam DTCM_ARBT_I_PTR_W = 1;
+
 
   wire [DTCM_ARBT_I_NUM*1-1:0] arbt_bus_icb_cmd_valid;
   wire [DTCM_ARBT_I_NUM*1-1:0] arbt_bus_icb_cmd_ready;
@@ -126,74 +123,19 @@ module e203_dtcm_ctrl(
   wire [DTCM_ARBT_I_NUM*1-1:0] arbt_bus_icb_rsp_err;
   wire [DTCM_ARBT_I_NUM*`E203_DTCM_DATA_WIDTH-1:0] arbt_bus_icb_rsp_rdata;
 
-  assign arbt_bus_icb_cmd_valid =
+  assign arbt_bus_icb_cmd_valid = lsu2dtcm_icb_cmd_valid;
       //LSU take higher priority
-                           {
-                      `ifdef E203_HAS_DTCM_EXTITF //{
-                             ext2dtcm_icb_cmd_valid,
-                      `endif//}
-                             lsu2dtcm_icb_cmd_valid
-                           } ;
-  assign arbt_bus_icb_cmd_addr =
-                           {
-                      `ifdef E203_HAS_DTCM_EXTITF //{
-                             ext2dtcm_icb_cmd_addr,
-                      `endif//}
-                             lsu2dtcm_icb_cmd_addr
-                           } ;
-  assign arbt_bus_icb_cmd_read =
-                           {
-                      `ifdef E203_HAS_DTCM_EXTITF //{
-                             ext2dtcm_icb_cmd_read,
-                      `endif//}
-                             lsu2dtcm_icb_cmd_read
-                           } ;
-  assign arbt_bus_icb_cmd_wdata =
-                           {
-                      `ifdef E203_HAS_DTCM_EXTITF //{
-                             ext2dtcm_icb_cmd_wdata,
-                      `endif//}
-                             lsu2dtcm_icb_cmd_wdata
-                           } ;
-  assign arbt_bus_icb_cmd_wmask =
-                           {
-                      `ifdef E203_HAS_DTCM_EXTITF //{
-                             ext2dtcm_icb_cmd_wmask,
-                      `endif//}
-                             lsu2dtcm_icb_cmd_wmask
-                           } ;
-  assign                   {
-                      `ifdef E203_HAS_DTCM_EXTITF //{
-                             ext2dtcm_icb_cmd_ready,
-                      `endif//}
-                             lsu2dtcm_icb_cmd_ready
-                           } = arbt_bus_icb_cmd_ready;
+  assign arbt_bus_icb_cmd_addr = lsu2dtcm_icb_cmd_addr;
+  assign arbt_bus_icb_cmd_read = lsu2dtcm_icb_cmd_read;
+  assign arbt_bus_icb_cmd_wdata = lsu2dtcm_icb_cmd_wdata;
+  assign arbt_bus_icb_cmd_wmask = lsu2dtcm_icb_cmd_wmask;
+  assign lsu2dtcm_icb_cmd_ready = arbt_bus_icb_cmd_ready;
 
 
-  assign                   {
-                      `ifdef E203_HAS_DTCM_EXTITF //{
-                             ext2dtcm_icb_rsp_valid,
-                      `endif//}
-                             lsu2dtcm_icb_rsp_valid
-                           } = arbt_bus_icb_rsp_valid;
-  assign                   {
-                      `ifdef E203_HAS_DTCM_EXTITF //{
-                             ext2dtcm_icb_rsp_err,
-                      `endif//}
-                             lsu2dtcm_icb_rsp_err
-                           } = arbt_bus_icb_rsp_err;
-  assign                   {
-                      `ifdef E203_HAS_DTCM_EXTITF //{
-                             ext2dtcm_icb_rsp_rdata,
-                      `endif//}
-                             lsu2dtcm_icb_rsp_rdata
-                           } = arbt_bus_icb_rsp_rdata;
-  assign arbt_bus_icb_rsp_ready = {
-                      `ifdef E203_HAS_DTCM_EXTITF //{
-                             ext2dtcm_icb_rsp_ready,
-                      `endif//}
-                             lsu2dtcm_icb_rsp_ready
-                           };
+  assign lsu2dtcm_icb_rsp_valid = arbt_bus_icb_rsp_valid;
+  assign lsu2dtcm_icb_rsp_err = arbt_bus_icb_rsp_err;
+  assign lsu2dtcm_icb_rsp_rdata = arbt_bus_icb_rsp_rdata;
+  assign arbt_bus_icb_rsp_ready = lsu2dtcm_icb_rsp_ready;
 
   sirv_gnrl_icb_arbt # (
   .ARBT_SCHEME (0),// Priority based
@@ -331,11 +273,7 @@ module e203_dtcm_ctrl(
   assign arbt_icb_rsp_rdata = sram_icb_rsp_rdata;
 
 
-  assign dtcm_active = lsu2dtcm_icb_cmd_valid | dtcm_sram_ctrl_active
-       `ifdef E203_HAS_DTCM_EXTITF //{
-                     | ext2dtcm_icb_cmd_valid
-       `endif//}
-          ;
+  assign dtcm_active = lsu2dtcm_icb_cmd_valid | dtcm_sram_ctrl_active;
 
 
 

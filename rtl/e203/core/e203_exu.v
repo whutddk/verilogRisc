@@ -1,3 +1,26 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Company:   
+// Engineer: Ruige_Lee
+// Create Date: 2019-06-25 19:07:21
+// Last Modified by:   Ruige_Lee
+// Last Modified time: 2019-06-29 14:13:07
+// Email: 295054118@whut.edu.cn
+// page: https://whutddk.github.io/
+// Design Name:   
+// Module Name: e203_exu
+// Project Name:   
+// Target Devices:   
+// Tool Versions:   
+// Description:   
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision:    -   
+// Additional Comments:  
+// 
+//
+//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -233,8 +256,8 @@ module e203_exu(
   e203_exu_decode u_e203_exu_decode (
     .dbg_mode     (dbg_mode),
 
-    .i_instr      (i_ir    ),
-    .i_pc         (i_pc    ),
+    .i_instr      ({i_ir[31:2],2'b11}    ),
+    .i_pc         ({i_pc[31:2],2'b00}    ),
     .i_misalgn    (i_misalgn),
     .i_buserr     (i_buserr ),
     .i_prdt_taken (i_prdt_taken), 
@@ -517,9 +540,9 @@ module e203_exu(
     .i_rdwen             (disp_alu_rdwen   ),
     .i_rdidx             (disp_alu_rdidx   ),
     .i_info              (disp_alu_info    ),
-    .i_pc                (i_pc    ),
+    .i_pc                ({i_pc[31:2],2'b00}     ),
     .i_pc_vld            (i_pc_vld),
-    .i_instr             (i_ir    ),
+    .i_instr             ({i_ir[31:2],2'b11}    ),
     .i_imm               (disp_alu_imm     ),
     .i_misalgn           (disp_alu_misalgn    ),
     .i_buserr            (disp_alu_buserr     ),

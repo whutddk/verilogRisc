@@ -1,3 +1,26 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Company:   
+// Engineer: Ruige_Lee
+// Create Date: 2019-04-10 20:47:17
+// Last Modified by:   Ruige_Lee
+// Last Modified time: 2019-06-29 11:02:17
+// Email: 295054118@whut.edu.cn
+// page: https://whutddk.github.io/
+// Design Name:   
+// Module Name: sirv_aon_wrapper
+// Project Name:   
+// Target Devices:   
+// Tool Versions:   
+// Description:   
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision:    -   
+// Additional Comments:  
+// 
+//
+//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -381,7 +404,7 @@ module sirv_aon_wrapper(
   //
   //  This signal will be passed to the main domain, since this is kind of pad selected signal
   //    we dont need to sync them in main domain, just directly use it
-  assign pc_rtvec = aon_io_bootrom ? 32'h0000_1000 : 
+  assign pc_rtvec = aon_io_bootrom ? 32'h8000_0000 : 
       // This is the external QSPI flash base address 
                                      32'h2000_0000;
 
