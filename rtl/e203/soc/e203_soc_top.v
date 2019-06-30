@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-27 19:06:59
 // Last Modified by:   29505
-// Last Modified time: 2019-06-30 14:24:56
+// Last Modified time: 2019-06-30 16:23:10
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name: e203_soc_top.v  
@@ -278,37 +278,6 @@ module e203_soc_top(
 	output  io_pads_gpio_31_o_ie,
 	output  io_pads_gpio_31_o_pue,
 	output  io_pads_gpio_31_o_ds,
-
-
-	//QSPI SCK and CS is output without enable
-	output  io_pads_qspi_sck_o_oval,
-	output  io_pads_qspi_cs_0_o_oval,
-
-	//QSPI DQ is bidir I/O with enable, and need pull-up enable
-	input   io_pads_qspi_dq_0_i_ival,
-	output  io_pads_qspi_dq_0_o_oval,
-	output  io_pads_qspi_dq_0_o_oe,
-	output  io_pads_qspi_dq_0_o_ie,
-	output  io_pads_qspi_dq_0_o_pue,
-	output  io_pads_qspi_dq_0_o_ds,
-	input   io_pads_qspi_dq_1_i_ival,
-	output  io_pads_qspi_dq_1_o_oval,
-	output  io_pads_qspi_dq_1_o_oe,
-	output  io_pads_qspi_dq_1_o_ie,
-	output  io_pads_qspi_dq_1_o_pue,
-	output  io_pads_qspi_dq_1_o_ds,
-	input   io_pads_qspi_dq_2_i_ival,
-	output  io_pads_qspi_dq_2_o_oval,
-	output  io_pads_qspi_dq_2_o_oe,
-	output  io_pads_qspi_dq_2_o_ie,
-	output  io_pads_qspi_dq_2_o_pue,
-	output  io_pads_qspi_dq_2_o_ds,
-	input   io_pads_qspi_dq_3_i_ival,
-	output  io_pads_qspi_dq_3_o_oval,
-	output  io_pads_qspi_dq_3_o_oe,
-	output  io_pads_qspi_dq_3_o_ie,
-	output  io_pads_qspi_dq_3_o_pue,
-	output  io_pads_qspi_dq_3_o_ds,
 
 	// Erst is input need to be pull-up by default
 	input   io_pads_aon_erst_n_i_ival,
@@ -631,45 +600,6 @@ module e203_soc_top(
 	.io_pads_gpio_31_o_pue           (io_pads_gpio_31_o_pue),
 	.io_pads_gpio_31_o_ds            (io_pads_gpio_31_o_ds),
 
-	.io_pads_qspi_sck_i_ival    (1'b1 ),
-	.io_pads_qspi_sck_o_oval    (io_pads_qspi_sck_o_oval ),
-	.io_pads_qspi_sck_o_oe      (),
-	.io_pads_qspi_sck_o_ie      (),
-	.io_pads_qspi_sck_o_pue     (),
-	.io_pads_qspi_sck_o_ds      (),
-	.io_pads_qspi_dq_0_i_ival   (io_pads_qspi_dq_0_i_ival & io_pads_qspi_dq_0_o_ie),
-	.io_pads_qspi_dq_0_o_oval   (io_pads_qspi_dq_0_o_oval),
-	.io_pads_qspi_dq_0_o_oe     (io_pads_qspi_dq_0_o_oe  ),
-	.io_pads_qspi_dq_0_o_ie     (io_pads_qspi_dq_0_o_ie  ),
-	.io_pads_qspi_dq_0_o_pue    (io_pads_qspi_dq_0_o_pue ),
-	.io_pads_qspi_dq_0_o_ds     (io_pads_qspi_dq_0_o_ds  ),
-
-	.io_pads_qspi_dq_1_i_ival   (io_pads_qspi_dq_1_i_ival & io_pads_qspi_dq_1_o_ie),
-	.io_pads_qspi_dq_1_o_oval   (io_pads_qspi_dq_1_o_oval),
-	.io_pads_qspi_dq_1_o_oe     (io_pads_qspi_dq_1_o_oe  ),
-	.io_pads_qspi_dq_1_o_ie     (io_pads_qspi_dq_1_o_ie  ),
-	.io_pads_qspi_dq_1_o_pue    (io_pads_qspi_dq_1_o_pue ),
-	.io_pads_qspi_dq_1_o_ds     (io_pads_qspi_dq_1_o_ds  ),
-
-	.io_pads_qspi_dq_2_i_ival   (io_pads_qspi_dq_2_i_ival & io_pads_qspi_dq_2_o_ie),
-	.io_pads_qspi_dq_2_o_oval   (io_pads_qspi_dq_2_o_oval),
-	.io_pads_qspi_dq_2_o_oe     (io_pads_qspi_dq_2_o_oe  ),
-	.io_pads_qspi_dq_2_o_ie     (io_pads_qspi_dq_2_o_ie  ),
-	.io_pads_qspi_dq_2_o_pue    (io_pads_qspi_dq_2_o_pue ),
-	.io_pads_qspi_dq_2_o_ds     (io_pads_qspi_dq_2_o_ds  ),
-
-	.io_pads_qspi_dq_3_i_ival   (io_pads_qspi_dq_3_i_ival & io_pads_qspi_dq_3_o_ie),
-	.io_pads_qspi_dq_3_o_oval   (io_pads_qspi_dq_3_o_oval),
-	.io_pads_qspi_dq_3_o_oe     (io_pads_qspi_dq_3_o_oe  ),
-	.io_pads_qspi_dq_3_o_ie     (io_pads_qspi_dq_3_o_ie  ),
-	.io_pads_qspi_dq_3_o_pue    (io_pads_qspi_dq_3_o_pue ),
-	.io_pads_qspi_dq_3_o_ds     (io_pads_qspi_dq_3_o_ds  ),
-	.io_pads_qspi_cs_0_i_ival   (1'b1),
-	.io_pads_qspi_cs_0_o_oval   (io_pads_qspi_cs_0_o_oval),
-	.io_pads_qspi_cs_0_o_oe     (),
-	.io_pads_qspi_cs_0_o_ie     (),
-	.io_pads_qspi_cs_0_o_pue    (),
-	.io_pads_qspi_cs_0_o_ds     (),
 
 		.hfextclk        (hfextclk),
 		.hfxoscen        (hfxoscen),

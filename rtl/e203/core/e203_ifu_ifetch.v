@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-25 19:07:21
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-29 13:23:07
+// Last Modified time: 2019-06-30 21:18:30
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -244,11 +244,10 @@ module e203_ifu_ifetch(
 
 		 // The ir valid is set when there is new instruction fetched *and* 
 		 //   no flush happening 
-	wire ifu_rsp_need_replay;
 	wire pc_newpend_r;
 	wire ifu_ir_i_ready;
-	assign ir_valid_set  = ifu_rsp_hsked & (~pipe_flush_req_real) & (~ifu_rsp_need_replay);
-	assign ir_pc_vld_set = pc_newpend_r & ifu_ir_i_ready & (~pipe_flush_req_real) & (~ifu_rsp_need_replay);
+	assign ir_valid_set  = ifu_rsp_hsked & (~pipe_flush_req_real);
+	assign ir_pc_vld_set = pc_newpend_r & ifu_ir_i_ready & (~pipe_flush_req_real);
 		 // The ir valid is cleared when it is accepted by EXU stage *or*
 		 //   the flush happening 
 	assign ir_valid_clr  = ifu_ir_o_hsked | (pipe_flush_hsked & ir_valid_r);
@@ -276,39 +275,28 @@ module e203_ifu_ifetch(
 	wire ifu_muldiv_b2b_nxt;
 	wire ifu_muldiv_b2b_r;
 	sirv_gnrl_dfflr #(1) ir_muldiv_b2b_dfflr (ir_valid_set, ifu_muldiv_b2b_nxt, ifu_muldiv_b2b_r, clk, rst_n);
-		 //To save power the H-16bits only loaded when it is 32bits length instru 
+		 
+
 	wire [`E203_INSTR_SIZE-1:0] ifu_ir_r;// The instruction register
-	wire minidec_rv32;
-	wire ir_hi_ena = ir_valid_set & minidec_rv32;
-	wire ir_lo_ena = ir_valid_set;
-	sirv_gnrl_dfflr #(`E203_INSTR_SIZE/2) ifu_hi_ir_dfflr (ir_hi_ena, ifu_ir_nxt[31:16], ifu_ir_r[31:16], clk, rst_n);
-	sirv_gnrl_dfflr #(`E203_INSTR_SIZE/2) ifu_lo_ir_dfflr (ir_lo_ena, ifu_ir_nxt[15: 0], ifu_ir_r[15: 0], clk, rst_n);
+	wire ir_ena = ir_valid_set;
+	// wire ir_lo_ena = ir_valid_set;
+	sirv_gnrl_dfflr #(`E203_INSTR_SIZE) ifu_ir_dfflr (ir_ena, {ifu_ir_nxt[`E203_INSTR_SIZE-1:2],2'b11}, ifu_ir_r, clk, rst_n);
+	// sirv_gnrl_dfflr #(`E203_INSTR_SIZE/2) ifu_lo_ir_dfflr (ir_lo_ena, ifu_ir_nxt[15: 0], ifu_ir_r[15: 0], clk, rst_n);
 
 	wire minidec_rs1en;
 	wire minidec_rs2en;
 	wire [`E203_RFIDX_WIDTH-1:0] minidec_rs1idx;
 	wire [`E203_RFIDX_WIDTH-1:0] minidec_rs2idx;
 
-	`ifndef E203_HAS_FPU//}
-	wire minidec_fpu        = 1'b0;
-	wire minidec_fpu_rs1en  = 1'b0;
-	wire minidec_fpu_rs2en  = 1'b0;
-	wire minidec_fpu_rs3en  = 1'b0;
-	wire minidec_fpu_rs1fpu = 1'b0;
-	wire minidec_fpu_rs2fpu = 1'b0;
-	wire minidec_fpu_rs3fpu = 1'b0;
-	wire [`E203_RFIDX_WIDTH-1:0] minidec_fpu_rs1idx = `E203_RFIDX_WIDTH'b0;
-	wire [`E203_RFIDX_WIDTH-1:0] minidec_fpu_rs2idx = `E203_RFIDX_WIDTH'b0;
-	`endif//}
-
+ 
 	wire [`E203_RFIDX_WIDTH-1:0] ir_rs1idx_r;
 	wire [`E203_RFIDX_WIDTH-1:0] ir_rs2idx_r;
 	wire bpu2rf_rs1_ena;
 	//FPU: if it is FPU instruction. we still need to put it into the IR register, but we need to mask off the non-integer regfile index to save power
-	wire ir_rs1idx_ena = (minidec_fpu & ir_valid_set & minidec_fpu_rs1en & (~minidec_fpu_rs1fpu)) | ((~minidec_fpu) & ir_valid_set & minidec_rs1en) | bpu2rf_rs1_ena;
-	wire ir_rs2idx_ena = (minidec_fpu & ir_valid_set & minidec_fpu_rs2en & (~minidec_fpu_rs2fpu)) | ((~minidec_fpu) & ir_valid_set & minidec_rs2en);
-	wire [`E203_RFIDX_WIDTH-1:0] ir_rs1idx_nxt = minidec_fpu ? minidec_fpu_rs1idx : minidec_rs1idx;
-	wire [`E203_RFIDX_WIDTH-1:0] ir_rs2idx_nxt = minidec_fpu ? minidec_fpu_rs2idx : minidec_rs2idx;
+	wire ir_rs1idx_ena = ( ir_valid_set & minidec_rs1en) | bpu2rf_rs1_ena;
+	wire ir_rs2idx_ena = ( ir_valid_set & minidec_rs2en);
+	wire [`E203_RFIDX_WIDTH-1:0] ir_rs1idx_nxt = minidec_rs1idx;
+	wire [`E203_RFIDX_WIDTH-1:0] ir_rs2idx_nxt = minidec_rs2idx;
 	sirv_gnrl_dfflr #(`E203_RFIDX_WIDTH) ir_rs1idx_dfflr (ir_rs1idx_ena, ir_rs1idx_nxt, ir_rs1idx_r, clk, rst_n);
 	sirv_gnrl_dfflr #(`E203_RFIDX_WIDTH) ir_rs2idx_dfflr (ir_rs2idx_ena, ir_rs2idx_nxt, ir_rs2idx_r, clk, rst_n);
 
@@ -317,7 +305,7 @@ module e203_ifu_ifetch(
 	wire [`E203_PC_SIZE-1:0] ifu_pc_r;
 	sirv_gnrl_dfflr #(`E203_PC_SIZE) ifu_pc_dfflr (ir_pc_vld_set, ifu_pc_nxt,  ifu_pc_r, clk, rst_n);
 
-	assign ifu_o_ir  = ifu_ir_r;
+	assign ifu_o_ir  = {ifu_ir_r[`E203_INSTR_SIZE-1:2],2'b11};
 	assign ifu_o_pc  = ifu_pc_r;
 		// Instruction fetch misaligned exceptions are not possible on machines that support extensions
 		// with 16-bit aligned instructions, such as the compressed instruction set extension, C.
@@ -396,7 +384,7 @@ module e203_ifu_ifetch(
 			.dec_rs1idx  (minidec_rs1idx     ),
 			.dec_rs2idx  (minidec_rs2idx     ),
 
-			.dec_rv32    (minidec_rv32       ),
+			.dec_rv32    (),
 			.dec_bjp     (minidec_bjp        ),
 			.dec_jal     (minidec_jal        ),
 			.dec_jalr    (minidec_jalr       ),
@@ -452,58 +440,52 @@ module e203_ifu_ifetch(
 		.rst_n                    (rst_n )                 
 	);
 	// If the instruciton is 32bits length, increament 4, otherwise 2
-	wire [2:0] pc_incr_ofst = minidec_rv32 ? 3'd4 : 3'd2;
+	// wire [2:0] pc_incr_ofst = 3'd4;
 
 	wire [`E203_PC_SIZE-1:0] pc_nxt_pre;
 	wire [`E203_PC_SIZE-1:0] pc_nxt;
 
 	wire bjp_req = minidec_bjp & prdt_taken;
 
-	wire ifetch_replay_req;
+	wire [`E203_PC_SIZE-1:0] pc_add_op1 =  bjp_req ? {prdt_pc_add_op1[`E203_PC_SIZE-1:2],2'b0} :
+										 ifu_reset_req ? {pc_rtvec[`E203_PC_SIZE-1:2],2'b0} :
+												{pc_r[`E203_PC_SIZE-1:2],2'b0};
 
-	wire [`E203_PC_SIZE-1:0] pc_add_op1 = 
-														`ifndef E203_TIMING_BOOST//}
-															 pipe_flush_req  ? pipe_flush_add_op1 :
-															 dly_pipe_flush_req  ? pc_r :
-														`endif//}
-															 ifetch_replay_req  ? pc_r :
-															 bjp_req ? prdt_pc_add_op1    :
-															 ifu_reset_req   ? pc_rtvec :
-																								 pc_r;
+	wire [`E203_PC_SIZE-1:0] pc_add_op2 = bjp_req ? {prdt_pc_add_op2[`E203_PC_SIZE-1:2],2'b0} :
+										 ifu_reset_req ? `E203_PC_SIZE'b0 :
+												`E203_PC_SIZE'd4 ;
 
-	wire [`E203_PC_SIZE-1:0] pc_add_op2 =  
-														`ifndef E203_TIMING_BOOST//}
-															 pipe_flush_req  ? pipe_flush_add_op2 :
-															 dly_pipe_flush_req  ? `E203_PC_SIZE'b0 :
-														`endif//}
-															 ifetch_replay_req  ? `E203_PC_SIZE'b0 :
-															 bjp_req ? prdt_pc_add_op2    :
-															 ifu_reset_req   ? `E203_PC_SIZE'b0 :
-																								 pc_incr_ofst ;
 
-	assign ifu_req_seq = (~pipe_flush_req_real) & (~ifu_reset_req) & (~ifetch_replay_req) & (~bjp_req);
+
+
+	// wire [`E203_PC_SIZE-1:0] pc_add_op1 =  bjp_req ? prdt_pc_add_op1 :
+	// 									 ifu_reset_req ? pc_rtvec :
+	// 											pc_r;
+
+	// wire [`E203_PC_SIZE-1:0] pc_add_op2 = bjp_req ? prdt_pc_add_op2 :
+	// 									 ifu_reset_req ? `E203_PC_SIZE'b0 :
+	// 											pc_incr_ofst ;
+
+	assign ifu_req_seq = (~pipe_flush_req_real) & (~ifu_reset_req) & (~bjp_req);
 	assign ifu_req_seq_rv32 = minidec_rv32;
 	assign ifu_req_last_pc = pc_r;
 
 	assign pc_nxt_pre = pc_add_op1 + pc_add_op2;
-	`ifndef E203_TIMING_BOOST//}
-	assign pc_nxt = {pc_nxt_pre[`E203_PC_SIZE-1:2],2'b0};
-	`else//}{
-	assign pc_nxt = 
-							 pipe_flush_req ? {pipe_flush_pc[`E203_PC_SIZE-1:2],2'b0} :
-							 dly_pipe_flush_req ? {pc_r[`E203_PC_SIZE-1:2],2'b0} :
-							 {pc_nxt_pre[`E203_PC_SIZE-1:2],2'b0};
-	`endif//}
+
+	assign pc_nxt = pipe_flush_req ? {pipe_flush_pc[`E203_PC_SIZE-1:2],2'b0} :
+					dly_pipe_flush_req ? {pc_r[`E203_PC_SIZE-1:2],2'b0} :
+					{pc_nxt_pre[`E203_PC_SIZE-1:2],2'b0};
+
 
 	// The Ifetch issue new ifetch request when
 	//   * If it is a bjp insturction, and it does not need to wait, and it is not a replay-set cycle
 	//   * and there is no halt_request
-	wire ifu_new_req = (~bpu_wait) & (~ifu_halt_req) & (~reset_flag_r) & (~ifu_rsp_need_replay);
+	wire ifu_new_req = (~bpu_wait) & (~ifu_halt_req) & (~reset_flag_r);
 
 	// The fetch request valid is triggering when
 	//      * New ifetch request
 	//      * or The flush-request is pending
-	wire ifu_req_valid_pre = ifu_new_req | ifu_reset_req | pipe_flush_req_real | ifetch_replay_req;
+	wire ifu_req_valid_pre = ifu_new_req | ifu_reset_req | pipe_flush_req_real;
 	// The new request ready condition is:
 	//   * No outstanding reqeusts
 	//   * Or if there is outstanding, but it is reponse valid back
@@ -554,10 +536,6 @@ module e203_ifu_ifetch(
 	wire pc_newpend_nxt = pc_newpend_set | (~pc_newpend_clr);
 
 	sirv_gnrl_dfflr #(1) pc_newpend_dfflr (pc_newpend_ena, pc_newpend_nxt, pc_newpend_r, clk, rst_n);
-
-
-	assign ifu_rsp_need_replay = 1'b0;
-	assign ifetch_replay_req = 1'b0;
 
 	`ifndef FPGA_SOURCE//{
 	`ifndef DISABLE_SV_ASSERTION//{

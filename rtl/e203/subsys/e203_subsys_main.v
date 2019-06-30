@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-06-30 14:05:03
 // Last Modified by:   29505
-// Last Modified time: 2019-06-30 14:28:38
+// Last Modified time: 2019-06-30 16:22:21
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_subsys_main.v  
 // Module Name:  
@@ -342,43 +342,6 @@ module e203_subsys_main(
   output io_pads_gpio_31_o_ie,
   output io_pads_gpio_31_o_pue,
   output io_pads_gpio_31_o_ds,
-
-  input   io_pads_qspi_sck_i_ival,
-  output  io_pads_qspi_sck_o_oval,
-  output  io_pads_qspi_sck_o_oe,
-  output  io_pads_qspi_sck_o_ie,
-  output  io_pads_qspi_sck_o_pue,
-  output  io_pads_qspi_sck_o_ds,
-  input   io_pads_qspi_dq_0_i_ival,
-  output  io_pads_qspi_dq_0_o_oval,
-  output  io_pads_qspi_dq_0_o_oe,
-  output  io_pads_qspi_dq_0_o_ie,
-  output  io_pads_qspi_dq_0_o_pue,
-  output  io_pads_qspi_dq_0_o_ds,
-  input   io_pads_qspi_dq_1_i_ival,
-  output  io_pads_qspi_dq_1_o_oval,
-  output  io_pads_qspi_dq_1_o_oe,
-  output  io_pads_qspi_dq_1_o_ie,
-  output  io_pads_qspi_dq_1_o_pue,
-  output  io_pads_qspi_dq_1_o_ds,
-  input   io_pads_qspi_dq_2_i_ival,
-  output  io_pads_qspi_dq_2_o_oval,
-  output  io_pads_qspi_dq_2_o_oe,
-  output  io_pads_qspi_dq_2_o_ie,
-  output  io_pads_qspi_dq_2_o_pue,
-  output  io_pads_qspi_dq_2_o_ds,
-  input   io_pads_qspi_dq_3_i_ival,
-  output  io_pads_qspi_dq_3_o_oval,
-  output  io_pads_qspi_dq_3_o_oe,
-  output  io_pads_qspi_dq_3_o_ie,
-  output  io_pads_qspi_dq_3_o_pue,
-  output  io_pads_qspi_dq_3_o_ds,
-  input   io_pads_qspi_cs_0_i_ival,
-  output  io_pads_qspi_cs_0_o_oval,
-  output  io_pads_qspi_cs_0_o_oe,
-  output  io_pads_qspi_cs_0_o_ie,
-  output  io_pads_qspi_cs_0_o_pue,
-  output  io_pads_qspi_cs_0_o_ds,
   
   //////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////
@@ -895,10 +858,6 @@ module e203_subsys_main(
 
   .core_csr_clk          (core_csr_clk      ),
 
-
-        
-        
-
     .tm_stop         (tm_stop),
     .pc_rtvec        (pc_rtvec),
 
@@ -993,29 +952,9 @@ module e203_subsys_main(
     .rst_n         (core_rst_n) 
   );
 
-  wire  qspi0_irq; 
-  wire  qspi1_irq;
-  wire  qspi2_irq;
+
 
   wire  uart0_irq;                
-  wire  uart1_irq;                
-
-  wire  pwm0_irq_0;
-  wire  pwm0_irq_1;
-  wire  pwm0_irq_2;
-  wire  pwm0_irq_3;
-
-  wire  pwm1_irq_0;
-  wire  pwm1_irq_1;
-  wire  pwm1_irq_2;
-  wire  pwm1_irq_3;
-
-  wire  pwm2_irq_0;
-  wire  pwm2_irq_1;
-  wire  pwm2_irq_2;
-  wire  pwm2_irq_3;
-
-  wire  i2c_mst_irq;
 
   wire  gpio_irq_0;
   wire  gpio_irq_1;
@@ -1068,31 +1007,9 @@ module e203_subsys_main(
 
     .wdg_irq_a              (aon_wdg_irq_a),
     .rtc_irq_a              (aon_rtc_irq_a),
-
-    .qspi0_irq              (qspi0_irq  ), 
-    .qspi1_irq              (qspi1_irq  ),
-    .qspi2_irq              (qspi2_irq  ),
-                                        
+                                      
     .uart0_irq              (uart0_irq  ),                
-    .uart1_irq              (uart1_irq  ),                
-                                        
-    .pwm0_irq_0             (pwm0_irq_0 ),
-    .pwm0_irq_1             (pwm0_irq_1 ),
-    .pwm0_irq_2             (pwm0_irq_2 ),
-    .pwm0_irq_3             (pwm0_irq_3 ),
-                                        
-    .pwm1_irq_0             (pwm1_irq_0 ),
-    .pwm1_irq_1             (pwm1_irq_1 ),
-    .pwm1_irq_2             (pwm1_irq_2 ),
-    .pwm1_irq_3             (pwm1_irq_3 ),
-                                        
-    .pwm2_irq_0             (pwm2_irq_0 ),
-    .pwm2_irq_1             (pwm2_irq_1 ),
-    .pwm2_irq_2             (pwm2_irq_2 ),
-    .pwm2_irq_3             (pwm2_irq_3 ),
-                                        
-    .i2c_mst_irq            (i2c_mst_irq),
-
+                                    
     .gpio_irq_0             (gpio_irq_0 ),
     .gpio_irq_1             (gpio_irq_1 ),
     .gpio_irq_2             (gpio_irq_2 ),
@@ -1154,18 +1071,7 @@ e203_subsys_clint u_e203_subsys_clint(
     .rst_n         (per_rst_n) 
   );
 
-  
-  wire                     qspi0_ro_icb_cmd_valid;
-  wire                     qspi0_ro_icb_cmd_ready;
-  wire [32-1:0]            qspi0_ro_icb_cmd_addr; 
-  wire                     qspi0_ro_icb_cmd_read; 
-  wire [32-1:0]            qspi0_ro_icb_cmd_wdata;
-  
-  wire                     qspi0_ro_icb_rsp_valid;
-  wire                     qspi0_ro_icb_rsp_ready;
-  wire [32-1:0]            qspi0_ro_icb_rsp_rdata;
-
-  
+    
   wire                     otp_ro_icb_cmd_valid;
   wire                     otp_ro_icb_cmd_ready;
   wire [32-1:0]            otp_ro_icb_cmd_addr; 
@@ -1223,28 +1129,6 @@ e203_subsys_clint u_e203_subsys_clint(
     .aon_icb_rsp_ready     (aon_icb_rsp_ready),
     .aon_icb_rsp_err       (aon_icb_rsp_err  ),
     .aon_icb_rsp_rdata     (aon_icb_rsp_rdata),
-
-`ifdef FAKE_FLASH_MODEL//{
-    .qspi0_ro_icb_cmd_valid  (1'b0), 
-    .qspi0_ro_icb_cmd_ready  (),
-    .qspi0_ro_icb_cmd_addr   (32'b0 ),
-    .qspi0_ro_icb_cmd_read   (1'b0 ),
-    .qspi0_ro_icb_cmd_wdata  (32'b0),
-                             
-    .qspi0_ro_icb_rsp_valid  (),
-    .qspi0_ro_icb_rsp_ready  (1'b0),
-    .qspi0_ro_icb_rsp_rdata  (),
-`else//}{
-    .qspi0_ro_icb_cmd_valid  (qspi0_ro_icb_cmd_valid), 
-    .qspi0_ro_icb_cmd_ready  (qspi0_ro_icb_cmd_ready),
-    .qspi0_ro_icb_cmd_addr   (qspi0_ro_icb_cmd_addr ),
-    .qspi0_ro_icb_cmd_read   (qspi0_ro_icb_cmd_read ),
-    .qspi0_ro_icb_cmd_wdata  (qspi0_ro_icb_cmd_wdata),
-                             
-    .qspi0_ro_icb_rsp_valid  (qspi0_ro_icb_rsp_valid),
-    .qspi0_ro_icb_rsp_ready  (qspi0_ro_icb_rsp_ready),
-    .qspi0_ro_icb_rsp_rdata  (qspi0_ro_icb_rsp_rdata),
-`endif//}
                            
     .otp_ro_icb_cmd_valid    (otp_ro_icb_cmd_valid  ),
     .otp_ro_icb_cmd_ready    (otp_ro_icb_cmd_ready  ),
@@ -1449,67 +1333,6 @@ e203_subsys_clint u_e203_subsys_clint(
     .io_pads_gpio_31_o_pue      (gpio_31_o_pue),
     .io_pads_gpio_31_o_ds       (gpio_31_o_ds),
 
-    .io_pads_qspi_sck_i_ival    (io_pads_qspi_sck_i_ival    ),
-    .io_pads_qspi_sck_o_oval    (io_pads_qspi_sck_o_oval    ),
-    .io_pads_qspi_sck_o_oe      (io_pads_qspi_sck_o_oe      ),
-    .io_pads_qspi_sck_o_ie      (io_pads_qspi_sck_o_ie      ),
-    .io_pads_qspi_sck_o_pue     (io_pads_qspi_sck_o_pue     ),
-    .io_pads_qspi_sck_o_ds      (io_pads_qspi_sck_o_ds      ),
-    .io_pads_qspi_dq_0_i_ival   (io_pads_qspi_dq_0_i_ival   ),
-    .io_pads_qspi_dq_0_o_oval   (io_pads_qspi_dq_0_o_oval   ),
-    .io_pads_qspi_dq_0_o_oe     (io_pads_qspi_dq_0_o_oe     ),
-    .io_pads_qspi_dq_0_o_ie     (io_pads_qspi_dq_0_o_ie     ),
-    .io_pads_qspi_dq_0_o_pue    (io_pads_qspi_dq_0_o_pue    ),
-    .io_pads_qspi_dq_0_o_ds     (io_pads_qspi_dq_0_o_ds     ),
-    .io_pads_qspi_dq_1_i_ival   (io_pads_qspi_dq_1_i_ival   ),
-    .io_pads_qspi_dq_1_o_oval   (io_pads_qspi_dq_1_o_oval   ),
-    .io_pads_qspi_dq_1_o_oe     (io_pads_qspi_dq_1_o_oe     ),
-    .io_pads_qspi_dq_1_o_ie     (io_pads_qspi_dq_1_o_ie     ),
-    .io_pads_qspi_dq_1_o_pue    (io_pads_qspi_dq_1_o_pue    ),
-    .io_pads_qspi_dq_1_o_ds     (io_pads_qspi_dq_1_o_ds     ),
-    .io_pads_qspi_dq_2_i_ival   (io_pads_qspi_dq_2_i_ival   ),
-    .io_pads_qspi_dq_2_o_oval   (io_pads_qspi_dq_2_o_oval   ),
-    .io_pads_qspi_dq_2_o_oe     (io_pads_qspi_dq_2_o_oe     ),
-    .io_pads_qspi_dq_2_o_ie     (io_pads_qspi_dq_2_o_ie     ),
-    .io_pads_qspi_dq_2_o_pue    (io_pads_qspi_dq_2_o_pue    ),
-    .io_pads_qspi_dq_2_o_ds     (io_pads_qspi_dq_2_o_ds     ),
-    .io_pads_qspi_dq_3_i_ival   (io_pads_qspi_dq_3_i_ival   ),
-    .io_pads_qspi_dq_3_o_oval   (io_pads_qspi_dq_3_o_oval   ),
-    .io_pads_qspi_dq_3_o_oe     (io_pads_qspi_dq_3_o_oe     ),
-    .io_pads_qspi_dq_3_o_ie     (io_pads_qspi_dq_3_o_ie     ),
-    .io_pads_qspi_dq_3_o_pue    (io_pads_qspi_dq_3_o_pue    ),
-    .io_pads_qspi_dq_3_o_ds     (io_pads_qspi_dq_3_o_ds     ),
-    .io_pads_qspi_cs_0_i_ival   (io_pads_qspi_cs_0_i_ival   ),
-    .io_pads_qspi_cs_0_o_oval   (io_pads_qspi_cs_0_o_oval   ),
-    .io_pads_qspi_cs_0_o_oe     (io_pads_qspi_cs_0_o_oe     ),
-    .io_pads_qspi_cs_0_o_ie     (io_pads_qspi_cs_0_o_ie     ),
-    .io_pads_qspi_cs_0_o_pue    (io_pads_qspi_cs_0_o_pue    ),
-    .io_pads_qspi_cs_0_o_ds     (io_pads_qspi_cs_0_o_ds     ),
-
-    .qspi0_irq              (qspi0_irq  ), 
-    .qspi1_irq              (qspi1_irq  ),
-    .qspi2_irq              (qspi2_irq  ),
-                                        
-    .uart0_irq              (uart0_irq  ),                
-    .uart1_irq              (uart1_irq  ),                
-                                        
-    .pwm0_irq_0             (pwm0_irq_0 ),
-    .pwm0_irq_1             (pwm0_irq_1 ),
-    .pwm0_irq_2             (pwm0_irq_2 ),
-    .pwm0_irq_3             (pwm0_irq_3 ),
-                                        
-    .pwm1_irq_0             (pwm1_irq_0 ),
-    .pwm1_irq_1             (pwm1_irq_1 ),
-    .pwm1_irq_2             (pwm1_irq_2 ),
-    .pwm1_irq_3             (pwm1_irq_3 ),
-                                        
-    .pwm2_irq_0             (pwm2_irq_0 ),
-    .pwm2_irq_1             (pwm2_irq_1 ),
-    .pwm2_irq_2             (pwm2_irq_2 ),
-    .pwm2_irq_3             (pwm2_irq_3 ),
-                                        
-    .i2c_mst_irq            (i2c_mst_irq),
-
     .gpio_irq_0             (gpio_irq_0 ),
     .gpio_irq_1             (gpio_irq_1 ),
     .gpio_irq_2             (gpio_irq_2 ),
@@ -1573,18 +1396,7 @@ e203_subsys_mems u_e203_subsys_mems(
     .sysmem_icb_rsp_ready  (sysmem_icb_rsp_ready),
     .sysmem_icb_rsp_err    (sysmem_icb_rsp_err  ),
     .sysmem_icb_rsp_rdata  (sysmem_icb_rsp_rdata),
- 
-    .qspi0_ro_icb_cmd_valid  (qspi0_ro_icb_cmd_valid), 
-    .qspi0_ro_icb_cmd_ready  (qspi0_ro_icb_cmd_ready),
-    .qspi0_ro_icb_cmd_addr   (qspi0_ro_icb_cmd_addr ),
-    .qspi0_ro_icb_cmd_read   (qspi0_ro_icb_cmd_read ),
-    .qspi0_ro_icb_cmd_wdata  (qspi0_ro_icb_cmd_wdata),
-                             
-    .qspi0_ro_icb_rsp_valid  (qspi0_ro_icb_rsp_valid),
-    .qspi0_ro_icb_rsp_ready  (qspi0_ro_icb_rsp_ready),
-    .qspi0_ro_icb_rsp_err    (1'b0  ),
-    .qspi0_ro_icb_rsp_rdata  (qspi0_ro_icb_rsp_rdata),
-                           
+                            
     .otp_ro_icb_cmd_valid    (otp_ro_icb_cmd_valid  ),
     .otp_ro_icb_cmd_ready    (otp_ro_icb_cmd_ready  ),
     .otp_ro_icb_cmd_addr     (otp_ro_icb_cmd_addr   ),
@@ -1611,24 +1423,6 @@ e203_subsys_mems u_e203_subsys_mems(
     .rst_n         (per_rst_n) 
   );
 
-
-
-`ifdef FAKE_FLASH_MODEL//{
-fake_qspi0_model_top u_fake_qspi0_model_top(
-    .icb_cmd_valid  (qspi0_ro_icb_cmd_valid), 
-    .icb_cmd_ready  (qspi0_ro_icb_cmd_ready),
-    .icb_cmd_addr   (qspi0_ro_icb_cmd_addr ),
-    .icb_cmd_read   (qspi0_ro_icb_cmd_read ),
-    .icb_cmd_wdata  (qspi0_ro_icb_cmd_wdata),
-                    
-    .icb_rsp_valid  (qspi0_ro_icb_rsp_valid),
-    .icb_rsp_ready  (qspi0_ro_icb_rsp_ready),
-    .icb_rsp_rdata  (qspi0_ro_icb_rsp_rdata),
-
-    .clk            (hfclk    ),
-    .rst_n          (bus_rst_n)  
-  );
-`endif//}
 
 
 endmodule

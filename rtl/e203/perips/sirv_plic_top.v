@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-06-26 09:51:22
+// Last Modified by:   29505
+// Last Modified time: 2019-06-30 16:50:53
+// Email: 295054118@whut.edu.cn
+// Design Name: sirv_plic_top.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -74,50 +96,15 @@ module sirv_plic_top(
   input   io_devices_0_32,
   input   io_devices_0_33,
   input   io_devices_0_34,
-  input   io_devices_0_35,
-  input   io_devices_0_36,
-  input   io_devices_0_37,
-  input   io_devices_0_38,
-  input   io_devices_0_39,
-  input   io_devices_0_40,
-  input   io_devices_0_41,
-  input   io_devices_0_42,
-  input   io_devices_0_43,
-  input   io_devices_0_44,
-  input   io_devices_0_45,
-  input   io_devices_0_46,
-  input   io_devices_0_47,
-  input   io_devices_0_48,
-  input   io_devices_0_49,
-  input   io_devices_0_50,
-  input   io_devices_0_51,
   output  io_harts_0_0
 );
 
 wire plic_irq;
 assign io_harts_0_0 = plic_irq;
 
-localparam PLIC_IRQ_NUM = 53;// The number can be enlarged as long as not larger than 1024
+localparam PLIC_IRQ_NUM = 36;// The number can be enlarged as long as not larger than 1024
 wire [PLIC_IRQ_NUM-1:0] plic_irq_i = { 
-                  io_devices_0_51  ,
-                  io_devices_0_50  ,
 
-                  io_devices_0_49  ,
-                  io_devices_0_48  ,
-                  io_devices_0_47  ,
-                  io_devices_0_46  ,
-                  io_devices_0_45  ,
-                  io_devices_0_44  ,
-                  io_devices_0_43  ,
-                  io_devices_0_42  ,
-                  io_devices_0_41  ,
-                  io_devices_0_40  ,
-
-                  io_devices_0_39  ,
-                  io_devices_0_38  ,
-                  io_devices_0_37  ,
-                  io_devices_0_36  ,
-                  io_devices_0_35  ,
                   io_devices_0_34  ,
                   io_devices_0_33  ,
                   io_devices_0_32  ,

@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-25 19:07:21
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-29 09:58:50
+// Last Modified time: 2019-06-30 20:53:34
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -130,10 +130,35 @@ module e203_ifu_litebpu(
 
 	assign bpu_wait = jalr_rs1x1_dep | jalr_rs1xn_dep | rs1xn_rdrf_set;
 
-	assign prdt_pc_add_op1 = (dec_bxx | dec_jal) ? pc[`E203_PC_SIZE-1:0]
-												 : (dec_jalr & dec_jalr_rs1x0) ? `E203_PC_SIZE'b0
-												 : (dec_jalr & dec_jalr_rs1x1) ? rf2bpu_x1[`E203_PC_SIZE-1:0]
-												 : rf2bpu_rs1[`E203_PC_SIZE-1:0];  
+	assign prdt_pc_add_op1 = (
+								{`E203_PC_SIZE{(dec_bxx | dec_jal)}} & pc[`E203_PC_SIZE-1:0]
+							)
+							|
+							(
+								{`E203_PC_SIZE{dec_jalr}} & 
+								(
+									(
+										{`E203_PC_SIZE{dec_jalr_rs1x0}} & `E203_PC_SIZE'b0
+									)
+									|
+									(
+										{`E203_PC_SIZE{dec_jalr_rs1x1}} & rf2bpu_x1[`E203_PC_SIZE-1:0]
+									)
+									| 
+									(
+										{`E203_PC_SIZE{dec_jalr_rs1xn}} & rf2bpu_rs1[`E203_PC_SIZE-1:0]			
+									)
+								)
+							); 
+
+
+
+
+
+	// assign prdt_pc_add_op1 = (dec_bxx | dec_jal) ? pc[`E203_PC_SIZE-1:0]
+	// 											 : (dec_jalr & dec_jalr_rs1x0) ? `E203_PC_SIZE'b0
+	// 											 : (dec_jalr & dec_jalr_rs1x1) ? rf2bpu_x1[`E203_PC_SIZE-1:0]
+	// 											 : rf2bpu_rs1[`E203_PC_SIZE-1:0];  
 
 	assign prdt_pc_add_op2 = dec_bjp_imm[`E203_PC_SIZE-1:0];  
 
