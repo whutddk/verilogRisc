@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-06-26 09:51:22
+// Last Modified by:   29505
+// Last Modified time: 2019-06-30 16:29:30
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_subsys_mems.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -253,13 +275,13 @@ module e203_subsys_mems(
 
 
   //  * QSPI0-RO  
-    .o3_icb_enable     (1'b1),
+    .o3_icb_enable     (1'b0),
 
-    .o3_icb_cmd_valid  (qspi0_ro_icb_cmd_valid),
-    .o3_icb_cmd_ready  (qspi0_ro_icb_cmd_ready),
-    .o3_icb_cmd_addr   (qspi0_ro_icb_cmd_addr ),
-    .o3_icb_cmd_read   (qspi0_ro_icb_cmd_read ),
-    .o3_icb_cmd_wdata  (qspi0_ro_icb_cmd_wdata),
+    .o3_icb_cmd_valid  (),
+    .o3_icb_cmd_ready  (1'b0),
+    .o3_icb_cmd_addr   (),
+    .o3_icb_cmd_read   (),
+    .o3_icb_cmd_wdata  (),
     .o3_icb_cmd_wmask  (),
     .o3_icb_cmd_lock   (),
     .o3_icb_cmd_excl   (),
@@ -267,11 +289,11 @@ module e203_subsys_mems(
     .o3_icb_cmd_burst  (),
     .o3_icb_cmd_beat   (),
     
-    .o3_icb_rsp_valid  (qspi0_ro_icb_rsp_valid),
-    .o3_icb_rsp_ready  (qspi0_ro_icb_rsp_ready),
-    .o3_icb_rsp_err    (qspi0_ro_icb_rsp_err),
+    .o3_icb_rsp_valid  (1'b0),
+    .o3_icb_rsp_ready  (),
+    .o3_icb_rsp_err    (1'b0),
     .o3_icb_rsp_excl_ok(1'b0  ),
-    .o3_icb_rsp_rdata  (qspi0_ro_icb_rsp_rdata),
+    .o3_icb_rsp_rdata  ({`E203_XLEN{1'b0}}),
 
 
   //  * SysMem
