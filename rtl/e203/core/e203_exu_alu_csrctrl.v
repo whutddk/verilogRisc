@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-06-25 22:13:16
 // Last Modified by:   29505
-// Last Modified time: 2019-06-30 15:07:26
+// Last Modified time: 2019-06-30 15:13:40
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_exu_alu_csrctrl.v  
 // Module Name:  
@@ -86,8 +86,6 @@ module e203_exu_alu_csrctrl(
   );
 
 
-  
-  assign sel_eai      = 1'b0;
   assign csr_o_valid      = csr_i_valid;
   assign csr_i_ready      = csr_o_ready;
   assign csr_o_wbck_err   = csr_access_ilgl;
@@ -117,7 +115,7 @@ module e203_exu_alu_csrctrl(
                                                                                          
   assign csr_idx = csridx;
 
-  assign csr_ena = csr_o_valid & csr_o_ready & (~sel_eai);
+  assign csr_ena = csr_o_valid & csr_o_ready;
 
   assign wbck_csr_dat = 
               ({`E203_XLEN{csrrw}} & csr_op1)
