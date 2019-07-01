@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-06-30 22:13:07
 // Last Modified by:   29505
-// Last Modified time: 2019-06-30 22:16:35
+// Last Modified time: 2019-07-01 09:37:44
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_ifu_ifetch.v  
 // Module Name:  
@@ -469,13 +469,33 @@ module e203_ifu_ifetch(
 
 	wire bjp_req = minidec_bjp & prdt_taken;
 
-	wire [`E203_PC_SIZE-1:0] pc_add_op1 =  bjp_req ? {prdt_pc_add_op1[`E203_PC_SIZE-1:2],2'b0} :
-										 ifu_reset_req ? {pc_rtvec[`E203_PC_SIZE-1:2],2'b0} :
-												{pc_r[`E203_PC_SIZE-1:2],2'b0};
+	wire [`E203_PC_SIZE-1:0] pc_add_op1 =  
+										(
+											{`E203_PC_SIZE{bjp_req}} & {prdt_pc_add_op1[`E203_PC_SIZE-1:2],2'b0} 
+										)
+										| 
+										(
+											{`E203_PC_SIZE{(~bjp_req)&(ifu_reset_req)}} & {pc_rtvec[`E203_PC_SIZE-1:2],2'b0}
+										)
+										|
+										(
+											{`E203_PC_SIZE{(~bjp_req)&(~ifu_reset_req)}} & {pc_r[`E203_PC_SIZE-1:2],2'b0}
+										)
+										;
 
-	wire [`E203_PC_SIZE-1:0] pc_add_op2 = bjp_req ? {prdt_pc_add_op2[`E203_PC_SIZE-1:2],2'b0} :
-										 ifu_reset_req ? `E203_PC_SIZE'b0 :
-												`E203_PC_SIZE'd4 ;
+	wire [`E203_PC_SIZE-1:0] pc_add_op2 = 
+										(
+											{`E203_PC_SIZE{bjp_req}} & {prdt_pc_add_op2[`E203_PC_SIZE-1:2],2'b0} 
+										)
+										|
+										(
+											{`E203_PC_SIZE{(~bjp_req)&(ifu_reset_req)}} & `E203_PC_SIZE'b0
+										)
+										|
+										(
+											{`E203_PC_SIZE{(~bjp_req)&(~ifu_reset_req)}} & `E203_PC_SIZE'd4
+										) 
+										;
 
 
 
@@ -494,10 +514,21 @@ module e203_ifu_ifetch(
 
 	assign pc_nxt_pre = pc_add_op1 + pc_add_op2;
 
-	assign pc_nxt = pipe_flush_req ? {pipe_flush_pc[`E203_PC_SIZE-1:2],2'b0} :
-					dly_pipe_flush_req ? {pc_r[`E203_PC_SIZE-1:2],2'b0} :
-					{pc_nxt_pre[`E203_PC_SIZE-1:2],2'b0};
-
+	assign pc_nxt = (
+						{`E203_PC_SIZE{pipe_flush_req}} & {pipe_flush_pc[`E203_PC_SIZE-1:2],2'b0} 
+					)
+					|
+					(
+						{`E203_PC_SIZE{(~pipe_flush_req)&(dly_pipe_flush_req)}} & {pc_r[`E203_PC_SIZE-1:2],2'b0}
+					)
+					|
+					(
+						{`E203_PC_SIZE{(~pipe_flush_req)&(~dly_pipe_flush_req)}} & {pc_nxt_pre[`E203_PC_SIZE-1:2],2'b0}
+					)
+					;
+	// assign pc_nxt = pipe_flush_req ? {pipe_flush_pc[`E203_PC_SIZE-1:2],2'b0} :
+	// 				dly_pipe_flush_req ? {pc_r[`E203_PC_SIZE-1:2],2'b0} :
+	// 				{pc_nxt_pre[`E203_PC_SIZE-1:2],2'b0};
 
 	// The Ifetch issue new ifetch request when
 	//   * If it is a bjp insturction, and it does not need to wait, and it is not a replay-set cycle
