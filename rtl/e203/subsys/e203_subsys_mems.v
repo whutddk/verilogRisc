@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-07-06 12:54:00
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-07-06 15:58:48
+// Last Modified time: 2019-07-06 19:14:00
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -149,7 +149,7 @@ module e203_subsys_mems(
     output [19:0] SRAM_ADDR_io,
     output [15:0] SRAM_DATA_IN_io,
     input [15:0] SRAM_DATA_OUT_io,
-    output SRAM_DATA_t
+    output [15:0] SRAM_DATA_t
   );
 
 

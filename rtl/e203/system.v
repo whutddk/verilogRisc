@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-27 19:06:55
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-07-06 16:08:33
+// Last Modified time: 2019-07-06 19:14:16
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name: system.v  
@@ -286,7 +286,7 @@ generate
 		.O(SRAM_DATA_OUT_io[i]),
 		.IO(SRAM_DATA[i]),
 		.I(SRAM_DATA_IN_io[i]),
-		.T(SRAM_DATA_t)
+		.T(SRAM_DATA_t[i])
 	);
 	end
  	

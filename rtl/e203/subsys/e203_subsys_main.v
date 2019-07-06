@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-06-30 14:05:03
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-07-06 15:59:37
+// Last Modified time: 2019-07-06 19:13:56
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_subsys_main.v  
 // Module Name: e203_subsys_main
@@ -390,7 +390,7 @@ module e203_subsys_main(
     output [19:0] SRAM_ADDR_io,
     output [15:0] SRAM_DATA_IN_io,
     input [15:0] SRAM_DATA_OUT_io,
-    output SRAM_DATA_t,
+    output [15:0] SRAM_DATA_t,
 
 
 
