@@ -2,8 +2,8 @@
 // Company:   
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-27 19:06:55
-// Last Modified by:   29505
-// Last Modified time: 2019-06-30 16:23:35
+// Last Modified by:   Ruige_Lee
+// Last Modified time: 2019-07-06 16:08:33
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name: system.v  
@@ -46,6 +46,14 @@
 
 module system
 (
+    output SRAM_OEn_io,
+    output SRAM_WRn_io,
+    output SRAM_CSn_io,
+
+    output [19:0] SRAM_ADDR_io,
+    inout [15:0] SRAM_DATA,
+
+
 	input wire CLK100MHZ,//GCLK-W19
 
 	input wire mcu_rst,//MCU_RESET-P20
@@ -257,8 +265,32 @@ end
 		.I(dut_io_pads_jtag_TDO_o_oval),
 		.T(~dut_io_pads_jtag_TDO_o_oe)
 	);
+	
+wire [15:0] SRAM_DATA_IN_io;
+wire [15:0] SRAM_DATA_OUT_io;
+wire [15:0] SRAM_DATA_t;
 
 
+genvar i;
+generate
+	for ( i = 0 ; i < 16 ; i = i+1 ) begin
+		IOBUF
+	#(
+		.DRIVE(12),
+		.IBUF_LOW_PWR("TRUE"),
+		.IOSTANDARD("DEFAULT"),
+		.SLEW("SLOW")
+	)
+	IOBUF_SRAM_DATA
+	(
+		.O(SRAM_DATA_OUT_io[i]),
+		.IO(SRAM_DATA[i]),
+		.I(SRAM_DATA_IN_io[i]),
+		.T(SRAM_DATA_t)
+	);
+	end
+ 	
+ endgenerate 
 
 	//=================================================
 	// Assignment of IOBUF "IO" pins to package pins
@@ -277,8 +309,25 @@ end
 	assign dut_io_pads_dbgmode2_n_i_ival = 1'b1;
 	//
 
+
+
 	e203_soc_top dut
 	(
+
+
+
+  //driver pin
+  .SRAM_OEn_io(SRAM_OEn_io),
+  .SRAM_WRn_io(SRAM_WRn_io),
+  .SRAM_CSn_io(SRAM_CSn_io),
+
+  .SRAM_ADDR_io(SRAM_ADDR_io),
+  .SRAM_DATA_IN_io(SRAM_DATA_IN_io),
+  .SRAM_DATA_OUT_io(SRAM_DATA_OUT_io),
+  .SRAM_DATA_t(SRAM_DATA_t), 
+
+
+
 		.hfextclk(clk_16M),
 		.hfxoscen(),
 

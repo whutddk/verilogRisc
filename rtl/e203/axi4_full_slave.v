@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-07-06 12:56:26
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-07-06 13:39:52
+// Last Modified time: 2019-07-06 16:13:10
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name:   
@@ -82,7 +82,19 @@
 		output wire [1 : 0] S_AXI_RRESP,// Read response. This signal indicates the status of the read transfer.
 		output wire  S_AXI_RLAST,// Read last. This signal indicates the last transfer in a read burst.
 		output wire  S_AXI_RVALID,// Read valid. This signal indicates that the channel is signaling the required read data.
-		input wire  S_AXI_RREADY// Read ready. This signal indicates that the master can accept the read data and response information.
+		input wire  S_AXI_RREADY,// Read ready. This signal indicates that the master can accept the read data and response information.
+	
+
+		//driver pin
+		output SRAM_OEn_io,
+		output SRAM_WRn_io,
+		output SRAM_CSn_io,
+
+		output [19:0] SRAM_ADDR_io,
+		output [15:0] SRAM_DATA_IN_io,
+		input [15:0] SRAM_DATA_OUT_io,
+		output SRAM_DATA_t
+
 	);
 
 	// AXI4FULL signals
@@ -127,14 +139,14 @@
 	//ADDR_LSB = 3 for 42 bits (n downto 3)
 
 	localparam integer ADDR_LSB = (C_S_AXI_DATA_WIDTH/32) + 1;
-	localparam integer OPT_MEM_ADDR_BITS = 4;
+	localparam integer OPT_MEM_ADDR_BITS = 20;
 	localparam integer USER_NUM_MEM = 1;
 	//----------------------------------------------
 	//-- Signals for user logic memory space example
 	//------------------------------------------------
-	wire [OPT_MEM_ADDR_BITS:0] mem_address;
+	wire [OPT_MEM_ADDR_BITS-1:0] mem_address;
 	wire [USER_NUM_MEM-1:0] mem_select;
-	reg [C_S_AXI_DATA_WIDTH-1:0] mem_data_out[0 : USER_NUM_MEM-1];
+	reg [C_S_AXI_DATA_WIDTH-1:0] mem_data_out;
 
 	genvar i;
 	genvar j;
@@ -406,7 +418,7 @@
 
 
 
-
+/*
 	// ------------------------------------------
 	// -- Example code to access user logic memory region
 	// ------------------------------------------
@@ -464,6 +476,51 @@
 		end       
 	end    
 
+*/
+wire mem_wren = axi_wready && S_AXI_WVALID ;
+wire mem_rden = axi_arv_arr_flag ;
+assign mem_address = ( axi_arv_arr_flag ? axi_araddr[ADDR_LSB + OPT_MEM_ADDR_BITS - 1 : ADDR_LSB] : ( axi_awv_awr_flag ? axi_awaddr[ADDR_LSB + OPT_MEM_ADDR_BITS - 1 : ADDR_LSB] : 0 ) );
 
+
+wire [15:0] data_in  = S_AXI_WDATA[15:0];
+wire [15:0] data_out;
+
+always @( posedge S_AXI_ACLK ) begin
+		if ( mem_rden ) begin
+			mem_data_out <= {16'b0,data_out};
+		end   
+	end
+
+  
+
+	always @( mem_data_out, axi_rvalid) begin
+		if ( axi_rvalid ) begin
+		  // Read address mux
+			axi_rdata <= mem_data_out;
+		end
+		else begin
+			axi_rdata <= 32'h00000000;
+		end       
+	end   
+
+perip_SRAM i_SRAM
+(
+	.mem_address(mem_address),
+	.mem_wren(mem_wren),
+	.mem_rden(mem_rden),
+	.data_in(data_in),
+	.data_out(data_out),
+
+	//driver pin
+	.SRAM_OEn_io(SRAM_OEn_io),
+	.SRAM_WRn_io(SRAM_WRn_io),
+	.SRAM_CSn_io(SRAM_CSn_io),
+
+	.SRAM_ADDR_io(SRAM_ADDR_io),
+	.SRAM_DATA_IN_io(SRAM_DATA_IN_io),
+	.SRAM_DATA_OUT_io(SRAM_DATA_OUT_io),
+	.SRAM_DATA_t(SRAM_DATA_t)
+
+);
 
 	endmodule
