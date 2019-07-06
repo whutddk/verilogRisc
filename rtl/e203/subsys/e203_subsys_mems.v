@@ -1,3 +1,26 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Company:   
+// Engineer: Ruige_Lee
+// Create Date: 2019-07-06 12:54:00
+// Last Modified by:   Ruige_Lee
+// Last Modified time: 2019-07-06 13:41:01
+// Email: 295054118@whut.edu.cn
+// page: https://whutddk.github.io/
+// Design Name:   
+// Module Name: e203_subsys_mems
+// Project Name:   
+// Target Devices:   
+// Tool Versions:   
+// Description:   
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision:    -   
+// Additional Comments:  
+// 
+//
+//////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////
 // Company:    
@@ -7,7 +30,7 @@
 // Last Modified time: 2019-06-30 16:29:30
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_subsys_mems.v  
-// Module Name:  
+// Module Name: e203_subsys_mems
 // Project Name:  
 // Target Devices:  
 // Tool Versions:  
@@ -504,48 +527,77 @@ sirv_gnrl_icb2axi # (
     .rst_n         (bus_rst_n) 
   );
 
-sirv_expl_axi_slv # (
-  .AW   (32),
-  .DW   (`E203_XLEN) 
-) u_perips_expl_axi_slv (
-    .axi_arvalid   (expl_axi_arvalid),
-    .axi_arready   (expl_axi_arready),
-    .axi_araddr    (expl_axi_araddr ),
-    .axi_arcache   (expl_axi_arcache),
-    .axi_arprot    (expl_axi_arprot ),
-    .axi_arlock    (expl_axi_arlock ),
-    .axi_arburst   (expl_axi_arburst),
-    .axi_arlen     (expl_axi_arlen  ),
-    .axi_arsize    (expl_axi_arsize ),
+// sirv_expl_axi_slv # (
+//   .AW   (32),
+//   .DW   (`E203_XLEN) 
+// ) u_perips_expl_axi_slv (
+//     .axi_arvalid   (),
+//     .axi_arready   (),
+//     .axi_araddr    ( ),
+//     .axi_arcache   (),
+//     .axi_arprot    ( ),
+//     .axi_arlock    ( ),
+//     .axi_arburst   (),
+//     .axi_arlen     (  ),
+//     .axi_arsize    ( ),
 
-    .axi_awvalid   (expl_axi_awvalid),
-    .axi_awready   (expl_axi_awready),
-    .axi_awaddr    (expl_axi_awaddr ),
-    .axi_awcache   (expl_axi_awcache),
-    .axi_awprot    (expl_axi_awprot ),
-    .axi_awlock    (expl_axi_awlock ),
-    .axi_awburst   (expl_axi_awburst),
-    .axi_awlen     (expl_axi_awlen  ),
-    .axi_awsize    (expl_axi_awsize ),
+//     .axi_awvalid   (),
+//     .axi_awready   (),
+//     .axi_awaddr    ( ),
+//     .axi_awcache   (),
+//     .axi_awprot    ( ),
+//     .axi_awlock    ( ),
+//     .axi_awburst   (),
+//     .axi_awlen     (  ),
+//     .axi_awsize    ( ),
   
-    .axi_rvalid    (expl_axi_rvalid ),
-    .axi_rready    (expl_axi_rready ),
-    .axi_rdata     (expl_axi_rdata  ),
-    .axi_rresp     (expl_axi_rresp  ),
-    .axi_rlast     (expl_axi_rlast  ),
+//     .axi_rvalid    ( ),
+//     .axi_rready    ( ),
+//     .axi_rdata     (  ),
+//     .axi_rresp     (  ),
+//     .axi_rlast     (  ),
 
-    .axi_wvalid    (expl_axi_wvalid ),
-    .axi_wready    (expl_axi_wready ),
-    .axi_wdata     (expl_axi_wdata  ),
-    .axi_wstrb     (expl_axi_wstrb  ),
-    .axi_wlast     (expl_axi_wlast  ),
+//     .axi_wvalid    ( ),
+//     .axi_wready    ( ),
+//     .axi_wdata     (  ),
+//     .axi_wstrb     (  ),
+//     .axi_wlast     (  ),
  
-    .axi_bvalid    (expl_axi_bvalid ),
-    .axi_bready    (expl_axi_bready ),
-    .axi_bresp     (expl_axi_bresp  ),
+//     .axi_bvalid    ( ),
+//     .axi_bready    ( ),
+//     .axi_bresp     (  ),
 
-    .clk           (clk  ),
-    .rst_n         (rst_n) 
+//     .clk           (),
+//     .rst_n         () 
+//   );
+
+axi4_full_slave i_axi_sram
+  (
+    .S_AXI_ACLK(clk),
+    .S_AXI_ARESETN(rst_n),
+    .S_AXI_AWADDR(expl_axi_awaddr),
+    .S_AXI_AWLEN(8'd0),
+    .S_AXI_AWBURST(expl_axi_awburst),
+    .S_AXI_AWVALID(expl_axi_awvalid),
+    .S_AXI_AWREADY(expl_axi_awready),
+    .S_AXI_WDATA(expl_axi_wdata),
+    .S_AXI_WSTRB(expl_axi_wstrb),
+    .S_AXI_WLAST(expl_axi_wlast),
+    .S_AXI_WVALID(expl_axi_wvalid),
+    .S_AXI_WREADY(expl_axi_wready),
+    .S_AXI_BRESP(expl_axi_bresp),
+    .S_AXI_BVALID(expl_axi_bvalid),
+    .S_AXI_BREADY(expl_axi_bready),
+    .S_AXI_ARADDR(expl_axi_araddr),
+    . S_AXI_ARLEN(8'd0),
+    .S_AXI_ARBURST(expl_axi_arburst),
+    .S_AXI_ARVALID(expl_axi_arvalid),
+    .S_AXI_ARREADY(expl_axi_arready),
+    .S_AXI_RDATA(expl_axi_rdata),
+    .S_AXI_RRESP(expl_axi_rresp),
+    .S_AXI_RLAST(expl_axi_rlast),
+    .S_AXI_RVALID(expl_axi_rvalid),
+    .S_AXI_RREADY(expl_axi_rready)
   );
 
 
