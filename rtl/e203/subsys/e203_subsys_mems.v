@@ -2,11 +2,11 @@
 // Company:   
 // Engineer: Ruige_Lee
 // Create Date: 2019-07-06 12:54:00
-// Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-07-06 19:14:00
+// Last Modified by:   29505
+// Last Modified time: 2019-07-09 15:05:49
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
-// Design Name:   
+// Design Name: e203_subsys_mems.v  
 // Module Name: e203_subsys_mems
 // Project Name:   
 // Target Devices:   
@@ -582,46 +582,88 @@ sirv_gnrl_icb2axi # (
 //     .rst_n         () 
 //   );
 
-axi4_full_slave i_axi_sram
+// axi4_full_slave i_axi_sram
+//   (
+//     .S_AXI_ACLK(clk),
+//     .S_AXI_ARESETN(rst_n),
+//     .S_AXI_AWADDR(expl_axi_awaddr),
+//     .S_AXI_AWLEN(8'd0),
+//     .S_AXI_AWBURST(expl_axi_awburst),
+//     .S_AXI_AWVALID(expl_axi_awvalid),
+//     .S_AXI_AWREADY(expl_axi_awready),
+//     .S_AXI_WDATA(expl_axi_wdata),
+//     .S_AXI_WSTRB(expl_axi_wstrb),
+//     .S_AXI_WLAST(expl_axi_wlast),
+//     .S_AXI_WVALID(expl_axi_wvalid),
+//     .S_AXI_WREADY(expl_axi_wready),
+//     .S_AXI_BRESP(expl_axi_bresp),
+//     .S_AXI_BVALID(expl_axi_bvalid),
+//     .S_AXI_BREADY(expl_axi_bready),
+//     .S_AXI_ARADDR(expl_axi_araddr),
+//     . S_AXI_ARLEN(8'd0),
+//     .S_AXI_ARBURST(expl_axi_arburst),
+//     .S_AXI_ARVALID(expl_axi_arvalid),
+//     .S_AXI_ARREADY(expl_axi_arready),
+//     .S_AXI_RDATA(expl_axi_rdata),
+//     .S_AXI_RRESP(expl_axi_rresp),
+//     .S_AXI_RLAST(expl_axi_rlast),
+//     .S_AXI_RVALID(expl_axi_rvalid),
+//     .S_AXI_RREADY(expl_axi_rready),
+
+
+
+//   //driver pin
+//   .SRAM_OEn_io(SRAM_OEn_io),
+//   .SRAM_WRn_io(SRAM_WRn_io),
+//   .SRAM_CSn_io(SRAM_CSn_io),
+
+//   .SRAM_ADDR_io(SRAM_ADDR_io),
+//   .SRAM_DATA_IN_io(SRAM_DATA_IN_io),
+//   .SRAM_DATA_OUT_io(SRAM_DATA_OUT_io),
+//   .SRAM_DATA_t(SRAM_DATA_t)
+//   );
+
+
+axi_bram_ctrl_0 i_axi_bram
   (
-    .S_AXI_ACLK(clk),
-    .S_AXI_ARESETN(rst_n),
-    .S_AXI_AWADDR(expl_axi_awaddr),
-    .S_AXI_AWLEN(8'd0),
-    .S_AXI_AWBURST(expl_axi_awburst),
-    .S_AXI_AWVALID(expl_axi_awvalid),
-    .S_AXI_AWREADY(expl_axi_awready),
-    .S_AXI_WDATA(expl_axi_wdata),
-    .S_AXI_WSTRB(expl_axi_wstrb),
-    .S_AXI_WLAST(expl_axi_wlast),
-    .S_AXI_WVALID(expl_axi_wvalid),
-    .S_AXI_WREADY(expl_axi_wready),
-    .S_AXI_BRESP(expl_axi_bresp),
-    .S_AXI_BVALID(expl_axi_bvalid),
-    .S_AXI_BREADY(expl_axi_bready),
-    .S_AXI_ARADDR(expl_axi_araddr),
-    . S_AXI_ARLEN(8'd0),
-    .S_AXI_ARBURST(expl_axi_arburst),
-    .S_AXI_ARVALID(expl_axi_arvalid),
-    .S_AXI_ARREADY(expl_axi_arready),
-    .S_AXI_RDATA(expl_axi_rdata),
-    .S_AXI_RRESP(expl_axi_rresp),
-    .S_AXI_RLAST(expl_axi_rlast),
-    .S_AXI_RVALID(expl_axi_rvalid),
-    .S_AXI_RREADY(expl_axi_rready),
+    .s_axi_araddr(expl_axi_araddr[11:0]),
+    .s_axi_arburst(expl_axi_arburst),
+.s_axi_arcache(4'b0),
+    .s_axi_arlen(8'd0),
+.s_axi_arlock(1'b0),
+.s_axi_arprot(3'b0),
+    .s_axi_arready(expl_axi_arready),
+.s_axi_arsize(3'b0),
+    .s_axi_arvalid(expl_axi_arvalid),
+    .s_axi_awaddr(expl_axi_awaddr[11:0]),
+    .s_axi_awburst(expl_axi_awburst),
+.s_axi_awcache(4'b0),
+    .s_axi_awlen(8'd0),
+.s_axi_awlock(1'b0),
+.s_axi_awprot(3'b0),
+    .s_axi_awready(expl_axi_awready),
+.s_axi_awsize(3'b0),
+    .s_axi_awvalid(expl_axi_awvalid),
+    .s_axi_bready(expl_axi_bready),
+    .s_axi_bresp(expl_axi_bresp),
+    .s_axi_bvalid(expl_axi_bvalid),
+    .s_axi_rdata(expl_axi_rdata),
+    .s_axi_rlast(expl_axi_rlast),
+    .s_axi_rready(expl_axi_rready),
+    .s_axi_rresp(expl_axi_rresp),
+    .s_axi_rvalid(expl_axi_rvalid),
+    .s_axi_wdata(expl_axi_wdata),
+    .s_axi_wlast(expl_axi_wlast),
+    .s_axi_wready(expl_axi_wready),
+    .s_axi_wstrb(expl_axi_wstrb),
+    .s_axi_wvalid(expl_axi_wvalid),
 
 
-
-  //driver pin
-  .SRAM_OEn_io(SRAM_OEn_io),
-  .SRAM_WRn_io(SRAM_WRn_io),
-  .SRAM_CSn_io(SRAM_CSn_io),
-
-  .SRAM_ADDR_io(SRAM_ADDR_io),
-  .SRAM_DATA_IN_io(SRAM_DATA_IN_io),
-  .SRAM_DATA_OUT_io(SRAM_DATA_OUT_io),
-  .SRAM_DATA_t(SRAM_DATA_t)
-  );
-
-
+    .s_axi_aclk(clk),
+    .s_axi_aresetn(rst_n)
+    
+    
+    
+    
+);
 endmodule
