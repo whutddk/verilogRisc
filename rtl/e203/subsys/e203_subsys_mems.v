@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-07-06 12:54:00
 // Last Modified by:   29505
-// Last Modified time: 2019-07-09 16:33:54
+// Last Modified time: 2019-07-10 15:04:22
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name: e203_subsys_mems.v  
@@ -582,46 +582,46 @@ sirv_gnrl_icb2axi # (
 //     .rst_n         () 
 //   );
 
-axi4_full_slave i_axi_sram
-  (
-    .S_AXI_ACLK(clk),
-    .S_AXI_ARESETN(rst_n),
-    .S_AXI_AWADDR(expl_axi_awaddr),
-    .S_AXI_AWLEN(8'd0),
-    .S_AXI_AWBURST(expl_axi_awburst),
-    .S_AXI_AWVALID(expl_axi_awvalid),
-    .S_AXI_AWREADY(expl_axi_awready),
-    .S_AXI_WDATA(expl_axi_wdata),
-    .S_AXI_WSTRB(expl_axi_wstrb),
-    .S_AXI_WLAST(expl_axi_wlast),
-    .S_AXI_WVALID(expl_axi_wvalid),
-    .S_AXI_WREADY(expl_axi_wready),
-    .S_AXI_BRESP(expl_axi_bresp),
-    .S_AXI_BVALID(expl_axi_bvalid),
-    .S_AXI_BREADY(expl_axi_bready),
-    .S_AXI_ARADDR(expl_axi_araddr),
-    . S_AXI_ARLEN(8'd0),
-    .S_AXI_ARBURST(expl_axi_arburst),
-    .S_AXI_ARVALID(expl_axi_arvalid),
-    .S_AXI_ARREADY(expl_axi_arready),
-    .S_AXI_RDATA(expl_axi_rdata),
-    .S_AXI_RRESP(expl_axi_rresp),
-    .S_AXI_RLAST(expl_axi_rlast),
-    .S_AXI_RVALID(expl_axi_rvalid),
-    .S_AXI_RREADY(expl_axi_rready),
+// axi4_full_slave i_axi_sram
+//   (
+//     .S_AXI_ACLK(clk),
+//     .S_AXI_ARESETN(rst_n),
+//     .S_AXI_AWADDR(expl_axi_awaddr),
+//     .S_AXI_AWLEN(8'd0),
+//     .S_AXI_AWBURST(expl_axi_awburst),
+//     .S_AXI_AWVALID(expl_axi_awvalid),
+//     .S_AXI_AWREADY(expl_axi_awready),
+//     .S_AXI_WDATA(expl_axi_wdata),
+//     .S_AXI_WSTRB(expl_axi_wstrb),
+//     .S_AXI_WLAST(expl_axi_wlast),
+//     .S_AXI_WVALID(expl_axi_wvalid),
+//     .S_AXI_WREADY(expl_axi_wready),
+//     .S_AXI_BRESP(expl_axi_bresp),
+//     .S_AXI_BVALID(expl_axi_bvalid),
+//     .S_AXI_BREADY(expl_axi_bready),
+//     .S_AXI_ARADDR(expl_axi_araddr),
+//     . S_AXI_ARLEN(8'd0),
+//     .S_AXI_ARBURST(expl_axi_arburst),
+//     .S_AXI_ARVALID(expl_axi_arvalid),
+//     .S_AXI_ARREADY(expl_axi_arready),
+//     .S_AXI_RDATA(expl_axi_rdata),
+//     .S_AXI_RRESP(expl_axi_rresp),
+//     .S_AXI_RLAST(expl_axi_rlast),
+//     .S_AXI_RVALID(expl_axi_rvalid),
+//     .S_AXI_RREADY(expl_axi_rready),
 
 
 
-  //driver pin
-  .SRAM_OEn_io(SRAM_OEn_io),
-  .SRAM_WRn_io(SRAM_WRn_io),
-  .SRAM_CSn_io(SRAM_CSn_io),
+//   //driver pin
+//   .SRAM_OEn_io(SRAM_OEn_io),
+//   .SRAM_WRn_io(SRAM_WRn_io),
+//   .SRAM_CSn_io(SRAM_CSn_io),
 
-  .SRAM_ADDR_io(SRAM_ADDR_io),
-  .SRAM_DATA_IN_io(SRAM_DATA_IN_io),
-  .SRAM_DATA_OUT_io(SRAM_DATA_OUT_io),
-  .SRAM_DATA_t(SRAM_DATA_t)
-  );
+//   .SRAM_ADDR_io(SRAM_ADDR_io),
+//   .SRAM_DATA_IN_io(SRAM_DATA_IN_io),
+//   .SRAM_DATA_OUT_io(SRAM_DATA_OUT_io),
+//   .SRAM_DATA_t(SRAM_DATA_t)
+//   );
 
 
 // axi_bram_ctrl_0 i_axi_bram
@@ -666,4 +666,89 @@ axi4_full_slave i_axi_sram
     
     
 // );
+
+
+wire [31:0] emc_addr_wire;
+axi_emc_0 i_axi_emc
+  (
+    .s_axi_mem_araddr(expl_axi_araddr),
+    .s_axi_mem_arburst(expl_axi_arburst),
+.s_axi_mem_arcache(4'b0),
+    .s_axi_mem_arlen(8'd0),
+.s_axi_mem_arlock(1'b0),
+.s_axi_mem_arprot(3'b0),
+    .s_axi_mem_arready(expl_axi_arready),
+.s_axi_mem_arsize(3'b0),
+    .s_axi_mem_arvalid(expl_axi_arvalid),
+    .s_axi_mem_awaddr(expl_axi_awaddr),
+    .s_axi_mem_awburst(expl_axi_awburst),
+.s_axi_mem_awcache(4'b0),
+    .s_axi_mem_awlen(8'd0),
+.s_axi_mem_awlock(1'b0),
+.s_axi_mem_awprot(3'b0),
+    .s_axi_mem_awready(expl_axi_awready),
+.s_axi_mem_awsize(3'b0),
+    .s_axi_mem_awvalid(expl_axi_awvalid),
+    .s_axi_mem_bready(expl_axi_bready),
+    .s_axi_mem_bresp(expl_axi_bresp),
+    .s_axi_mem_bvalid(expl_axi_bvalid),
+    .s_axi_mem_rdata(expl_axi_rdata),
+    .s_axi_mem_rlast(expl_axi_rlast),
+    .s_axi_mem_rready(expl_axi_rready),
+    .s_axi_mem_rresp(expl_axi_rresp),
+    .s_axi_mem_rvalid(expl_axi_rvalid),
+    .s_axi_mem_wdata(expl_axi_wdata),
+    .s_axi_mem_wlast(expl_axi_wlast),
+    .s_axi_mem_wready(expl_axi_wready),
+    .s_axi_mem_wstrb(expl_axi_wstrb),
+    .s_axi_mem_wvalid(expl_axi_wvalid),
+
+
+    .s_axi_aclk(clk),
+    .s_axi_aresetn(rst_n),
+
+    .rdclk(clk),
+
+
+
+
+
+
+    .mem_a(emc_addr_wire),
+    .mem_adv_ldn(),
+    .mem_ben(),
+    .mem_ce(),
+    .mem_cen(SRAM_CSn_io),
+    .mem_cken(),
+    .mem_cre(),
+    .mem_dq_i(SRAM_DATA_OUT_io),
+    .mem_dq_o(SRAM_DATA_IN_io),
+    .mem_dq_t(SRAM_DATA_t),
+    .mem_lbon(),
+    .mem_oen(SRAM_OEn_io),
+    .mem_qwen(),
+    .mem_rnw(),
+    .mem_rpn(),
+    .mem_wait(1'b0),
+    .mem_wen(SRAM_WRn_io)
+    
+
+
+
+    //   .SRAM_OEn_io(SRAM_OEn_io),
+//   .SRAM_WRn_io(SRAM_WRn_io),
+//   .SRAM_CSn_io(SRAM_CSn_io),
+
+//   .SRAM_ADDR_io(SRAM_ADDR_io),
+//   .SRAM_DATA_IN_io(SRAM_DATA_IN_io),
+//   .SRAM_DATA_OUT_io(SRAM_DATA_OUT_io),
+//   .SRAM_DATA_t(SRAM_DATA_t)
+);
+
+assign SRAM_ADDR_io = emc_addr_wire[20:1];
+
+
+
+
+
 endmodule
