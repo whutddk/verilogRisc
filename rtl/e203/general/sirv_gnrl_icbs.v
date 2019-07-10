@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-02-03 20:22:49
+// Last Modified by:   29505
+// Last Modified time: 2019-07-10 17:26:03
+// Email: 295054118@whut.edu.cn
+// Design Name: sirv_gnrl_icbs.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -1137,8 +1159,8 @@ module sirv_gnrl_icb2axi # (
   assign i_axi_awlock = 2'b0;
   //
   // The ICB does not support burst now, so just make it fixed
-  assign i_axi_arburst = 2'b0;
-  assign i_axi_awburst = 2'b0;
+  assign i_axi_arburst = 2'b01;
+  assign i_axi_awburst = 2'b01;
   assign i_axi_arlen = 4'b0;
   assign i_axi_awlen = 4'b0;
   
