@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-07-06 12:54:00
 // Last Modified by:   29505
-// Last Modified time: 2019-07-10 15:04:22
+// Last Modified time: 2019-07-11 23:58:50
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name: e203_subsys_mems.v  
@@ -125,16 +125,16 @@ module e203_subsys_mems(
   input                          otp_ro_icb_rsp_err,
   input  [`E203_XLEN-1:0]        otp_ro_icb_rsp_rdata,
 
-    //////////////////////////////////////////////////////////
-  output                         dm_icb_cmd_valid,
-  input                          dm_icb_cmd_ready,
-  output [`E203_ADDR_SIZE-1:0]   dm_icb_cmd_addr, 
-  output                         dm_icb_cmd_read, 
-  output [`E203_XLEN-1:0]        dm_icb_cmd_wdata,
-  //
-  input                          dm_icb_rsp_valid,
-  output                         dm_icb_rsp_ready,
-  input  [`E203_XLEN-1:0]        dm_icb_rsp_rdata,
+  //   //////////////////////////////////////////////////////////
+  // output                         dm_icb_cmd_valid,
+  // input                          dm_icb_cmd_ready,
+  // output [`E203_ADDR_SIZE-1:0]   dm_icb_cmd_addr, 
+  // output                         dm_icb_cmd_read, 
+  // output [`E203_XLEN-1:0]        dm_icb_cmd_wdata,
+  // //
+  // input                          dm_icb_rsp_valid,
+  // output                         dm_icb_rsp_ready,
+  // input  [`E203_XLEN-1:0]        dm_icb_rsp_rdata,
 
   input  clk,
   input  bus_rst_n,
@@ -245,13 +245,13 @@ module e203_subsys_mems(
     .i_icb_rsp_rdata  (mem_icb_rsp_rdata),
     
   //  * DM
-    .o0_icb_enable     (1'b1),
+    .o0_icb_enable     (1'b0),
 
-    .o0_icb_cmd_valid  (dm_icb_cmd_valid),
-    .o0_icb_cmd_ready  (dm_icb_cmd_ready),
-    .o0_icb_cmd_addr   (dm_icb_cmd_addr ),
-    .o0_icb_cmd_read   (dm_icb_cmd_read ),
-    .o0_icb_cmd_wdata  (dm_icb_cmd_wdata),
+    .o0_icb_cmd_valid  (),
+    .o0_icb_cmd_ready  (1'B0),
+    .o0_icb_cmd_addr   (),
+    .o0_icb_cmd_read   (),
+    .o0_icb_cmd_wdata  (),
     .o0_icb_cmd_wmask  (),
     .o0_icb_cmd_lock   (),
     .o0_icb_cmd_excl   (),
@@ -259,11 +259,11 @@ module e203_subsys_mems(
     .o0_icb_cmd_burst  (),
     .o0_icb_cmd_beat   (),
     
-    .o0_icb_rsp_valid  (dm_icb_rsp_valid),
-    .o0_icb_rsp_ready  (dm_icb_rsp_ready),
+    .o0_icb_rsp_valid  (1'b0),
+    .o0_icb_rsp_ready  (),
     .o0_icb_rsp_err    (1'b0),
     .o0_icb_rsp_excl_ok(1'b0),
-    .o0_icb_rsp_rdata  (dm_icb_rsp_rdata),
+    .o0_icb_rsp_rdata  ({`E203_XLEN{1'b0}}),
 
   //  * MROM      
     .o1_icb_enable     (1'b1),

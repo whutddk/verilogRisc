@@ -3,8 +3,8 @@
 // Company:    
 // Engineer: 29505
 // Create Date: 2019-06-30 14:05:03
-// Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-07-06 19:13:56
+// Last Modified by:   29505
+// Last Modified time: 2019-07-11 23:16:16
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_subsys_main.v  
 // Module Name: e203_subsys_main
@@ -959,6 +959,16 @@ module e203_subsys_main(
     .mem_icb_rsp_err    (mem_icb_rsp_err  ),
     .mem_icb_rsp_rdata  (mem_icb_rsp_rdata),
 
+    .dm_icb_cmd_valid    (dm_icb_cmd_valid  ),
+    .dm_icb_cmd_ready    (dm_icb_cmd_ready  ),
+    .dm_icb_cmd_addr     (dm_icb_cmd_addr   ),
+    .dm_icb_cmd_read     (dm_icb_cmd_read   ),
+    .dm_icb_cmd_wdata    (dm_icb_cmd_wdata  ),
+     
+    .dm_icb_rsp_valid    (dm_icb_rsp_valid  ),
+    .dm_icb_rsp_ready    (dm_icb_rsp_ready  ),
+    .dm_icb_rsp_rdata    (dm_icb_rsp_rdata  ),
+
     .test_mode     (test_mode), 
     .clk           (hfclk  ),
     .rst_n         (core_rst_n) 
@@ -1420,15 +1430,15 @@ e203_subsys_mems u_e203_subsys_mems(
     .otp_ro_icb_rsp_err      (1'b0    ),
     .otp_ro_icb_rsp_rdata    (otp_ro_icb_rsp_rdata  ),
 
-    .dm_icb_cmd_valid    (dm_icb_cmd_valid  ),
-    .dm_icb_cmd_ready    (dm_icb_cmd_ready  ),
-    .dm_icb_cmd_addr     (dm_icb_cmd_addr   ),
-    .dm_icb_cmd_read     (dm_icb_cmd_read   ),
-    .dm_icb_cmd_wdata    (dm_icb_cmd_wdata  ),
+    // .dm_icb_cmd_valid    (dm_icb_cmd_valid  ),
+    // .dm_icb_cmd_ready    (dm_icb_cmd_ready  ),
+    // .dm_icb_cmd_addr     (dm_icb_cmd_addr   ),
+    // .dm_icb_cmd_read     (dm_icb_cmd_read   ),
+    // .dm_icb_cmd_wdata    (dm_icb_cmd_wdata  ),
      
-    .dm_icb_rsp_valid    (dm_icb_rsp_valid  ),
-    .dm_icb_rsp_ready    (dm_icb_rsp_ready  ),
-    .dm_icb_rsp_rdata    (dm_icb_rsp_rdata  ),
+    // .dm_icb_rsp_valid    (dm_icb_rsp_valid  ),
+    // .dm_icb_rsp_ready    (dm_icb_rsp_ready  ),
+    // .dm_icb_rsp_rdata    (dm_icb_rsp_rdata  ),
 
     .clk           (hfclk  ),
     .bus_rst_n     (bus_rst_n), 

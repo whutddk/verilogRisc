@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-27 19:06:59
 // Last Modified by:   29505
-// Last Modified time: 2019-06-30 15:06:52
+// Last Modified time: 2019-07-11 23:19:09
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name: e203_cpu.v  
@@ -236,6 +236,16 @@ module e203_cpu #(
 	input                          mem_icb_rsp_excl_ok,
 	input  [`E203_XLEN-1:0]        mem_icb_rsp_rdata,
 	`endif//}
+
+	output                         dm_icb_cmd_valid,
+	input                          dm_icb_cmd_ready,
+	output [`E203_ADDR_SIZE-1:0]   dm_icb_cmd_addr, 
+	output                         dm_icb_cmd_read, 
+	output [`E203_XLEN-1:0]        dm_icb_cmd_wdata,
+	//
+	input                          dm_icb_rsp_valid,
+	output                         dm_icb_rsp_ready,
+	input  [`E203_XLEN-1:0]        dm_icb_rsp_rdata,
 
 	`ifdef E203_HAS_ITCM//{
 	output itcm_ls,
@@ -603,6 +613,16 @@ module e203_cpu #(
 		.mem_icb_rsp_excl_ok(mem_icb_rsp_excl_ok  ),
 		.mem_icb_rsp_rdata  (mem_icb_rsp_rdata),
 	`endif//}
+
+		.dm_icb_cmd_valid    (dm_icb_cmd_valid  ),
+    	.dm_icb_cmd_ready    (dm_icb_cmd_ready  ),
+    	.dm_icb_cmd_addr     (dm_icb_cmd_addr   ),
+    	.dm_icb_cmd_read     (dm_icb_cmd_read   ),
+    	.dm_icb_cmd_wdata    (dm_icb_cmd_wdata  ),
+     
+    	.dm_icb_rsp_valid    (dm_icb_rsp_valid  ),
+    	.dm_icb_rsp_ready    (dm_icb_rsp_ready  ),
+    	.dm_icb_rsp_rdata    (dm_icb_rsp_rdata  ),
 
 		.clk_aon           (clk_aon           ),
 		.clk_core_ifu      (clk_core_ifu      ),

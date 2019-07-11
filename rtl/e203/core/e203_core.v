@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-06-30 14:05:03
 // Last Modified by:   29505
-// Last Modified time: 2019-06-30 15:07:06
+// Last Modified time: 2019-07-11 23:21:23
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_core.v  
 // Module Name:  
@@ -232,6 +232,16 @@ module e203_core(
 	input                          mem_icb_rsp_excl_ok  ,
 	input  [`E203_XLEN-1:0]        mem_icb_rsp_rdata,
 	`endif//}
+
+	output                         dm_icb_cmd_valid,
+	input                          dm_icb_cmd_ready,
+	output [`E203_ADDR_SIZE-1:0]   dm_icb_cmd_addr, 
+	output                         dm_icb_cmd_read, 
+	output [`E203_XLEN-1:0]        dm_icb_cmd_wdata,
+	//
+	input                          dm_icb_rsp_valid,
+	output                         dm_icb_rsp_ready,
+	input  [`E203_XLEN-1:0]        dm_icb_rsp_rdata,
 
 	`ifdef E203_HAS_ITCM //{
 	//////////////////////////////////////////////////////////////
@@ -813,6 +823,16 @@ module e203_core(
 		.mem_icb_rsp_excl_ok   (mem_icb_rsp_excl_ok  ),
 		.mem_icb_rsp_rdata     (mem_icb_rsp_rdata),
 	`endif//}
+
+		.dm_icb_cmd_valid    (dm_icb_cmd_valid  ),
+    	.dm_icb_cmd_ready    (dm_icb_cmd_ready  ),
+    	.dm_icb_cmd_addr     (dm_icb_cmd_addr   ),
+    	.dm_icb_cmd_read     (dm_icb_cmd_read   ),
+    	.dm_icb_cmd_wdata    (dm_icb_cmd_wdata  ),
+     
+    	.dm_icb_rsp_valid    (dm_icb_rsp_valid  ),
+    	.dm_icb_rsp_ready    (dm_icb_rsp_ready  ),
+    	.dm_icb_rsp_rdata    (dm_icb_rsp_rdata  ),
 
 		.clk                    (clk_core_biu ),
 		.rst_n                  (rst_n        ) 
