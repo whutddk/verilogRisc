@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-06-26 09:51:22
 // Last Modified by:   29505
-// Last Modified time: 2019-06-30 16:24:20
+// Last Modified time: 2019-07-12 11:26:05
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_subsys_perips.v  
 // Module Name:  
@@ -89,15 +89,15 @@ module e203_subsys_perips(
   input  [`E203_XLEN-1:0]        aon_icb_rsp_rdata,
 
   
-  input                      otp_ro_icb_cmd_valid,
-  output                     otp_ro_icb_cmd_ready,
-  input  [32-1:0]            otp_ro_icb_cmd_addr, 
-  input                      otp_ro_icb_cmd_read, 
-  input  [32-1:0]            otp_ro_icb_cmd_wdata,
+  // input                      otp_ro_icb_cmd_valid,
+  // output                     otp_ro_icb_cmd_ready,
+  // input  [32-1:0]            otp_ro_icb_cmd_addr, 
+  // input                      otp_ro_icb_cmd_read, 
+  // input  [32-1:0]            otp_ro_icb_cmd_wdata,
   
-  output                     otp_ro_icb_rsp_valid,
-  input                      otp_ro_icb_rsp_ready,
-  output [32-1:0]            otp_ro_icb_rsp_rdata,
+  // output                     otp_ro_icb_rsp_valid,
+  // input                      otp_ro_icb_rsp_ready,
+  // output [32-1:0]            otp_ro_icb_rsp_rdata,
 
 
   input  io_pads_gpio_0_i_ival,
@@ -1051,15 +1051,15 @@ module e203_subsys_perips(
   assign gpio_iof_1_31_o_ie        = 1'b0;
   assign gpio_iof_1_31_o_valid     = 1'b0;
 
-  wire                     otp_icb_cmd_valid;
-  wire                     otp_icb_cmd_ready;
-  wire [32-1:0]            otp_icb_cmd_addr; 
-  wire                     otp_icb_cmd_read; 
-  wire [32-1:0]            otp_icb_cmd_wdata;
+  // wire                     otp_icb_cmd_valid;
+  // wire                     otp_icb_cmd_ready;
+  // wire [32-1:0]            otp_icb_cmd_addr; 
+  // wire                     otp_icb_cmd_read; 
+  // wire [32-1:0]            otp_icb_cmd_wdata;
   
-  wire                     otp_icb_rsp_valid;
-  wire                     otp_icb_rsp_ready;
-  wire [32-1:0]            otp_icb_rsp_rdata;
+  // wire                     otp_icb_rsp_valid;
+  // wire                     otp_icb_rsp_ready;
+  // wire [32-1:0]            otp_icb_rsp_rdata;
 
   wire                     gpio_icb_cmd_valid;
   wire                     gpio_icb_cmd_ready;
@@ -1236,13 +1236,13 @@ u_sirv_ppi_fab(
     .o1_icb_rsp_rdata  (hclkgen_icb_rsp_rdata),
 
   //  * OTP       
-    .o2_icb_enable     (1'b1),
+    .o2_icb_enable     (1'b0),
 
-    .o2_icb_cmd_valid  (otp_icb_cmd_valid),
-    .o2_icb_cmd_ready  (otp_icb_cmd_ready),
-    .o2_icb_cmd_addr   (otp_icb_cmd_addr ),
-    .o2_icb_cmd_read   (otp_icb_cmd_read ),
-    .o2_icb_cmd_wdata  (otp_icb_cmd_wdata),
+    .o2_icb_cmd_valid  (),
+    .o2_icb_cmd_ready  (1'b0),
+    .o2_icb_cmd_addr   (),
+    .o2_icb_cmd_read   (),
+    .o2_icb_cmd_wdata  (),
     .o2_icb_cmd_wmask  (),
     .o2_icb_cmd_lock   (),
     .o2_icb_cmd_excl   (),
@@ -1250,11 +1250,11 @@ u_sirv_ppi_fab(
     .o2_icb_cmd_burst  (),
     .o2_icb_cmd_beat   (),
     
-    .o2_icb_rsp_valid  (otp_icb_rsp_valid),
-    .o2_icb_rsp_ready  (otp_icb_rsp_ready),
+    .o2_icb_rsp_valid  (1'b0),
+    .o2_icb_rsp_ready  (),
     .o2_icb_rsp_err    (1'b0  ),
     .o2_icb_rsp_excl_ok(1'b0  ),
-    .o2_icb_rsp_rdata  (otp_icb_rsp_rdata),
+    .o2_icb_rsp_rdata  ({`E203_XLEN{1'b0}}),
 
 
   //  * GPIO      
@@ -1370,30 +1370,30 @@ u_sirv_ppi_fab(
 
 
   //  * OTP       
-  sirv_otp_top u_sirv_otp_top( 
-    .clk           (clk  ),
-    .rst_n         (rst_n), 
+//   sirv_otp_top u_sirv_otp_top( 
+//     .clk           (clk  ),
+//     .rst_n         (rst_n), 
 
-    .i_icb_cmd_valid (otp_icb_cmd_valid),
-    .i_icb_cmd_ready (otp_icb_cmd_ready),
-    .i_icb_cmd_addr  (otp_icb_cmd_addr ),
-    .i_icb_cmd_read  (otp_icb_cmd_read ),
-    .i_icb_cmd_wdata (otp_icb_cmd_wdata),
+//     .i_icb_cmd_valid (otp_icb_cmd_valid),
+//     .i_icb_cmd_ready (otp_icb_cmd_ready),
+//     .i_icb_cmd_addr  (otp_icb_cmd_addr ),
+//     .i_icb_cmd_read  (otp_icb_cmd_read ),
+//     .i_icb_cmd_wdata (otp_icb_cmd_wdata),
     
-    .i_icb_rsp_valid (otp_icb_rsp_valid),
-    .i_icb_rsp_ready (otp_icb_rsp_ready),
-    .i_icb_rsp_rdata (otp_icb_rsp_rdata),
+//     .i_icb_rsp_valid (otp_icb_rsp_valid),
+//     .i_icb_rsp_ready (otp_icb_rsp_ready),
+//     .i_icb_rsp_rdata (otp_icb_rsp_rdata),
    
-    .f_icb_cmd_valid (otp_ro_icb_cmd_valid),
-    .f_icb_cmd_ready (otp_ro_icb_cmd_ready),
-    .f_icb_cmd_addr  (otp_ro_icb_cmd_addr ),
-    .f_icb_cmd_read  (otp_ro_icb_cmd_read ),
-    .f_icb_cmd_wdata (otp_ro_icb_cmd_wdata),
+//     .f_icb_cmd_valid (otp_ro_icb_cmd_valid),
+//     .f_icb_cmd_ready (otp_ro_icb_cmd_ready),
+//     .f_icb_cmd_addr  (otp_ro_icb_cmd_addr ),
+//     .f_icb_cmd_read  (otp_ro_icb_cmd_read ),
+//     .f_icb_cmd_wdata (otp_ro_icb_cmd_wdata),
   
-    .f_icb_rsp_valid (otp_ro_icb_rsp_valid),
-    .f_icb_rsp_ready (otp_ro_icb_rsp_ready),
-    .f_icb_rsp_rdata (otp_ro_icb_rsp_rdata) 
-);
+//     .f_icb_rsp_valid (otp_ro_icb_rsp_valid),
+//     .f_icb_rsp_ready (otp_ro_icb_rsp_ready),
+//     .f_icb_rsp_rdata (otp_ro_icb_rsp_rdata) 
+// );
 
   //  * GPIO      
 sirv_gpio_top u_sirv_gpio_top(

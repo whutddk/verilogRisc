@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-07-06 12:54:00
 // Last Modified by:   29505
-// Last Modified time: 2019-07-12 10:22:40
+// Last Modified time: 2019-07-12 11:14:40
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name: e203_subsys_mems.v  
@@ -88,42 +88,42 @@ module e203_subsys_mems(
   output [`E203_XLEN-1:0]        mem_icb_rsp_rdata,
   
   //////////////////////////////////////////////////////////
-  output                         sysmem_icb_cmd_valid,
-  input                          sysmem_icb_cmd_ready,
-  output [`E203_ADDR_SIZE-1:0]   sysmem_icb_cmd_addr, 
-  output                         sysmem_icb_cmd_read, 
-  output [`E203_XLEN-1:0]        sysmem_icb_cmd_wdata,
-  output [`E203_XLEN/8-1:0]      sysmem_icb_cmd_wmask,
-  //
-  input                          sysmem_icb_rsp_valid,
-  output                         sysmem_icb_rsp_ready,
-  input                          sysmem_icb_rsp_err,
-  input  [`E203_XLEN-1:0]        sysmem_icb_rsp_rdata,
+  // output                         sysmem_icb_cmd_valid,
+  // input                          sysmem_icb_cmd_ready,
+  // output [`E203_ADDR_SIZE-1:0]   sysmem_icb_cmd_addr, 
+  // output                         sysmem_icb_cmd_read, 
+  // output [`E203_XLEN-1:0]        sysmem_icb_cmd_wdata,
+  // output [`E203_XLEN/8-1:0]      sysmem_icb_cmd_wmask,
+  // //
+  // input                          sysmem_icb_rsp_valid,
+  // output                         sysmem_icb_rsp_ready,
+  // input                          sysmem_icb_rsp_err,
+  // input  [`E203_XLEN-1:0]        sysmem_icb_rsp_rdata,
 
     //////////////////////////////////////////////////////////
-  output                         qspi0_ro_icb_cmd_valid,
-  input                          qspi0_ro_icb_cmd_ready,
-  output [`E203_ADDR_SIZE-1:0]   qspi0_ro_icb_cmd_addr, 
-  output                         qspi0_ro_icb_cmd_read, 
-  output [`E203_XLEN-1:0]        qspi0_ro_icb_cmd_wdata,
-  //
-  input                          qspi0_ro_icb_rsp_valid,
-  output                         qspi0_ro_icb_rsp_ready,
-  input                          qspi0_ro_icb_rsp_err,
-  input  [`E203_XLEN-1:0]        qspi0_ro_icb_rsp_rdata,
+  // output                         qspi0_ro_icb_cmd_valid,
+  // input                          qspi0_ro_icb_cmd_ready,
+  // output [`E203_ADDR_SIZE-1:0]   qspi0_ro_icb_cmd_addr, 
+  // output                         qspi0_ro_icb_cmd_read, 
+  // output [`E203_XLEN-1:0]        qspi0_ro_icb_cmd_wdata,
+  // //
+  // input                          qspi0_ro_icb_rsp_valid,
+  // output                         qspi0_ro_icb_rsp_ready,
+  // input                          qspi0_ro_icb_rsp_err,
+  // input  [`E203_XLEN-1:0]        qspi0_ro_icb_rsp_rdata,
 
 
     //////////////////////////////////////////////////////////
-  output                         otp_ro_icb_cmd_valid,
-  input                          otp_ro_icb_cmd_ready,
-  output [`E203_ADDR_SIZE-1:0]   otp_ro_icb_cmd_addr, 
-  output                         otp_ro_icb_cmd_read, 
-  output [`E203_XLEN-1:0]        otp_ro_icb_cmd_wdata,
-  //
-  input                          otp_ro_icb_rsp_valid,
-  output                         otp_ro_icb_rsp_ready,
-  input                          otp_ro_icb_rsp_err,
-  input  [`E203_XLEN-1:0]        otp_ro_icb_rsp_rdata,
+  // output                         otp_ro_icb_cmd_valid,
+  // input                          otp_ro_icb_cmd_ready,
+  // output [`E203_ADDR_SIZE-1:0]   otp_ro_icb_cmd_addr, 
+  // output                         otp_ro_icb_cmd_read, 
+  // output [`E203_XLEN-1:0]        otp_ro_icb_cmd_wdata,
+  // //
+  // input                          otp_ro_icb_rsp_valid,
+  // output                         otp_ro_icb_rsp_ready,
+  // input                          otp_ro_icb_rsp_err,
+  // input  [`E203_XLEN-1:0]        otp_ro_icb_rsp_rdata,
 
   //   //////////////////////////////////////////////////////////
   // output                         dm_icb_cmd_valid,
@@ -155,15 +155,15 @@ module e203_subsys_mems(
 
 
       
-  wire                         mrom_icb_cmd_valid;
-  wire                         mrom_icb_cmd_ready;
-  wire [`E203_ADDR_SIZE-1:0]   mrom_icb_cmd_addr; 
-  wire                         mrom_icb_cmd_read; 
+  // wire                         mrom_icb_cmd_valid;
+  // wire                         mrom_icb_cmd_ready;
+  // wire [`E203_ADDR_SIZE-1:0]   mrom_icb_cmd_addr; 
+  // wire                         mrom_icb_cmd_read; 
   
-  wire                         mrom_icb_rsp_valid;
-  wire                         mrom_icb_rsp_ready;
-  wire                         mrom_icb_rsp_err  ;
-  wire [`E203_XLEN-1:0]        mrom_icb_rsp_rdata;
+  // wire                         mrom_icb_rsp_valid;
+  // wire                         mrom_icb_rsp_ready;
+  // wire                         mrom_icb_rsp_err  ;
+  // wire [`E203_XLEN-1:0]        mrom_icb_rsp_rdata;
 
   wire                     expl_axi_icb_cmd_valid;
   wire                     expl_axi_icb_cmd_ready;
@@ -178,58 +178,41 @@ module e203_subsys_mems(
   wire                     expl_axi_icb_rsp_err;
 
 
- localparam MROM_AW = 12  ;
- localparam MROM_DP = 1024;
+ // localparam MROM_AW = 12  ;
+ // localparam MROM_DP = 1024;
 
- 	assign expl_axi_icb_cmd_valid = mem_icb_cmd_valid;
- 	assign mem_icb_cmd_addr = expl_axi_icb_cmd_addr;
- 	assign expl_axi_icb_cmd_ready = mem_icb_cmd_ready;
- 	assign expl_axi_icb_cmd_read = mem_icb_cmd_read;
- 	assign expl_axi_icb_cmd_wdata = mem_icb_cmd_wdata;
- 	assign expl_axi_icb_cmd_wmask = mem_icb_cmd_wmask;
- 	assign mem_icb_rsp_valid = expl_axi_icb_rsp_valid;
- 	assign expl_axi_icb_rsp_ready = mem_icb_rsp_ready;
- 	assign mem_icb_rsp_err = expl_axi_icb_rsp_err;
- 	assign mem_icb_rsp_rdata = expl_axi_icb_rsp_rdata;
+ 	wire sram_sel = (mem_icb_cmd_addr[31:28] == 4'h4);
 
+ 	assign expl_axi_icb_cmd_valid = sram_sel ? mem_icb_cmd_valid : 1'b0;
+ 	assign expl_axi_icb_cmd_addr = sram_sel ? mem_icb_cmd_addr : 32'b0;
+ 	assign mem_icb_cmd_ready = sram_sel ? expl_axi_icb_cmd_ready : mem_icb_rsp_ready;
+ 	assign expl_axi_icb_cmd_read = sram_sel ? mem_icb_cmd_read : 1'b0;
+ 	assign expl_axi_icb_cmd_wdata = sram_sel ? mem_icb_cmd_wdata : 32'b0;
+ 	assign expl_axi_icb_cmd_wmask = sram_sel ? mem_icb_cmd_wmask : 4'b0;
+ 	assign mem_icb_rsp_valid = sram_sel ? expl_axi_icb_rsp_valid : mem_icb_cmd_valid;
+ 	assign expl_axi_icb_rsp_ready = sram_sel ? mem_icb_rsp_ready : 1'b0;
+ 	assign mem_icb_rsp_err = sram_sel ? expl_axi_icb_rsp_err : 1'b0;
+ 	assign mem_icb_rsp_rdata = sram_sel ? expl_axi_icb_rsp_rdata : {`E203_XLEN{1'b0}};
 
-    // .o5_icb_cmd_valid  (expl_axi_icb_cmd_valid),
-    // .o5_icb_cmd_ready  (expl_axi_icb_cmd_ready),
-    // .o5_icb_cmd_addr   (expl_axi_icb_cmd_addr ),
-    // .o5_icb_cmd_read   (expl_axi_icb_cmd_read ),
-    // .o5_icb_cmd_wdata  (expl_axi_icb_cmd_wdata),
-    // .o5_icb_cmd_wmask  (expl_axi_icb_cmd_wmask),
-    // .o5_icb_cmd_lock   (),
-    // .o5_icb_cmd_excl   (),
-    // .o5_icb_cmd_size   (),
-    // .o5_icb_cmd_burst  (),
-    // .o5_icb_cmd_beat   (),
+  //   .o0_icb_cmd_valid  (),
+  //   .o0_icb_cmd_ready  (1'B0),
+  //   .o0_icb_cmd_addr   (),
+  //   .o0_icb_cmd_read   (),
+  //   .o0_icb_cmd_wdata  (),
+  //   .o0_icb_cmd_wmask  (),
+  //   .o0_icb_cmd_lock   (),
+  //   .o0_icb_cmd_excl   (),
+  //   .o0_icb_cmd_size   (),
+  //   .o0_icb_cmd_burst  (),
+  //   .o0_icb_cmd_beat   (),
     
-    // .o5_icb_rsp_valid  (expl_axi_icb_rsp_valid),
-    // .o5_icb_rsp_ready  (expl_axi_icb_rsp_ready),
-    // .o5_icb_rsp_err    (expl_axi_icb_rsp_err),
-    // .o5_icb_rsp_excl_ok(1'b0  ),
-    // .o5_icb_rsp_rdata  (expl_axi_icb_rsp_rdata),
+  //   .o0_icb_rsp_valid  (1'b0),
+  //   .o0_icb_rsp_ready  (),
+  //   .o0_icb_rsp_err    (1'b0),
+  //   .o0_icb_rsp_excl_ok(1'b0),
+  //   .o0_icb_rsp_rdata  ({`E203_XLEN{1'b0}}),
 
 
-
-    // .i_icb_cmd_valid  (mem_icb_cmd_valid),
-    // .i_icb_cmd_ready  (mem_icb_cmd_ready),
-    // .i_icb_cmd_addr   (mem_icb_cmd_addr ),
-    // .i_icb_cmd_read   (mem_icb_cmd_read ),
-    // .i_icb_cmd_wdata  (mem_icb_cmd_wdata),
-    // .i_icb_cmd_wmask  (mem_icb_cmd_wmask),
-    // .i_icb_cmd_lock   (1'b0 ),
-    // .i_icb_cmd_excl   (1'b0 ),
-    // .i_icb_cmd_size   (2'b0 ),
-    // .i_icb_cmd_burst  (2'b0),
-    // .i_icb_cmd_beat   (2'b0 ),
-    
-    // .i_icb_rsp_valid  (mem_icb_rsp_valid),
-    // .i_icb_rsp_ready  (mem_icb_rsp_ready),
-    // .i_icb_rsp_err    (mem_icb_rsp_err  ),
-    // .i_icb_rsp_excl_ok(),
-    // .i_icb_rsp_rdata  (mem_icb_rsp_rdata),
 
   // There are several slaves for Mem bus, including:
   //  * DM        : 0x0000 0000 -- 0x0000 0FFF
@@ -470,25 +453,25 @@ module e203_subsys_mems(
   //   .rst_n         (bus_rst_n) 
   // );
 
-  sirv_mrom_top #(
-    .AW(MROM_AW),
-    .DW(32),
-    .DP(MROM_DP)
-  )u_sirv_mrom_top(
+  // sirv_mrom_top #(
+  //   .AW(MROM_AW),
+  //   .DW(32),
+  //   .DP(MROM_DP)
+  // )u_sirv_mrom_top(
 
-    .rom_icb_cmd_valid  (mrom_icb_cmd_valid),
-    .rom_icb_cmd_ready  (mrom_icb_cmd_ready),
-    .rom_icb_cmd_addr   (mrom_icb_cmd_addr [MROM_AW-1:0]),
-    .rom_icb_cmd_read   (mrom_icb_cmd_read ),
+  //   .rom_icb_cmd_valid  (mrom_icb_cmd_valid),
+  //   .rom_icb_cmd_ready  (mrom_icb_cmd_ready),
+  //   .rom_icb_cmd_addr   (mrom_icb_cmd_addr [MROM_AW-1:0]),
+  //   .rom_icb_cmd_read   (mrom_icb_cmd_read ),
     
-    .rom_icb_rsp_valid  (mrom_icb_rsp_valid),
-    .rom_icb_rsp_ready  (mrom_icb_rsp_ready),
-    .rom_icb_rsp_err    (mrom_icb_rsp_err  ),
-    .rom_icb_rsp_rdata  (mrom_icb_rsp_rdata),
+  //   .rom_icb_rsp_valid  (mrom_icb_rsp_valid),
+  //   .rom_icb_rsp_ready  (mrom_icb_rsp_ready),
+  //   .rom_icb_rsp_err    (mrom_icb_rsp_err  ),
+  //   .rom_icb_rsp_rdata  (mrom_icb_rsp_rdata),
 
-    .clk           (clk  ),
-    .rst_n         (rst_n) 
-  );
+  //   .clk           (clk  ),
+  //   .rst_n         (rst_n) 
+  // );
 
       // * Here is an example AXI Peripheral
   wire expl_axi_arvalid;

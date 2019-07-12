@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-06-30 14:05:03
 // Last Modified by:   29505
-// Last Modified time: 2019-07-12 10:13:40
+// Last Modified time: 2019-07-12 11:14:15
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_biu.v  
 // Module Name:  
@@ -848,6 +848,9 @@ module e203_biu(
 													 , dm_icb_rsp_ready
 													 } = splt_bus_icb_rsp_ready;
 
+	wire buf_icb_cmd_dm = 1'b1 & (buf_icb_cmd_addr[31:12] == 20'h00000);
+	wire buf_icb_sel_dm = buf_icb_cmd_dm;
+
 	wire buf_icb_cmd_ppi = ppi_icb_enable & (buf_icb_cmd_addr[`E203_PPI_BASE_REGION] ==  ppi_region_indic[`E203_PPI_BASE_REGION]);
 	wire buf_icb_sel_ppi = buf_icb_cmd_ppi & (~buf_icb_cmd_ifu) & (~buf_icb_sel_dm);
 
@@ -858,8 +861,7 @@ module e203_biu(
 	wire buf_icb_sel_plic = buf_icb_cmd_plic & (~buf_icb_cmd_ifu) & (~buf_icb_sel_dm);
 
 
-	wire buf_icb_cmd_dm = 1'b1 & (buf_icb_cmd_addr[31:12] == 20'h00000);
-	wire buf_icb_sel_dm = buf_icb_cmd_dm;
+
 
 
 	wire buf_icb_sel_ifuerr =(	buf_icb_cmd_ppi 
