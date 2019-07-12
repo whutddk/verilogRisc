@@ -3,8 +3,8 @@
 // Company:    
 // Engineer: 29505
 // Create Date: 2019-06-30 14:05:03
-// Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-07-06 19:13:56
+// Last Modified by:   29505
+// Last Modified time: 2019-07-12 11:19:10
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_subsys_main.v  
 // Module Name: e203_subsys_main
@@ -362,25 +362,25 @@ module e203_subsys_main(
   input  [`E203_XLEN-1:0]        sysper_icb_rsp_rdata,
 
 
-  `ifdef E203_HAS_MEM_ITF //{
-  //////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////
-  // The ICB Interface from Ifetch 
-  //
-  //    * Bus cmd channel
-  output                         sysmem_icb_cmd_valid,
-  input                          sysmem_icb_cmd_ready,
-  output [`E203_ADDR_SIZE-1:0]   sysmem_icb_cmd_addr, 
-  output                         sysmem_icb_cmd_read, 
-  output [`E203_XLEN-1:0]        sysmem_icb_cmd_wdata,
-  output [`E203_XLEN/8-1:0]      sysmem_icb_cmd_wmask,
-  //
-  //    * Bus RSP channel
-  input                          sysmem_icb_rsp_valid,
-  output                         sysmem_icb_rsp_ready,
-  input                          sysmem_icb_rsp_err  ,
-  input  [`E203_XLEN-1:0]        sysmem_icb_rsp_rdata,
-  `endif//}
+  // `ifdef E203_HAS_MEM_ITF //{
+  // //////////////////////////////////////////////////////////////
+  // //////////////////////////////////////////////////////////////
+  // // The ICB Interface from Ifetch 
+  // //
+  // //    * Bus cmd channel
+  // output                         sysmem_icb_cmd_valid,
+  // input                          sysmem_icb_cmd_ready,
+  // output [`E203_ADDR_SIZE-1:0]   sysmem_icb_cmd_addr, 
+  // output                         sysmem_icb_cmd_read, 
+  // output [`E203_XLEN-1:0]        sysmem_icb_cmd_wdata,
+  // output [`E203_XLEN/8-1:0]      sysmem_icb_cmd_wmask,
+  // //
+  // //    * Bus RSP channel
+  // input                          sysmem_icb_rsp_valid,
+  // output                         sysmem_icb_rsp_ready,
+  // input                          sysmem_icb_rsp_err  ,
+  // input  [`E203_XLEN-1:0]        sysmem_icb_rsp_rdata,
+  // `endif//}
 
             //driver pin
     output SRAM_OEn_io,
@@ -959,6 +959,16 @@ module e203_subsys_main(
     .mem_icb_rsp_err    (mem_icb_rsp_err  ),
     .mem_icb_rsp_rdata  (mem_icb_rsp_rdata),
 
+    .dm_icb_cmd_valid    (dm_icb_cmd_valid  ),
+    .dm_icb_cmd_ready    (dm_icb_cmd_ready  ),
+    .dm_icb_cmd_addr     (dm_icb_cmd_addr   ),
+    .dm_icb_cmd_read     (dm_icb_cmd_read   ),
+    .dm_icb_cmd_wdata    (dm_icb_cmd_wdata  ),
+     
+    .dm_icb_rsp_valid    (dm_icb_rsp_valid  ),
+    .dm_icb_rsp_ready    (dm_icb_rsp_ready  ),
+    .dm_icb_rsp_rdata    (dm_icb_rsp_rdata  ),
+
     .test_mode     (test_mode), 
     .clk           (hfclk  ),
     .rst_n         (core_rst_n) 
@@ -1084,15 +1094,15 @@ e203_subsys_clint u_e203_subsys_clint(
   );
 
     
-  wire                     otp_ro_icb_cmd_valid;
-  wire                     otp_ro_icb_cmd_ready;
-  wire [32-1:0]            otp_ro_icb_cmd_addr; 
-  wire                     otp_ro_icb_cmd_read; 
-  wire [32-1:0]            otp_ro_icb_cmd_wdata;
+  // wire                     otp_ro_icb_cmd_valid;
+  // wire                     otp_ro_icb_cmd_ready;
+  // wire [32-1:0]            otp_ro_icb_cmd_addr; 
+  // wire                     otp_ro_icb_cmd_read; 
+  // wire [32-1:0]            otp_ro_icb_cmd_wdata;
  
-  wire                     otp_ro_icb_rsp_valid;
-  wire                     otp_ro_icb_rsp_ready;
-  wire [32-1:0]            otp_ro_icb_rsp_rdata;
+  // wire                     otp_ro_icb_rsp_valid;
+  // wire                     otp_ro_icb_rsp_ready;
+  // wire [32-1:0]            otp_ro_icb_rsp_rdata;
 
 
   e203_subsys_perips u_e203_subsys_perips (
@@ -1142,15 +1152,15 @@ e203_subsys_clint u_e203_subsys_clint(
     .aon_icb_rsp_err       (aon_icb_rsp_err  ),
     .aon_icb_rsp_rdata     (aon_icb_rsp_rdata),
                            
-    .otp_ro_icb_cmd_valid    (otp_ro_icb_cmd_valid  ),
-    .otp_ro_icb_cmd_ready    (otp_ro_icb_cmd_ready  ),
-    .otp_ro_icb_cmd_addr     (otp_ro_icb_cmd_addr   ),
-    .otp_ro_icb_cmd_read     (otp_ro_icb_cmd_read   ),
-    .otp_ro_icb_cmd_wdata    (otp_ro_icb_cmd_wdata  ),
+    // .otp_ro_icb_cmd_valid    (otp_ro_icb_cmd_valid  ),
+    // .otp_ro_icb_cmd_ready    (otp_ro_icb_cmd_ready  ),
+    // .otp_ro_icb_cmd_addr     (otp_ro_icb_cmd_addr   ),
+    // .otp_ro_icb_cmd_read     (otp_ro_icb_cmd_read   ),
+    // .otp_ro_icb_cmd_wdata    (otp_ro_icb_cmd_wdata  ),
                           
-    .otp_ro_icb_rsp_valid    (otp_ro_icb_rsp_valid  ),
-    .otp_ro_icb_rsp_ready    (otp_ro_icb_rsp_ready  ),
-    .otp_ro_icb_rsp_rdata    (otp_ro_icb_rsp_rdata  ),
+    // .otp_ro_icb_rsp_valid    (otp_ro_icb_rsp_valid  ),
+    // .otp_ro_icb_rsp_ready    (otp_ro_icb_rsp_ready  ),
+    // .otp_ro_icb_rsp_rdata    (otp_ro_icb_rsp_rdata  ),
 
     .io_pads_gpio_0_i_ival      (io_pads_gpio_0_i_ival),
     .io_pads_gpio_0_o_oval      (gpio_0_o_oval),
@@ -1345,6 +1355,8 @@ e203_subsys_clint u_e203_subsys_clint(
     .io_pads_gpio_31_o_pue      (gpio_31_o_pue),
     .io_pads_gpio_31_o_ds       (gpio_31_o_ds),
 
+    .uart0_irq(uart0_irq),
+
     .gpio_irq_0             (gpio_irq_0 ),
     .gpio_irq_1             (gpio_irq_1 ),
     .gpio_irq_2             (gpio_irq_2 ),
@@ -1397,38 +1409,38 @@ e203_subsys_mems u_e203_subsys_mems(
     .mem_icb_rsp_err    (mem_icb_rsp_err  ),
     .mem_icb_rsp_rdata  (mem_icb_rsp_rdata),
 
-    .sysmem_icb_cmd_valid  (sysmem_icb_cmd_valid),
-    .sysmem_icb_cmd_ready  (sysmem_icb_cmd_ready),
-    .sysmem_icb_cmd_addr   (sysmem_icb_cmd_addr ),
-    .sysmem_icb_cmd_read   (sysmem_icb_cmd_read ),
-    .sysmem_icb_cmd_wdata  (sysmem_icb_cmd_wdata),
-    .sysmem_icb_cmd_wmask  (sysmem_icb_cmd_wmask),
+    // .sysmem_icb_cmd_valid  (sysmem_icb_cmd_valid),
+    // .sysmem_icb_cmd_ready  (sysmem_icb_cmd_ready),
+    // .sysmem_icb_cmd_addr   (sysmem_icb_cmd_addr ),
+    // .sysmem_icb_cmd_read   (sysmem_icb_cmd_read ),
+    // .sysmem_icb_cmd_wdata  (sysmem_icb_cmd_wdata),
+    // .sysmem_icb_cmd_wmask  (sysmem_icb_cmd_wmask),
     
-    .sysmem_icb_rsp_valid  (sysmem_icb_rsp_valid),
-    .sysmem_icb_rsp_ready  (sysmem_icb_rsp_ready),
-    .sysmem_icb_rsp_err    (sysmem_icb_rsp_err  ),
-    .sysmem_icb_rsp_rdata  (sysmem_icb_rsp_rdata),
+    // .sysmem_icb_rsp_valid  (sysmem_icb_rsp_valid),
+    // .sysmem_icb_rsp_ready  (sysmem_icb_rsp_ready),
+    // .sysmem_icb_rsp_err    (sysmem_icb_rsp_err  ),
+    // .sysmem_icb_rsp_rdata  (sysmem_icb_rsp_rdata),
                             
-    .otp_ro_icb_cmd_valid    (otp_ro_icb_cmd_valid  ),
-    .otp_ro_icb_cmd_ready    (otp_ro_icb_cmd_ready  ),
-    .otp_ro_icb_cmd_addr     (otp_ro_icb_cmd_addr   ),
-    .otp_ro_icb_cmd_read     (otp_ro_icb_cmd_read   ),
-    .otp_ro_icb_cmd_wdata    (otp_ro_icb_cmd_wdata  ),
+    // .otp_ro_icb_cmd_valid    (otp_ro_icb_cmd_valid  ),
+    // .otp_ro_icb_cmd_ready    (otp_ro_icb_cmd_ready  ),
+    // .otp_ro_icb_cmd_addr     (otp_ro_icb_cmd_addr   ),
+    // .otp_ro_icb_cmd_read     (otp_ro_icb_cmd_read   ),
+    // .otp_ro_icb_cmd_wdata    (otp_ro_icb_cmd_wdata  ),
                           
-    .otp_ro_icb_rsp_valid    (otp_ro_icb_rsp_valid  ),
-    .otp_ro_icb_rsp_ready    (otp_ro_icb_rsp_ready  ),
-    .otp_ro_icb_rsp_err      (1'b0    ),
-    .otp_ro_icb_rsp_rdata    (otp_ro_icb_rsp_rdata  ),
+    // .otp_ro_icb_rsp_valid    (otp_ro_icb_rsp_valid  ),
+    // .otp_ro_icb_rsp_ready    (otp_ro_icb_rsp_ready  ),
+    // .otp_ro_icb_rsp_err      (1'b0    ),
+    // .otp_ro_icb_rsp_rdata    (otp_ro_icb_rsp_rdata  ),
 
-    .dm_icb_cmd_valid    (dm_icb_cmd_valid  ),
-    .dm_icb_cmd_ready    (dm_icb_cmd_ready  ),
-    .dm_icb_cmd_addr     (dm_icb_cmd_addr   ),
-    .dm_icb_cmd_read     (dm_icb_cmd_read   ),
-    .dm_icb_cmd_wdata    (dm_icb_cmd_wdata  ),
+    // .dm_icb_cmd_valid    (dm_icb_cmd_valid  ),
+    // .dm_icb_cmd_ready    (dm_icb_cmd_ready  ),
+    // .dm_icb_cmd_addr     (dm_icb_cmd_addr   ),
+    // .dm_icb_cmd_read     (dm_icb_cmd_read   ),
+    // .dm_icb_cmd_wdata    (dm_icb_cmd_wdata  ),
      
-    .dm_icb_rsp_valid    (dm_icb_rsp_valid  ),
-    .dm_icb_rsp_ready    (dm_icb_rsp_ready  ),
-    .dm_icb_rsp_rdata    (dm_icb_rsp_rdata  ),
+    // .dm_icb_rsp_valid    (dm_icb_rsp_valid  ),
+    // .dm_icb_rsp_ready    (dm_icb_rsp_ready  ),
+    // .dm_icb_rsp_rdata    (dm_icb_rsp_rdata  ),
 
     .clk           (hfclk  ),
     .bus_rst_n     (bus_rst_n), 

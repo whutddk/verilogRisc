@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-06-30 14:05:03
 // Last Modified by:   29505
-// Last Modified time: 2019-06-30 14:20:05
+// Last Modified time: 2019-07-12 11:14:15
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_biu.v  
 // Module Name:  
@@ -226,6 +226,16 @@ module e203_biu(
 	input  [`E203_XLEN-1:0]        mem_icb_rsp_rdata,
 	`endif//}
 
+	output                         dm_icb_cmd_valid,
+	input                          dm_icb_cmd_ready,
+	output [`E203_ADDR_SIZE-1:0]   dm_icb_cmd_addr, 
+	output                         dm_icb_cmd_read, 
+	output [`E203_XLEN-1:0]        dm_icb_cmd_wdata,
+	//
+	input                          dm_icb_rsp_valid,
+	output                         dm_icb_rsp_ready,
+	input  [`E203_XLEN-1:0]        dm_icb_rsp_rdata,
+
 	input  clk,
 	input  rst_n
 	);
@@ -254,7 +264,7 @@ module e203_biu(
 			localparam BIU_SPLT_I_NUM_2 = BIU_SPLT_I_NUM_1;
 
 
-			localparam BIU_SPLT_I_NUM   = BIU_SPLT_I_NUM_2;
+			localparam BIU_SPLT_I_NUM   = BIU_SPLT_I_NUM_2 + 1;
 
 	wire                         ifuerr_icb_cmd_valid;
 	wire                         ifuerr_icb_cmd_ready;
@@ -625,6 +635,41 @@ module e203_biu(
 	wire [BIU_SPLT_I_NUM*1-1:0] splt_bus_icb_rsp_excl_ok;
 	wire [BIU_SPLT_I_NUM*`E203_XLEN-1:0] splt_bus_icb_rsp_rdata;
 
+
+
+	// input [`E203_ADDR_SIZE-1:0]    plic_region_indic,
+	// input                          plic_icb_enable,
+	// //    * Bus cmd channel
+	// output                         plic_icb_cmd_valid,
+	// input                          plic_icb_cmd_ready,
+	// output [`E203_ADDR_SIZE-1:0]   plic_icb_cmd_addr, 
+	// output                         plic_icb_cmd_read, 
+	// output [`E203_XLEN-1:0]        plic_icb_cmd_wdata,
+	// output [`E203_XLEN/8-1:0]      plic_icb_cmd_wmask,
+	// output [1:0]                   plic_icb_cmd_burst,
+	// output [1:0]                   plic_icb_cmd_beat,
+	// output                         plic_icb_cmd_lock,
+	// output                         plic_icb_cmd_excl,
+	// output [1:0]                   plic_icb_cmd_size,
+	// //
+	// //    * Bus RSP channel
+	// input                          plic_icb_rsp_valid,
+	// output                         plic_icb_rsp_ready,
+	// input                          plic_icb_rsp_err  ,
+	// input                          plic_icb_rsp_excl_ok,
+	// input  [`E203_XLEN-1:0]        plic_icb_rsp_rdata,
+
+
+	wire [`E203_XLEN/8-1:0]      dm_icb_cmd_wmask;
+	wire [1:0]                 	 dm_icb_cmd_burst;
+	wire [1:0]                   dm_icb_cmd_beat;
+	wire                         dm_icb_cmd_lock;
+	wire                         dm_icb_cmd_excl;
+	wire [1:0]                   dm_icb_cmd_size;
+
+	wire                         dm_icb_rsp_err = 1'b0;
+	wire                         dm_icb_rsp_excl_ok = 1'b1;
+
 	//CMD Channel
 	assign {
 														 ifuerr_icb_cmd_valid
@@ -634,6 +679,7 @@ module e203_biu(
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_cmd_valid
 													 `endif//}
+													 , dm_icb_cmd_valid
 													 } = splt_bus_icb_cmd_valid;
 
 	assign {
@@ -644,6 +690,7 @@ module e203_biu(
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_cmd_addr
 													 `endif//}
+													 , dm_icb_cmd_addr
 													 } = splt_bus_icb_cmd_addr;
 
 	assign {
@@ -654,6 +701,7 @@ module e203_biu(
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_cmd_read
 													 `endif//}
+													 , dm_icb_cmd_read
 													 } = splt_bus_icb_cmd_read;
 
 	assign {
@@ -664,6 +712,7 @@ module e203_biu(
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_cmd_wdata
 													 `endif//}
+													 , dm_icb_cmd_wdata
 													 } = splt_bus_icb_cmd_wdata;
 
 	assign {
@@ -674,6 +723,7 @@ module e203_biu(
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_cmd_wmask
 													 `endif//}
+													 , dm_icb_cmd_wmask
 													 } = splt_bus_icb_cmd_wmask;
 												 
 	assign {
@@ -684,6 +734,7 @@ module e203_biu(
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_cmd_burst
 													 `endif//}
+													 , dm_icb_cmd_burst
 													 } = splt_bus_icb_cmd_burst;
 												 
 	assign {
@@ -694,6 +745,7 @@ module e203_biu(
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_cmd_beat
 													 `endif//}
+													 , dm_icb_cmd_beat
 													 } = splt_bus_icb_cmd_beat;
 												 
 	assign {
@@ -704,6 +756,7 @@ module e203_biu(
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_cmd_lock
 													 `endif//}
+													 , dm_icb_cmd_lock
 													 } = splt_bus_icb_cmd_lock;
 
 	assign {
@@ -714,6 +767,7 @@ module e203_biu(
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_cmd_excl
 													 `endif//}
+													 , dm_icb_cmd_excl
 													 } = splt_bus_icb_cmd_excl;
 													 
 	assign {
@@ -724,6 +778,7 @@ module e203_biu(
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_cmd_size
 													 `endif//}
+													 , dm_icb_cmd_size
 													 } = splt_bus_icb_cmd_size;
 
 	assign splt_bus_icb_cmd_ready = {
@@ -734,6 +789,7 @@ module e203_biu(
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_cmd_ready
 													 `endif//}
+													 , dm_icb_cmd_ready
 													 };
 
 	//RSP Channel
@@ -745,6 +801,7 @@ module e203_biu(
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_rsp_valid
 													 `endif//}
+													 , dm_icb_rsp_valid
 													 };
 
 	assign splt_bus_icb_rsp_err = {
@@ -755,6 +812,7 @@ module e203_biu(
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_rsp_err
 													 `endif//}
+													 , dm_icb_rsp_err
 													 };
 
 	assign splt_bus_icb_rsp_excl_ok = {
@@ -765,6 +823,7 @@ module e203_biu(
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_rsp_excl_ok
 													 `endif//}
+													 , dm_icb_rsp_excl_ok
 													 };
 
 	assign splt_bus_icb_rsp_rdata = {
@@ -775,6 +834,7 @@ module e203_biu(
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_rsp_rdata
 													 `endif//}
+													 , dm_icb_rsp_rdata
 													 };
 
 	assign {
@@ -785,32 +845,48 @@ module e203_biu(
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , mem_icb_rsp_ready
 													 `endif//}
+													 , dm_icb_rsp_ready
 													 } = splt_bus_icb_rsp_ready;
 
+	wire buf_icb_cmd_dm = 1'b1 & (buf_icb_cmd_addr[31:12] == 20'h00000);
+	wire buf_icb_sel_dm = buf_icb_cmd_dm;
+
 	wire buf_icb_cmd_ppi = ppi_icb_enable & (buf_icb_cmd_addr[`E203_PPI_BASE_REGION] ==  ppi_region_indic[`E203_PPI_BASE_REGION]);
-	wire buf_icb_sel_ppi = buf_icb_cmd_ppi & (~buf_icb_cmd_ifu);
+	wire buf_icb_sel_ppi = buf_icb_cmd_ppi & (~buf_icb_cmd_ifu) & (~buf_icb_sel_dm);
 
 	wire buf_icb_cmd_clint = clint_icb_enable & (buf_icb_cmd_addr[`E203_CLINT_BASE_REGION] ==  clint_region_indic[`E203_CLINT_BASE_REGION]);
-	wire buf_icb_sel_clint = buf_icb_cmd_clint & (~buf_icb_cmd_ifu);
+	wire buf_icb_sel_clint = buf_icb_cmd_clint & (~buf_icb_cmd_ifu) & (~buf_icb_sel_dm);
 
 	wire buf_icb_cmd_plic = plic_icb_enable & (buf_icb_cmd_addr[`E203_PLIC_BASE_REGION] ==  plic_region_indic[`E203_PLIC_BASE_REGION]);
-	wire buf_icb_sel_plic = buf_icb_cmd_plic & (~buf_icb_cmd_ifu);
+	wire buf_icb_sel_plic = buf_icb_cmd_plic & (~buf_icb_cmd_ifu) & (~buf_icb_sel_dm);
 
 
-	wire buf_icb_sel_ifuerr =(
-														buf_icb_cmd_ppi 
-													| buf_icb_cmd_clint 
-													| buf_icb_cmd_plic
-													 ) & buf_icb_cmd_ifu;
+
+
+
+	wire buf_icb_sel_ifuerr =(	buf_icb_cmd_ppi 
+								| buf_icb_cmd_clint 
+								| buf_icb_cmd_plic
+								 ) & buf_icb_cmd_ifu;
 
 	`ifdef E203_HAS_MEM_ITF //{
 	wire buf_icb_sel_mem = mem_icb_enable 
-														 & (~buf_icb_sel_ifuerr)
-														 & (~buf_icb_sel_ppi)
-														 & (~buf_icb_sel_clint)
-														 & (~buf_icb_sel_plic)
-														 ;
+							 & (~buf_icb_sel_ifuerr)
+							 & (~buf_icb_sel_ppi)
+							 & (~buf_icb_sel_clint)
+							 & (~buf_icb_sel_plic)
+							 & (~buf_icb_sel_dm)
+							 ;
+
+	// wire buf_icb_sel_mem = (buf_icb_cmd_addr[31:28] == 4'h4);
+
+
+
 	`endif//}
+
+		// input [`E203_ADDR_SIZE-1:0]    plic_region_indic,
+	// input                          plic_icb_enable,
+
 
 	wire [BIU_SPLT_I_NUM-1:0] buf_icb_splt_indic = 
 			{
@@ -821,6 +897,7 @@ module e203_biu(
 													 `ifdef E203_HAS_MEM_ITF //{
 													 , buf_icb_sel_mem
 													 `endif//}
+													 , buf_icb_sel_dm
 			};
 
 	sirv_gnrl_icb_splt # (

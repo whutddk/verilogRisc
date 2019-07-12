@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-06-30 14:05:03
 // Last Modified by:   29505
-// Last Modified time: 2019-06-30 14:21:16
+// Last Modified time: 2019-07-11 23:16:45
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_cpu_top.v  
 // Module Name:  
@@ -210,6 +210,17 @@ module e203_cpu_top(
 	input                          mem_icb_rsp_err  ,
 	input  [`E203_XLEN-1:0]        mem_icb_rsp_rdata,
 	// The System Memory Interface (ICB): End
+
+    //////////////////////////////////////////////////////////
+	output                         dm_icb_cmd_valid,
+	input                          dm_icb_cmd_ready,
+	output [`E203_ADDR_SIZE-1:0]   dm_icb_cmd_addr, 
+	output                         dm_icb_cmd_read, 
+	output [`E203_XLEN-1:0]        dm_icb_cmd_wdata,
+	//
+	input                          dm_icb_rsp_valid,
+	output                         dm_icb_rsp_ready,
+	input  [`E203_XLEN-1:0]        dm_icb_rsp_rdata,
 
 
 	// The test mode signal
@@ -448,6 +459,16 @@ module e203_cpu_top(
 		.mem_icb_rsp_excl_ok(mem_icb_rsp_excl_ok  ),
 		.mem_icb_rsp_rdata  (mem_icb_rsp_rdata),
 	`endif//}
+
+		.dm_icb_cmd_valid    (dm_icb_cmd_valid  ),
+	    .dm_icb_cmd_ready    (dm_icb_cmd_ready  ),
+	    .dm_icb_cmd_addr     (dm_icb_cmd_addr   ),
+	    .dm_icb_cmd_read     (dm_icb_cmd_read   ),
+	    .dm_icb_cmd_wdata    (dm_icb_cmd_wdata  ),
+	     
+	    .dm_icb_rsp_valid    (dm_icb_rsp_valid  ),
+	    .dm_icb_rsp_ready    (dm_icb_rsp_ready  ),
+	    .dm_icb_rsp_rdata    (dm_icb_rsp_rdata  ),
 
 	`ifdef E203_HAS_ITCM //{
 		.itcm_ram_cs   (itcm_ram_cs  ),

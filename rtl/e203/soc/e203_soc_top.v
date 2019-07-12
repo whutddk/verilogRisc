@@ -2,8 +2,8 @@
 // Company:   
 // Engineer: Ruige_Lee
 // Create Date: 2019-06-27 19:06:59
-// Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-07-06 19:13:39
+// Last Modified by:   29505
+// Last Modified time: 2019-07-12 11:20:04
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name: e203_soc_top.v  
@@ -313,10 +313,10 @@ module e203_soc_top(
  wire sysper_icb_cmd_valid;
  wire sysper_icb_cmd_ready;
 
-`ifdef E203_HAS_MEM_ITF
- wire sysmem_icb_cmd_valid;
- wire sysmem_icb_cmd_ready;
-`endif
+// `ifdef E203_HAS_MEM_ITF
+//  wire sysmem_icb_cmd_valid;
+//  wire sysmem_icb_cmd_ready;
+// `endif
 
  e203_subsys_top u_e203_subsys_top(
 
@@ -346,19 +346,19 @@ module e203_soc_top(
 	.sysper_icb_rsp_err   (1'b0  ),
 	.sysper_icb_rsp_rdata (32'b0),
 
-`ifdef E203_HAS_MEM_ITF
-	.sysmem_icb_cmd_valid(sysmem_icb_cmd_valid),
-	.sysmem_icb_cmd_ready(sysmem_icb_cmd_ready),
-	.sysmem_icb_cmd_read (), 
-	.sysmem_icb_cmd_addr (), 
-	.sysmem_icb_cmd_wdata(), 
-	.sysmem_icb_cmd_wmask(), 
+// `ifdef E203_HAS_MEM_ITF
+// 	.sysmem_icb_cmd_valid(sysmem_icb_cmd_valid),
+// 	.sysmem_icb_cmd_ready(sysmem_icb_cmd_ready),
+// 	.sysmem_icb_cmd_read (), 
+// 	.sysmem_icb_cmd_addr (), 
+// 	.sysmem_icb_cmd_wdata(), 
+// 	.sysmem_icb_cmd_wmask(), 
 
-	.sysmem_icb_rsp_valid(sysmem_icb_cmd_valid),
-	.sysmem_icb_rsp_ready(sysmem_icb_cmd_ready),
-	.sysmem_icb_rsp_err  (1'b0  ),
-	.sysmem_icb_rsp_rdata(32'b0),
-`endif
+// 	.sysmem_icb_rsp_valid(sysmem_icb_cmd_valid),
+// 	.sysmem_icb_rsp_ready(sysmem_icb_cmd_ready),
+// 	.sysmem_icb_rsp_err  (1'b0  ),
+// 	.sysmem_icb_rsp_rdata(32'b0),
+// `endif
 
 	.io_pads_jtag_TCK_i_ival    (io_pads_jtag_TCK_i_ival    ),
 	.io_pads_jtag_TCK_o_oval    (),
