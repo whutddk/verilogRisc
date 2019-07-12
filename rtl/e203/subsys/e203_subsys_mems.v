@@ -3,7 +3,7 @@
 // Engineer: Ruige_Lee
 // Create Date: 2019-07-06 12:54:00
 // Last Modified by:   29505
-// Last Modified time: 2019-07-11 23:58:50
+// Last Modified time: 2019-07-12 09:51:22
 // Email: 295054118@whut.edu.cn
 // page: https://whutddk.github.io/
 // Design Name: e203_subsys_mems.v  
@@ -266,12 +266,12 @@ module e203_subsys_mems(
     .o0_icb_rsp_rdata  ({`E203_XLEN{1'b0}}),
 
   //  * MROM      
-    .o1_icb_enable     (1'b1),
+    .o1_icb_enable     (1'b0),
 
-    .o1_icb_cmd_valid  (mrom_icb_cmd_valid),
-    .o1_icb_cmd_ready  (mrom_icb_cmd_ready),
-    .o1_icb_cmd_addr   (mrom_icb_cmd_addr ),
-    .o1_icb_cmd_read   (mrom_icb_cmd_read ),
+    .o1_icb_cmd_valid  (),
+    .o1_icb_cmd_ready  (1'b0),
+    .o1_icb_cmd_addr   (),
+    .o1_icb_cmd_read   (),
     .o1_icb_cmd_wdata  (),
     .o1_icb_cmd_wmask  (),
     .o1_icb_cmd_lock   (),
@@ -280,20 +280,20 @@ module e203_subsys_mems(
     .o1_icb_cmd_burst  (),
     .o1_icb_cmd_beat   (),
     
-    .o1_icb_rsp_valid  (mrom_icb_rsp_valid),
-    .o1_icb_rsp_ready  (mrom_icb_rsp_ready),
-    .o1_icb_rsp_err    (mrom_icb_rsp_err),
+    .o1_icb_rsp_valid  (1'b0),
+    .o1_icb_rsp_ready  (),
+    .o1_icb_rsp_err    (1'b0),
     .o1_icb_rsp_excl_ok(1'b0  ),
-    .o1_icb_rsp_rdata  (mrom_icb_rsp_rdata),
+    .o1_icb_rsp_rdata  ({`E203_XLEN{1'b0}}),
 
   //  * OTP-RO    
-    .o2_icb_enable     (1'b1),
+    .o2_icb_enable     (1'b0),
 
-    .o2_icb_cmd_valid  (otp_ro_icb_cmd_valid),
-    .o2_icb_cmd_ready  (otp_ro_icb_cmd_ready),
-    .o2_icb_cmd_addr   (otp_ro_icb_cmd_addr ),
-    .o2_icb_cmd_read   (otp_ro_icb_cmd_read ),
-    .o2_icb_cmd_wdata  (otp_ro_icb_cmd_wdata),
+    .o2_icb_cmd_valid  (),
+    .o2_icb_cmd_ready  (1'b0),
+    .o2_icb_cmd_addr   (),
+    .o2_icb_cmd_read   (),
+    .o2_icb_cmd_wdata  (),
     .o2_icb_cmd_wmask  (),
     .o2_icb_cmd_lock   (),
     .o2_icb_cmd_excl   (),
@@ -301,11 +301,11 @@ module e203_subsys_mems(
     .o2_icb_cmd_burst  (),
     .o2_icb_cmd_beat   (),
     
-    .o2_icb_rsp_valid  (otp_ro_icb_rsp_valid),
-    .o2_icb_rsp_ready  (otp_ro_icb_rsp_ready),
-    .o2_icb_rsp_err    (otp_ro_icb_rsp_err),
+    .o2_icb_rsp_valid  (1'b0 ),
+    .o2_icb_rsp_ready  (),
+    .o2_icb_rsp_err    (1'b0 ),
     .o2_icb_rsp_excl_ok(1'b0  ),
-    .o2_icb_rsp_rdata  (otp_ro_icb_rsp_rdata),
+    .o2_icb_rsp_rdata  ({`E203_XLEN{1'b0}}),
 
 
   //  * QSPI0-RO  
@@ -331,25 +331,25 @@ module e203_subsys_mems(
 
 
   //  * SysMem
-    .o4_icb_enable     (1'b1),
+    .o4_icb_enable     (1'b0),
 
-    .o4_icb_cmd_valid  (sysmem_icb_cmd_valid),
-    .o4_icb_cmd_ready  (sysmem_icb_cmd_ready),
-    .o4_icb_cmd_addr   (sysmem_icb_cmd_addr ),
-    .o4_icb_cmd_read   (sysmem_icb_cmd_read ),
-    .o4_icb_cmd_wdata  (sysmem_icb_cmd_wdata),
-    .o4_icb_cmd_wmask  (sysmem_icb_cmd_wmask),
+    .o4_icb_cmd_valid  (),
+    .o4_icb_cmd_ready  (1'b0),
+    .o4_icb_cmd_addr   (),
+    .o4_icb_cmd_read   (),
+    .o4_icb_cmd_wdata  (),
+    .o4_icb_cmd_wmask  (),
     .o4_icb_cmd_lock   (),
     .o4_icb_cmd_excl   (),
     .o4_icb_cmd_size   (),
     .o4_icb_cmd_burst  (),
     .o4_icb_cmd_beat   (),
     
-    .o4_icb_rsp_valid  (sysmem_icb_rsp_valid),
-    .o4_icb_rsp_ready  (sysmem_icb_rsp_ready),
-    .o4_icb_rsp_err    (sysmem_icb_rsp_err    ),
+    .o4_icb_rsp_valid  (1'b0),
+    .o4_icb_rsp_ready  (),
+    .o4_icb_rsp_err    (1'b0),
     .o4_icb_rsp_excl_ok(1'b0),
-    .o4_icb_rsp_rdata  (sysmem_icb_rsp_rdata),
+    .o4_icb_rsp_rdata  ({`E203_XLEN{1'b0}}),
 
    //  * Example AXI    
     .o5_icb_enable     (1'b1),

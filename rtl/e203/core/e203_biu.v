@@ -4,7 +4,7 @@
 // Engineer: 29505
 // Create Date: 2019-06-30 14:05:03
 // Last Modified by:   29505
-// Last Modified time: 2019-07-12 00:01:07
+// Last Modified time: 2019-07-12 10:13:40
 // Email: 295054118@whut.edu.cn
 // Design Name: e203_biu.v  
 // Module Name:  
@@ -875,6 +875,11 @@ module e203_biu(
 							 & (~buf_icb_sel_plic)
 							 & (~buf_icb_sel_dm)
 							 ;
+
+	// wire buf_icb_sel_mem = (buf_icb_cmd_addr[31:28] == 4'h4);
+
+
+
 	`endif//}
 
 		// input [`E203_ADDR_SIZE-1:0]    plic_region_indic,
