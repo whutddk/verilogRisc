@@ -1,6 +1,29 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Company:   
 // Engineer: Ruige_Lee
+// Create Date: 2019-04-15 20:39:35
+// Last Modified by:   Ruige_Lee
+// Last Modified time: 2019-05-07 14:53:48
+// Email: 295054118@whut.edu.cn
+// page: https://whutddk.github.io/
+// Design Name:   
+// Module Name: e203_exu_decode
+// Project Name:   
+// Target Devices:   
+// Tool Versions:   
+// Description:   
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision:    -   
+// Additional Comments:  
+// 
+//
+//////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+// Company:   
+// Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
 // Last Modified time: 2019-04-21 17:48:13
@@ -54,11 +77,11 @@ module e203_exu_decode(
 	input  [`E203_INSTR_SIZE-1:0] i_instr,
 	input  [`E203_PC_SIZE-1:0] i_pc,
 	input  i_prdt_taken, 
-	input  i_misalgn,              // The fetch misalign
-	input  i_buserr,               // The fetch bus error
+// input  i_misalgn,              // The fetch misalign
+// input  i_buserr,               // The fetch bus error
 	input  i_muldiv_b2b,           // The back2back case for mul/div
 
-	input  dbg_mode,
+	// input  dbg_mode,
 	//////////////////////////////////////////////////////////////
 	// The Decoded Info-Bus
 
@@ -73,8 +96,8 @@ module e203_exu_decode(
 	output [`E203_DECINFO_WIDTH-1:0] dec_info,  
 	output [`E203_XLEN-1:0] dec_imm,
 	output [`E203_PC_SIZE-1:0] dec_pc,
-	output dec_misalgn,
-	output dec_buserr,
+	// output dec_misalgn,
+	// output dec_buserr,
 	output dec_ilegl,
 	
 
@@ -97,8 +120,8 @@ module e203_exu_decode(
 
 
 
-	wire [32-1:0] rv32_instr = i_instr;
-	wire [16-1:0] rv16_instr = i_instr[15:0];
+	wire [31:0] rv32_instr = i_instr;
+
 
 	wire [6:0]  opcode = rv32_instr[6:0];
 
@@ -186,12 +209,7 @@ module e203_exu_decode(
 	wire rv32_resved0  = opcode_6_5_11 & opcode_4_2_010;// & opcode_1_0_11; 
 
 	wire rv32_miscmem  = opcode_6_5_00 & opcode_4_2_011;// & opcode_1_0_11; 
-	`ifdef E203_SUPPORT_AMO//{
-	wire rv32_amo      = opcode_6_5_01 & opcode_4_2_011;// & opcode_1_0_11; 
-	`endif//E203_SUPPORT_AMO}
-	`ifndef E203_SUPPORT_AMO//{
-	wire rv32_amo      = 1'b0;
-	`endif//}
+
 	wire rv32_nmadd    = opcode_6_5_10 & opcode_4_2_011;// & opcode_1_0_11; 
 	wire rv32_jal      = opcode_6_5_11 & opcode_4_2_011;// & opcode_1_0_11; 
 
@@ -237,14 +255,14 @@ module e203_exu_decode(
 	wire rv32_csrrsi   = rv32_system & rv32_func3_110; 
 	wire rv32_csrrci   = rv32_system & rv32_func3_111; 
 
-	wire rv32_dret_ilgl = rv32_dret & (~dbg_mode);
+	wire rv32_dret_ilgl = rv32_dret ;
 
 	wire rv32_ecall_ebreak_ret_wfi = rv32_system & rv32_func3_000;
 	wire rv32_csr          = rv32_system & (~rv32_func3_000);
 
 
 	// ===========================================================================
-		// The Branch and system group of instructions will be handled by BJP
+	// The Branch and system group of instructions will be handled by BJP
 
 	assign dec_jal     = rv32_jal;    
 
@@ -374,13 +392,8 @@ module e203_exu_decode(
 	wire rv32_rem      = rv32_op     & rv32_func3_110 & rv32_func7_0000001;
 	wire rv32_remu     = rv32_op     & rv32_func3_111 & rv32_func7_0000001;
 	
-	// The MULDIV group of instructions will be handled by MUL-DIV-datapath
-	`ifdef E203_SUPPORT_MULDIV//{
+
 	wire muldiv_op = rv32_op & rv32_func7_0000001;
-	`endif//}
-	`ifndef E203_SUPPORT_MULDIV//{
-	wire muldiv_op = 1'b0;
-	`endif//}
 
 	wire [`E203_DECINFO_MULDIV_WIDTH-1:0] muldiv_info_bus;
 	assign muldiv_info_bus[`E203_DECINFO_GRP          ] = `E203_DECINFO_GRP_MULDIV;
@@ -414,63 +427,31 @@ module e203_exu_decode(
 	wire rv32_sh       = rv32_store  & rv32_func3_001;
 	wire rv32_sw       = rv32_store  & rv32_func3_010;
 
-
-	// ===========================================================================
-	// Atomic Instructions
-	`ifdef E203_SUPPORT_AMO//{
-	wire rv32_lr_w      = rv32_amo & rv32_func3_010 & (rv32_func7[6:2] == 5'b00010);
-	wire rv32_sc_w      = rv32_amo & rv32_func3_010 & (rv32_func7[6:2] == 5'b00011);
-	wire rv32_amoswap_w = rv32_amo & rv32_func3_010 & (rv32_func7[6:2] == 5'b00001);
-	wire rv32_amoadd_w  = rv32_amo & rv32_func3_010 & (rv32_func7[6:2] == 5'b00000);
-	wire rv32_amoxor_w  = rv32_amo & rv32_func3_010 & (rv32_func7[6:2] == 5'b00100);
-	wire rv32_amoand_w  = rv32_amo & rv32_func3_010 & (rv32_func7[6:2] == 5'b01100);
-	wire rv32_amoor_w   = rv32_amo & rv32_func3_010 & (rv32_func7[6:2] == 5'b01000);
-	wire rv32_amomin_w  = rv32_amo & rv32_func3_010 & (rv32_func7[6:2] == 5'b10000);
-	wire rv32_amomax_w  = rv32_amo & rv32_func3_010 & (rv32_func7[6:2] == 5'b10100);
-	wire rv32_amominu_w = rv32_amo & rv32_func3_010 & (rv32_func7[6:2] == 5'b11000);
-	wire rv32_amomaxu_w = rv32_amo & rv32_func3_010 & (rv32_func7[6:2] == 5'b11100);
-
-	`endif//E203_SUPPORT_AMO}
-	`ifndef E203_SUPPORT_AMO//{
-	wire rv32_lr_w      = 1'b0;
-	wire rv32_sc_w      = 1'b0;
-	wire rv32_amoswap_w = 1'b0;
-	wire rv32_amoadd_w  = 1'b0;
-	wire rv32_amoxor_w  = 1'b0;
-	wire rv32_amoand_w  = 1'b0;
-	wire rv32_amoor_w   = 1'b0;
-	wire rv32_amomin_w  = 1'b0;
-	wire rv32_amomax_w  = 1'b0;
-	wire rv32_amominu_w = 1'b0;
-	wire rv32_amomaxu_w = 1'b0;
-
-	`endif//}
-
-	wire   amoldst_op = rv32_amo | rv32_load | rv32_store ;
+	wire amoldst_op = rv32_load | rv32_store ;
 
 		// The RV16 always is word
 	wire [1:0] lsu_info_size  =  rv32_func3[1:0] ;
 		// The RV16 always is signed
-	wire       lsu_info_usign =  rv32_func3[2] ;
+	wire lsu_info_usign =  rv32_func3[2] ;
 
 	wire [`E203_DECINFO_AGU_WIDTH-1:0] agu_info_bus;
 	assign agu_info_bus[`E203_DECINFO_GRP    ] = `E203_DECINFO_GRP_AGU;
 	assign agu_info_bus[`E203_DECINFO_RV32   ] = 1'b1;
-	assign agu_info_bus[`E203_DECINFO_AGU_LOAD   ] = rv32_load  | rv32_lr_w ;
-	assign agu_info_bus[`E203_DECINFO_AGU_STORE  ] = rv32_store | rv32_sc_w ;
+	assign agu_info_bus[`E203_DECINFO_AGU_LOAD   ] = rv32_load;
+	assign agu_info_bus[`E203_DECINFO_AGU_STORE  ] = rv32_store ;
 	assign agu_info_bus[`E203_DECINFO_AGU_SIZE   ] = lsu_info_size;
 	assign agu_info_bus[`E203_DECINFO_AGU_USIGN  ] = lsu_info_usign;
-	assign agu_info_bus[`E203_DECINFO_AGU_EXCL   ] = rv32_lr_w | rv32_sc_w;
-	assign agu_info_bus[`E203_DECINFO_AGU_AMO    ] = rv32_amo & (~(rv32_lr_w | rv32_sc_w));// We seperated the EXCL out of AMO in LSU handling
-	assign agu_info_bus[`E203_DECINFO_AGU_AMOSWAP] = rv32_amoswap_w;
-	assign agu_info_bus[`E203_DECINFO_AGU_AMOADD ] = rv32_amoadd_w ;
-	assign agu_info_bus[`E203_DECINFO_AGU_AMOAND ] = rv32_amoand_w ;
-	assign agu_info_bus[`E203_DECINFO_AGU_AMOOR  ] = rv32_amoor_w ;
-	assign agu_info_bus[`E203_DECINFO_AGU_AMOXOR ] = rv32_amoxor_w  ;
-	assign agu_info_bus[`E203_DECINFO_AGU_AMOMAX ] = rv32_amomax_w ;
-	assign agu_info_bus[`E203_DECINFO_AGU_AMOMIN ] = rv32_amomin_w ;
-	assign agu_info_bus[`E203_DECINFO_AGU_AMOMAXU] = rv32_amomaxu_w;
-	assign agu_info_bus[`E203_DECINFO_AGU_AMOMINU] = rv32_amominu_w;
+	assign agu_info_bus[`E203_DECINFO_AGU_EXCL   ] = 1'b0;
+	assign agu_info_bus[`E203_DECINFO_AGU_AMO    ] = 1'b0;// We seperated the EXCL out of AMO in LSU handling
+	assign agu_info_bus[`E203_DECINFO_AGU_AMOSWAP] = 1'b0;
+	assign agu_info_bus[`E203_DECINFO_AGU_AMOADD ] = 1'b0 ;
+	assign agu_info_bus[`E203_DECINFO_AGU_AMOAND ] = 1'b0;
+	assign agu_info_bus[`E203_DECINFO_AGU_AMOOR  ] = 1'b0;
+	assign agu_info_bus[`E203_DECINFO_AGU_AMOXOR ] = 1'b0;
+	assign agu_info_bus[`E203_DECINFO_AGU_AMOMAX ] = 1'b0;
+	assign agu_info_bus[`E203_DECINFO_AGU_AMOMIN ] = 1'b0;
+	assign agu_info_bus[`E203_DECINFO_AGU_AMOMAXU] = 1'b0;
+	assign agu_info_bus[`E203_DECINFO_AGU_AMOMINU] = 1'b0;
 	assign agu_info_bus[`E203_DECINFO_AGU_OP2IMM ] = need_imm; 
 
 
@@ -543,16 +524,14 @@ module e203_exu_decode(
 						& (
 							(
 								(rv32_branch)
-							| (rv32_store)
-							| (rv32_op)
-							| (rv32_amo & (~rv32_lr_w))
+								| (rv32_store)
+								| (rv32_op)
 							)
 						);
 
 	wire [31:0]  rv32_i_imm = { {20{rv32_instr[31]}} , rv32_instr[31:20] };
 
 	wire [31:0]  rv32_s_imm = {{20{rv32_instr[31]}} , rv32_instr[31:25], rv32_instr[11:7]};
-
 
 	wire [31:0]  rv32_b_imm = { {19{rv32_instr[31]}} , rv32_instr[31], rv32_instr[7], rv32_instr[30:25], rv32_instr[11:8], 1'b0};
 
@@ -651,8 +630,8 @@ module e203_exu_decode(
 
 	assign dec_jalr_rs1idx = rv32_rs1[`E203_RFIDX_WIDTH-1:0]; 
 
-	assign dec_misalgn = i_misalgn;
-	assign dec_buserr  = i_buserr ;
+	// assign dec_misalgn = 1'b0;
+	// assign dec_buserr  = 1'b0;
 
 
 	assign dec_ilegl = (rv_all0s1s_ilgl) 

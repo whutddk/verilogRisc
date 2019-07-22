@@ -1,21 +1,66 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-05-24 21:39:36
+// Last Modified by:   29505
+// Last Modified time: 2019-05-25 10:54:59
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_exu_csr.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+// Company:   
+// Engineer: Ruige_Lee
+// Create Date: 2019-04-01 16:33:19
+// Last Modified by:   Ruige_Lee
+// Last Modified time: 2019-05-07 11:13:49
+// Email: 295054118@whut.edu.cn
+// page: https://whutddk.github.io/
+// Design Name: e203_exu_csr.v  
+// Module Name: e203_exu_csr
+// Project Name:   
+// Target Devices:   
+// Tool Versions:   
+// Description:   
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision:    -   
+// Additional Comments:  
+// 
+//
+//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
-                                                                         
+																																				 
  Licensed under the Apache License, Version 2.0 (the "License");         
  you may not use this file except in compliance with the License.        
  You may obtain a copy of the License at                                 
-                                                                         
-     http://www.apache.org/licenses/LICENSE-2.0                          
-                                                                         
-  Unless required by applicable law or agreed to in writing, software    
+																																				 
+		 http://www.apache.org/licenses/LICENSE-2.0                          
+																																				 
+	Unless required by applicable law or agreed to in writing, software    
  distributed under the License is distributed on an "AS IS" BASIS,       
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and     
  limitations under the License.                                          
  */                                                                      
-                                                                         
-                                                                         
-                                                                         
+																																				 
+																																				 
+																																				 
 //=====================================================================
 //
 // Designer   : Bob Hu
@@ -27,89 +72,94 @@
 `include "e203_defines.v"
 
 module e203_exu_csr(
-  input nonflush_cmt_ena,
-  output eai_xs_off,
+	input nonflush_cmt_ena,
+	//output eai_xs_off,
 
-  input csr_ena,
-  input csr_wr_en,
-  input csr_rd_en,
-  input [12-1:0] csr_idx,
+	input csr_ena,
+	input csr_wr_en,
+	input csr_rd_en,
+	input [12-1:0] csr_idx,
 
-  output csr_access_ilgl,
-  output tm_stop,
-  output core_cgstop,
-  output tcm_cgstop,
-  output itcm_nohold,
-  output mdv_nob2b,
-
-
-  output [`E203_XLEN-1:0] read_csr_dat,
-  input  [`E203_XLEN-1:0] wbck_csr_dat,
-   
-  input  [`E203_HART_ID_W-1:0] core_mhartid,
-  input  ext_irq_r,
-  input  sft_irq_r,
-  input  tmr_irq_r,
-
-  output status_mie_r,
-  output mtie_r,
-  output msie_r,
-  output meie_r,
-
-  output wr_dcsr_ena    ,
-  output wr_dpc_ena     ,
-  output wr_dscratch_ena,
+	output csr_access_ilgl,
+	output tm_stop,
+	output core_cgstop,
+	output tcm_cgstop,
+	output itcm_nohold,
+	output mdv_nob2b,
 
 
-  input [`E203_XLEN-1:0] dcsr_r    ,
-  input [`E203_PC_SIZE-1:0] dpc_r     ,
-  input [`E203_XLEN-1:0] dscratch_r,
+	output [`E203_XLEN-1:0] read_csr_dat,
+	input  [`E203_XLEN-1:0] wbck_csr_dat,
+	 
+	input  [`E203_HART_ID_W-1:0] core_mhartid,
+	input  ext_irq_r,
+	input  sft_irq_r,
+	input  tmr_irq_r,
 
-  output [`E203_XLEN-1:0] wr_csr_nxt    ,
+	output status_mie_r,
+	output mtie_r,
+	output msie_r,
+	output meie_r,
 
-  input  dbg_mode,
-  input  dbg_stopcycle,
-
-  output u_mode,
-  output s_mode,
-  output h_mode,
-  output m_mode,
-
-  input [`E203_ADDR_SIZE-1:0] cmt_badaddr,
-  input cmt_badaddr_ena,
-  input [`E203_PC_SIZE-1:0] cmt_epc,
-  input cmt_epc_ena,
-  input [`E203_XLEN-1:0] cmt_cause,
-  input cmt_cause_ena,
-  input cmt_status_ena,
-  input cmt_instret_ena,
-
-  input                      cmt_mret_ena,
-  output[`E203_PC_SIZE-1:0]  csr_epc_r,
-  output[`E203_PC_SIZE-1:0]  csr_dpc_r,
-  output[`E203_XLEN-1:0]     csr_mtvec_r,
+	output wr_dcsr_ena    ,
+	output wr_dpc_ena     ,
+	output wr_dscratch_ena,
 
 
-  input  clk_aon,
-  input  clk,
-  input  rst_n
+	input [`E203_XLEN-1:0] dcsr_r    ,
+	input [`E203_PC_SIZE-1:0] dpc_r     ,
+	input [`E203_XLEN-1:0] dscratch_r,
 
-  );
+	output [`E203_XLEN-1:0] wr_csr_nxt    ,
+
+	// input  dbg_mode = 1'b0,
+	// input  dbg_stopcycle = 1'b0,
+
+	// output u_mode,
+	// output s_mode,
+	// output h_mode,
+	// output m_mode,
+
+	input [`E203_ADDR_SIZE-1:0] cmt_badaddr,
+	input cmt_badaddr_ena,
+	input [`E203_PC_SIZE-1:0] cmt_epc,
+	input cmt_epc_ena,
+	input [`E203_XLEN-1:0] cmt_cause,
+	input cmt_cause_ena,
+	input cmt_status_ena,
+	input cmt_instret_ena,
+
+	input                      cmt_mret_ena,
+	output[`E203_PC_SIZE-1:0]  csr_epc_r,
+	output[`E203_PC_SIZE-1:0]  csr_dpc_r,
+	output[`E203_XLEN-1:0]     csr_mtvec_r,
+
+
+	input  clk_aon,
+	input  clk,
+	input  rst_n
+
+	);
 
 
 
 assign csr_access_ilgl = 1'b0
-                ;
+								;
 
 // Only toggle when need to read or write to save power
-wire wbck_csr_wen = csr_wr_en & csr_ena & (~csr_access_ilgl);
-wire read_csr_ena = csr_rd_en & csr_ena & (~csr_access_ilgl);
+wire wbck_csr_wen = csr_wr_en & csr_ena;
+wire read_csr_ena = csr_rd_en & csr_ena;
 
-wire [1:0] priv_mode = u_mode ? 2'b00 : 
-                       s_mode ? 2'b01 :
-                       h_mode ? 2'b10 : 
-                       m_mode ? 2'b11 : 
-                                2'b11;
+// wire [1:0] priv_mode = u_mode ? 2'b00 : 
+// 										s_mode ? 2'b01 :
+// 										h_mode ? 2'b10 : 
+// 										m_mode ? 2'b11 : 
+// 										2'b11;
+
+// wire [1:0] priv_mode = 2'b11;
+
+
+
 
 //0x000 URW ustatus User status register.
 //    * Since we support the user-level interrupt, hence we need to support UIE
@@ -131,53 +181,53 @@ wire wr_mstatus = sel_mstatus & csr_wr_en;
 // Implement MPIE field
 //
 wire status_mpie_r;
-    // The MPIE Feilds will be updates when: 
+		// The MPIE Feilds will be updates when: 
 wire status_mpie_ena  = 
-        // The CSR is written by CSR instructions
-        (wr_mstatus & wbck_csr_wen) |
-        // The MRET instruction commited
-        cmt_mret_ena |
-        // The Trap is taken
-        cmt_status_ena;
+				// The CSR is written by CSR instructions
+				(wr_mstatus & wbck_csr_wen) |
+				// The MRET instruction commited
+				cmt_mret_ena |
+				// The Trap is taken
+				cmt_status_ena;
 
 wire status_mpie_nxt    = 
-    //   See Priv SPEC:
-    //       When a trap is taken from privilege mode y into privilege
-    //       mode x, xPIE is set to the value of xIE;
-    // So, When the Trap is taken, the MPIE is updated with the current MIE value
-    cmt_status_ena ? status_mie_r :
-    //   See Priv SPEC:
-    //       When executing an xRET instruction, supposing xPP holds the value y, xIE
-    //       is set to xPIE; the privilege mode is changed to y; 
-    //       xPIE is set to 1;
-    // So, When the MRET instruction commited, the MPIE is updated with 1
-    cmt_mret_ena  ? 1'b1 :
-    // When the CSR is written by CSR instructions
-    (wr_mstatus & wbck_csr_wen) ? wbck_csr_dat[7] : // MPIE is in field 7 of mstatus
-                  status_mpie_r; // Unchanged 
+		//   See Priv SPEC:
+		//       When a trap is taken from privilege mode y into privilege
+		//       mode x, xPIE is set to the value of xIE;
+		// So, When the Trap is taken, the MPIE is updated with the current MIE value
+		cmt_status_ena ? status_mie_r :
+		//   See Priv SPEC:
+		//       When executing an xRET instruction, supposing xPP holds the value y, xIE
+		//       is set to xPIE; the privilege mode is changed to y; 
+		//       xPIE is set to 1;
+		// So, When the MRET instruction commited, the MPIE is updated with 1
+		cmt_mret_ena  ? 1'b1 :
+		// When the CSR is written by CSR instructions
+		(wr_mstatus & wbck_csr_wen) ? wbck_csr_dat[7] : // MPIE is in field 7 of mstatus
+									status_mpie_r; // Unchanged 
 
 sirv_gnrl_dfflr #(1) status_mpie_dfflr (status_mpie_ena, status_mpie_nxt, status_mpie_r, clk, rst_n);
 
 //////////////////////////
 // Implement MIE field
 //
-    // The MIE Feilds will be updates same as MPIE
-wire status_mie_ena  = status_mpie_ena; 
-wire status_mie_nxt    = 
-    //   See Priv SPEC:
-    //       When a trap is taken from privilege mode y into privilege
-    //       mode x, xPIE is set to the value of xIE,
-    //       xIE is set to 0;
-    // So, When the Trap is taken, the MIE is updated with 0
-     cmt_status_ena ? 1'b0 :
-    //   See Priv SPEC:
-    //       When executing an xRET instruction, supposing xPP holds the value y, xIE
-    //       is set to xPIE; the privilege mode is changed to y, xPIE is set to 1;
-    // So, When the MRET instruction commited, the MIE is updated with MPIE
-    cmt_mret_ena ? status_mpie_r :
-    // When the CSR is written by CSR instructions
-    (wr_mstatus & wbck_csr_wen) ? wbck_csr_dat[3] : // MIE is in field 3 of mstatus
-                  status_mie_r; // Unchanged 
+		// The MIE Feilds will be updates same as MPIE
+wire status_mie_ena = status_mpie_ena; 
+wire status_mie_nxt = 
+		//   See Priv SPEC:
+		//       When a trap is taken from privilege mode y into privilege
+		//       mode x, xPIE is set to the value of xIE,
+		//       xIE is set to 0;
+		// So, When the Trap is taken, the MIE is updated with 0
+		 cmt_status_ena ? 1'b0 :
+		//   See Priv SPEC:
+		//       When executing an xRET instruction, supposing xPP holds the value y, xIE
+		//       is set to xPIE; the privilege mode is changed to y, xPIE is set to 1;
+		// So, When the MRET instruction commited, the MIE is updated with MPIE
+		cmt_mret_ena ? status_mpie_r :
+		// When the CSR is written by CSR instructions
+		(wr_mstatus & wbck_csr_wen) ? wbck_csr_dat[3] : // MIE is in field 3 of mstatus
+									status_mie_r; // Unchanged 
 
 sirv_gnrl_dfflr #(1) status_mie_dfflr (status_mie_ena, status_mie_nxt, status_mie_r, clk, rst_n);
 
@@ -188,9 +238,9 @@ sirv_gnrl_dfflr #(1) status_mie_dfflr (status_mie_ena, status_mie_nxt, status_mi
 //    The SD bit is read-only 
 //    And is set when either the FS or XS bits encode a Dirty
 //      state (i.e., SD=((FS==11) OR (XS==11))).
-wire [1:0] status_fs_r;
-wire [1:0] status_xs_r;
-wire status_sd_r = (status_fs_r == 2'b11) | (status_xs_r == 2'b11);
+// wire [1:0] status_fs_r;
+// wire [1:0] status_xs_r;
+// wire status_sd_r = 1'b0;
 
 //////////////////////////
 // Implement XS field
@@ -198,43 +248,42 @@ wire status_sd_r = (status_fs_r == 2'b11) | (status_xs_r == 2'b11);
 //  See Priv SPEC:
 //    XS field is read-only
 //    The XS field represents a summary of all extensions' status
-    // But in E200 we implement XS exactly same as FS to make it usable by software to 
-    //   disable extended accelerators
-`ifndef E203_HAS_EAI
-   // If no EAI coprocessor interface configured, the XS is just hardwired to 0
-assign status_xs_r = 2'b0; 
-assign eai_xs_off = 1'b0;// We just make this signal to 0
-`endif
+// But in E200 we implement XS exactly same as FS to make it usable by software to 
+//   disable extended accelerators
+
+// If no EAI coprocessor interface configured, the XS is just hardwired to 0
+// assign status_xs_r = 2'b0;
+//assign eai_xs_off = 1'b0;// We just make this signal to 0
+
 
 //////////////////////////
 // Implement FS field
 //
 
-`ifndef E203_HAS_FPU
-   // If no FPU configured, the FS is just hardwired to 0
-assign status_fs_r = 2'b0; 
-`endif
+// If no FPU configured, the FS is just hardwired to 0
+// assign status_fs_r = 2'b0; 
+
 
 //////////////////////////
 // Pack to the full mstatus register
 //
 wire [`E203_XLEN-1:0] status_r;
-assign status_r[31]    = status_sd_r;                        //SD
-assign status_r[30:23] = 8'b0; // Reserved
-assign status_r[22:17] = 6'b0;               // TSR--MPRV
-assign status_r[16:15] = status_xs_r;                        // XS
-assign status_r[14:13] = status_fs_r;                        // FS
-assign status_r[12:11] = 2'b11;              // MPP 
-assign status_r[10:9]  = 2'b0; // Reserved
-assign status_r[8]     = 1'b0;               // SPP
-assign status_r[7]     = status_mpie_r;                      // MPIE
-assign status_r[6]     = 1'b0; // Reserved
-assign status_r[5]     = 1'b0;               // SPIE 
-assign status_r[4]     = 1'b0;               // UPIE 
-assign status_r[3]     = status_mie_r;                       // MIE
-assign status_r[2]     = 1'b0; // Reserved
-assign status_r[1]     = 1'b0;               // SIE 
-assign status_r[0]     = 1'b0;               // UIE 
+assign status_r[31]    = 1'b0;              //SD
+assign status_r[30:23] = 8'b0;				// Reserved
+assign status_r[22:17] = 6'b0;              // TSR--MPRV
+assign status_r[16:15] = 2'b0;				// XS
+assign status_r[14:13] = 2'b0;				// FS
+assign status_r[12:11] = 2'b11;				// MPP 
+assign status_r[10:9]  = 2'b0;				// Reserved
+assign status_r[8]     = 1'b0;				// SPP
+assign status_r[7]     = status_mpie_r;		// MPIE
+assign status_r[6]     = 1'b0;				// Reserved
+assign status_r[5]     = 1'b0;				// SPIE 
+assign status_r[4]     = 1'b0;				// UPIE 
+assign status_r[3]     = status_mie_r;		// MIE
+assign status_r[2]     = 1'b0;				// Reserved
+assign status_r[1]     = 1'b0;				// SIE 
+assign status_r[0]     = 1'b0;				// UIE 
 
 wire [`E203_XLEN-1:0] csr_mstatus = status_r;
 
@@ -291,6 +340,7 @@ wire [`E203_XLEN-1:0] csr_mip = ip_r;
 //0x305 MRW mtvec Machine trap-handler base address.
 wire sel_mtvec = (csr_idx == 12'h305);
 wire rd_mtvec = csr_rd_en & sel_mtvec;
+
 `ifdef E203_SUPPORT_MTVEC //{
 wire wr_mtvec = sel_mtvec & csr_wr_en;
 wire mtvec_ena = (wr_mtvec & wbck_csr_wen);
@@ -299,9 +349,10 @@ wire [`E203_XLEN-1:0] mtvec_nxt = wbck_csr_dat;
 sirv_gnrl_dfflr #(`E203_XLEN) mtvec_dfflr (mtvec_ena, mtvec_nxt, mtvec_r, clk, rst_n);
 wire [`E203_XLEN-1:0] csr_mtvec = mtvec_r;
 `else//}{
-  // THe vector table base is a configurable parameter, so we dont support writeable to it
+	// THe vector table base is a configurable parameter, so we dont support writeable to it
 wire [`E203_XLEN-1:0] csr_mtvec = `E203_MTVEC_TRAP_BASE;
 `endif//}
+
 assign csr_mtvec_r = csr_mtvec;
 
 //0x340 MRW mscratch 
@@ -328,21 +379,21 @@ wire sel_minstret  = (csr_idx == 12'hB02);
 wire sel_minstreth = (csr_idx == 12'hB82);
 
 // 0xBFF MRW counterstop 
-      // This register is our self-defined register to stop
-      // the cycle/time/instret counters to save dynamic powers
+			// This register is our self-defined register to stop
+			// the cycle/time/instret counters to save dynamic powers
 wire sel_counterstop = (csr_idx == 12'hBFF);// This address is not used by ISA
 // 0xBFE MRW mcgstop 
-      // This register is our self-defined register to disable the 
-      // automaticall clock gating for CPU logics for debugging purpose
+			// This register is our self-defined register to disable the 
+			// automaticall clock gating for CPU logics for debugging purpose
 wire sel_mcgstop = (csr_idx == 12'hBFE);// This address is not used by ISA
 // 0xBFD MRW itcmnohold 
-      // This register is our self-defined register to disble the 
-      // ITCM SRAM output holdup feature, if set, then we assume
-      // ITCM SRAM output cannot holdup last read value
+			// This register is our self-defined register to disble the 
+			// ITCM SRAM output holdup feature, if set, then we assume
+			// ITCM SRAM output cannot holdup last read value
 wire sel_itcmnohold = (csr_idx == 12'hBFD);// This address is not used by ISA
 // 0xBF0 MRW mdvnob2b 
-      // This register is our self-defined register to disble the 
-      // Mul/div back2back feature
+			// This register is our self-defined register to disble the 
+			// Mul/div back2back feature
 wire sel_mdvnob2b = (csr_idx == 12'hBF0);// This address is not used by ISA
 
 
@@ -385,15 +436,15 @@ wire [`E203_XLEN-1:0] minstreth_r;
 wire cy_stop;
 wire ir_stop;
 
-wire stop_cycle_in_dbg = dbg_stopcycle & dbg_mode;
+wire stop_cycle_in_dbg = 1'b0;
 wire mcycle_ena    = mcycle_wr_ena    | 
-                     ((~cy_stop) & (~stop_cycle_in_dbg) & (1'b1));
+										 ((~cy_stop) & (~stop_cycle_in_dbg) & (1'b1));
 wire mcycleh_ena   = mcycleh_wr_ena   | 
-                     ((~cy_stop) & (~stop_cycle_in_dbg) & ((mcycle_r == (~(`E203_XLEN'b0)))));
+										 ((~cy_stop) & (~stop_cycle_in_dbg) & ((mcycle_r == (~(`E203_XLEN'b0)))));
 wire minstret_ena  = minstret_wr_ena  |
-                     ((~ir_stop) & (~stop_cycle_in_dbg) & (cmt_instret_ena));
+										 ((~ir_stop) & (~stop_cycle_in_dbg) & (cmt_instret_ena));
 wire minstreth_ena = minstreth_wr_ena |
-                     ((~ir_stop) & (~stop_cycle_in_dbg) & ((cmt_instret_ena & (minstret_r == (~(`E203_XLEN'b0))))));
+										 ((~ir_stop) & (~stop_cycle_in_dbg) & ((cmt_instret_ena & (minstret_r == (~(`E203_XLEN'b0))))));
 
 wire [`E203_XLEN-1:0] mcycle_nxt    = mcycle_wr_ena    ? wbck_csr_dat : (mcycle_r    + 1'b1);
 wire [`E203_XLEN-1:0] mcycleh_nxt   = mcycleh_wr_ena   ? wbck_csr_dat : (mcycleh_r   + 1'b1);
@@ -539,52 +590,44 @@ wire sel_misa = (csr_idx == 12'h301);
 wire rd_misa = sel_misa & csr_rd_en;
 // Only implemented the M mode, IMC or EMC
 wire [`E203_XLEN-1:0] csr_misa = {
-    2'b1
-   ,4'b0 //WIRI
-   ,1'b0 //              25 Z Reserved
-   ,1'b0 //              24 Y Reserved
-   ,1'b0 //              23 X Non-standard extensions present
-   ,1'b0 //              22 W Reserved
-   ,1'b0 //              21 V Tentatively reserved for Vector extension 20 U User mode implemented
-   ,1'b0 //              20 U User mode implemented
-   ,1'b0 //              19 T Tentatively reserved for Transactional Memory extension
-   ,1'b0 //              18 S Supervisor mode implemented
-   ,1'b0 //              17 R Reserved
-   ,1'b0 //              16 Q Quad-precision floating-point extension
-   ,1'b0 //              15 P Tentatively reserved for Packed-SIMD extension
-   ,1'b0 //              14 O Reserved
-   ,1'b0 //              13 N User-level interrupts supported
-   ,1'b1 // 12 M Integer Multiply/Divide extension
-   ,1'b0 //              11 L Tentatively reserved for Decimal Floating-Point extension
-   ,1'b0 //              10 K Reserved
-   ,1'b0 //              9 J Reserved
-   `ifdef E203_RFREG_NUM_IS_32
-   ,1'b1 // 8 I RV32I/64I/128I base ISA
-   `else
-   ,1'b0
-   `endif
-   ,1'b0 //              7 H Hypervisor mode implemented
-   ,1'b0 //              6 G Additional standard extensions present
-  `ifndef E203_HAS_FPU//{
-   ,1'b0 //              5 F Single-precision floating-point extension
-  `endif//
-   `ifdef E203_RFREG_NUM_IS_32
-   ,1'b0 //              4 E RV32E base ISA
-   `else
-   ,1'b1 //              
-   `endif
-  `ifndef E203_HAS_FPU//{
-   ,1'b0 //              3 D Double-precision floating-point extension
-  `endif//
-   ,1'b1 // 2 C Compressed extension
-   ,1'b0 //              1 B Tentatively reserved for Bit operations extension
-  `ifdef E203_SUPPORT_AMO//{
-   ,1'b1 //              0 A Atomic extension
-  `endif//E203_SUPPORT_AMO}
-  `ifndef E203_SUPPORT_AMO//{
-   ,1'b0 //              0 A Atomic extension
-  `endif//}
-                           };
+		2'b1
+	 ,4'b0 //WIRI
+	 ,1'b0 //              25 Z Reserved
+	 ,1'b0 //              24 Y Reserved
+	 ,1'b0 //              23 X Non-standard extensions present
+	 ,1'b0 //              22 W Reserved
+	 ,1'b0 //              21 V Tentatively reserved for Vector extension 20 U User mode implemented
+	 ,1'b0 //              20 U User mode implemented
+	 ,1'b0 //              19 T Tentatively reserved for Transactional Memory extension
+	 ,1'b0 //              18 S Supervisor mode implemented
+	 ,1'b0 //              17 R Reserved
+	 ,1'b0 //              16 Q Quad-precision floating-point extension
+	 ,1'b0 //              15 P Tentatively reserved for Packed-SIMD extension
+	 ,1'b0 //              14 O Reserved
+	 ,1'b0 //              13 N User-level interrupts supported
+	 ,1'b1 // 12 M Integer Multiply/Divide extension
+	 ,1'b0 //              11 L Tentatively reserved for Decimal Floating-Point extension
+	 ,1'b0 //              10 K Reserved
+	 ,1'b0 //              9 J Reserved
+	 `ifdef E203_RFREG_NUM_IS_32
+	 ,1'b1 // 8 I RV32I/64I/128I base ISA
+	 `else
+	 ,1'b0
+	 `endif
+	 ,1'b0 //              7 H Hypervisor mode implemented
+	 ,1'b0 //              6 G Additional standard extensions present
+	 ,1'b0 //              5 F Single-precision floating-point extension
+	 `ifdef E203_RFREG_NUM_IS_32
+	 ,1'b0 //              4 E RV32E base ISA
+	 `else
+	 ,1'b1 //              
+	 `endif
+	 ,1'b0 //              3 D Double-precision floating-point extension
+	 ,1'b1 // 2 C Compressed extension
+	 ,1'b0 //              1 B Tentatively reserved for Bit operations extension
+	 ,1'b0 //              0 A Atomic extension
+
+													 };
 
 //Machine Information Registers
 //0xF11 MRO mvendorid Vendor ID.
@@ -608,68 +651,61 @@ wire sel_dcsr     = (csr_idx == 12'h7b0);
 wire sel_dpc      = (csr_idx == 12'h7b1);
 wire sel_dscratch = (csr_idx == 12'h7b2);
 
-wire rd_dcsr     = dbg_mode & csr_rd_en & sel_dcsr    ;
-wire rd_dpc      = dbg_mode & csr_rd_en & sel_dpc     ;
-wire rd_dscratch = dbg_mode & csr_rd_en & sel_dscratch;
+wire rd_dcsr     = 1'b0;
+wire rd_dpc      = 1'b0;
+wire rd_dscratch = 1'b0;
 
 
-assign wr_dcsr_ena     = dbg_mode & csr_wr_en & sel_dcsr    ;
-assign wr_dpc_ena      = dbg_mode & csr_wr_en & sel_dpc     ;
-assign wr_dscratch_ena = dbg_mode & csr_wr_en & sel_dscratch;
+assign wr_dcsr_ena     = 1'b0;
+assign wr_dpc_ena      = 1'b0;
+assign wr_dscratch_ena = 1'b0;
 
 
 assign wr_csr_nxt     = wbck_csr_dat;
 
 
 wire [`E203_XLEN-1:0] csr_dcsr     = dcsr_r    ;
-`ifdef E203_PC_SIZE_IS_16
-wire [`E203_XLEN-1:0] csr_dpc      = {{`E203_XLEN-`E203_PC_SIZE{1'b0}},dpc_r};
-`endif
-`ifdef E203_PC_SIZE_IS_24
-wire [`E203_XLEN-1:0] csr_dpc      = {{`E203_XLEN-`E203_PC_SIZE{1'b0}},dpc_r};
-`endif
-`ifdef E203_PC_SIZE_IS_32
 wire [`E203_XLEN-1:0] csr_dpc      = dpc_r     ;
-`endif
+
 wire [`E203_XLEN-1:0] csr_dscratch = dscratch_r;
 
 assign csr_dpc_r = dpc_r;
 
 /////////////////////////////////////////////////////////////////////
 //  Generate the Read path
-  //Currently we only support the M mode to simplify the implementation and 
-  //      reduce the gatecount because we are a privite core
-assign u_mode = 1'b0;
-assign s_mode = 1'b0;
-assign h_mode = 1'b0;
-assign m_mode = 1'b1;
+//Currently we only support the M mode to simplify the implementation and 
+//      reduce the gatecount because we are a privite core
+// assign u_mode = 1'b0;
+// assign s_mode = 1'b0;
+// assign h_mode = 1'b0;
+// assign m_mode = 1'b1;
 assign read_csr_dat = `E203_XLEN'b0 
-               //| ({`E203_XLEN{rd_ustatus  }} & csr_ustatus  )
-               | ({`E203_XLEN{rd_mstatus  }} & csr_mstatus  )
-               | ({`E203_XLEN{rd_mie      }} & csr_mie      )
-               | ({`E203_XLEN{rd_mtvec    }} & csr_mtvec    )
-               | ({`E203_XLEN{rd_mepc     }} & csr_mepc     )
-               | ({`E203_XLEN{rd_mscratch }} & csr_mscratch )
-               | ({`E203_XLEN{rd_mcause   }} & csr_mcause   )
-               | ({`E203_XLEN{rd_mbadaddr }} & csr_mbadaddr )
-               | ({`E203_XLEN{rd_mip      }} & csr_mip      )
-               | ({`E203_XLEN{rd_misa     }} & csr_misa      )
-               | ({`E203_XLEN{rd_mvendorid}} & csr_mvendorid)
-               | ({`E203_XLEN{rd_marchid  }} & csr_marchid  )
-               | ({`E203_XLEN{rd_mimpid   }} & csr_mimpid   )
-               | ({`E203_XLEN{rd_mhartid  }} & csr_mhartid  )
-               | ({`E203_XLEN{rd_mcycle   }} & csr_mcycle   )
-               | ({`E203_XLEN{rd_mcycleh  }} & csr_mcycleh  )
-               | ({`E203_XLEN{rd_minstret }} & csr_minstret )
-               | ({`E203_XLEN{rd_minstreth}} & csr_minstreth)
-               | ({`E203_XLEN{rd_counterstop}} & csr_counterstop)// Self-defined
-               | ({`E203_XLEN{rd_mcgstop}} & csr_mcgstop)// Self-defined
-               | ({`E203_XLEN{rd_itcmnohold}} & csr_itcmnohold)// Self-defined
-               | ({`E203_XLEN{rd_mdvnob2b}} & csr_mdvnob2b)// Self-defined
-               | ({`E203_XLEN{rd_dcsr     }} & csr_dcsr    )
-               | ({`E203_XLEN{rd_dpc      }} & csr_dpc     )
-               | ({`E203_XLEN{rd_dscratch }} & csr_dscratch)
-               ;
+							 //| ({`E203_XLEN{rd_ustatus  }} & csr_ustatus  )
+							 | ({`E203_XLEN{rd_mstatus  }} & csr_mstatus  )
+							 | ({`E203_XLEN{rd_mie      }} & csr_mie      )
+							 | ({`E203_XLEN{rd_mtvec    }} & csr_mtvec    )
+							 | ({`E203_XLEN{rd_mepc     }} & csr_mepc     )
+							 | ({`E203_XLEN{rd_mscratch }} & csr_mscratch )
+							 | ({`E203_XLEN{rd_mcause   }} & csr_mcause   )
+							 | ({`E203_XLEN{rd_mbadaddr }} & csr_mbadaddr )
+							 | ({`E203_XLEN{rd_mip      }} & csr_mip      )
+							 | ({`E203_XLEN{rd_misa     }} & csr_misa      )
+							 | ({`E203_XLEN{rd_mvendorid}} & csr_mvendorid)
+							 | ({`E203_XLEN{rd_marchid  }} & csr_marchid  )
+							 | ({`E203_XLEN{rd_mimpid   }} & csr_mimpid   )
+							 | ({`E203_XLEN{rd_mhartid  }} & csr_mhartid  )
+							 | ({`E203_XLEN{rd_mcycle   }} & csr_mcycle   )
+							 | ({`E203_XLEN{rd_mcycleh  }} & csr_mcycleh  )
+							 | ({`E203_XLEN{rd_minstret }} & csr_minstret )
+							 | ({`E203_XLEN{rd_minstreth}} & csr_minstreth)
+							 | ({`E203_XLEN{rd_counterstop}} & csr_counterstop)// Self-defined
+							 | ({`E203_XLEN{rd_mcgstop}} & csr_mcgstop)// Self-defined
+							 | ({`E203_XLEN{rd_itcmnohold}} & csr_itcmnohold)// Self-defined
+							 | ({`E203_XLEN{rd_mdvnob2b}} & csr_mdvnob2b)// Self-defined
+							 | ({`E203_XLEN{rd_dcsr     }} & csr_dcsr    )
+							 | ({`E203_XLEN{rd_dpc      }} & csr_dpc     )
+							 | ({`E203_XLEN{rd_dscratch }} & csr_dscratch)
+							 ;
 
 
 endmodule

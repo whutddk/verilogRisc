@@ -1,6 +1,29 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Company:   
 // Engineer: Ruige_Lee
+// Create Date: 2019-04-12 16:13:12
+// Last Modified by:   29505
+// Last Modified time: 2019-05-25 09:43:44
+// Email: 295054118@whut.edu.cn
+// page: https://whutddk.github.io/
+// Design Name: e203_cpu_top.v  
+// Module Name: e203_cpu_top
+// Project Name:   
+// Target Devices:   
+// Tool Versions:   
+// Description:   
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision:    -   
+// Additional Comments:  
+// 
+//
+//////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+// Company:   
+// Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
 // Last Modified time: 2019-04-21 16:57:55
@@ -113,12 +136,12 @@ module e203_cpu_top(
 	input  [32-1:0] dscratch_r,
 
 	// The debug mode control signals from Debug Module
-	input  dbg_mode,
-	input  dbg_halt_r,
-	input  dbg_step_r,
-	input  dbg_ebreakm_r,
-	input  dbg_stopcycle,
-	input  dbg_irq_a,
+	// input  dbg_mode,
+	// input  dbg_halt_r,
+	// input  dbg_step_r,
+	// input  dbg_ebreakm_r,
+	// input  dbg_stopcycle,
+	// input  dbg_irq_a,
 	// The interface to Debug Module: End
 
 
@@ -246,14 +269,14 @@ e203_cpu #(.MASTER(1)) u_e203_cpu(
 	.dpc_r           (dpc_r          ),
 	.dscratch_r      (dscratch_r     ),
 
-	.dbg_mode        (dbg_mode),
-	.dbg_halt_r      (dbg_halt_r),
-	.dbg_step_r      (dbg_step_r),
-	.dbg_ebreakm_r   (dbg_ebreakm_r),
-	.dbg_stopcycle   (dbg_stopcycle),
+	// .dbg_mode        (dbg_mode),
+	// .dbg_halt_r      (dbg_halt_r),
+	// .dbg_step_r      (dbg_step_r),
+	// .dbg_ebreakm_r   (dbg_ebreakm_r),
+	// .dbg_stopcycle   (dbg_stopcycle),
 
 	.core_mhartid    (core_mhartid),  
-	.dbg_irq_a       (dbg_irq_a),
+	// .dbg_irq_a       (dbg_irq_a),
 	.ext_irq_a       (ext_irq_a),
 	.sft_irq_a       (sft_irq_a),
 	.tmr_irq_a       (tmr_irq_a),

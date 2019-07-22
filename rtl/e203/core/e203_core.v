@@ -1,11 +1,34 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-05-24 21:39:36
+// Last Modified by:   29505
+// Last Modified time: 2019-05-25 09:45:23
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_core.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 // Company:   
 // Engineer: Ruige_Lee
-// Create Date: 2019-02-17 17:25:12
+// Create Date: 2019-04-23 19:53:51
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-23 14:29:13
+// Last Modified time: 2019-05-07 12:02:14
 // Email: 295054118@whut.edu.cn
-// Design Name:   
+// page: https://whutddk.github.io/
+// Design Name: e203_core.v  
 // Module Name: e203_core
 // Project Name:   
 // Target Devices:   
@@ -18,29 +41,8 @@
 // Revision:    -   
 // Additional Comments:  
 // 
+//
 //////////////////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////////////////////////////////////////////////////
-// Company:    
-// Engineer: 29505
-// Create Date: 2019-01-28 20:59:01
-// Last Modified by:   29505
-// Last Modified time: 2019-02-01 18:08:08
-// Email: 295054118@whut.edu.cn
-// Design Name: e203_core.v  
-// Module Name: e203_core
-// Project Name:    
-// Target Devices:    
-// Tool Versions:    
-// Description:    
-// 
-// Dependencies:    
-// 
-// Revision:   
-// Revision  
-// Additional Comments:   
-// 
-////////////////////////////////////////////////////////////////////////////////// 
 
 /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
@@ -73,14 +75,6 @@
 
 module e203_core(
 
-`ifdef E203_HAS_CSR_EAI//{
-	output         eai_csr_valid,
-	input          eai_csr_ready,
-	output  [31:0] eai_csr_addr,
-	output         eai_csr_wr,
-	output  [31:0] eai_csr_wdata,
-	input   [31:0] eai_csr_rdata,
-`endif//}
 	output core_wfi,
 	output tm_stop,
 	output core_cgstop,
@@ -89,7 +83,7 @@ module e203_core(
 	input  [`E203_PC_SIZE-1:0] pc_rtvec,
 
 	input  [`E203_HART_ID_W-1:0] core_mhartid,
-	input  dbg_irq_r,
+	// input  dbg_irq_r,
 	input  [`E203_LIRQ_NUM-1:0] lcl_irq_r,
 	input  [`E203_EVT_NUM-1:0] evt_r,
 	input  ext_irq_r,
@@ -113,11 +107,11 @@ module e203_core(
 	output  [3-1:0] cmt_dcause,
 	output  cmt_dcause_ena,
 
-	input  dbg_mode,
-	input  dbg_halt_r,
-	input  dbg_step_r,
-	input  dbg_ebreakm_r,
-	input  dbg_stopcycle,
+	// input  dbg_mode,
+	// input  dbg_halt_r,
+	// input  dbg_step_r,
+	// input  dbg_ebreakm_r,
+	// input  dbg_stopcycle,
 
 	input [`E203_ADDR_SIZE-1:0]    clint_region_indic,
 	input                          clint_icb_enable,
@@ -160,32 +154,6 @@ module e203_core(
 	input  [`E203_XLEN-1:0]        plic_icb_rsp_rdata,
 
 
-
-
-// input [`E203_ADDR_SIZE-1:0] dtcm_region_indic,
-// 	//////////////////////////////////////////////////////////////
-// 	//////////////////////////////////////////////////////////////
-// 	// The ICB Interface to DTCM
-// 	//
-// 	//    * Bus cmd channel
-// output                         lsu2dtcm_icb_cmd_valid,
-// input                          lsu2dtcm_icb_cmd_ready,
-// output [`E203_DTCM_ADDR_WIDTH-1:0]   lsu2dtcm_icb_cmd_addr, 
-// output                         lsu2dtcm_icb_cmd_read, 
-// output [`E203_XLEN-1:0]        lsu2dtcm_icb_cmd_wdata,
-// output [`E203_XLEN/8-1:0]      lsu2dtcm_icb_cmd_wmask,
-// output                         lsu2dtcm_icb_cmd_lock,
-// output                         lsu2dtcm_icb_cmd_excl,
-// output [1:0]                   lsu2dtcm_icb_cmd_size,
-// //
-// //    * Bus RSP channel
-// input                          lsu2dtcm_icb_rsp_valid,
-// output                         lsu2dtcm_icb_rsp_ready,
-// input                          lsu2dtcm_icb_rsp_err  ,
-// input                          lsu2dtcm_icb_rsp_excl_ok,
-// input  [`E203_XLEN-1:0]        lsu2dtcm_icb_rsp_rdata,
-
-
 	output exu_active,
 // output ifu_active,
 	output lsu_active,
@@ -197,7 +165,7 @@ module e203_core(
 	input  clk_core_biu,
 	input  clk,
 
-	input test_mode,
+	// input test_mode,
 	input  rst_n
 	);
 
@@ -319,20 +287,11 @@ e203_ifu u_e203_ifu(
 
 e203_exu u_e203_exu(
 
-`ifdef E203_HAS_CSR_EAI//{
-	.eai_csr_valid (eai_csr_valid),
-	.eai_csr_ready (eai_csr_ready),
-	.eai_csr_addr  (eai_csr_addr ),
-	.eai_csr_wr    (eai_csr_wr   ),
-	.eai_csr_wdata (eai_csr_wdata),
-	.eai_csr_rdata (eai_csr_rdata),
-`endif//}
-
 
 	.excp_active            (excp_active),
 	.commit_mret            (commit_mret),
 	.commit_trap            (commit_trap),
-	.test_mode              (test_mode),
+	// .test_mode              (test_mode),
 	.core_wfi               (core_wfi),
 	.tm_stop                (tm_stop),
 	.itcm_nohold            (),
@@ -365,7 +324,7 @@ e203_exu u_e203_exu(
 	.dpc_r           (dpc_r          ),
 	.dscratch_r      (dscratch_r     ),
 
-	.dbg_mode               (dbg_mode  ),
+	// .dbg_mode               (dbg_mode  ),
 	.dbg_halt_r             (dbg_halt_r),
 	.dbg_step_r             (dbg_step_r),
 	.dbg_ebreakm_r          (dbg_ebreakm_r),
@@ -376,8 +335,8 @@ e203_exu u_e203_exu(
 	.i_ir                   (ifu_o_ir            ),
 	.i_pc                   (ifu_o_pc            ),
 	.i_pc_vld               (ifu_o_pc_vld        ),
-	.i_misalgn              (1'b0), 
-	.i_buserr               (1'b0), 
+	// .i_misalgn              (1'b0), 
+	// .i_buserr               (1'b0), 
 	.i_rs1idx               (ifu_o_rs1idx        ),
 	.i_rs2idx               (ifu_o_rs2idx        ),
 	.i_prdt_taken           (ifu_o_prdt_taken    ),
@@ -386,7 +345,7 @@ e203_exu u_e203_exu(
 	.wfi_halt_ifu_req       (wfi_halt_ifu_req),
 	.wfi_halt_ifu_ack       (wfi_halt_ifu_ack),
 
-	.pipe_flush_ack         (1'b1),
+	// .pipe_flush_ack         (1'b1),
 	.pipe_flush_req         (pipe_flush_req      ),
 	.pipe_flush_add_op1     (pipe_flush_add_op1  ),  
 	.pipe_flush_add_op2     (pipe_flush_add_op2  ),  
@@ -490,27 +449,6 @@ e203_lsu u_e203_lsu(
 	.agu_icb_rsp_err     (agu_icb_rsp_err   ),
 	.agu_icb_rsp_excl_ok (agu_icb_rsp_excl_ok),
 	.agu_icb_rsp_rdata   (agu_icb_rsp_rdata),
-
-
-
-// .dtcm_region_indic   (dtcm_region_indic),
-
-// .dtcm_icb_cmd_valid  (lsu2dtcm_icb_cmd_valid),
-// .dtcm_icb_cmd_ready  (lsu2dtcm_icb_cmd_ready),
-// .dtcm_icb_cmd_addr   (lsu2dtcm_icb_cmd_addr ),
-// .dtcm_icb_cmd_read   (lsu2dtcm_icb_cmd_read ),
-// .dtcm_icb_cmd_wdata  (lsu2dtcm_icb_cmd_wdata),
-// .dtcm_icb_cmd_wmask  (lsu2dtcm_icb_cmd_wmask),
-// .dtcm_icb_cmd_lock   (lsu2dtcm_icb_cmd_lock ),
-// .dtcm_icb_cmd_excl   (lsu2dtcm_icb_cmd_excl ),
-// .dtcm_icb_cmd_size   (lsu2dtcm_icb_cmd_size ),
- 
-// .dtcm_icb_rsp_valid  (lsu2dtcm_icb_rsp_valid),
-// .dtcm_icb_rsp_ready  (lsu2dtcm_icb_rsp_ready),
-// .dtcm_icb_rsp_err    (lsu2dtcm_icb_rsp_err  ),
-// .dtcm_icb_rsp_excl_ok(lsu2dtcm_icb_rsp_excl_ok  ),
-// .dtcm_icb_rsp_rdata  (lsu2dtcm_icb_rsp_rdata),
-
 
 	.biu_icb_cmd_valid  (lsu2biu_icb_cmd_valid),
 	.biu_icb_cmd_ready  (lsu2biu_icb_cmd_ready),

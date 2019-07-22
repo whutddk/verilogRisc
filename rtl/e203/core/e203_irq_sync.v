@@ -1,3 +1,25 @@
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-02-03 20:22:49
+// Last Modified by:   29505
+// Last Modified time: 2019-05-25 09:44:59
+// Email: 295054118@whut.edu.cn
+// Design Name: e203_irq_sync.v  
+// Module Name:  
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -35,26 +57,26 @@ module e203_irq_sync #(
   input  ext_irq_a,
   input  sft_irq_a,
   input  tmr_irq_a,
-  input  dbg_irq_a,
+  // input  dbg_irq_a,
 
   output ext_irq_r,
   output sft_irq_r,
   output tmr_irq_r,
-  output dbg_irq_r 
+  // output dbg_irq_r 
 );
 generate 
   if(MASTER == 1) begin:master_gen
       `ifndef E203_HAS_LOCKSTEP//{
       `ifdef E203_IRQ_NEED_SYNC//{
-      sirv_gnrl_sync # (
-        .DP(`E203_ASYNC_FF_LEVELS),
-        .DW(1)
-      ) u_dbg_irq_sync(
-          .din_a    (dbg_irq_a),
-          .dout     (dbg_irq_r),
-          .clk      (clk  ),
-          .rst_n    (rst_n) 
-      );
+      // sirv_gnrl_sync # (
+      //   .DP(`E203_ASYNC_FF_LEVELS),
+      //   .DW(1)
+      // ) u_dbg_irq_sync(
+      //     .din_a    (dbg_irq_a),
+      //     .dout     (dbg_irq_r),
+      //     .clk      (clk  ),
+      //     .rst_n    (rst_n) 
+      // );
       
       
       sirv_gnrl_sync # (
@@ -101,7 +123,7 @@ generate
      assign ext_irq_r = ext_irq_a;
      assign sft_irq_r = sft_irq_a;
      assign tmr_irq_r = tmr_irq_a;
-     assign dbg_irq_r = dbg_irq_a;
+     // assign dbg_irq_r = dbg_irq_a;
    
   end
 endgenerate

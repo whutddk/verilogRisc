@@ -1,10 +1,11 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Company:   
 // Engineer: Ruige_Lee
-// Create Date: 2019-02-17 17:25:12
+// Create Date: 2019-04-15 20:39:35
 // Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-04-21 19:07:03
+// Last Modified time: 2019-05-07 16:00:45
 // Email: 295054118@whut.edu.cn
+// page: https://whutddk.github.io/
 // Design Name:   
 // Module Name: e203_ifu_minidec
 // Project Name:   
@@ -18,7 +19,9 @@
 // Revision:    -   
 // Additional Comments:  
 // 
+//
 //////////////////////////////////////////////////////////////////////////////////
+
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
                                                                          
@@ -85,13 +88,13 @@ module e203_ifu_minidec(
   .i_prdt_taken(1'b0), 
   .i_muldiv_b2b(1'b0), 
 
-  .i_misalgn (1'b0),
-  .i_buserr  (1'b0),
+  // .i_misalgn (1'b0),
+  // .i_buserr  (1'b0),
 
-  .dbg_mode  (1'b0),
+  // .dbg_mode  (1'b0),
 
-  .dec_misalgn(),
-  .dec_buserr(),
+  // .dec_misalgn(),
+  // .dec_buserr(),
   .dec_ilegl(),
 
   .dec_rs1x0(),

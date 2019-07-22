@@ -1,6 +1,29 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Company:   
 // Engineer: Ruige_Lee
+// Create Date: 2019-04-15 20:39:35
+// Last Modified by:   29505
+// Last Modified time: 2019-05-25 09:23:16
+// Email: 295054118@whut.edu.cn
+// page: https://whutddk.github.io/
+// Design Name: e203_defines.v  
+// Module Name: e203_defines
+// Project Name:   
+// Target Devices:   
+// Tool Versions:   
+// Description:   
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision:    -   
+// Additional Comments:  
+// 
+//
+//////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+// Company:   
+// Engineer: Ruige_Lee
 // Create Date: 2019-02-17 17:25:12
 // Last Modified by:   Ruige_Lee
 // Last Modified time: 2019-04-10 17:59:46
@@ -763,7 +786,7 @@
   //`endif//}
 
   `ifdef E203_CFG_SUPPORT_AMO//{
-     `define E203_SUPPORT_AMO
+     // `define E203_SUPPORT_AMO
   `endif//}
   // No unalign
   //`ifdef E203_CFG_SUPPORT_UNALGNLDST//{
@@ -824,4 +847,4 @@
     `define E203_BIU_RSP_DP        0
   `endif
 
-  `define E203_HAS_CSR_EAI  1
+  `define E203_HAS_CSR_EAI  0
