@@ -3,7 +3,7 @@
 // Engineer: 29505
 // Create Date: 2019-07-26 10:13:53
 // Last Modified by:   29505
-// Last Modified time: 2019-07-26 14:58:24
+// Last Modified time: 2019-07-26 16:12:06
 // Email: 295054118@whut.edu.cn
 // page:  
 // Design Name: system.v  
@@ -1014,7 +1014,7 @@ module system
   assign pmu_padrst = dut_io_pads_aon_pmu_padrst_o_oval;		
 
   // model select
-  assign dut_io_pads_bootrom_n_i_ival  = 1'b1;   //
+  assign dut_io_pads_bootrom_n_i_ival  = 1'b0;   //
   assign dut_io_pads_dbgmode0_n_i_ival = 1'b1;
   assign dut_io_pads_dbgmode1_n_i_ival = 1'b1;
   assign dut_io_pads_dbgmode2_n_i_ival = 1'b1;

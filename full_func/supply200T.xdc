@@ -21,6 +21,8 @@ create_clock -period 30517.578 -name rtc_clk_pin -waveform {0.000 15258.789} -ad
 # MCU JTAG TCK Clock signal 10Mhz
 set_property -dict {PACKAGE_PIN W22 IOSTANDARD LVCMOS33} [get_ports MCU_TCK];
 create_clock -period 100.000 -name TCK_clk_pin -waveform {0.000 50.000} -add [get_ports MCU_TCK];
+
+set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets dut_io_pads_jtag_TCK_i_ival]
 set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets IOBUF_jtag_TCK/O]
 
 
