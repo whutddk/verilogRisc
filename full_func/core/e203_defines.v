@@ -173,26 +173,26 @@
   // The ITCM size is 2^addr_width bytes, and ITCM is 64bits wide (8 bytes)
   //  so the DP is 2^addr_wdith/8
   //  so the AW is addr_wdith - 3
-  `define E203_ITCM_RAM_DP      (1<<(`E203_CFG_ITCM_ADDR_WIDTH-3)) 
-  `define E203_ITCM_RAM_AW          (`E203_CFG_ITCM_ADDR_WIDTH-3) 
+  `define E203_ITCM_RAM_DP      (1<<(`E203_CFG_ITCM_ADDR_WIDTH-2)) 
+  `define E203_ITCM_RAM_AW          (`E203_CFG_ITCM_ADDR_WIDTH-2) 
   `define E203_ITCM_BASE_REGION  `E203_ADDR_SIZE-1:`E203_ITCM_ADDR_WIDTH
   
-  `define E203_CFG_ITCM_DATA_WIDTH_IS_64
-  `ifdef E203_CFG_ITCM_DATA_WIDTH_IS_64
-    `define E203_ITCM_DATA_WIDTH_IS_64
-    `define E203_ITCM_DATA_WIDTH  64
-    `define E203_ITCM_WMSK_WIDTH  8
-  
-    `define E203_ITCM_RAM_ECC_DW  8
-    `define E203_ITCM_RAM_ECC_MW  1
+  `define E203_CFG_ITCM_DATA_WIDTH_IS_32
+  `ifdef E203_CFG_ITCM_DATA_WIDTH_IS_32
+    `define E203_ITCM_DATA_WIDTH_IS_32
+    `define E203_ITCM_DATA_WIDTH  32
+    `define E203_ITCM_WMSK_WIDTH  4
+
   `endif
+
+
   `ifndef E203_HAS_ECC //{
     `define E203_ITCM_RAM_DW      `E203_ITCM_DATA_WIDTH
     `define E203_ITCM_RAM_MW      `E203_ITCM_WMSK_WIDTH
     `define E203_ITCM_OUTS_NUM 1 // If no-ECC, ITCM is 1 cycle latency then only allow 1 oustanding for external agent
   `endif//}
 
-  `define E203_HAS_ITCM_EXTITF
+  //`define E203_HAS_ITCM_EXTITF
 `endif//}
 
 /////////////////////////////////////////////////////////////////////////////

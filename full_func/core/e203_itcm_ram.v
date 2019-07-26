@@ -26,7 +26,6 @@
 
 `include "e203_defines.v"
 
-  `ifdef E203_HAS_ITCM //{
 module e203_itcm_ram(
 
   input                              sd,
@@ -46,9 +45,9 @@ module e203_itcm_ram(
 
  
   sirv_gnrl_ram #(
-      `ifndef E203_HAS_ECC//{
+
     .FORCE_X2ZERO(0),
-      `endif//}
+
     .DP(`E203_ITCM_RAM_DP),
     .DW(`E203_ITCM_RAM_DW),
     .MW(`E203_ITCM_RAM_MW),
@@ -69,4 +68,4 @@ module e203_itcm_ram(
   );
                                                       
 endmodule
-  `endif//}
+
