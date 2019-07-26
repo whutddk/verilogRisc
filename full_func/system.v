@@ -1,11 +1,34 @@
 //////////////////////////////////////////////////////////////////////////////////
+// Company:    
+// Engineer: 29505
+// Create Date: 2019-07-26 10:13:53
+// Last Modified by:   29505
+// Last Modified time: 2019-07-26 14:58:24
+// Email: 295054118@whut.edu.cn
+// page:  
+// Design Name: system.v  
+// Module Name: system
+// Project Name:  
+// Target Devices:  
+// Tool Versions:  
+// Description:  
+// 
+// Dependencies:   
+// 
+// Revision:  
+// Revision  
+// Additional Comments:   
+// 
+// 
+//////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
 // Company:   
 // Engineer: Ruige_Lee
 // Create Date: 2019-01-24 08:57:00
 // Last Modified by:   Ruige_Lee
 // Last Modified time: 2019-01-24 08:57:30
 // Email: 295054118@whut.edu.cn
-// Design Name:   
+// Design Name: system.v  
 // Module Name: system
 // Project Name:   
 // Target Devices:   
@@ -23,17 +46,16 @@
 
 module system
 (
-  input wire CLK100MHZ,//GCLK-W19
-  input wire CLK32768KHZ,//RTC_CLK-Y18
+  input wire i_sysclk,//GCLK-W19
+  input wire i_rtcclk,//RTC_CLK-Y18
 
-  input wire fpga_rst,//FPGA_RESET-T6
   input wire mcu_rst,//MCU_RESET-P20
 
 
   // Dedicated QSPI interface
-  output wire qspi_cs,
-  output wire qspi_sck,
-  inout wire [3:0] qspi_dq,
+  output wire QSPI_CS,
+  output wire QSPI_SCK,
+  inout wire [3:0] QSPI_DQ,
                            
                            
                            
@@ -43,24 +65,21 @@ module system
 
 
   // JD (used for JTAG connection)
-  inout wire mcu_TDO,//MCU_TDO-N17
-  inout wire mcu_TCK,//MCU_TCK-P15 
-  inout wire mcu_TDI,//MCU_TDI-T18
-  inout wire mcu_TMS,//MCU_TMS-P17
+  inout wire MCU_TDO,//MCU_TDO-N17
+  inout wire MCU_TCK,//MCU_TCK-P15 
+  inout wire MCU_TDI,//MCU_TDI-T18
+  inout wire MCU_TMS//MCU_TMS-P17
 
-  //pmu_wakeup
 
-  inout wire pmu_paden,  //PMU_VDDPADEN-U15
-  inout wire pmu_padrst, //PMU_VADDPARST_V15
-  inout wire mcu_wakeup  //MCU_WAKE-N15
 );
+
+  wire pmu_paden;
+  wire pmu_padrst;
 
   wire clk_out1;
   wire mmcm_locked;
 
   wire reset_periph;
-
-  wire ck_rst;
 
   // All wires connected to the chip top
   wire dut_clock;
@@ -311,21 +330,19 @@ module system
 
   mmcm ip_mmcm
   (
-    .resetn(ck_rst),
-    .clk_in1(CLK100MHZ),
+    .resetn(mcu_rst),
+    .clk_in1(i_sysclk),
     
-    .clk_out2(clk_16M), // 16 MHz, this clock we set to 16MHz 
+    .clk_out1(clk_16M), // 16 MHz, this clock we set to 16MHz 
     .locked(mmcm_locked)
   );
-
-  assign ck_rst = fpga_rst & mcu_rst;
 
   
 
   reset_sys ip_reset_sys
   (
     .slowest_sync_clk(clk_16M),
-    .ext_reset_in(ck_rst), // Active-low
+    .ext_reset_in(mcu_rst), // Active-low
     .aux_reset_in(1'b1),
     .mb_debug_sys_rst(1'b0),
     .dcm_locked(mmcm_locked),
@@ -344,12 +361,12 @@ module system
 
   PULLUP qspi_pullup[3:0]
   (
-    .O(qspi_dq)
+    .O(QSPI_DQ)
   );
 
   IOBUF qspi_iobuf[3:0]
   (
-    .IO(qspi_dq),
+    .IO(QSPI_DQ),
     .O(qspi_ui_dq_i),
     .I(qspi_ui_dq_o),
     .T(~qspi_ui_dq_oe)
@@ -918,12 +935,12 @@ module system
   IOBUF_jtag_TCK
   (
     .O(iobuf_jtag_TCK_o),
-    .IO(mcu_TCK),
+    .IO(MCU_TCK),
     .I(1'b0),
     .T(1'b1)
   );
   assign dut_io_pads_jtag_TCK_i_ival = iobuf_jtag_TCK_o ;
-  PULLUP pullup_TCK (.O(mcu_TCK));
+  PULLUP pullup_TCK (.O(MCU_TCK));
 
   wire iobuf_jtag_TMS_o;
   IOBUF
@@ -936,12 +953,12 @@ module system
   IOBUF_jtag_TMS
   (
     .O(iobuf_jtag_TMS_o),
-    .IO(mcu_TMS),
+    .IO(MCU_TMS),
     .I(1'b0),
     .T(1'b1)
   );
   assign dut_io_pads_jtag_TMS_i_ival = iobuf_jtag_TMS_o;
-  PULLUP pullup_TMS (.O(mcu_TMS));
+  PULLUP pullup_TMS (.O(MCU_TMS));
 
   wire iobuf_jtag_TDI_o;
   IOBUF
@@ -954,12 +971,12 @@ module system
   IOBUF_jtag_TDI
   (
     .O(iobuf_jtag_TDI_o),
-    .IO(mcu_TDI),
+    .IO(MCU_TDI),
     .I(1'b0),
     .T(1'b1)
   );
   assign dut_io_pads_jtag_TDI_i_ival = iobuf_jtag_TDI_o;
-  PULLUP pullup_TDI (.O(mcu_TDI));
+  PULLUP pullup_TDI (.O(MCU_TDI));
 
   wire iobuf_jtag_TDO_o;
   IOBUF
@@ -972,7 +989,7 @@ module system
   IOBUF_jtag_TDO
   (
     .O(iobuf_jtag_TDO_o),
-    .IO(mcu_TDO),
+    .IO(MCU_TDO),
     .I(dut_io_pads_jtag_TDO_o_oval),
     .T(~dut_io_pads_jtag_TDO_o_oe)
   );
@@ -1008,7 +1025,7 @@ module system
     .hfextclk(clk_16M),
     .hfxoscen(),
 
-    .lfextclk(CLK32768KHZ), 
+    .lfextclk(i_rtcclk), 
     .lfxoscen(),
 
        // Note: this is the real SoC top AON domain slow clock
@@ -1236,7 +1253,7 @@ module system
     .io_pads_qspi_dq_3_o_ds(dut_io_pads_qspi_dq_3_o_ds),
     .io_pads_qspi_cs_0_o_oval(dut_io_pads_qspi_cs_0_o_oval),
        // Note: this is the real SoC top level reset signal
-    .io_pads_aon_erst_n_i_ival(ck_rst),
+    .io_pads_aon_erst_n_i_ival(mcu_rst),
     .io_pads_aon_pmu_dwakeup_n_i_ival(dut_io_pads_aon_pmu_dwakeup_n_i_ival),
     .io_pads_aon_pmu_vddpaden_o_oval(dut_io_pads_aon_pmu_vddpaden_o_oval),
 
@@ -1251,28 +1268,14 @@ module system
 
   // Assign reasonable values to otherwise unconnected inputs to chip top
 
-  wire iobuf_dwakeup_o;
-  IOBUF
-  #(
-    .DRIVE(12),
-    .IBUF_LOW_PWR("TRUE"),
-    .IOSTANDARD("DEFAULT"),
-    .SLEW("SLOW")
-  )
-  IOBUF_dwakeup_n
-  (
-    .O(iobuf_dwakeup_o),
-    .IO(mcu_wakeup),
-    .I(1'b1),
-    .T(1'b1)
-  );
-  assign dut_io_pads_aon_pmu_dwakeup_n_i_ival = (~iobuf_dwakeup_o);
+
+  assign dut_io_pads_aon_pmu_dwakeup_n_i_ival = (1'b0);
 
   
 
   assign dut_io_pads_aon_pmu_vddpaden_i_ival = 1'b1;
 
-  assign qspi_cs = dut_io_pads_qspi_cs_0_o_oval;
+  assign QSPI_CS = dut_io_pads_qspi_cs_0_o_oval;
   assign qspi_ui_dq_o = {
     dut_io_pads_qspi_dq_3_o_oval,
     dut_io_pads_qspi_dq_2_o_oval,
@@ -1289,7 +1292,7 @@ module system
   assign dut_io_pads_qspi_dq_1_i_ival = qspi_ui_dq_i[1];
   assign dut_io_pads_qspi_dq_2_i_ival = qspi_ui_dq_i[2];
   assign dut_io_pads_qspi_dq_3_i_ival = qspi_ui_dq_i[3];
-  assign qspi_sck = dut_io_pads_qspi_sck_o_oval;
+  assign QSPI_SCK = dut_io_pads_qspi_sck_o_oval;
 
 endmodule
 
