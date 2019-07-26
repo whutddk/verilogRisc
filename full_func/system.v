@@ -1,47 +1,4 @@
-//////////////////////////////////////////////////////////////////////////////////
-// Company:    
-// Engineer: 29505
-// Create Date: 2019-07-26 10:13:53
-// Last Modified by:   29505
-// Last Modified time: 2019-07-26 16:12:06
-// Email: 295054118@whut.edu.cn
-// page:  
-// Design Name: system.v  
-// Module Name: system
-// Project Name:  
-// Target Devices:  
-// Tool Versions:  
-// Description:  
-// 
-// Dependencies:   
-// 
-// Revision:  
-// Revision  
-// Additional Comments:   
-// 
-// 
-//////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////
-// Company:   
-// Engineer: Ruige_Lee
-// Create Date: 2019-01-24 08:57:00
-// Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-01-24 08:57:30
-// Email: 295054118@whut.edu.cn
-// Design Name: system.v  
-// Module Name: system
-// Project Name:   
-// Target Devices:   
-// Tool Versions:   
-// Description:   
-// 
-// Dependencies:   
-// 
-// Revision:  
-// Revision 0.01 - File Created
-// Additional Comments:  
-// 
-//////////////////////////////////////////////////////////////////////////////////
+
 `timescale 1ns/1ps
 
 module system

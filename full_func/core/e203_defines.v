@@ -719,9 +719,9 @@
     `define E203_LSU_OUTS_NUM_IS_1
   //`endif//}
 
-  `ifdef E203_CFG_SUPPORT_AMO//{
-     `define E203_SUPPORT_AMO
-  `endif//}
+  // `ifdef E203_CFG_SUPPORT_AMO//{
+  //    `define E203_SUPPORT_AMO
+  // `endif//}
   // No unalign
   //`ifdef E203_CFG_SUPPORT_UNALGNLDST//{
   //   `define E203_SUPPORT_UNALGNLDST
