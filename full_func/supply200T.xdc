@@ -30,102 +30,99 @@ set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets IOBUF_jtag_TCK/O]
 set_clock_groups -name async_sys_rtc_jtag -asynchronous -group sys_clk_pin -group rtc_clk_pin -group TCK_clk_pin
 
 # SRAM0
-set_property -dict {PACKAGE_PIN H22 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[0]}]
-set_property -dict {PACKAGE_PIN H19 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[1]}]
-set_property -dict {PACKAGE_PIN G20 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[2]}]
-set_property -dict {PACKAGE_PIN J19 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[3]}]
-set_property -dict {PACKAGE_PIN H20 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[4]}]
-set_property -dict {PACKAGE_PIN H13 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[5]}]
-set_property -dict {PACKAGE_PIN H15 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[6]}]
-set_property -dict {PACKAGE_PIN J14 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[7]}]
-set_property -dict {PACKAGE_PIN L20 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[8]}]
-set_property -dict {PACKAGE_PIN M20 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[9]}]
-set_property -dict {PACKAGE_PIN M21 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[10]}]
-set_property -dict {PACKAGE_PIN N22 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[11]}]
-set_property -dict {PACKAGE_PIN L21 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[12]}]
-set_property -dict {PACKAGE_PIN M22 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[13]}]
-set_property -dict {PACKAGE_PIN L14 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[14]}]
-set_property -dict {PACKAGE_PIN M13 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[15]}]
-set_property -dict {PACKAGE_PIN L15 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[16]}]
-set_property -dict {PACKAGE_PIN J16 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[17]}]
-set_property -dict {PACKAGE_PIN L19 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[18]}]
-set_property -dict {PACKAGE_PIN K22 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[19]}]
-set_property -dict {PACKAGE_PIN N18 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[20]}]
-set_property -dict {PACKAGE_PIN L13 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[21]}]
-
-set_property -dict {PACKAGE_PIN G16 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[0]}]
-set_property -dict {PACKAGE_PIN G18 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[1]}]
-set_property -dict {PACKAGE_PIN G15 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[2]}]
-set_property -dict {PACKAGE_PIN H14 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[3]}]
-set_property -dict {PACKAGE_PIN M17 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[4]}]
-set_property -dict {PACKAGE_PIN M18 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[5]}]
-set_property -dict {PACKAGE_PIN M16 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[6]}]
-set_property -dict {PACKAGE_PIN N19 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[7]}]
-set_property -dict {PACKAGE_PIN J17 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[8]}]
-set_property -dict {PACKAGE_PIN K18 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[9]}]
-set_property -dict {PACKAGE_PIN K17 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[10]}]
-set_property -dict {PACKAGE_PIN K19 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[11]}]
-set_property -dict {PACKAGE_PIN K16 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[12]}]
-set_property -dict {PACKAGE_PIN K13 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[13]}]
-set_property -dict {PACKAGE_PIN K14 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[14]}]
-set_property -dict {PACKAGE_PIN K21 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[15]}]
-
-set_property -dict {PACKAGE_PIN G17 IOSTANDARD LVCMOS33} [get_ports SRAM0_CEn]
-set_property -dict {PACKAGE_PIN J20 IOSTANDARD LVCMOS33} [get_ports SRAM0_OEn]
-set_property -dict {PACKAGE_PIN N20 IOSTANDARD LVCMOS33} [get_ports SRAM0_WEn]
-
-set_property -dict {PACKAGE_PIN J21 IOSTANDARD LVCMOS33} [get_ports SRAM0_UBn]
-set_property -dict {PACKAGE_PIN J22 IOSTANDARD LVCMOS33} [get_ports SRAM0_LBn]
+# set_property -dict {PACKAGE_PIN H22 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[0]}]
+# set_property -dict {PACKAGE_PIN H19 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[1]}]
+# set_property -dict {PACKAGE_PIN G20 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[2]}]
+# set_property -dict {PACKAGE_PIN J19 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[3]}]
+# set_property -dict {PACKAGE_PIN H20 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[4]}]
+# set_property -dict {PACKAGE_PIN H13 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[5]}]
+# set_property -dict {PACKAGE_PIN H15 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[6]}]
+# set_property -dict {PACKAGE_PIN J14 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[7]}]
+# set_property -dict {PACKAGE_PIN L20 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[8]}]
+# set_property -dict {PACKAGE_PIN M20 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[9]}]
+# set_property -dict {PACKAGE_PIN M21 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[10]}]
+# set_property -dict {PACKAGE_PIN N22 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[11]}]
+# set_property -dict {PACKAGE_PIN L21 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[12]}]
+# set_property -dict {PACKAGE_PIN M22 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[13]}]
+# set_property -dict {PACKAGE_PIN L14 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[14]}]
+# set_property -dict {PACKAGE_PIN M13 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[15]}]
+# set_property -dict {PACKAGE_PIN L15 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[16]}]
+# set_property -dict {PACKAGE_PIN J16 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[17]}]
+# set_property -dict {PACKAGE_PIN L19 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[18]}]
+# set_property -dict {PACKAGE_PIN K22 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[19]}]
+# set_property -dict {PACKAGE_PIN N18 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[20]}]
+# set_property -dict {PACKAGE_PIN L13 IOSTANDARD LVCMOS33} [get_ports {SRAM0_A[21]}]
+# 
+# set_property -dict {PACKAGE_PIN G16 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[0]}]
+# set_property -dict {PACKAGE_PIN G18 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[1]}]
+# set_property -dict {PACKAGE_PIN G15 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[2]}]
+# set_property -dict {PACKAGE_PIN H14 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[3]}]
+# set_property -dict {PACKAGE_PIN M17 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[4]}]
+# set_property -dict {PACKAGE_PIN M18 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[5]}]
+# set_property -dict {PACKAGE_PIN M16 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[6]}]
+# set_property -dict {PACKAGE_PIN N19 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[7]}]
+# set_property -dict {PACKAGE_PIN J17 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[8]}]
+# set_property -dict {PACKAGE_PIN K18 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[9]}]
+# set_property -dict {PACKAGE_PIN K17 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[10]}]
+# set_property -dict {PACKAGE_PIN K19 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[11]}]
+# set_property -dict {PACKAGE_PIN K16 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[12]}]
+# set_property -dict {PACKAGE_PIN K13 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[13]}]
+# set_property -dict {PACKAGE_PIN K14 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[14]}]
+# set_property -dict {PACKAGE_PIN K21 IOSTANDARD LVCMOS33} [get_ports {SRAM0_DQ[15]}]
+# 
+# set_property -dict {PACKAGE_PIN G17 IOSTANDARD LVCMOS33} [get_ports SRAM0_CEn]
+# set_property -dict {PACKAGE_PIN J20 IOSTANDARD LVCMOS33} [get_ports SRAM0_OEn]
+# set_property -dict {PACKAGE_PIN N20 IOSTANDARD LVCMOS33} [get_ports SRAM0_WEn]
+# 
+# set_property -dict {PACKAGE_PIN J21 IOSTANDARD LVCMOS33} [get_ports SRAM0_UBn]
+# set_property -dict {PACKAGE_PIN J22 IOSTANDARD LVCMOS33} [get_ports SRAM0_LBn]
 
 
 
 # SRAM1
-# set_property -dict {PACKAGE_PIN C15 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[0]}];
-# set_property -dict {PACKAGE_PIN C14 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[1]}];
-# set_property -dict {PACKAGE_PIN A13 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[2]}];
-# set_property -dict {PACKAGE_PIN B15 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[3]}];
-# set_property -dict {PACKAGE_PIN A14 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[4]}];
-# set_property -dict {PACKAGE_PIN E17 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[5]}];
-# set_property -dict {PACKAGE_PIN F16 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[6]}];
-# set_property -dict {PACKAGE_PIN D17 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[7]}];
-# set_property -dict {PACKAGE_PIN C20 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[8]}];
-# set_property -dict {PACKAGE_PIN D20 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[9]}];
-# set_property -dict {PACKAGE_PIN D22 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[10]}];
-# set_property -dict {PACKAGE_PIN E22 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[11]}];
-# set_property -dict {PACKAGE_PIN C22 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[12]}];
-# set_property -dict {PACKAGE_PIN D21 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[13]}];
-# set_property -dict {PACKAGE_PIN A19 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[14]}];
-# set_property -dict {PACKAGE_PIN A20 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[15]}];
-# set_property -dict {PACKAGE_PIN C18 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[16]}];
-# set_property -dict {PACKAGE_PIN A18 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[17]}];
-# set_property -dict {PACKAGE_PIN C19 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[18]}];
-# set_property -dict {PACKAGE_PIN B22 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[19]}];
-# set_property -dict {PACKAGE_PIN F20 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[20]}];
-# set_property -dict {PACKAGE_PIN B18 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[21]}];
-#
-# set_property -dict {PACKAGE_PIN B13 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[0]}];
-# set_property -dict {PACKAGE_PIN F13 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[1]}];
-# set_property -dict {PACKAGE_PIN C13 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[2]}];
-# set_property -dict {PACKAGE_PIN F15 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[3]}];
-# set_property -dict {PACKAGE_PIN E13 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[4]}];
-# set_property -dict {PACKAGE_PIN B20 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[5]}];
-# set_property -dict {PACKAGE_PIN A21 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[6]}];
-# set_property -dict {PACKAGE_PIN F19 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[7]}];
-# set_property -dict {PACKAGE_PIN D15 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[8]}];
-# set_property -dict {PACKAGE_PIN A16 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[9]}];
-# set_property -dict {PACKAGE_PIN B16 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[10]}];
-# set_property -dict {PACKAGE_PIN D16 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[11]}];
-# set_property -dict {PACKAGE_PIN E16 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[12]}];
-# set_property -dict {PACKAGE_PIN B17 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[13]}];
-# set_property -dict {PACKAGE_PIN C17 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[14]}];
-# set_property -dict {PACKAGE_PIN B21 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[15]}];
-#
-# set_property -dict {PACKAGE_PIN D14 IOSTANDARD LVCMOS33} [get_ports {SRAM1_CEn}];
-# set_property -dict {PACKAGE_PIN A15 IOSTANDARD LVCMOS33} [get_ports {SRAM1_OEn}];
-# set_property -dict {PACKAGE_PIN E21 IOSTANDARD LVCMOS33} [get_ports {SRAM1_WEn}];
-#
-# set_property -dict {PACKAGE_PIN E19 IOSTANDARD LVCMOS33} [get_ports {SRAM1_UBn}];
-# set_property -dict {PACKAGE_PIN E18 IOSTANDARD LVCMOS33} [get_ports {SRAM1_LBn}];
+set_property -dict {PACKAGE_PIN C15 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[0]}];
+set_property -dict {PACKAGE_PIN C14 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[1]}];
+set_property -dict {PACKAGE_PIN A13 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[2]}];
+set_property -dict {PACKAGE_PIN B15 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[3]}];
+set_property -dict {PACKAGE_PIN A14 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[4]}];
+set_property -dict {PACKAGE_PIN E17 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[5]}];
+set_property -dict {PACKAGE_PIN F16 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[6]}];
+set_property -dict {PACKAGE_PIN D17 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[7]}];
+set_property -dict {PACKAGE_PIN C20 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[8]}];
+set_property -dict {PACKAGE_PIN D20 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[9]}];
+set_property -dict {PACKAGE_PIN D22 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[10]}];
+set_property -dict {PACKAGE_PIN E22 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[11]}];
+set_property -dict {PACKAGE_PIN C22 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[12]}];
+set_property -dict {PACKAGE_PIN D21 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[13]}];
+set_property -dict {PACKAGE_PIN A19 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[14]}];
+set_property -dict {PACKAGE_PIN A20 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[15]}];
+set_property -dict {PACKAGE_PIN C18 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[16]}];
+set_property -dict {PACKAGE_PIN A18 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[17]}];
+set_property -dict {PACKAGE_PIN C19 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[18]}];
+set_property -dict {PACKAGE_PIN B22 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[19]}];
+set_property -dict {PACKAGE_PIN F20 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[20]}];
+set_property -dict {PACKAGE_PIN B18 IOSTANDARD LVCMOS33} [get_ports {SRAM1_A[21]}];
+set_property -dict {PACKAGE_PIN B13 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[0]}];
+set_property -dict {PACKAGE_PIN F13 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[1]}];
+set_property -dict {PACKAGE_PIN C13 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[2]}];
+set_property -dict {PACKAGE_PIN F15 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[3]}];
+set_property -dict {PACKAGE_PIN E13 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[4]}];
+set_property -dict {PACKAGE_PIN B20 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[5]}];
+set_property -dict {PACKAGE_PIN A21 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[6]}];
+set_property -dict {PACKAGE_PIN F19 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[7]}];
+set_property -dict {PACKAGE_PIN D15 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[8]}];
+set_property -dict {PACKAGE_PIN A16 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[9]}];
+set_property -dict {PACKAGE_PIN B16 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[10]}];
+set_property -dict {PACKAGE_PIN D16 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[11]}];
+set_property -dict {PACKAGE_PIN E16 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[12]}];
+set_property -dict {PACKAGE_PIN B17 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[13]}];
+set_property -dict {PACKAGE_PIN C17 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[14]}];
+set_property -dict {PACKAGE_PIN B21 IOSTANDARD LVCMOS33} [get_ports {SRAM1_DQ[15]}];
+set_property -dict {PACKAGE_PIN D14 IOSTANDARD LVCMOS33} [get_ports {SRAM1_CEn}];
+set_property -dict {PACKAGE_PIN A15 IOSTANDARD LVCMOS33} [get_ports {SRAM1_OEn}];
+set_property -dict {PACKAGE_PIN E21 IOSTANDARD LVCMOS33} [get_ports {SRAM1_WEn}];
+set_property -dict {PACKAGE_PIN E19 IOSTANDARD LVCMOS33} [get_ports {SRAM1_UBn}];
+set_property -dict {PACKAGE_PIN E18 IOSTANDARD LVCMOS33} [get_ports {SRAM1_LBn}];
 
 
 
