@@ -437,7 +437,21 @@ module e203_subsys_main(
   input  corerst, // The original async reset
   input  hfclkrst, // The original async reset
   input  hfextclk,// The original clock from crystal
-  output hfclk // The generated clock by HCLKGEN
+  output hfclk, // The generated clock by HCLKGEN
+
+
+          //driver pin
+
+    output SRAM0_OEn,
+    output SRAM0_WEn,
+    output SRAM0_CEn,
+    output [1:0] SRAM0_BEn,
+
+    output [21:0] SRAM0_A,
+    output [15:0] SRAM0_DATA_IN_io,
+    input [15:0] SRAM0_DATA_OUT_io,
+    output [15:0] SRAM0_DATA_t
+
 
   );
 
@@ -1686,7 +1700,20 @@ e203_subsys_mems u_e203_subsys_mems(
 
     .clk           (hfclk  ),
     .bus_rst_n     (bus_rst_n), 
-    .rst_n         (per_rst_n) 
+    .rst_n         (per_rst_n),
+
+
+              //driver pin
+
+    .SRAM0_OEn(SRAM0_OEn),
+    .SRAM0_WEn(SRAM0_WEn),
+    .SRAM0_CEn(SRAM0_CEn),
+    .SRAM0_BEn(SRAM0_BEn),
+
+    .SRAM0_A(SRAM0_A),
+    .SRAM0_DATA_IN_io(SRAM0_DATA_IN_io),
+    .SRAM0_DATA_OUT_io(SRAM0_DATA_OUT_io),
+    .SRAM0_DATA_t(SRAM0_DATA_t)
   );
 
 

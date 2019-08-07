@@ -282,7 +282,20 @@ module e203_soc_top(
 
       // PMU output is just output without enable
   output io_pads_aon_pmu_padrst_o_oval,
-  output io_pads_aon_pmu_vddpaden_o_oval 
+  output io_pads_aon_pmu_vddpaden_o_oval,
+
+    //driver pin
+
+    output SRAM0_OEn,
+    output SRAM0_WEn,
+    output SRAM0_CEn,
+    output [1:0] SRAM0_BEn,
+
+    output [21:0] SRAM0_A,
+    output [15:0] SRAM0_DATA_IN_io,
+    input [15:0] SRAM0_DATA_OUT_io,
+    output [15:0] SRAM0_DATA_t
+
 );
 
 
@@ -295,6 +308,10 @@ module e203_soc_top(
 
  wire sysmem_icb_cmd_valid;
  wire sysmem_icb_cmd_ready;
+
+
+
+
 
  e203_subsys_top u_e203_subsys_top(
     .core_mhartid      (1'b0),
@@ -712,9 +729,28 @@ module e203_soc_top(
 
     .io_pads_dbgmode1_n_i_ival       (io_pads_dbgmode1_n_i_ival),
 
-    .io_pads_dbgmode2_n_i_ival       (io_pads_dbgmode2_n_i_ival) 
+    .io_pads_dbgmode2_n_i_ival       (io_pads_dbgmode2_n_i_ival),
+
+    //driver pin
+
+    .SRAM0_OEn(SRAM0_OEn),
+    .SRAM0_WEn(SRAM0_WEn),
+    .SRAM0_CEn(SRAM0_CEn),
+    .SRAM0_BEn(SRAM0_BEn),
+
+    .SRAM0_A(SRAM0_A),
+    .SRAM0_DATA_IN_io(SRAM0_DATA_IN_io),
+    .SRAM0_DATA_OUT_io(SRAM0_DATA_OUT_io),
+    .SRAM0_DATA_t(SRAM0_DATA_t)
 
 
   );
+
+
+
+
+
+
+
 
 endmodule

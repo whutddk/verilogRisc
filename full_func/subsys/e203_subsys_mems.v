@@ -93,7 +93,22 @@ module e203_subsys_mems(
 
 	input  clk,
 	input  bus_rst_n,
-	input  rst_n
+	input  rst_n,
+
+
+
+
+          //driver pin
+
+    output SRAM0_OEn,
+    output SRAM0_WEn,
+    output SRAM0_CEn,
+    output [1:0] SRAM0_BEn,
+
+    output [21:0] SRAM0_A,
+    output [15:0] SRAM0_DATA_IN_io,
+    input [15:0] SRAM0_DATA_OUT_io,
+    output [15:0] SRAM0_DATA_t
 	);
 
 
@@ -482,49 +497,74 @@ sirv_gnrl_icb2axi # (
 		.rst_n         (bus_rst_n) 
 	);
 
-sirv_expl_axi_slv # (
-	.AW   (32),
-	.DW   (`E203_XLEN) 
-) u_perips_expl_axi_slv (
-		.axi_arvalid   (expl_axi_arvalid),
-		.axi_arready   (expl_axi_arready),
-		.axi_araddr    (expl_axi_araddr ),
-		.axi_arcache   (expl_axi_arcache),
-		.axi_arprot    (expl_axi_arprot ),
-		.axi_arlock    (expl_axi_arlock ),
-		.axi_arburst   (expl_axi_arburst),
-		.axi_arlen     (expl_axi_arlen  ),
-		.axi_arsize    (expl_axi_arsize ),
 
-		.axi_awvalid   (expl_axi_awvalid),
-		.axi_awready   (expl_axi_awready),
-		.axi_awaddr    (expl_axi_awaddr ),
-		.axi_awcache   (expl_axi_awcache),
-		.axi_awprot    (expl_axi_awprot ),
-		.axi_awlock    (expl_axi_awlock ),
-		.axi_awburst   (expl_axi_awburst),
-		.axi_awlen     (expl_axi_awlen  ),
-		.axi_awsize    (expl_axi_awsize ),
-	
-		.axi_rvalid    (expl_axi_rvalid ),
-		.axi_rready    (expl_axi_rready ),
-		.axi_rdata     (expl_axi_rdata  ),
-		.axi_rresp     (expl_axi_rresp  ),
-		.axi_rlast     (expl_axi_rlast  ),
 
-		.axi_wvalid    (expl_axi_wvalid ),
-		.axi_wready    (expl_axi_wready ),
-		.axi_wdata     (expl_axi_wdata  ),
-		.axi_wstrb     (expl_axi_wstrb  ),
-		.axi_wlast     (expl_axi_wlast  ),
- 
-		.axi_bvalid    (expl_axi_bvalid ),
-		.axi_bready    (expl_axi_bready ),
-		.axi_bresp     (expl_axi_bresp  ),
+wire [31:0] emc_addr_wire;
 
-		.clk           (clk  ),
-		.rst_n         (rst_n) 
-	);
+axi_emc_0 i_axi_emc
+(
+
+    .s_axi_mem_araddr(expl_axi_araddr),
+    .s_axi_mem_arburst(expl_axi_arburst),
+.s_axi_mem_arcache(4'b0),
+    .s_axi_mem_arlen(8'd0),
+.s_axi_mem_arlock(1'b0),
+.s_axi_mem_arprot(3'b0),
+    .s_axi_mem_arready(expl_axi_arready),
+.s_axi_mem_arsize(3'b0),
+    .s_axi_mem_arvalid(expl_axi_arvalid),
+    .s_axi_mem_awaddr(expl_axi_awaddr),
+    .s_axi_mem_awburst(expl_axi_awburst),
+.s_axi_mem_awcache(4'b0),
+    .s_axi_mem_awlen(8'd0),
+.s_axi_mem_awlock(1'b0),
+.s_axi_mem_awprot(3'b0),
+    .s_axi_mem_awready(expl_axi_awready),
+.s_axi_mem_awsize(3'b0),
+    .s_axi_mem_awvalid(expl_axi_awvalid),
+    .s_axi_mem_bready(expl_axi_bready),
+    .s_axi_mem_bresp(expl_axi_bresp),
+    .s_axi_mem_bvalid(expl_axi_bvalid),
+    .s_axi_mem_rdata(expl_axi_rdata),
+    .s_axi_mem_rlast(expl_axi_rlast),
+    .s_axi_mem_rready(expl_axi_rready),
+    .s_axi_mem_rresp(expl_axi_rresp),
+    .s_axi_mem_rvalid(expl_axi_rvalid),
+    .s_axi_mem_wdata(expl_axi_wdata),
+    .s_axi_mem_wlast(expl_axi_wlast),
+    .s_axi_mem_wready(expl_axi_wready),
+    .s_axi_mem_wstrb(expl_axi_wstrb),
+    .s_axi_mem_wvalid(expl_axi_wvalid),
+
+    .s_axi_aclk(clk),
+    .s_axi_aresetn(rst_n),
+    .rdclk(clk),
+
+
+    .mem_a(emc_addr_wire),
+    .mem_adv_ldn(),
+    .mem_ben(SRAM0_BEn),
+    .mem_ce(),
+    .mem_cen(SRAM0_CEn),
+    .mem_cken(),
+    .mem_cre(),
+    .mem_dq_i(SRAM0_DATA_OUT_io),
+    .mem_dq_o(SRAM0_DATA_IN_io),
+    .mem_dq_t(SRAM0_DATA_t),
+    .mem_lbon(),
+    .mem_oen(SRAM0_OEn),
+    .mem_qwen(),
+    .mem_rnw(),
+    .mem_rpn(),
+    .mem_wait(1'b0),
+    .mem_wen(SRAM0_WEn)
+
+);
+
+
+
+assign SRAM0_A = emc_addr_wire[22:1];
+
 
 
 endmodule

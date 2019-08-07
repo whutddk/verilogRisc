@@ -25,10 +25,31 @@ module system
   inout wire MCU_TDO,//MCU_TDO-N17
   inout wire MCU_TCK,//MCU_TCK-P15 
   inout wire MCU_TDI,//MCU_TDI-T18
-  inout wire MCU_TMS//MCU_TMS-P17
+  inout wire MCU_TMS,//MCU_TMS-P17
 
+
+        //driver pin
+
+output SRAM0_OEn,
+output SRAM0_WEn,
+output SRAM0_CEn,
+output SRAM0_UBn,
+output SRAM0_LBn,
+
+output [21:0] SRAM0_A,
+inout [15:0] SRAM0_DQ
 
 );
+
+wire [1:0] SRAM0_BEn;
+wire [15:0] SRAM0_DATA_IN_io;
+wire [15:0] SRAM0_DATA_OUT_io;
+wire [15:0] SRAM0_DATA_t;
+
+// assign {SRAM0_UBn,SRAM0_LBn} = SRAM0_BEn;
+
+assign {SRAM0_UBn,SRAM0_LBn} = 2'b0;
+
 
   wire pmu_paden;
   wire pmu_padrst;
@@ -1220,7 +1241,19 @@ module system
 
     .io_pads_dbgmode0_n_i_ival       (dut_io_pads_dbgmode0_n_i_ival),
     .io_pads_dbgmode1_n_i_ival       (dut_io_pads_dbgmode1_n_i_ival),
-    .io_pads_dbgmode2_n_i_ival       (dut_io_pads_dbgmode2_n_i_ival) 
+    .io_pads_dbgmode2_n_i_ival       (dut_io_pads_dbgmode2_n_i_ival),
+
+    //driver pin
+
+    .SRAM0_OEn(SRAM0_OEn),
+    .SRAM0_WEn(SRAM0_WEn),
+    .SRAM0_CEn(SRAM0_CEn),
+    .SRAM0_BEn(SRAM0_BEn),
+
+    .SRAM0_A(SRAM0_A),
+    .SRAM0_DATA_IN_io(SRAM0_DATA_IN_io),
+    .SRAM0_DATA_OUT_io(SRAM0_DATA_OUT_io),
+    .SRAM0_DATA_t(SRAM0_DATA_t) 
   );
 
   // Assign reasonable values to otherwise unconnected inputs to chip top
@@ -1250,6 +1283,36 @@ module system
   assign dut_io_pads_qspi_dq_2_i_ival = qspi_ui_dq_i[2];
   assign dut_io_pads_qspi_dq_3_i_ival = qspi_ui_dq_i[3];
   assign QSPI_SCK = dut_io_pads_qspi_sck_o_oval;
+
+
+
+
+
+
+
+genvar i;
+generate
+  for ( i = 0 ; i < 16 ; i = i+1 ) begin
+    IOBUF
+  #(
+    .DRIVE(12),
+    .IBUF_LOW_PWR("TRUE"),
+    .IOSTANDARD("DEFAULT"),
+    .SLEW("SLOW")
+  )
+  IOBUF_SRAM_DATA
+  (
+    .O(SRAM0_DATA_OUT_io[i]),
+    .IO(SRAM0_DQ[i]),
+    .I(SRAM0_DATA_IN_io[i]),
+    .T(SRAM0_DATA_t[i])
+  );
+
+  end
+endgenerate 
+
+
+
 
 endmodule
 

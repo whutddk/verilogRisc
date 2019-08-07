@@ -439,7 +439,19 @@ module e203_subsys_top(
   output  io_pads_jtag_TRST_n_o_ds,
 
   input  test_iso_override,
-  input  test_mode 
+  input  test_mode,
+
+          //driver pin
+
+    output SRAM0_OEn,
+    output SRAM0_WEn,
+    output SRAM0_CEn,
+    output [1:0] SRAM0_BEn,
+
+    output [21:0] SRAM0_A,
+    output [15:0] SRAM0_DATA_IN_io,
+    input [15:0] SRAM0_DATA_OUT_io,
+    output [15:0] SRAM0_DATA_t
   );
 
   wire hfclk;// The PLL generated high-speed clock 
@@ -883,7 +895,19 @@ module e203_subsys_top(
     .test_mode     (test_mode), 
     .hfclk           (hfclk   ),
     .hfclkrst        (hfclkrst),
-    .corerst       (corerst)
+    .corerst       (corerst),
+
+                  //driver pin
+
+    .SRAM0_OEn(SRAM0_OEn),
+    .SRAM0_WEn(SRAM0_WEn),
+    .SRAM0_CEn(SRAM0_CEn),
+    .SRAM0_BEn(SRAM0_BEn),
+
+    .SRAM0_A(SRAM0_A),
+    .SRAM0_DATA_IN_io(SRAM0_DATA_IN_io),
+    .SRAM0_DATA_OUT_io(SRAM0_DATA_OUT_io),
+    .SRAM0_DATA_t(SRAM0_DATA_t)
   );
 
 

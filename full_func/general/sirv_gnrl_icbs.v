@@ -1137,8 +1137,8 @@ module sirv_gnrl_icb2axi # (
   assign i_axi_awlock = 2'b0;
   //
   // The ICB does not support burst now, so just make it fixed
-  assign i_axi_arburst = 2'b0;
-  assign i_axi_awburst = 2'b0;
+  assign i_axi_arburst = 2'b01;
+  assign i_axi_awburst = 2'b01;
   assign i_axi_arlen = 4'b0;
   assign i_axi_awlen = 4'b0;
   
