@@ -27,7 +27,7 @@ module system
   inout wire MCU_TDI,//MCU_TDI-T18
   inout wire MCU_TMS,//MCU_TMS-P17
 
-
+  // output LED_RED,
         //driver pin
 
 output SRAM1_OEn,
@@ -1313,7 +1313,29 @@ endgenerate
 
 
 
+// reg SRAM1_OEn_Reg = 'b0;
+// reg SRAM1_WEn_Reg = 'b0;
+// reg SRAM1_CEn_Reg = 'b0;
+// reg SRAM1_UBn_Reg = 'b0;
+// reg SRAM1_LBn_Reg = 'b0;
+// reg [21:0] SRAM1_A_Reg = 'b0;
+// reg [15:0] SRAM1_Data_in_Reg = 'b0;
+// reg [15:0] SRAM1_Data_out_Reg = 'b0;
+// reg [15:0] SRAM1_Data_t_Reg = 'b0;
 
+// always @(posedge clk_16M) begin
+// 	SRAM1_OEn_Reg <= SRAM1_OEn;
+// 	SRAM1_WEn_Reg <= SRAM1_WEn;
+// 	SRAM1_CEn_Reg <= SRAM1_CEn;
+// 	SRAM1_UBn_Reg <= SRAM1_UBn;
+// 	SRAM1_LBn_Reg <= SRAM1_LBn;
+// 	SRAM1_A_Reg <= SRAM1_A;
+// 	SRAM1_Data_in_Reg <= SRAM1_DATA_IN_io;
+// 	SRAM1_Data_out_Reg <= SRAM1_DATA_OUT_io;
+// 	SRAM1_Data_t_Reg <= SRAM1_DATA_t;
+// end
+
+// assign LED_RED = &{SRAM1_OEn_Reg,SRAM1_WEn_Reg,SRAM1_CEn_Reg,SRAM1_UBn_Reg,SRAM1_LBn_Reg,SRAM1_A_Reg,SRAM1_Data_in_Reg,SRAM1_Data_out_Reg,SRAM1_Data_t_Reg};
 endmodule
 
 
