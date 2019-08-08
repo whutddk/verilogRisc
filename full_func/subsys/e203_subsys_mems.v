@@ -500,7 +500,10 @@ sirv_gnrl_icb2axi # (
 
 
 wire [31:0] emc_addr_wire;
-
+wire [31:0] SRAM0_DATA_OUT_Wire;
+wire [31:0] SRAM0_DATA_IN_Wire;
+wire [31:0] SRAM0_DATA_t_Wire;
+wire [3:0] SRAM0_CEn_Wire;
 axi_emc_0 i_axi_emc
 (
 
@@ -545,12 +548,12 @@ axi_emc_0 i_axi_emc
     .mem_adv_ldn(),
     .mem_ben(SRAM0_BEn),
     .mem_ce(),
-    .mem_cen(SRAM0_CEn),
+    .mem_cen(SRAM0_CEn_Wire),
     .mem_cken(),
     .mem_cre(),
-    .mem_dq_i(SRAM0_DATA_OUT_io),
-    .mem_dq_o(SRAM0_DATA_IN_io),
-    .mem_dq_t(SRAM0_DATA_t),
+    .mem_dq_i(SRAM0_DATA_OUT_Wire),
+    .mem_dq_o(SRAM0_DATA_IN_Wire),
+    .mem_dq_t(SRAM0_DATA_t_Wire),
     .mem_lbon(),
     .mem_oen(SRAM0_OEn),
     .mem_qwen(),
@@ -562,9 +565,59 @@ axi_emc_0 i_axi_emc
 );
 
 
+assign SRAM0_A = emc_addr_wire[23:2];
 
-assign SRAM0_A = emc_addr_wire[22:1];
+assign SRAM0_DATA_OUT_Wire = { 16'b0,SRAM0_DATA_OUT_io };
+assign SRAM0_DATA_IN_io = SRAM0_DATA_IN_Wire[15:0];
+assign SRAM0_DATA_t = SRAM0_DATA_t_Wire[15:0];
+assign SRAM0_CEn = SRAM0_CEn_Wire[1:0];
 
+
+
+
+// axi4_full_slave i_axi_slave
+// 	(
+// 	.S_AXI_ACLK(clk),
+//     .S_AXI_ARESETN(rst_n),
+//     .S_AXI_AWADDR(expl_axi_awaddr),
+//     .S_AXI_AWLEN(8'd0),
+//     .S_AXI_AWBURST(expl_axi_awburst),
+//     .S_AXI_AWVALID(expl_axi_awvalid),
+//     .S_AXI_AWREADY(expl_axi_awready),
+//     .S_AXI_WDATA(expl_axi_wdata),
+//     .S_AXI_WSTRB(expl_axi_wstrb),
+//     .S_AXI_WLAST(expl_axi_wlast),
+//     .S_AXI_WVALID(expl_axi_wvalid),
+//     .S_AXI_WREADY(expl_axi_wready),
+//     .S_AXI_BRESP(expl_axi_bresp),
+//     .S_AXI_BVALID(expl_axi_bvalid),
+//     .S_AXI_BREADY(expl_axi_bready),
+//     .S_AXI_ARADDR(expl_axi_araddr),
+//     . S_AXI_ARLEN(8'd0),
+//     .S_AXI_ARBURST(expl_axi_arburst),
+//     .S_AXI_ARVALID(expl_axi_arvalid),
+//     .S_AXI_ARREADY(expl_axi_arready),
+//     .S_AXI_RDATA(expl_axi_rdata),
+//     .S_AXI_RRESP(expl_axi_rresp),
+//     .S_AXI_RLAST(expl_axi_rlast),
+//     .S_AXI_RVALID(expl_axi_rvalid),
+//     .S_AXI_RREADY(expl_axi_rready),
+
+
+// 	//driver pin	
+
+// 	.SRAM_OEn_io(SRAM0_OEn),
+// 	.SRAM_WRn_io(SRAM0_WEn),
+// 	.SRAM_CSn_io(SRAM0_CEn),
+
+// 	.SRAM_ADDR_io(SRAM0_A),
+// 	.SRAM_DATA_IN_io(SRAM0_DATA_IN_io),
+// 	.SRAM_DATA_OUT_io(SRAM0_DATA_OUT_io),
+// 	.SRAM_DATA_t(SRAM0_DATA_t)
+
+// 	);
+
+//     assign SRAM0_BEn = 2'b0;
 
 
 endmodule
