@@ -61,8 +61,8 @@ inout [15:0] SRAM1_DQ
      wire [31:0] SRAM_DATA_t;
 
 
-// assign {SRAM1_UBn,SRAM1_LBn} = SRAM1_BEn;
-assign {SRAM1_UBn,SRAM1_LBn,SRAM0_UBn,SRAM0_LBn} = 4'b0;
+assign {SRAM1_UBn,SRAM1_LBn,SRAM0_UBn,SRAM0_LBn} = SRAM_BEn;
+// assign {SRAM1_UBn,SRAM1_LBn,SRAM0_UBn,SRAM0_LBn} = 4'b0;
 
 assign SRAM0_OEn = SRAM_OEn;
 assign SRAM0_WEn = SRAM_WEn;

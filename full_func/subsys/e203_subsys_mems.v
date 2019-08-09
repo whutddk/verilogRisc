@@ -500,6 +500,8 @@ sirv_gnrl_icb2axi # (
 
 
 wire [31:0] emc_addr_wire;
+wire [3:0] SRAM_BEn_Wire;
+
 
 axi_emc_0 i_axi_emc
 (
@@ -543,7 +545,7 @@ axi_emc_0 i_axi_emc
 
     .mem_a(emc_addr_wire),
     .mem_adv_ldn(),
-    .mem_ben(SRAM_BEn),
+    .mem_ben(SRAM_BEn_Wire),
     .mem_ce(),
     .mem_cen(SRAM_CEn),
     .mem_cken(),
@@ -564,7 +566,7 @@ axi_emc_0 i_axi_emc
 
 assign SRAM_A = emc_addr_wire[23:2];
 
-
+assign SRAM_BEn = SRAM_WEn ? 4'b0 : SRAM_BEn_Wire;
 
 
 
