@@ -49,7 +49,8 @@ module system
     output SRAM_OEn_io,
     output SRAM_WRn_io,
     output SRAM_CSn_io,
-
+    output SRAM_UBn,
+    output SRAM_LBn,
     output [19:0] SRAM_ADDR_io,
     inout [15:0] SRAM_DATA,
 
@@ -70,6 +71,7 @@ module system
 
 );
 
+	assign {SRAM_UBn,SRAM_LBn} = 2'B0;
 	wire clk_out1;
 	wire mmcm_locked;
 
