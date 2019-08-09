@@ -286,15 +286,15 @@ module e203_soc_top(
 
     //driver pin
 
-    output SRAM0_OEn,
-    output SRAM0_WEn,
-    output SRAM0_CEn,
-    output [1:0] SRAM0_BEn,
+    output SRAM_OEn,
+    output SRAM_WEn,
+    output SRAM_CEn,
+    output [3:0] SRAM_BEn,
 
-    output [21:0] SRAM0_A,
-    output [15:0] SRAM0_DATA_IN_io,
-    input [15:0] SRAM0_DATA_OUT_io,
-    output [15:0] SRAM0_DATA_t
+    output [21:0] SRAM_A,
+    output [31:0] SRAM_DATA_IN,
+    input [31:0] SRAM_DATA_OUT,
+    output [31:0] SRAM_DATA_t
 
 );
 
@@ -733,15 +733,15 @@ module e203_soc_top(
 
     //driver pin
 
-    .SRAM0_OEn(SRAM0_OEn),
-    .SRAM0_WEn(SRAM0_WEn),
-    .SRAM0_CEn(SRAM0_CEn),
-    .SRAM0_BEn(SRAM0_BEn),
+    .SRAM_OEn(SRAM_OEn),
+    .SRAM_WEn(SRAM_WEn),
+    .SRAM_CEn(SRAM_CEn),
+    .SRAM_BEn(SRAM_BEn),
 
-    .SRAM0_A(SRAM0_A),
-    .SRAM0_DATA_IN_io(SRAM0_DATA_IN_io),
-    .SRAM0_DATA_OUT_io(SRAM0_DATA_OUT_io),
-    .SRAM0_DATA_t(SRAM0_DATA_t)
+    .SRAM_A(SRAM0_A),
+    .SRAM_DATA_IN(SRAM_DATA_IN),
+    .SRAM_DATA_OUT(SRAM_DATA_OUT),
+    .SRAM_DATA_t(SRAM_DATA_t)
 
 
   );

@@ -28,27 +28,54 @@ module system
   inout wire MCU_TMS,//MCU_TMS-P17
 
   // output LED_RED,
-        //driver pin
+
+   //driver pin
+
+output SRAM0_OEn,
+output SRAM0_WEn,
+output SRAM0_CEn,
+output SRAM0_UBn,
+output SRAM0_LBn,
+output [21:0] SRAM0_A,
+inout [15:0] SRAM0_DQ,
 
 output SRAM1_OEn,
 output SRAM1_WEn,
 output SRAM1_CEn,
 output SRAM1_UBn,
 output SRAM1_LBn,
-
 output [21:0] SRAM1_A,
 inout [15:0] SRAM1_DQ
 
+
 );
 
-wire [1:0] SRAM1_BEn;
-wire [15:0] SRAM1_DATA_IN_io;
-wire [15:0] SRAM1_DATA_OUT_io;
-wire [15:0] SRAM1_DATA_t;
 
-assign {SRAM1_UBn,SRAM1_LBn} = SRAM1_BEn;
+     wire SRAM_OEn;
+     wire SRAM_WEn;
+     wire SRAM_CEn;
+     wire [3:0] SRAM_BEn;
+     wire [21:0] SRAM_A;
+     wire [31:0] SRAM_DATA_IN;
+     wire [31:0] SRAM_DATA_OUT;
+     wire [31:0] SRAM_DATA_t;
 
-// assign {SRAM0_UBn,SRAM0_LBn} = 2'b0;
+
+// assign {SRAM1_UBn,SRAM1_LBn} = SRAM1_BEn;
+assign {SRAM1_UBn,SRAM1_LBn,SRAM0_UBn,SRAM0_LBn} = 4'b0;
+
+assign SRAM0_OEn = SRAM_OEn;
+assign SRAM0_WEn = SRAM_WEn;
+assign SRAM0_CEn = SRAM_CEn;
+assign SRAM0_A = SRAM_A;
+
+assign SRAM1_OEn = SRAM_OEn;
+assign SRAM1_WEn = SRAM_WEn;
+assign SRAM1_CEn = SRAM_CEn;
+assign SRAM1_A = SRAM_A;
+
+
+
 
 
   wire pmu_paden;
@@ -1245,15 +1272,15 @@ assign {SRAM1_UBn,SRAM1_LBn} = SRAM1_BEn;
 
     //driver pin
 
-    .SRAM0_OEn(SRAM1_OEn),
-    .SRAM0_WEn(SRAM1_WEn),
-    .SRAM0_CEn(SRAM1_CEn),
-    .SRAM0_BEn(SRAM1_BEn),
+    .SRAM_OEn(SRAM_OEn),
+    .SRAM_WEn(SRAM_WEn),
+    .SRAM_CEn(SRAM_CEn),
+    .SRAM_BEn(SRAM_BEn),
 
-    .SRAM0_A(SRAM1_A),
-    .SRAM0_DATA_IN_io(SRAM1_DATA_IN_io),
-    .SRAM0_DATA_OUT_io(SRAM1_DATA_OUT_io),
-    .SRAM0_DATA_t(SRAM1_DATA_t) 
+    .SRAM_A(SRAM_A),
+    .SRAM_DATA_IN(SRAM_DATA_IN),
+    .SRAM_DATA_OUT(SRAM_DATA_OUT),
+    .SRAM_DATA_t(SRAM_DATA_t) 
   );
 
   // Assign reasonable values to otherwise unconnected inputs to chip top
@@ -1302,10 +1329,25 @@ generate
   )
   IOBUF_SRAM_DATA
   (
-    .O(SRAM1_DATA_OUT_io[i]),
+    .O(SRAM1_DATA_OUT[i]),
+    .IO(SRAM0_DQ[i]),
+    .I(SRAM_DATA_IN[i]),
+    .T(SRAM_DATA_t[i])
+  );
+
+  IOBUF
+  #(
+    .DRIVE(12),
+    .IBUF_LOW_PWR("TRUE"),
+    .IOSTANDARD("DEFAULT"),
+    .SLEW("SLOW")
+  )
+  IOBUF_SRAM_DATA
+  (
+    .O(SRAM_DATA_OUT[i+16]),
     .IO(SRAM1_DQ[i]),
-    .I(SRAM1_DATA_IN_io[i]),
-    .T(SRAM1_DATA_t[i])
+    .I(SRAM_DATA_IN[i+16]),
+    .T(SRAM_DATA_t[i+16])
   );
 
   end

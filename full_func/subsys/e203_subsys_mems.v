@@ -100,15 +100,15 @@ module e203_subsys_mems(
 
           //driver pin
 
-    output SRAM0_OEn,
-    output SRAM0_WEn,
-    output SRAM0_CEn,
-    output [1:0] SRAM0_BEn,
+    output SRAM_OEn,
+    output SRAM_WEn,
+    output SRAM_CEn,
+    output [3:0] SRAM_BEn,
 
-    output [21:0] SRAM0_A,
-    output [15:0] SRAM0_DATA_IN_io,
-    input [15:0] SRAM0_DATA_OUT_io,
-    output [15:0] SRAM0_DATA_t
+    output [21:0] SRAM_A,
+    output [31:0] SRAM_DATA_IN,
+    input [31:0] SRAM_DATA_OUT,
+    output [31:0] SRAM_DATA_t
 	);
 
 
@@ -500,10 +500,7 @@ sirv_gnrl_icb2axi # (
 
 
 wire [31:0] emc_addr_wire;
-wire [31:0] SRAM0_DATA_OUT_Wire;
-wire [31:0] SRAM0_DATA_IN_Wire;
-wire [31:0] SRAM0_DATA_t_Wire;
-wire [3:0] SRAM0_CEn_Wire;
+
 axi_emc_0 i_axi_emc
 (
 
@@ -546,31 +543,27 @@ axi_emc_0 i_axi_emc
 
     .mem_a(emc_addr_wire),
     .mem_adv_ldn(),
-    .mem_ben(SRAM0_BEn),
+    .mem_ben(SRAM_BEn),
     .mem_ce(),
-    .mem_cen(SRAM0_CEn_Wire),
+    .mem_cen(SRAM_CEn),
     .mem_cken(),
     .mem_cre(),
-    .mem_dq_i(SRAM0_DATA_OUT_Wire),
-    .mem_dq_o(SRAM0_DATA_IN_Wire),
-    .mem_dq_t(SRAM0_DATA_t_Wire),
+    .mem_dq_i(SRAM_DATA_OUT),
+    .mem_dq_o(SRAM_DATA_IN),
+    .mem_dq_t(SRAM_DATA_t),
     .mem_lbon(),
-    .mem_oen(SRAM0_OEn),
+    .mem_oen(SRAM_OEn),
     .mem_qwen(),
     .mem_rnw(),
     .mem_rpn(),
     .mem_wait(1'b0),
-    .mem_wen(SRAM0_WEn)
+    .mem_wen(SRAM_WEn)
 
 );
 
 
-assign SRAM0_A = emc_addr_wire[23:2];
+assign SRAM_A = emc_addr_wire[23:2];
 
-assign SRAM0_DATA_OUT_Wire = { 16'b0,SRAM0_DATA_OUT_io };
-assign SRAM0_DATA_IN_io = SRAM0_DATA_IN_Wire[15:0];
-assign SRAM0_DATA_t = SRAM0_DATA_t_Wire[15:0];
-assign SRAM0_CEn = SRAM0_CEn_Wire[1:0];
 
 
 
