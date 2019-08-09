@@ -738,7 +738,7 @@ module e203_soc_top(
     .SRAM_CEn(SRAM_CEn),
     .SRAM_BEn(SRAM_BEn),
 
-    .SRAM_A(SRAM0_A),
+    .SRAM_A(SRAM_A),
     .SRAM_DATA_IN(SRAM_DATA_IN),
     .SRAM_DATA_OUT(SRAM_DATA_OUT),
     .SRAM_DATA_t(SRAM_DATA_t)

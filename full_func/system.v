@@ -1327,9 +1327,9 @@ generate
     .IOSTANDARD("DEFAULT"),
     .SLEW("SLOW")
   )
-  IOBUF_SRAM_DATA
+  IOBUF_SRAM0_DATA
   (
-    .O(SRAM1_DATA_OUT[i]),
+    .O(SRAM_DATA_OUT[i]),
     .IO(SRAM0_DQ[i]),
     .I(SRAM_DATA_IN[i]),
     .T(SRAM_DATA_t[i])
@@ -1342,7 +1342,7 @@ generate
     .IOSTANDARD("DEFAULT"),
     .SLEW("SLOW")
   )
-  IOBUF_SRAM_DATA
+  IOBUF_SRAM1_DATA
   (
     .O(SRAM_DATA_OUT[i+16]),
     .IO(SRAM1_DQ[i]),
