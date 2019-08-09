@@ -1,48 +1,4 @@
 
-//////////////////////////////////////////////////////////////////////////////////
-// Company:    
-// Engineer: 29505
-// Create Date: 2019-06-30 22:13:07
-// Last Modified by:   29505
-// Last Modified time: 2019-07-01 09:37:44
-// Email: 295054118@whut.edu.cn
-// Design Name: e203_ifu_ifetch.v  
-// Module Name:  
-// Project Name:  
-// Target Devices:  
-// Tool Versions:  
-// Description:  
-// 
-// Dependencies:   
-// 
-// Revision:  
-// Revision  
-// Additional Comments:   
-// 
-//////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////
-// Company:   
-// Engineer: Ruige_Lee
-// Create Date: 2019-06-25 19:07:21
-// Last Modified by:   Ruige_Lee
-// Last Modified time: 2019-06-30 21:18:30
-// Email: 295054118@whut.edu.cn
-// page: https://whutddk.github.io/
-// Design Name: e203_ifu_ifetch.v  
-// Module Name: e203_ifu_ifetch
-// Project Name:   
-// Target Devices:   
-// Tool Versions:   
-// Description:   
-// 
-// Dependencies:   
-// 
-// Revision:  
-// Revision:    -   
-// Additional Comments:  
-// 
-//
-//////////////////////////////////////////////////////////////////////////////////
  /*                                                                      
  Copyright 2018 Nuclei System Technology, Inc.                
 																																				 
