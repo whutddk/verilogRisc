@@ -53,9 +53,8 @@ module e203_lsu_ctrl(
 	input  commit_trap,
 	output lsu_ctrl_active,
 
-	`ifdef E203_HAS_ITCM //{
+
 	input [`E203_ADDR_SIZE-1:0] itcm_region_indic,
-	`endif//}
 
 	input [`E203_ADDR_SIZE-1:0] dtcm_region_indic,
 
@@ -128,7 +127,6 @@ module e203_lsu_ctrl(
 	input  [`E203_XLEN-1:0]        dtcm_icb_rsp_rdata,
 
 
-	`ifdef E203_HAS_ITCM //{
 	//////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////
 	// The ICB Interface to ITCM
@@ -143,16 +141,14 @@ module e203_lsu_ctrl(
 	output                         itcm_icb_cmd_lock,
 	output                         itcm_icb_cmd_excl,
 	output [1:0]                   itcm_icb_cmd_size,
-	//
 	//    * Bus RSP channel
 	input                          itcm_icb_rsp_valid,
 	output                         itcm_icb_rsp_ready,
 	input                          itcm_icb_rsp_err  ,
 	input                          itcm_icb_rsp_excl_ok  ,
 	input  [`E203_XLEN-1:0]        itcm_icb_rsp_rdata,
-	`endif//}
 
-	//////////////////////////////////////////////////////////////
+
 	//////////////////////////////////////////////////////////////
 	// The ICB Interface to BIU
 	//
@@ -166,7 +162,6 @@ module e203_lsu_ctrl(
 	output                         biu_icb_cmd_lock,
 	output                         biu_icb_cmd_excl,
 	output [1:0]                   biu_icb_cmd_size,
-	//
 	//    * Bus RSP channel
 	input                          biu_icb_rsp_valid,
 	output                         biu_icb_rsp_ready,
@@ -179,15 +174,8 @@ module e203_lsu_ctrl(
 	input  rst_n
 	);
 
-	// The EAI mem holdup signal will override other request to LSU-Ctrl
-	wire agu_icb_cmd_valid_pos;
-	wire agu_icb_cmd_ready_pos;
-	assign agu_icb_cmd_valid_pos = agu_icb_cmd_valid;
-	assign agu_icb_cmd_ready     = agu_icb_cmd_ready_pos;
 
 
-	localparam LSU_ARBT_I_NUM   = 1;
-	localparam LSU_ARBT_I_PTR_W = 1;
 
 
 	
@@ -204,8 +192,8 @@ module e203_lsu_ctrl(
 			`endif//}
 		`endif//}
 	`endif//}
-	//
-	//
+
+
 	wire                  pre_agu_icb_rsp_valid;
 	wire                  pre_agu_icb_rsp_ready;
 	wire                  pre_agu_icb_rsp_err  ;
@@ -232,10 +220,8 @@ module e203_lsu_ctrl(
 				,agu_icb_cmd_addr 
 				,agu_icb_cmd_excl 
 			};
-	// wire [USR_W-1:0] eai_icb_cmd_usr = {USR_W-1{1'b0}};
-	// wire [USR_W-1:0] fpu_icb_cmd_usr = {USR_W-1{1'b0}};
 
-	wire [USR_W-1:0]      pre_agu_icb_rsp_usr;
+	wire [USR_W-1:0] pre_agu_icb_rsp_usr;
 	assign 
 			{
 				 pre_agu_icb_rsp_back2agu  
@@ -246,201 +232,6 @@ module e203_lsu_ctrl(
 				,pre_agu_icb_rsp_addr
 				,pre_agu_icb_rsp_excl 
 			} = pre_agu_icb_rsp_usr;
-	// wire [USR_W-1:0] eai_icb_rsp_usr;
-	// wire [USR_W-1:0] fpu_icb_rsp_usr;
-
-	wire arbt_icb_cmd_valid;
-	wire arbt_icb_cmd_ready;
-	wire [`E203_ADDR_SIZE-1:0] arbt_icb_cmd_addr;
-	wire arbt_icb_cmd_read;
-	wire [`E203_XLEN-1:0] arbt_icb_cmd_wdata;
-	wire [`E203_XLEN/8-1:0] arbt_icb_cmd_wmask;
-	wire arbt_icb_cmd_lock;
-	wire arbt_icb_cmd_excl;
-	wire [1:0] arbt_icb_cmd_size;
-	wire [1:0] arbt_icb_cmd_burst;
-	wire [1:0] arbt_icb_cmd_beat;
-	wire [USR_W-1:0] arbt_icb_cmd_usr;
-
-	wire arbt_icb_rsp_valid;
-	wire arbt_icb_rsp_ready;
-	wire arbt_icb_rsp_err;
-	wire arbt_icb_rsp_excl_ok;
-	wire [`E203_XLEN-1:0] arbt_icb_rsp_rdata;
-	wire [USR_W-1:0] arbt_icb_rsp_usr;
-
-	wire [LSU_ARBT_I_NUM*1-1:0] arbt_bus_icb_cmd_valid;
-	wire [LSU_ARBT_I_NUM*1-1:0] arbt_bus_icb_cmd_ready;
-	wire [LSU_ARBT_I_NUM*`E203_ADDR_SIZE-1:0] arbt_bus_icb_cmd_addr;
-	wire [LSU_ARBT_I_NUM*1-1:0] arbt_bus_icb_cmd_read;
-	wire [LSU_ARBT_I_NUM*`E203_XLEN-1:0] arbt_bus_icb_cmd_wdata;
-	wire [LSU_ARBT_I_NUM*`E203_XLEN/8-1:0] arbt_bus_icb_cmd_wmask;
-	wire [LSU_ARBT_I_NUM*1-1:0] arbt_bus_icb_cmd_lock;
-	wire [LSU_ARBT_I_NUM*1-1:0] arbt_bus_icb_cmd_excl;
-	wire [LSU_ARBT_I_NUM*2-1:0] arbt_bus_icb_cmd_size;
-	wire [LSU_ARBT_I_NUM*USR_W-1:0] arbt_bus_icb_cmd_usr;
-	wire [LSU_ARBT_I_NUM*2-1:0] arbt_bus_icb_cmd_burst;
-	wire [LSU_ARBT_I_NUM*2-1:0] arbt_bus_icb_cmd_beat;
-
-	wire [LSU_ARBT_I_NUM*1-1:0] arbt_bus_icb_rsp_valid;
-	wire [LSU_ARBT_I_NUM*1-1:0] arbt_bus_icb_rsp_ready;
-	wire [LSU_ARBT_I_NUM*1-1:0] arbt_bus_icb_rsp_err;
-	wire [LSU_ARBT_I_NUM*1-1:0] arbt_bus_icb_rsp_excl_ok;
-	wire [LSU_ARBT_I_NUM*`E203_XLEN-1:0] arbt_bus_icb_rsp_rdata;
-	wire [LSU_ARBT_I_NUM*USR_W-1:0] arbt_bus_icb_rsp_usr;
-
-	//CMD Channel
-	wire [LSU_ARBT_I_NUM*1-1:0] arbt_bus_icb_cmd_valid_raw;
-	assign arbt_bus_icb_cmd_valid_raw =
-			// The EAI take higher priority
-													 {
-														 agu_icb_cmd_valid
-													 } ;
-
-	assign arbt_bus_icb_cmd_valid =
-			// The EAI take higher priority
-													 {
-														 agu_icb_cmd_valid_pos
-													 } ;
-
-	assign arbt_bus_icb_cmd_addr =
-													 {
-														 agu_icb_cmd_addr
-													 } ;
-
-	assign arbt_bus_icb_cmd_read =
-													 {
-														 agu_icb_cmd_read
-													 } ;
-
-	assign arbt_bus_icb_cmd_wdata =
-													 {
-														 agu_icb_cmd_wdata
-													 } ;
-
-	assign arbt_bus_icb_cmd_wmask =
-													 {
-														 agu_icb_cmd_wmask
-													 } ;
-												 
-	assign arbt_bus_icb_cmd_lock =
-													 {
-														 agu_icb_cmd_lock
-													 } ;
-
-	assign arbt_bus_icb_cmd_burst =
-													 {
-														 2'b0
-													 } ;
-
-	assign arbt_bus_icb_cmd_beat =
-													 {
-														 1'b0
-													 } ;
-
-	assign arbt_bus_icb_cmd_excl =
-													 {
-														 agu_icb_cmd_excl
-													 } ;
-													 
-	assign arbt_bus_icb_cmd_size =
-													 {
-														 agu_icb_cmd_size
-													 } ;
-
-	assign arbt_bus_icb_cmd_usr =
-													 {
-														 agu_icb_cmd_usr
-													 } ;
-
-	assign                   {
-														 agu_icb_cmd_ready_pos
-													 } = arbt_bus_icb_cmd_ready;
-													 
-
-	//RSP Channel
-	assign                   {
-														 pre_agu_icb_rsp_valid
-													 } = arbt_bus_icb_rsp_valid;
-
-	assign                   {
-														 pre_agu_icb_rsp_err
-													 } = arbt_bus_icb_rsp_err;
-
-	assign                   {
-														 pre_agu_icb_rsp_excl_ok
-													 } = arbt_bus_icb_rsp_excl_ok;
-
-
-	assign                   {
-														 pre_agu_icb_rsp_rdata
-													 } = arbt_bus_icb_rsp_rdata;
-
-	assign                   {
-														 pre_agu_icb_rsp_usr
-													 } = arbt_bus_icb_rsp_usr;
-
-	assign arbt_bus_icb_rsp_ready = {
-														 pre_agu_icb_rsp_ready
-													 };
-
-	sirv_gnrl_icb_arbt # (
-	.ARBT_SCHEME (0),// Priority based
-	.ALLOW_0CYCL_RSP (0),// Dont allow the 0 cycle response because in BIU we always have CMD_DP larger than 0
-											 //   when the response come back from the external bus, it is at least 1 cycle later
-											 //   for ITCM and DTCM, Dcache, .etc, definitely they cannot reponse as 0 cycle
-	.FIFO_OUTS_NUM   (`E203_LSU_OUTS_NUM),
-	.FIFO_CUT_READY  (0),
-	.ARBT_NUM   (LSU_ARBT_I_NUM),
-	.ARBT_PTR_W (LSU_ARBT_I_PTR_W),
-	.USR_W      (USR_W),
-	.AW         (`E203_ADDR_SIZE),
-	.DW         (`E203_XLEN) 
-	) u_lsu_icb_arbt(
-	.o_icb_cmd_valid        (arbt_icb_cmd_valid )     ,
-	.o_icb_cmd_ready        (arbt_icb_cmd_ready )     ,
-	.o_icb_cmd_read         (arbt_icb_cmd_read )      ,
-	.o_icb_cmd_addr         (arbt_icb_cmd_addr )      ,
-	.o_icb_cmd_wdata        (arbt_icb_cmd_wdata )     ,
-	.o_icb_cmd_wmask        (arbt_icb_cmd_wmask)      ,
-	.o_icb_cmd_burst        (arbt_icb_cmd_burst)     ,
-	.o_icb_cmd_beat         (arbt_icb_cmd_beat )     ,
-	.o_icb_cmd_excl         (arbt_icb_cmd_excl )     ,
-	.o_icb_cmd_lock         (arbt_icb_cmd_lock )     ,
-	.o_icb_cmd_size         (arbt_icb_cmd_size )     ,
-	.o_icb_cmd_usr          (arbt_icb_cmd_usr  )     ,
-																
-	.o_icb_rsp_valid        (arbt_icb_rsp_valid )     ,
-	.o_icb_rsp_ready        (arbt_icb_rsp_ready )     ,
-	.o_icb_rsp_err          (arbt_icb_rsp_err)        ,
-	.o_icb_rsp_excl_ok      (arbt_icb_rsp_excl_ok)    ,
-	.o_icb_rsp_rdata        (arbt_icb_rsp_rdata )     ,
-	.o_icb_rsp_usr          (arbt_icb_rsp_usr   )     ,
-															 
-	.i_bus_icb_cmd_ready    (arbt_bus_icb_cmd_ready ) ,
-	.i_bus_icb_cmd_valid    (arbt_bus_icb_cmd_valid ) ,
-	.i_bus_icb_cmd_read     (arbt_bus_icb_cmd_read )  ,
-	.i_bus_icb_cmd_addr     (arbt_bus_icb_cmd_addr )  ,
-	.i_bus_icb_cmd_wdata    (arbt_bus_icb_cmd_wdata ) ,
-	.i_bus_icb_cmd_wmask    (arbt_bus_icb_cmd_wmask)  ,
-	.i_bus_icb_cmd_burst    (arbt_bus_icb_cmd_burst)  ,
-	.i_bus_icb_cmd_beat     (arbt_bus_icb_cmd_beat )  ,
-	.i_bus_icb_cmd_excl     (arbt_bus_icb_cmd_excl )  ,
-	.i_bus_icb_cmd_lock     (arbt_bus_icb_cmd_lock )  ,
-	.i_bus_icb_cmd_size     (arbt_bus_icb_cmd_size )  ,
-	.i_bus_icb_cmd_usr      (arbt_bus_icb_cmd_usr  )  ,
-																
-	.i_bus_icb_rsp_valid    (arbt_bus_icb_rsp_valid ) ,
-	.i_bus_icb_rsp_ready    (arbt_bus_icb_rsp_ready ) ,
-	.i_bus_icb_rsp_err      (arbt_bus_icb_rsp_err)    ,
-	.i_bus_icb_rsp_excl_ok  (arbt_bus_icb_rsp_excl_ok),
-	.i_bus_icb_rsp_rdata    (arbt_bus_icb_rsp_rdata ) ,
-	.i_bus_icb_rsp_usr      (arbt_bus_icb_rsp_usr) ,
-														 
-	.clk                    (clk  ),
-	.rst_n                  (rst_n)
-	);
-
 
 
 	/////////////////////////////////////////////////////////////////////////////////
@@ -448,24 +239,13 @@ module e203_lsu_ctrl(
 	//
 	//  * The FIFO will be pushed when a ICB CMD handshaked
 	//  * The FIFO will be poped  when a ICB RSP handshaked
-	`ifdef E203_HAS_ITCM //{
-	wire arbt_icb_cmd_itcm = (arbt_icb_cmd_addr[`E203_ITCM_BASE_REGION] ==  itcm_region_indic[`E203_ITCM_BASE_REGION]);
-	`else//}{
-	wire arbt_icb_cmd_itcm = 1'b0;
-	`endif//}
 
-	wire arbt_icb_cmd_dtcm = (arbt_icb_cmd_addr[`E203_DTCM_BASE_REGION] ==  dtcm_region_indic[`E203_DTCM_BASE_REGION]);
+	wire arbt_icb_cmd_itcm = (agu_icb_cmd_addr[`E203_ITCM_BASE_REGION] ==  itcm_region_indic[`E203_ITCM_BASE_REGION]);
+	wire arbt_icb_cmd_dtcm = (agu_icb_cmd_addr[`E203_DTCM_BASE_REGION] ==  dtcm_region_indic[`E203_DTCM_BASE_REGION]);
+	wire arbt_icb_cmd_biu    = (~arbt_icb_cmd_itcm) & (~arbt_icb_cmd_dtcm);
 
-
-
-	wire arbt_icb_cmd_dcache = 1'b0;
-
-
-	wire arbt_icb_cmd_biu    = (~arbt_icb_cmd_itcm) & (~arbt_icb_cmd_dtcm) & (~arbt_icb_cmd_dcache);
-
-	wire splt_fifo_wen = arbt_icb_cmd_valid & arbt_icb_cmd_ready;
-	wire splt_fifo_ren = arbt_icb_rsp_valid & arbt_icb_rsp_ready;
-
+	wire splt_fifo_wen = agu_icb_cmd_valid & agu_icb_cmd_ready;
+	wire splt_fifo_ren = pre_agu_icb_rsp_valid & pre_agu_icb_rsp_ready;
 
 	wire splt_fifo_i_ready;
 	wire splt_fifo_i_valid = splt_fifo_wen;
@@ -475,41 +255,35 @@ module e203_lsu_ctrl(
 	wire splt_fifo_empty   = (~splt_fifo_o_valid);
 
 	wire arbt_icb_rsp_biu;
-	wire arbt_icb_rsp_dcache;
 	wire arbt_icb_rsp_dtcm;
 	wire arbt_icb_rsp_itcm;
 	wire arbt_icb_rsp_scond_true;
 
 
 
-	localparam SPLT_FIFO_W = (USR_W+4);
-	wire [`E203_XLEN/8-1:0] arbt_icb_cmd_wmask_pos = arbt_icb_cmd_wmask;
+	localparam SPLT_FIFO_W = (USR_W+3);
+	wire [`E203_XLEN/8-1:0] arbt_icb_cmd_wmask_pos = agu_icb_cmd_wmask;
 
 
 	wire [SPLT_FIFO_W-1:0] splt_fifo_wdat;
 	wire [SPLT_FIFO_W-1:0] splt_fifo_rdat;
 
 	assign splt_fifo_wdat =  {
-					arbt_icb_cmd_biu,
-					arbt_icb_cmd_dcache,
-					arbt_icb_cmd_dtcm,
-					arbt_icb_cmd_itcm,
-					arbt_icb_cmd_usr 
-					};
+			arbt_icb_cmd_biu,
+			arbt_icb_cmd_dtcm,
+			arbt_icb_cmd_itcm,
+			agu_icb_cmd_usr 
+		};
 
-	assign   
-			{
-					arbt_icb_rsp_biu,
-					arbt_icb_rsp_dcache,
-					arbt_icb_rsp_dtcm,
-					arbt_icb_rsp_itcm,
-					arbt_icb_rsp_usr 
-					} = splt_fifo_rdat & {SPLT_FIFO_W{splt_fifo_o_valid}};
-					// The output signals will be used as 
-					//   control signals, so need to be masked
+	assign  {
+				arbt_icb_rsp_biu,
+				arbt_icb_rsp_dtcm,
+				arbt_icb_rsp_itcm,
+				pre_agu_icb_rsp_usr 
+			} = splt_fifo_rdat & {SPLT_FIFO_W{splt_fifo_o_valid}};
+				// The output signals will be used as 
+				//   control signals, so need to be masked
 
-	
-	`ifdef E203_LSU_OUTS_NUM_IS_1 //{
 	sirv_gnrl_pipe_stage # (
 		.CUT_READY(0),
 		.DP(1),
@@ -525,162 +299,71 @@ module e203_lsu_ctrl(
 		.clk  (clk),
 		.rst_n(rst_n)
 	);
-	`else//}{
-	sirv_gnrl_fifo # (
-		.CUT_READY (0),// When entry is clearing, it can also accept new one
-		.MSKO      (0),
-		// The depth of OITF determined how many oustanding can be dispatched to long pipeline
-		.DP  (`E203_LSU_OUTS_NUM),
-		.DW  (SPLT_FIFO_W)//
-	) u_e203_lsu_splt_fifo (
-		.i_vld  (splt_fifo_i_valid),
-		.i_rdy  (splt_fifo_i_ready),
-		.i_dat  (splt_fifo_wdat ),
-		.o_vld  (splt_fifo_o_valid),
-		.o_rdy  (splt_fifo_o_ready),  
-		.o_dat  (splt_fifo_rdat ),  
-		.clk  (clk),
-		.rst_n(rst_n)
-	);
-	`endif//}
 
 
 
-	/////////////////////////////////////////////////////////////////////////////////
-	// Implement the ICB Splitting
 
-	`ifdef E203_LSU_OUTS_NUM_IS_1 //{
-	wire cmd_diff_branch = 1'b0; // If the LSU outstanding is only 1, there is no chance to 
-															 //   happen several outsanding ops, not to mention 
-															 //   with different branches
-	`else//}{
-	// The next transaction can only be issued if there is no any outstanding 
-	//   transactions to different targets
-	wire cmd_diff_branch = (~splt_fifo_empty) & 
-				(~({arbt_icb_cmd_biu, arbt_icb_cmd_dcache, arbt_icb_cmd_dtcm, arbt_icb_cmd_itcm}
-				== {arbt_icb_rsp_biu, arbt_icb_rsp_dcache, arbt_icb_rsp_dtcm, arbt_icb_rsp_itcm}));
 
-	`endif//}
 
-	wire arbt_icb_cmd_addi_condi = (~splt_fifo_full) & (~cmd_diff_branch);
+	wire arbt_icb_cmd_addi_condi = (~splt_fifo_full);
 	wire arbt_icb_cmd_ready_pos;
 
-	wire arbt_icb_cmd_valid_pos = arbt_icb_cmd_addi_condi & arbt_icb_cmd_valid;
-	assign arbt_icb_cmd_ready     = arbt_icb_cmd_addi_condi & arbt_icb_cmd_ready_pos;
+	wire arbt_icb_cmd_valid_pos = arbt_icb_cmd_addi_condi & agu_icb_cmd_valid;
+	assign agu_icb_cmd_ready = arbt_icb_cmd_addi_condi & arbt_icb_cmd_ready_pos;
 
 	wire all_icb_cmd_ready;
 	wire all_icb_cmd_ready_excp_biu;
-	wire all_icb_cmd_ready_excp_dcach;
 	wire all_icb_cmd_ready_excp_dtcm;
 	wire all_icb_cmd_ready_excp_itcm;
 
 
 	assign dtcm_icb_cmd_valid = arbt_icb_cmd_valid_pos & arbt_icb_cmd_dtcm & all_icb_cmd_ready_excp_dtcm;
-	assign dtcm_icb_cmd_addr  = arbt_icb_cmd_addr [`E203_DTCM_ADDR_WIDTH-1:0]; 
-	assign dtcm_icb_cmd_read  = arbt_icb_cmd_read ; 
-	assign dtcm_icb_cmd_wdata = arbt_icb_cmd_wdata;
+	assign dtcm_icb_cmd_addr  = agu_icb_cmd_addr [`E203_DTCM_ADDR_WIDTH-1:0]; 
+	assign dtcm_icb_cmd_read  = agu_icb_cmd_read ; 
+	assign dtcm_icb_cmd_wdata = agu_icb_cmd_wdata;
 	assign dtcm_icb_cmd_wmask = arbt_icb_cmd_wmask_pos;
-	assign dtcm_icb_cmd_lock  = arbt_icb_cmd_lock ;
-	assign dtcm_icb_cmd_excl  = arbt_icb_cmd_excl ;
-	assign dtcm_icb_cmd_size  = arbt_icb_cmd_size ;
+	assign dtcm_icb_cmd_lock  = agu_icb_cmd_lock ;
+	assign dtcm_icb_cmd_excl  = agu_icb_cmd_excl ;
+	assign dtcm_icb_cmd_size  = agu_icb_cmd_size ;
 
-
-	`ifdef E203_HAS_ITCM //{
 	assign itcm_icb_cmd_valid = arbt_icb_cmd_valid_pos & arbt_icb_cmd_itcm & all_icb_cmd_ready_excp_itcm;
-	assign itcm_icb_cmd_addr  = arbt_icb_cmd_addr [`E203_ITCM_ADDR_WIDTH-1:0]; 
-	assign itcm_icb_cmd_read  = arbt_icb_cmd_read ; 
-	assign itcm_icb_cmd_wdata = arbt_icb_cmd_wdata;
+	assign itcm_icb_cmd_addr  = agu_icb_cmd_addr [`E203_ITCM_ADDR_WIDTH-1:0]; 
+	assign itcm_icb_cmd_read  = agu_icb_cmd_read ; 
+	assign itcm_icb_cmd_wdata = agu_icb_cmd_wdata;
 	assign itcm_icb_cmd_wmask = arbt_icb_cmd_wmask_pos;
-	assign itcm_icb_cmd_lock  = arbt_icb_cmd_lock ;
-	assign itcm_icb_cmd_excl  = arbt_icb_cmd_excl ;
-	assign itcm_icb_cmd_size  = arbt_icb_cmd_size ;
-	`endif//}
+	assign itcm_icb_cmd_lock  = agu_icb_cmd_lock ;
+	assign itcm_icb_cmd_excl  = agu_icb_cmd_excl ;
+	assign itcm_icb_cmd_size  = agu_icb_cmd_size ;
 
 	assign biu_icb_cmd_valid = arbt_icb_cmd_valid_pos & arbt_icb_cmd_biu & all_icb_cmd_ready_excp_biu;
-	assign biu_icb_cmd_addr  = arbt_icb_cmd_addr ; 
-	assign biu_icb_cmd_read  = arbt_icb_cmd_read ; 
-	assign biu_icb_cmd_wdata = arbt_icb_cmd_wdata;
+	assign biu_icb_cmd_addr  = agu_icb_cmd_addr ; 
+	assign biu_icb_cmd_read  = agu_icb_cmd_read ; 
+	assign biu_icb_cmd_wdata = agu_icb_cmd_wdata;
 	assign biu_icb_cmd_wmask = arbt_icb_cmd_wmask_pos;
-	assign biu_icb_cmd_lock  = arbt_icb_cmd_lock ;
-	assign biu_icb_cmd_excl  = arbt_icb_cmd_excl ;
-	assign biu_icb_cmd_size  = arbt_icb_cmd_size ;
+	assign biu_icb_cmd_lock  = agu_icb_cmd_lock ;
+	assign biu_icb_cmd_excl  = agu_icb_cmd_excl ;
+	assign biu_icb_cmd_size  = agu_icb_cmd_size ;
 	
-	////assign arbt_icb_cmd_ready_pos =  
-	////          (arbt_icb_cmd_biu & biu_icb_cmd_ready ) 
-	////           `ifdef E203_HAS_DCACHE //{
-	////        | (arbt_icb_cmd_dcache & dcache_icb_cmd_ready) 
-	////           `endif//}
-	////           `ifdef E203_HAS_DTCM //{
-	////        | (arbt_icb_cmd_dtcm & dtcm_icb_cmd_ready) 
-	////           `endif//}
-	////           `ifdef E203_HAS_ITCM //{
-	////        | (arbt_icb_cmd_itcm & itcm_icb_cmd_ready) 
-	////           `endif//}
-	////           ;
-	// To cut the in2out path from addr to the cmd_ready signal
-	//   we just always use the simplified logic
-	//   to always ask for all of the downstream components
-	//   to be ready, this may impact performance a little
-	//   bit in corner case, but doesnt really hurt the common 
-	//   case
-	//
-	assign all_icb_cmd_ready =  
-						(biu_icb_cmd_ready ) 
 
-						 `ifdef E203_HAS_DTCM //{
-					& (dtcm_icb_cmd_ready) 
-						 `endif//}
-						 `ifdef E203_HAS_ITCM //{
-					& (itcm_icb_cmd_ready) 
-						 `endif//}
-						 ;
+	assign all_icb_cmd_ready =  
+			(biu_icb_cmd_ready )& (dtcm_icb_cmd_ready)& (itcm_icb_cmd_ready);
 
 	assign all_icb_cmd_ready_excp_biu =  
-						1'b1
-						 `ifdef E203_HAS_DTCM //{
-					& (dtcm_icb_cmd_ready) 
-						 `endif//}
-						 `ifdef E203_HAS_ITCM //{
-					& (itcm_icb_cmd_ready) 
-						 `endif//}
-						 ;
-
-	assign all_icb_cmd_ready_excp_dcach =  
-						(biu_icb_cmd_ready ) 
-						 `ifdef E203_HAS_DTCM //{
-					& (dtcm_icb_cmd_ready) 
-						 `endif//}
-						 `ifdef E203_HAS_ITCM //{
-					& (itcm_icb_cmd_ready) 
-						 `endif//}
-						 ;
+			1'b1 & (dtcm_icb_cmd_ready) & (itcm_icb_cmd_ready) ;
+	
 	assign all_icb_cmd_ready_excp_dtcm =  
-						(biu_icb_cmd_ready ) 
-						 `ifdef E203_HAS_DTCM //{
-					& 1'b1
-						 `endif//}
-						 `ifdef E203_HAS_ITCM //{
-					& (itcm_icb_cmd_ready) 
-						 `endif//}
-						 ;
+			(biu_icb_cmd_ready ) & 1'b1 & (itcm_icb_cmd_ready) ;
 
- assign all_icb_cmd_ready_excp_itcm =  
-						(biu_icb_cmd_ready ) 
-						 `ifdef E203_HAS_DTCM //{
-					& (dtcm_icb_cmd_ready) 
-						 `endif//}
-						 `ifdef E203_HAS_ITCM //{
-					& 1'b1
-						 `endif//}
-						 ;
+	assign all_icb_cmd_ready_excp_itcm =  
+			(biu_icb_cmd_ready ) & (dtcm_icb_cmd_ready) & 1'b1;
 
 	assign arbt_icb_cmd_ready_pos = all_icb_cmd_ready;  
 
 	assign {
-					arbt_icb_rsp_valid 
-				, arbt_icb_rsp_err 
-				, arbt_icb_rsp_excl_ok 
-				, arbt_icb_rsp_rdata 
+					pre_agu_icb_rsp_valid 
+				, pre_agu_icb_rsp_err 
+				, pre_agu_icb_rsp_excl_ok 
+				, pre_agu_icb_rsp_rdata 
 				 } =
 						({`E203_XLEN+3{arbt_icb_rsp_biu}} &
 												{ biu_icb_rsp_valid 
@@ -689,7 +372,7 @@ module e203_lsu_ctrl(
 												, biu_icb_rsp_rdata 
 												}
 						) 
-						 `ifdef E203_HAS_DTCM //{
+
 					| ({`E203_XLEN+3{arbt_icb_rsp_dtcm}} &
 												{ dtcm_icb_rsp_valid 
 												, dtcm_icb_rsp_err 
@@ -697,8 +380,7 @@ module e203_lsu_ctrl(
 												, dtcm_icb_rsp_rdata 
 												}
 						) 
-						 `endif//}
-						 `ifdef E203_HAS_ITCM //{
+
 					| ({`E203_XLEN+3{arbt_icb_rsp_itcm}} &
 												{ itcm_icb_rsp_valid 
 												, itcm_icb_rsp_err 
@@ -706,16 +388,13 @@ module e203_lsu_ctrl(
 												, itcm_icb_rsp_rdata 
 												}
 						) 
-						 `endif//}
+
 						 ;
 
-	assign biu_icb_rsp_ready    = arbt_icb_rsp_biu    & arbt_icb_rsp_ready;
-						 `ifdef E203_HAS_DTCM //{
-	assign dtcm_icb_rsp_ready   = arbt_icb_rsp_dtcm   & arbt_icb_rsp_ready;
-						 `endif//}
-						 `ifdef E203_HAS_ITCM //{
-	assign itcm_icb_rsp_ready   = arbt_icb_rsp_itcm   & arbt_icb_rsp_ready;
-						 `endif//}
+	assign biu_icb_rsp_ready    = arbt_icb_rsp_biu    & pre_agu_icb_rsp_ready;
+	assign dtcm_icb_rsp_ready   = arbt_icb_rsp_dtcm   & pre_agu_icb_rsp_ready;
+	assign itcm_icb_rsp_ready   = arbt_icb_rsp_itcm   & pre_agu_icb_rsp_ready;
+
 
 
 	/////////////////////////////////////////////////////////////////////////////////
@@ -755,10 +434,10 @@ module e203_lsu_ctrl(
 	assign lsu_o_wbck_err    = pre_agu_icb_rsp_err;
 	assign lsu_o_cmt_buserr  = pre_agu_icb_rsp_err;// The bus-error exception generated
 	assign lsu_o_cmt_badaddr = pre_agu_icb_rsp_addr;
-	assign lsu_o_cmt_ld=  pre_agu_icb_rsp_read;
-	assign lsu_o_cmt_st= ~pre_agu_icb_rsp_read;
+	assign lsu_o_cmt_ld =  pre_agu_icb_rsp_read;
+	assign lsu_o_cmt_st = ~pre_agu_icb_rsp_read;
 
-	assign lsu_ctrl_active = (|arbt_bus_icb_cmd_valid_raw) | splt_fifo_o_valid;
+	assign lsu_ctrl_active = (|agu_icb_cmd_valid) | splt_fifo_o_valid;
 
 endmodule
 

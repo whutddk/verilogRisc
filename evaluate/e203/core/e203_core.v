@@ -635,7 +635,6 @@ module e203_core(
 
 
 
-	`ifdef E203_HAS_ITCM //{
 		.itcm_region_indic   (itcm_region_indic),
 		.itcm_icb_cmd_valid  (lsu2itcm_icb_cmd_valid),
 		.itcm_icb_cmd_ready  (lsu2itcm_icb_cmd_ready),
@@ -653,9 +652,8 @@ module e203_core(
 		.itcm_icb_rsp_excl_ok(lsu2itcm_icb_rsp_excl_ok  ),
 		.itcm_icb_rsp_rdata  (lsu2itcm_icb_rsp_rdata),
 
-	`endif//}
 
-	`ifdef E203_HAS_DTCM //{
+
 		.dtcm_region_indic   (dtcm_region_indic),
 
 		.dtcm_icb_cmd_valid  (lsu2dtcm_icb_cmd_valid),
@@ -674,7 +672,6 @@ module e203_core(
 		.dtcm_icb_rsp_excl_ok(lsu2dtcm_icb_rsp_excl_ok  ),
 		.dtcm_icb_rsp_rdata  (lsu2dtcm_icb_rsp_rdata),
 
-	`endif//}
 
 		.biu_icb_cmd_valid  (lsu2biu_icb_cmd_valid),
 		.biu_icb_cmd_ready  (lsu2biu_icb_cmd_ready),
