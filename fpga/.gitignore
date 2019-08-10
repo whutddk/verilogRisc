@@ -1,6 +1,0 @@
-fpga_flist
-install
-vivado.*
-common.mk.real
-common.mk.github
-
