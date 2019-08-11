@@ -194,7 +194,6 @@ module e203_exu(
     .wbck_dest_idx (rf_wbck_rdidx),
     .wbck_dest_dat (rf_wbck_wdat),
                                  
-    .test_mode     (test_mode),
     .clk           (clk          ),
     .rst_n         (rst_n        ) 
   );

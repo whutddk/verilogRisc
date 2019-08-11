@@ -37,7 +37,6 @@ module e203_exu_regfile(
 
 		output [`E203_XLEN-1:0] x1_r,
 
-		input  test_mode,
 		input  clk,
 		input  rst_n
 	);
