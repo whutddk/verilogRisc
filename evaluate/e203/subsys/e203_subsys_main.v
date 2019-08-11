@@ -382,15 +382,16 @@ module e203_subsys_main(
   // input  [`E203_XLEN-1:0]        sysmem_icb_rsp_rdata,
   // `endif//}
 
-            //driver pin
-    output SRAM_OEn_io,
-    output SRAM_WRn_io,
-    output SRAM_CSn_io,
+    //driver pin
+    output SRAM_OEn,
+    output SRAM_WEn,
+    output SRAM_CEn,
+    output [3:0] SRAM_BEn,
 
-    output [19:0] SRAM_ADDR_io,
-    output [15:0] SRAM_DATA_IN_io,
-    input [15:0] SRAM_DATA_OUT_io,
-    output [15:0] SRAM_DATA_t,
+    output [21:0] SRAM_ADDR,
+    output [31:0] SRAM_DATA_IN,
+    input [31:0] SRAM_DATA_OUT,
+    output [31:0] SRAM_DATA_t,
 
 
 
@@ -1447,15 +1448,16 @@ e203_subsys_mems u_e203_subsys_mems(
     .rst_n         (per_rst_n),
 
 
-  //driver pin
-  .SRAM_OEn_io(SRAM_OEn_io),
-  .SRAM_WRn_io(SRAM_WRn_io),
-  .SRAM_CSn_io(SRAM_CSn_io),
+    //driver pin
+    .SRAM_OEn(SRAM_OEn),
+    .SRAM_WEn(SRAM_WEn),
+    .SRAM_CEn(SRAM_CEn),
+    .SRAM_BEn(SRAM_BEn),
 
-  .SRAM_ADDR_io(SRAM_ADDR_io),
-  .SRAM_DATA_IN_io(SRAM_DATA_IN_io),
-  .SRAM_DATA_OUT_io(SRAM_DATA_OUT_io),
-  .SRAM_DATA_t(SRAM_DATA_t) 
+    .SRAM_ADDR(SRAM_ADDR),
+    .SRAM_DATA_IN(SRAM_DATA_IN),
+    .SRAM_DATA_OUT(SRAM_DATA_OUT),
+    .SRAM_DATA_t(SRAM_DATA_t)
   );
 
 

@@ -46,17 +46,26 @@
 
 module system
 (
-    output SRAM_OEn_io,
-    output SRAM_WRn_io,
-    output SRAM_CSn_io,
-    output SRAM_UBn,
-    output SRAM_LBn,
-    output [19:0] SRAM_ADDR_io,
-    inout [15:0] SRAM_DATA,
+    output [21:0] SRAM0_A,
+    inout [15:0] SRAM0_DQ,
+    output SRAM0_CEn,
+    output SRAM0_OEn,
+    output SRAM0_WEn,
+    output SRAM0_UBn,
+    output SRAM0_LBn,
+    
+    output [21:0] SRAM1_A,
+    inout [15:0] SRAM1_DQ,
+    output SRAM1_CEn,
+    output SRAM1_OEn,
+    output SRAM1_WEn,
+    output SRAM1_UBn,
+    output SRAM1_LBn,
 
 
-	input wire CLK100MHZ,//GCLK-W19
-
+	input wire i_sysclk,//GCLK-W19
+	input wire i_rtcclk,
+    
 	input wire mcu_rst,//MCU_RESET-P20
 
 
@@ -64,19 +73,16 @@ module system
 	inout wire [1:0] gpio,//GPIO00~GPIO031
 
 	// JD (used for JTAG connection)
-	inout wire mcu_TDO,//MCU_TDO-N17
-	inout wire mcu_TCK,//MCU_TCK-P15 
-	inout wire mcu_TDI,//MCU_TDI-T18
-	inout wire mcu_TMS//MCU_TMS-P17
+	inout wire MCU_TDO,//MCU_TDO-N17
+	inout wire MCU_TCK,//MCU_TCK-P15 
+	inout wire MCU_TDI,//MCU_TDI-T18
+	inout wire MCU_TMS//MCU_TMS-P17
 
 );
 
-	assign {SRAM_UBn,SRAM_LBn} = 2'B0;
 	wire clk_out1;
 	wire mmcm_locked;
-
 	wire reset_periph;
-
 	wire ck_rst;
 
 	// All wires connected to the chip top
@@ -112,7 +118,7 @@ module system
 
 	//=================================================
 	// Clock & Reset
-	wire clk_8388;
+	
 	wire clk_16M;
 	
 
@@ -120,26 +126,12 @@ module system
 	mmcm ip_mmcm
 	(
 		.resetn(ck_rst),
-		.clk_in1(CLK100MHZ),
-		.clk_out1(clk_8388),
-		.clk_out2(clk_16M), // 16 MHz, this clock we set to 16MHz 
+		.clk_in1(i_sysclk),
+		.clk_out1(clk_16M),
 		.locked(mmcm_locked)
 	);
 
 	assign ck_rst = mcu_rst;
-
-	reg [7:0] rtcCLK_cnt;
-always @(posedge clk_8388 or negedge ck_rst) begin
-		if (!ck_rst) begin
-			rtcCLK_cnt <= 8'b0;
-			
-		end
-		else begin
-			rtcCLK_cnt <= rtcCLK_cnt + 8'b1;
-		end
-end
-
-
 
 
 	reset_sys ip_reset_sys
@@ -209,12 +201,12 @@ end
 	IOBUF_jtag_TCK
 	(
 		.O(iobuf_jtag_TCK_o),
-		.IO(mcu_TCK),
+		.IO(MCU_TCK),
 		.I(1'b0),
 		.T(1'b1)
 	);
 	assign dut_io_pads_jtag_TCK_i_ival = iobuf_jtag_TCK_o ;
-	PULLUP pullup_TCK (.O(mcu_TCK));
+	PULLUP pullup_TCK (.O(MCU_TCK));
 
 	wire iobuf_jtag_TMS_o;
 	IOBUF
@@ -227,12 +219,12 @@ end
 	IOBUF_jtag_TMS
 	(
 		.O(iobuf_jtag_TMS_o),
-		.IO(mcu_TMS),
+		.IO(MCU_TMS),
 		.I(1'b0),
 		.T(1'b1)
 	);
 	assign dut_io_pads_jtag_TMS_i_ival = iobuf_jtag_TMS_o;
-	PULLUP pullup_TMS (.O(mcu_TMS));
+	PULLUP pullup_TMS (.O(MCU_TMS));
 
 	wire iobuf_jtag_TDI_o;
 	IOBUF
@@ -245,12 +237,12 @@ end
 	IOBUF_jtag_TDI
 	(
 		.O(iobuf_jtag_TDI_o),
-		.IO(mcu_TDI),
+		.IO(MCU_TDI),
 		.I(1'b0),
 		.T(1'b1)
 	);
 	assign dut_io_pads_jtag_TDI_i_ival = iobuf_jtag_TDI_o;
-	PULLUP pullup_TDI (.O(mcu_TDI));
+	PULLUP pullup_TDI (.O(MCU_TDI));
 
 	wire iobuf_jtag_TDO_o;
 	IOBUF
@@ -263,32 +255,67 @@ end
 	IOBUF_jtag_TDO
 	(
 		.O(iobuf_jtag_TDO_o),
-		.IO(mcu_TDO),
+		.IO(MCU_TDO),
 		.I(dut_io_pads_jtag_TDO_o_oval),
 		.T(~dut_io_pads_jtag_TDO_o_oe)
 	);
-	
-wire [15:0] SRAM_DATA_IN_io;
-wire [15:0] SRAM_DATA_OUT_io;
-wire [15:0] SRAM_DATA_t;
 
+
+	
+wire [31:0] SRAM_DATA_IN;
+wire [31:0] SRAM_DATA_OUT;
+wire [31:0] SRAM_DATA_t;
+wire SRAM_OEn;
+wire SRAM_WEn;
+wire SRAM_CEn;
+wire [3:0] SRAM_BEn;
+wire [21:0] SRAM_ADDR;
+
+
+    assign SRAM0_A = SRAM_ADDR;
+    assign SRAM1_A = SRAM_ADDR;
+    assign SRAM0_CEn = SRAM_CEn;
+    assign SRAM0_OEn = SRAM_OEn;
+    assign SRAM0_WEn = SRAM_WEn;
+ 
+    assign SRAM1_CEn = SRAM_CEn;
+    assign SRAM1_OEn = SRAM_OEn;
+    assign SRAM1_WEn = SRAM_WEn;
+
+    assign {SRAM1_UBn,SRAM1_LBn,SRAM0_UBn,SRAM0_LBn} = SRAM_BEn;
 
 genvar i;
 generate
 	for ( i = 0 ; i < 16 ; i = i+1 ) begin
-		IOBUF
+	
+	IOBUF
 	#(
 		.DRIVE(12),
 		.IBUF_LOW_PWR("TRUE"),
 		.IOSTANDARD("DEFAULT"),
 		.SLEW("SLOW")
 	)
-	IOBUF_SRAM_DATA
+	IOBUF_SRAM0_DATA
 	(
-		.O(SRAM_DATA_OUT_io[i]),
-		.IO(SRAM_DATA[i]),
-		.I(SRAM_DATA_IN_io[i]),
+		.O(SRAM_DATA_OUT[i]),
+		.IO(SRAM0_DQ[i]),
+		.I(SRAM_DATA_IN[i]),
 		.T(SRAM_DATA_t[i])
+	);
+	
+	IOBUF
+	#(
+		.DRIVE(12),
+		.IBUF_LOW_PWR("TRUE"),
+		.IOSTANDARD("DEFAULT"),
+		.SLEW("SLOW")
+	)
+	IOBUF_SRAM1_DATA
+	(
+		.O(SRAM_DATA_OUT[i+16]),
+		.IO(SRAM1_DQ[i]),
+		.I(SRAM_DATA_IN[i+16]),
+		.T(SRAM_DATA_t[i+16])
 	);
 	end
  	
@@ -316,24 +343,22 @@ generate
 	e203_soc_top dut
 	(
 
+    .SRAM_OEn(SRAM_OEn),
+    .SRAM_WEn(SRAM_WEn),
+    .SRAM_CEn(SRAM_CEn),
+    .SRAM_BEn(SRAM_BEn),
 
-
-  //driver pin
-  .SRAM_OEn_io(SRAM_OEn_io),
-  .SRAM_WRn_io(SRAM_WRn_io),
-  .SRAM_CSn_io(SRAM_CSn_io),
-
-  .SRAM_ADDR_io(SRAM_ADDR_io),
-  .SRAM_DATA_IN_io(SRAM_DATA_IN_io),
-  .SRAM_DATA_OUT_io(SRAM_DATA_OUT_io),
-  .SRAM_DATA_t(SRAM_DATA_t), 
+    .SRAM_ADDR(SRAM_ADDR),
+    .SRAM_DATA_IN(SRAM_DATA_IN),
+    .SRAM_DATA_OUT(SRAM_DATA_OUT),
+    .SRAM_DATA_t(SRAM_DATA_t),
 
 
 
 		.hfextclk(clk_16M),
 		.hfxoscen(),
 
-		.lfextclk(rtcCLK_cnt[7]), 
+		.lfextclk(i_rtcclk), 
 		.lfxoscen(),
 
 			 // Note: this is the real SoC top AON domain slow clock
