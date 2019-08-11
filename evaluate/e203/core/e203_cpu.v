@@ -633,7 +633,6 @@ module e203_cpu #(
 		.rst_n             (rst_core ) 
 	);
 
-	`ifdef E203_HAS_ITCM //{
 	e203_itcm_ctrl u_e203_itcm_ctrl(
 		.tcm_cgstop   (tcm_cgstop),
 
@@ -674,27 +673,12 @@ module e203_cpu #(
 		.itcm_ram_dout           (itcm_ram_dout),
 		.clk_itcm_ram            (clk_itcm_ram ),
 
-	`ifdef E203_HAS_ITCM_EXTITF //{
-		.ext2itcm_icb_cmd_valid  (ext2itcm_icb_cmd_valid),
-		.ext2itcm_icb_cmd_ready  (ext2itcm_icb_cmd_ready),
-		.ext2itcm_icb_cmd_addr   (ext2itcm_icb_cmd_addr ),
-		.ext2itcm_icb_cmd_read   (ext2itcm_icb_cmd_read ),
-		.ext2itcm_icb_cmd_wdata  (ext2itcm_icb_cmd_wdata),
-		.ext2itcm_icb_cmd_wmask  (ext2itcm_icb_cmd_wmask),
-		
-		.ext2itcm_icb_rsp_valid  (ext2itcm_icb_rsp_valid),
-		.ext2itcm_icb_rsp_ready  (ext2itcm_icb_rsp_ready),
-		.ext2itcm_icb_rsp_err    (ext2itcm_icb_rsp_err  ),
-		.ext2itcm_icb_rsp_rdata  (ext2itcm_icb_rsp_rdata),
-	`endif//}
-
 		.test_mode               (test_mode),
 		.clk                     (clk_itcm),
 		.rst_n                   (rst_itcm) 
 	);
-	`endif//}
 
-	`ifdef E203_HAS_DTCM //{
+
 	e203_dtcm_ctrl u_e203_dtcm_ctrl(
 		.tcm_cgstop   (tcm_cgstop),
 
@@ -724,7 +708,7 @@ module e203_cpu #(
 		.clk                     (clk_dtcm),
 		.rst_n                   (rst_dtcm) 
 	);
-	`endif//}
+
 
 
 	assign inspect_dbg_irq       = dbg_irq_a;

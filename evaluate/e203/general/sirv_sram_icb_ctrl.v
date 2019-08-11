@@ -97,20 +97,24 @@ module sirv_sram_icb_ctrl #(
                     } = byp_icb_cmd_o_pack;
 
      
-  sirv_gnrl_bypbuf # (
-   .DP(1),// We really use bypbuf here
-   .DW(BUF_CMD_PACK_W)
-  ) u_byp_icb_cmd_buf(
-    .i_vld(i_icb_cmd_valid), 
-    .i_rdy(i_icb_cmd_ready), 
-    .i_dat(byp_icb_cmd_i_pack),
-    .o_vld(byp_icb_cmd_valid), 
-    .o_rdy(byp_icb_cmd_ready), 
-    .o_dat(byp_icb_cmd_o_pack),
+  // sirv_gnrl_bypbuf # (
+  //  .DP(0),// We really use bypbuf here
+  //  .DW(BUF_CMD_PACK_W)
+  // ) u_byp_icb_cmd_buf(
+  //   .i_vld(), 
+  //   .i_rdy(i_icb_cmd_ready), 
+  //   .i_dat(),
+  //   .o_vld(), 
+  //   .o_rdy(), 
+  //   .o_dat(),
   
-    .clk  (clk  ),
-    .rst_n(rst_n)  
-   );
+  //   .clk  (clk  ),
+  //   .rst_n(rst_n)  
+  //  );
+
+  assign byp_icb_cmd_valid = i_icb_cmd_valid;
+  assign i_icb_cmd_ready = byp_icb_cmd_ready;
+  assign byp_icb_cmd_o_pack = byp_icb_cmd_i_pack;
 
 
   //////////////////////////////////////////////////////////////
