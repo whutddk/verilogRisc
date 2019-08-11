@@ -367,9 +367,9 @@ module e203_core(
 
 		.itcm_nohold     (itcm_nohold),
 
-	`ifdef E203_HAS_ITCM //{
+
 		.ifu2itcm_holdup (ifu2itcm_holdup),
-		//.ifu2itcm_replay (ifu2itcm_replay),
+
 
 	// The ITCM address region indication signal
 		.itcm_region_indic (itcm_region_indic),
@@ -381,20 +381,14 @@ module e203_core(
 		.ifu2itcm_icb_rsp_ready(ifu2itcm_icb_rsp_ready),
 		.ifu2itcm_icb_rsp_err  (ifu2itcm_icb_rsp_err  ),
 		.ifu2itcm_icb_rsp_rdata(ifu2itcm_icb_rsp_rdata),
-	`endif//}
 
-	`ifdef E203_HAS_MEM_ITF //{
 		.ifu2biu_icb_cmd_valid  (ifu2biu_icb_cmd_valid),
 		.ifu2biu_icb_cmd_ready  (ifu2biu_icb_cmd_ready),
 		.ifu2biu_icb_cmd_addr   (ifu2biu_icb_cmd_addr ),
-		
 		.ifu2biu_icb_rsp_valid  (ifu2biu_icb_rsp_valid),
 		.ifu2biu_icb_rsp_ready  (ifu2biu_icb_rsp_ready),
 		.ifu2biu_icb_rsp_err    (ifu2biu_icb_rsp_err  ),
 		.ifu2biu_icb_rsp_rdata  (ifu2biu_icb_rsp_rdata),
-
-	`endif//}
-
 
 		.ifu_o_valid            (ifu_o_valid         ),
 		.ifu_o_ready            (ifu_o_ready         ),
