@@ -68,18 +68,7 @@ module e203_exu_regfile(
         end
         else begin: rfno0
             assign rf_wen[i] = wbck_dest_wen & (wbck_dest_idx == i) ;
-          `ifdef E203_REGFILE_LATCH_BASED //{
-            e203_clkgate u_e203_clkgate(
-              .clk_in  (clk  ),
-              .test_mode(test_mode),
-              .clock_en(rf_wen[i]),
-              .clk_out (clk_rf_ltch[i])
-            );
-                //from write-enable to clk_rf_ltch to rf_ltch
-            sirv_gnrl_ltch #(`E203_XLEN) rf_ltch (clk_rf_ltch[i], wbck_dest_dat_r, rf_r[i]);
-          `else//}{
             sirv_gnrl_dffl #(`E203_XLEN) rf_dffl (rf_wen[i], wbck_dest_dat, rf_r[i], clk);
-          `endif//}
         end
   
       end//}
@@ -88,40 +77,6 @@ module e203_exu_regfile(
   assign read_src1_dat = rf_r[read_src1_idx];
   assign read_src2_dat = rf_r[read_src2_idx];
   
- // wire  [`E203_XLEN-1:0] x0  = rf_r[0];
- // wire  [`E203_XLEN-1:0] x1  = rf_r[1];
- // wire  [`E203_XLEN-1:0] x2  = rf_r[2];
- // wire  [`E203_XLEN-1:0] x3  = rf_r[3];
- // wire  [`E203_XLEN-1:0] x4  = rf_r[4];
- // wire  [`E203_XLEN-1:0] x5  = rf_r[5];
- // wire  [`E203_XLEN-1:0] x6  = rf_r[6];
- // wire  [`E203_XLEN-1:0] x7  = rf_r[7];
- // wire  [`E203_XLEN-1:0] x8  = rf_r[8];
- // wire  [`E203_XLEN-1:0] x9  = rf_r[9];
- // wire  [`E203_XLEN-1:0] x10 = rf_r[10];
- // wire  [`E203_XLEN-1:0] x11 = rf_r[11];
- // wire  [`E203_XLEN-1:0] x12 = rf_r[12];
- // wire  [`E203_XLEN-1:0] x13 = rf_r[13];
- // wire  [`E203_XLEN-1:0] x14 = rf_r[14];
- // wire  [`E203_XLEN-1:0] x15 = rf_r[15];
- // `ifdef E203_RFREG_NUM_IS_32 //{ 
- // wire  [`E203_XLEN-1:0] x16 = rf_r[16];
- // wire  [`E203_XLEN-1:0] x17 = rf_r[17];
- // wire  [`E203_XLEN-1:0] x18 = rf_r[18];
- // wire  [`E203_XLEN-1:0] x19 = rf_r[19];
- // wire  [`E203_XLEN-1:0] x20 = rf_r[20];
- // wire  [`E203_XLEN-1:0] x21 = rf_r[21];
- // wire  [`E203_XLEN-1:0] x22 = rf_r[22];
- // wire  [`E203_XLEN-1:0] x23 = rf_r[23];
- // wire  [`E203_XLEN-1:0] x24 = rf_r[24];
- // wire  [`E203_XLEN-1:0] x25 = rf_r[25];
- // wire  [`E203_XLEN-1:0] x26 = rf_r[26];
- // wire  [`E203_XLEN-1:0] x27 = rf_r[27];
- // wire  [`E203_XLEN-1:0] x28 = rf_r[28];
- // wire  [`E203_XLEN-1:0] x29 = rf_r[29];
- // wire  [`E203_XLEN-1:0] x30 = rf_r[30];
- // wire  [`E203_XLEN-1:0] x31 = rf_r[31];
- // `endif//}
 
   assign x1_r = rf_r[1];
       
