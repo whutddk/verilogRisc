@@ -60,7 +60,7 @@ module e203_itcm_ctrl(
   input  tcm_cgstop,
   // Note: the ITCM ICB interface only support the single-transaction
   
-  //////////////////////////////////////////////////////////////
+
   //////////////////////////////////////////////////////////////
   // IFU ICB to ITCM
   //    * Bus cmd channel
@@ -81,9 +81,8 @@ module e203_itcm_ctrl(
   output [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata, 
   
   output ifu2itcm_holdup,
-  //output ifu2itcm_replay,
 
-  //////////////////////////////////////////////////////////////
+
   //////////////////////////////////////////////////////////////
   // LSU ICB to ITCM
   //    * Bus cmd channel
@@ -103,6 +102,8 @@ module e203_itcm_ctrl(
             // Note: the RSP rdata is inline with AXI definition
   output [32-1:0] lsu2itcm_icb_rsp_rdata, 
 
+
+
   output                         itcm_ram_cs,  
   output                         itcm_ram_we,  
   output [`E203_ITCM_RAM_AW-1:0] itcm_ram_addr, 
@@ -117,51 +118,15 @@ module e203_itcm_ctrl(
   );
 
 
-  wire arbt_icb_cmd_valid;
-  wire arbt_icb_cmd_ready;
-  wire [`E203_ITCM_ADDR_WIDTH-1:0] arbt_icb_cmd_addr;
-  wire arbt_icb_cmd_read;
-  wire [`E203_ITCM_DATA_WIDTH-1:0] arbt_icb_cmd_wdata;
-  wire [`E203_ITCM_WMSK_WIDTH-1:0] arbt_icb_cmd_wmask;
 
-  wire arbt_icb_rsp_valid;
-  wire arbt_icb_rsp_ready;
-  wire arbt_icb_rsp_err;
-  wire [`E203_ITCM_DATA_WIDTH-1:0] arbt_icb_rsp_rdata;
-
-  
-   
-  assign lsu2itcm_icb_cmd_ready = arbt_icb_cmd_ready;
-  assign lsu2itcm_icb_rsp_valid = arbt_icb_rsp_valid;
-  assign lsu2itcm_icb_rsp_err = arbt_icb_rsp_err;
-  assign lsu2itcm_icb_rsp_rdata = arbt_icb_rsp_rdata;
-    assign arbt_icb_cmd_valid     = lsu2itcm_icb_cmd_valid;
-    assign arbt_icb_cmd_read      = lsu2itcm_icb_cmd_read ;
-    assign arbt_icb_cmd_addr      = lsu2itcm_icb_cmd_addr ;
-    assign arbt_icb_cmd_wdata     = lsu2itcm_icb_cmd_wdata;
-    assign arbt_icb_cmd_wmask     = lsu2itcm_icb_cmd_wmask;
-                               
-    assign arbt_icb_rsp_ready     = lsu2itcm_icb_rsp_ready;
-
-
-
-  wire sram_ready2ifu = 1'b1
-                   //The EXT and load/store have higher priotry than the ifetch
-                      & (~arbt_icb_cmd_valid)
-                   ;
-
-  wire sram_ready2arbt = 1'b1
-                  ;
-
-
-  wire sram_sel_ifu  = sram_ready2ifu  & ifu2itcm_icb_cmd_valid;
-  wire sram_sel_arbt = sram_ready2arbt & arbt_icb_cmd_valid;
+  wire sram_sel_ifu = (~lsu2itcm_icb_cmd_valid)  & ifu2itcm_icb_cmd_valid;
+  wire sram_sel_lsu =   lsu2itcm_icb_cmd_valid;
 
   wire sram_icb_cmd_ready;
   wire sram_icb_cmd_valid;
 
-  assign ifu2itcm_icb_cmd_ready = sram_ready2ifu   & sram_icb_cmd_ready;
-  assign arbt_icb_cmd_ready = sram_ready2arbt  & sram_icb_cmd_ready;
+  assign ifu2itcm_icb_cmd_ready = sram_icb_cmd_ready & (~lsu2itcm_icb_cmd_valid);
+  assign lsu2itcm_icb_cmd_ready = sram_icb_cmd_ready;
 
 
 
@@ -171,23 +136,21 @@ module e203_itcm_ctrl(
   wire [`E203_ITCM_WMSK_WIDTH-1:0] sram_icb_cmd_wmask;
 
   assign sram_icb_cmd_valid = (sram_sel_ifu   & ifu2itcm_icb_cmd_valid)
-                            | (sram_sel_arbt  & arbt_icb_cmd_valid);
+                            | (sram_sel_lsu  & lsu2itcm_icb_cmd_valid);
 
   assign sram_icb_cmd_addr  = ({`E203_ITCM_ADDR_WIDTH{sram_sel_ifu  }} & ifu2itcm_icb_cmd_addr)
-                            | ({`E203_ITCM_ADDR_WIDTH{sram_sel_arbt }} & arbt_icb_cmd_addr);
+                            | ({`E203_ITCM_ADDR_WIDTH{sram_sel_lsu }} & lsu2itcm_icb_cmd_addr);
   assign sram_icb_cmd_read  = (sram_sel_ifu   & ifu2itcm_icb_cmd_read)
-                            | (sram_sel_arbt  & arbt_icb_cmd_read);
+                            | (sram_sel_lsu  & lsu2itcm_icb_cmd_read);
   assign sram_icb_cmd_wdata = ({`E203_ITCM_DATA_WIDTH{sram_sel_ifu  }} & ifu2itcm_icb_cmd_wdata)
-                            | ({`E203_ITCM_DATA_WIDTH{sram_sel_arbt }} & arbt_icb_cmd_wdata);
+                            | ({`E203_ITCM_DATA_WIDTH{sram_sel_lsu }} & lsu2itcm_icb_cmd_wdata);
   assign sram_icb_cmd_wmask = ({`E203_ITCM_WMSK_WIDTH{sram_sel_ifu  }} & ifu2itcm_icb_cmd_wmask)
-                            | ({`E203_ITCM_WMSK_WIDTH{sram_sel_arbt }} & arbt_icb_cmd_wmask);
+                            | ({`E203_ITCM_WMSK_WIDTH{sram_sel_lsu }} & lsu2itcm_icb_cmd_wmask);
 
                         
-  wire sram_icb_cmd_ifu = sram_sel_ifu;
-
 
   wire  [1:0] sram_icb_rsp_usr;
-  wire  [1:0] sram_icb_cmd_usr =  {sram_icb_cmd_ifu,sram_icb_cmd_read};
+  wire  [1:0] sram_icb_cmd_usr =  {sram_sel_ifu,sram_icb_cmd_read};
   wire sram_icb_rsp_ifu ;
   wire sram_icb_rsp_read; 
   assign {sram_icb_rsp_ifu, sram_icb_rsp_read} = sram_icb_rsp_usr;
@@ -199,12 +162,12 @@ module e203_itcm_ctrl(
   wire [`E203_ITCM_DATA_WIDTH-1:0] sram_icb_rsp_rdata;
   wire sram_icb_rsp_err;
 
-  `ifndef E203_HAS_ECC //{
+
   sirv_sram_icb_ctrl #(
       .DW     (`E203_ITCM_DATA_WIDTH),
       .AW     (`E203_ITCM_ADDR_WIDTH),
       .MW     (`E203_ITCM_WMSK_WIDTH),
-      .AW_LSB (2),// ITCM is 64bits wide, so the LSB is 3
+      .AW_LSB (2),// ITCM is 32bits wide, so the LSB is 2
       .USR_W  (2) 
   ) u_sram_icb_ctrl(
      .sram_ctrl_active (itcm_sram_ctrl_active),
@@ -237,8 +200,6 @@ module e203_itcm_ctrl(
     );
 
     assign sram_icb_rsp_err = 1'b0;
-  `endif//}
-
   
 
 
@@ -246,15 +207,15 @@ module e203_itcm_ctrl(
   // The E2 pass to IFU RSP channel only when it is IFU access 
   // The E2 pass to ARBT RSP channel only when it is not IFU access
   assign sram_icb_rsp_ready = sram_icb_rsp_ifu ? 
-                    ifu2itcm_icb_rsp_ready : arbt_icb_rsp_ready;
+                    ifu2itcm_icb_rsp_ready : lsu2itcm_icb_rsp_ready;
 
   assign ifu2itcm_icb_rsp_valid = sram_icb_rsp_valid & sram_icb_rsp_ifu;
   assign ifu2itcm_icb_rsp_err   = sram_icb_rsp_err;
   assign ifu2itcm_icb_rsp_rdata = sram_icb_rsp_rdata;
 
-  assign arbt_icb_rsp_valid = sram_icb_rsp_valid & (~sram_icb_rsp_ifu);
-  assign arbt_icb_rsp_err   = sram_icb_rsp_err;
-  assign arbt_icb_rsp_rdata = sram_icb_rsp_rdata;
+  assign lsu2itcm_icb_rsp_valid = sram_icb_rsp_valid & (~sram_icb_rsp_ifu);
+  assign lsu2itcm_icb_rsp_err   = sram_icb_rsp_err;
+  assign lsu2itcm_icb_rsp_rdata = sram_icb_rsp_rdata;
 
  
 
@@ -272,9 +233,9 @@ module e203_itcm_ctrl(
                 //   *** I$ updated by cache maintaineice operation
   wire ifu_holdup_r;
   // The IFU holdup will be set after last time accessed by a IFU access
-  wire ifu_holdup_set =   sram_icb_cmd_ifu & itcm_ram_cs;
+  wire ifu_holdup_set =   sram_sel_ifu & itcm_ram_cs;
   // The IFU holdup will be cleared after last time accessed by a non-IFU access
-  wire ifu_holdup_clr = (~sram_icb_cmd_ifu) & itcm_ram_cs;
+  wire ifu_holdup_clr = (~sram_sel_ifu) & itcm_ram_cs;
   wire ifu_holdup_ena = ifu_holdup_set | ifu_holdup_clr;
   wire ifu_holdup_nxt = ifu_holdup_set & (~ifu_holdup_clr);
   sirv_gnrl_dfflr #(1)ifu_holdup_dffl(ifu_holdup_ena, ifu_holdup_nxt, ifu_holdup_r, clk, rst_n);
