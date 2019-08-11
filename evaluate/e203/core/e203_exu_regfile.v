@@ -26,45 +26,43 @@
 `include "e203_defines.v"
 
 module e203_exu_regfile(
-	input  [`E203_RFIDX_WIDTH-1:0] read_src1_idx,
-	input  [`E203_RFIDX_WIDTH-1:0] read_src2_idx,
-	output [`E203_XLEN-1:0] read_src1_dat,
-	output [`E203_XLEN-1:0] read_src2_dat,
+		input  [`E203_RFIDX_WIDTH-1:0] read_src1_idx,
+		input  [`E203_RFIDX_WIDTH-1:0] read_src2_idx,
+		output [`E203_XLEN-1:0] read_src1_dat,
+		output [`E203_XLEN-1:0] read_src2_dat,
 
-	input  wbck_dest_wen,
-	input  [`E203_RFIDX_WIDTH-1:0] wbck_dest_idx,
-	input  [`E203_XLEN-1:0] wbck_dest_dat,
+		input  wbck_dest_wen,
+		input  [`E203_RFIDX_WIDTH-1:0] wbck_dest_idx,
+		input  [`E203_XLEN-1:0] wbck_dest_dat,
 
-	output [`E203_XLEN-1:0] x1_r,
+		output [`E203_XLEN-1:0] x1_r,
 
-	input  test_mode,
-	input  clk,
-	input  rst_n
+		input  test_mode,
+		input  clk,
+		input  rst_n
 	);
 
 	wire [`E203_XLEN-1:0] rf_r [`E203_RFREG_NUM-1:0];
 	wire [`E203_RFREG_NUM-1:0] rf_wen;
 		
 	genvar i;
-	generate //{
+	generate
 	
-			for (i=0; i<`E203_RFREG_NUM; i=i+1) begin:regfile//{
-	
-				if(i==0) begin: rf0
-						// x0 cannot be wrote since it is constant-zeros
-						assign rf_wen[i] = 1'b0;
-						assign rf_r[i] = `E203_XLEN'b0;
-					`ifdef E203_REGFILE_LATCH_BASED //{
-						assign clk_rf_ltch[i] = 1'b0;
-					`endif//}
-				end
-				else begin: rfno0
-						assign rf_wen[i] = wbck_dest_wen & (wbck_dest_idx == i) ;
-						sirv_gnrl_dffl #(`E203_XLEN) rf_dffl (rf_wen[i], wbck_dest_dat, rf_r[i], clk);
-				end
-	
-			end//}
-	endgenerate//}
+		for (i=0; i<`E203_RFREG_NUM; i=i+1) begin:regfile
+
+			if(i==0) begin: rf0
+				// x0 cannot be wrote since it is constant-zeros
+				assign rf_wen[i] = 1'b0;
+				assign rf_r[i] = `E203_XLEN'b0;
+
+			end
+			else begin: rfno0
+				assign rf_wen[i] = wbck_dest_wen & (wbck_dest_idx == i) ;
+				sirv_gnrl_dffl #(`E203_XLEN) rf_dffl (rf_wen[i], wbck_dest_dat, rf_r[i], clk);
+			end
+
+		end
+	endgenerate
 	
 	assign read_src1_dat = rf_r[read_src1_idx];
 	assign read_src2_dat = rf_r[read_src2_idx];
