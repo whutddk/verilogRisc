@@ -383,6 +383,6 @@ module sirv_aon_wrapper(
   //    we dont need to sync them in main domain, just directly use it
   assign pc_rtvec = aon_io_bootrom ? 32'h0000_1000 : 
       // This is the external QSPI flash base address 
-                                     32'h2000_0000;
+                                     32'h20c0_0000;
 
 endmodule
