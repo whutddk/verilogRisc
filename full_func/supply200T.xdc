@@ -358,7 +358,8 @@ set_property -dict {PACKAGE_PIN M6 IOSTANDARD LVCMOS33} [get_ports {gpio[31]}]
 
 
 set_property CONFIG_MODE SPIx4 [current_design]
-
+set_property BITSTREAM.CONFIG.CONFIGFALLBACK ENABLE [current_design]
+set_property BITSTREAM.GENERAL.COMPRESS TRUE [current_design]
 
 
 
