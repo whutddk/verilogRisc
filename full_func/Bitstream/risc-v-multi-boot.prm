@@ -1,0 +1,14 @@
+===================================
+Configuration Memory information
+===================================
+File Format        BIN
+Interface          SPIX4
+Size               16M
+Start Address      0x00000000
+End Address        0x00FFFFFF
+
+Addr1         Addr2         Date                    File(s)
+0x00000000    0x000D2993    Aug 15 15:41:32 2019    C:/Users/29505/Desktop/multi_boot.bit
+0x00400000    0x006B4017    Aug 15 16:05:02 2019    C:/Users/29505/Desktop/system16.bit
+0x00800000    0x00AB421F    Aug 15 15:50:50 2019    C:/Users/29505/Desktop/system50M.bit
+0x00C00000    0x00C02847    Aug 14 09:56:38 2019    K:/RISC-V Software Tools/codePrj/hello_world/Debug/hello_world.bin
