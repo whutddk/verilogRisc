@@ -148,11 +148,6 @@ module e203_exu_decode(
 	wire rv32_rd_x0  = (rv32_rd  == 5'b00000);
 	wire rv32_rd_x2  = (rv32_rd  == 5'b00010);
 
-	wire rv16_rs1_x0 = (rv16_rs1 == 5'b00000);
-	wire rv16_rs2_x0 = (rv16_rs2 == 5'b00000);
-	wire rv16_rd_x0  = (rv16_rd  == 5'b00000);
-	wire rv16_rd_x2  = (rv16_rd  == 5'b00010);
-
 	wire rv32_rs1_x31 = (rv32_rs1 == 5'b11111);
 	wire rv32_rs2_x31 = (rv32_rs2 == 5'b11111);
 	wire rv32_rd_x31  = (rv32_rd  == 5'b11111);
