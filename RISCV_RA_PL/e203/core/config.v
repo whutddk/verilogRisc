@@ -39,7 +39,7 @@
 
 `define E203_CFG_REGNUM_IS_32
 /////////////////////////////////////////////////////////////////
-//`define E203_CFG_HAS_ITCM
+`define E203_CFG_HAS_ITCM
     // 64KB have address 16bits wide
     //   The depth is 64*1024*8/64=8192
 `define E203_CFG_ITCM_ADDR_WIDTH  16
