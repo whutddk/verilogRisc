@@ -78,7 +78,7 @@ module e203_core(
   input  dbg_ebreakm_r,
   input  dbg_stopcycle,
 
-  `ifdef E203_HAS_ITCM //{
+
   // The ITCM address region indication signal
   input [`E203_ADDR_SIZE-1:0] itcm_region_indic,
   input  ifu2itcm_holdup,
@@ -100,7 +100,6 @@ module e203_core(
   input  ifu2itcm_icb_rsp_err,   // Response error
             // Note: the RSP rdata is inline with AXI definition
   input  [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata, 
-  `endif//}
 
 
   //////////////////////////////////////////////////////////////
@@ -195,7 +194,7 @@ module e203_core(
   input  [`E203_XLEN-1:0]        fio_icb_rsp_rdata,
   `endif//}
 
-  `ifdef E203_HAS_MEM_ITF //{
+
   //////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////
   // The ICB Interface from Ifetch 
@@ -220,9 +219,9 @@ module e203_core(
   input                          mem_icb_rsp_err  ,
   input                          mem_icb_rsp_excl_ok  ,
   input  [`E203_XLEN-1:0]        mem_icb_rsp_rdata,
-  `endif//}
 
-  `ifdef E203_HAS_ITCM //{
+
+
   //////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////
   // The ICB Interface to ITCM
@@ -244,7 +243,7 @@ module e203_core(
   input                          lsu2itcm_icb_rsp_err  ,
   input                          lsu2itcm_icb_rsp_excl_ok  ,
   input  [`E203_XLEN-1:0]        lsu2itcm_icb_rsp_rdata,
-  `endif//}
+
 
     `ifdef E203_HAS_DTCM //{
   input [`E203_ADDR_SIZE-1:0] dtcm_region_indic,
@@ -346,7 +345,6 @@ module e203_core(
 
     .itcm_nohold     (itcm_nohold),
 
-  `ifdef E203_HAS_ITCM //{
     .ifu2itcm_holdup (ifu2itcm_holdup),
     //.ifu2itcm_replay (ifu2itcm_replay),
 
@@ -360,9 +358,9 @@ module e203_core(
     .ifu2itcm_icb_rsp_ready(ifu2itcm_icb_rsp_ready),
     .ifu2itcm_icb_rsp_err  (ifu2itcm_icb_rsp_err  ),
     .ifu2itcm_icb_rsp_rdata(ifu2itcm_icb_rsp_rdata),
-  `endif//}
 
-  `ifdef E203_HAS_MEM_ITF //{
+
+
     .ifu2biu_icb_cmd_valid  (ifu2biu_icb_cmd_valid),
     .ifu2biu_icb_cmd_ready  (ifu2biu_icb_cmd_ready),
     .ifu2biu_icb_cmd_addr   (ifu2biu_icb_cmd_addr ),
@@ -372,7 +370,6 @@ module e203_core(
     .ifu2biu_icb_rsp_err    (ifu2biu_icb_rsp_err  ),
     .ifu2biu_icb_rsp_rdata  (ifu2biu_icb_rsp_rdata),
 
-  `endif//}
 
 
     .ifu_o_valid            (ifu_o_valid         ),

@@ -31,8 +31,9 @@ module e203_ifu(
   output ifu_active,
   input  itcm_nohold,
 
-  input  [`E203_PC_SIZE-1:0] pc_rtvec,  
-  `ifdef E203_HAS_ITCM //{
+  input  [`E203_PC_SIZE-1:0] pc_rtvec,
+
+
   input  ifu2itcm_holdup,
   //input  ifu2itcm_replay,
 
@@ -53,11 +54,11 @@ module e203_ifu(
   input  ifu2itcm_icb_rsp_valid, // Response valid 
   output ifu2itcm_icb_rsp_ready, // Response ready
   input  ifu2itcm_icb_rsp_err,   // Response error
-            // Note: the RSP rdata is inline with AXI definition
+  // Note: the RSP rdata is inline with AXI definition
   input  [`E203_ITCM_DATA_WIDTH-1:0] ifu2itcm_icb_rsp_rdata, 
-  `endif//}
 
-  `ifdef E203_HAS_MEM_ITF //{
+
+
   //////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////
   // Bus Interface to System Memory, internal protocol called ICB (Internal Chip Bus)
@@ -75,8 +76,7 @@ module e203_ifu(
             // Note: the RSP rdata is inline with AXI definition
   input  [`E203_SYSMEM_DATA_WIDTH-1:0] ifu2biu_icb_rsp_rdata, 
 
-  //input  ifu2biu_replay,
-  `endif//}
+
 
   //////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////
@@ -206,7 +206,7 @@ module e203_ifu(
     .ifu_rsp_instr (ifu_rsp_instr),
     .itcm_nohold   (itcm_nohold),
 
-  `ifdef E203_HAS_ITCM //{
+
     .itcm_region_indic (itcm_region_indic),
     .ifu2itcm_icb_cmd_valid(ifu2itcm_icb_cmd_valid),
     .ifu2itcm_icb_cmd_ready(ifu2itcm_icb_cmd_ready),
@@ -215,10 +215,9 @@ module e203_ifu(
     .ifu2itcm_icb_rsp_ready(ifu2itcm_icb_rsp_ready),
     .ifu2itcm_icb_rsp_err  (ifu2itcm_icb_rsp_err  ),
     .ifu2itcm_icb_rsp_rdata(ifu2itcm_icb_rsp_rdata),
-  `endif//}
 
 
-  `ifdef E203_HAS_MEM_ITF //{
+
     .ifu2biu_icb_cmd_valid(ifu2biu_icb_cmd_valid),
     .ifu2biu_icb_cmd_ready(ifu2biu_icb_cmd_ready),
     .ifu2biu_icb_cmd_addr (ifu2biu_icb_cmd_addr ),
@@ -226,13 +225,10 @@ module e203_ifu(
     .ifu2biu_icb_rsp_ready(ifu2biu_icb_rsp_ready),
     .ifu2biu_icb_rsp_err  (ifu2biu_icb_rsp_err  ),
     .ifu2biu_icb_rsp_rdata(ifu2biu_icb_rsp_rdata),
-    //.ifu2biu_replay (ifu2biu_replay),
-  `endif//}
 
-  `ifdef E203_HAS_ITCM //{
+
     .ifu2itcm_holdup (ifu2itcm_holdup),
-    //.ifu2itcm_replay (ifu2itcm_replay),
-  `endif//}
+
 
     .clk           (clk          ),
     .rst_n         (rst_n        ) 
