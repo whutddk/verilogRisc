@@ -73,7 +73,8 @@ reg icb_rsp_valid_reg;
 reg [31:0] icb_rsp_rdata_reg;
 
 assign i_icb_cmd_ready = i_icb_cmd_valid;
-assign i_icb_rsp_valid = (~i_icb_cmd_read) ? i_icb_cmd_valid : icb_rsp_valid_reg;
+assign i_icb_rsp_valid = ( (~i_icb_cmd_read) & i_icb_cmd_valid ) 
+						| icb_rsp_valid_reg;
 assign i_icb_rsp_rdata = icb_rsp_rdata_reg;
 
 wire [5:0] reg_mux = i_icb_cmd_addr[5:0];
@@ -81,8 +82,8 @@ wire [5:0] reg_mux = i_icb_cmd_addr[5:0];
 
 
 
-//写状态，本拍给结果，下一拍录入
-//读状态，下拍给结果
+//写状态，本拍给结果，下一拍录?
+//读状态，下拍给结?
 always @ ( posedge clk or negedge rst_n ) begin
 	if ( !rst_n ) begin
 		#1 icb_reg0 <= 'd0;
@@ -123,7 +124,7 @@ always @ ( posedge clk or negedge rst_n ) begin
 		#1 icb_rsp_rdata_reg <= 'd0;
 	end
 	else begin
-		if ( ~i_icb_cmd_read & i_icb_cmd_valid ) begin //写
+		if ( ~i_icb_cmd_read & i_icb_cmd_valid ) begin //?
 			case(reg_mux)
 				5'd0:  #1 icb_reg0 <= i_icb_cmd_wdata;
 				5'd1:  #1 icb_reg1 <= i_icb_cmd_wdata;
@@ -168,7 +169,7 @@ always @ ( posedge clk or negedge rst_n ) begin
 			#1 icb_rsp_rdata_reg <= 'd0;
 		end
 
-		else if ( i_icb_cmd_read & i_icb_cmd_valid ) begin //读
+		else if ( i_icb_cmd_read & i_icb_cmd_valid ) begin //?
 			#1 icb_rsp_valid_reg <= 1'b1;
 
 			case(reg_mux)
@@ -213,12 +214,12 @@ always @ ( posedge clk or negedge rst_n ) begin
 
 		end
 
-		else begin
-
-			
-			#1 icb_rsp_rdata_reg <= 'd0;
+		else if ( i_icb_rsp_ready == 1'b1 ) begin
 			#1 icb_rsp_valid_reg <= 1'b0;
+			#1 icb_rsp_rdata_reg <= 'd0;
+		end
 
+		else begin
 
 
 		end
