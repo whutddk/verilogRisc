@@ -77,7 +77,7 @@ assign i_icb_rsp_valid = ( (~i_icb_cmd_read) & i_icb_cmd_valid )
 						| icb_rsp_valid_reg;
 assign i_icb_rsp_rdata = icb_rsp_rdata_reg;
 
-wire [5:0] reg_mux = i_icb_cmd_addr[5:0];
+wire [4:0] reg_mux = i_icb_cmd_addr[4:0];
 
 
 
@@ -126,38 +126,39 @@ always @ ( posedge clk or negedge rst_n ) begin
 	else begin
 		if ( ~i_icb_cmd_read & i_icb_cmd_valid ) begin //?
 			case(reg_mux)
-				5'd0:  #1 icb_reg0 <= i_icb_cmd_wdata;
-				5'd1:  #1 icb_reg1 <= i_icb_cmd_wdata;
-				5'd2:  #1 icb_reg2 <= i_icb_cmd_wdata;
-				5'd3:  #1 icb_reg3 <= i_icb_cmd_wdata;
-				5'd4:  #1 icb_reg4 <= i_icb_cmd_wdata;
-				5'd5:  #1 icb_reg5 <= i_icb_cmd_wdata;
-				5'd6:  #1 icb_reg6 <= i_icb_cmd_wdata;
-				5'd7:  #1 icb_reg7 <= i_icb_cmd_wdata;
-				5'd8:  #1 icb_reg8 <= i_icb_cmd_wdata;
-				5'd9:  #1 icb_reg9 <= i_icb_cmd_wdata;
-				5'd10: #1  icb_reg10 <= i_icb_cmd_wdata;
-				5'd11: #1  icb_reg11 <= i_icb_cmd_wdata;
-				5'd12: #1  icb_reg12 <= i_icb_cmd_wdata;
-				5'd13: #1  icb_reg13 <= i_icb_cmd_wdata;
-				5'd14: #1  icb_reg14 <= i_icb_cmd_wdata;
-				5'd15: #1  icb_reg15 <= i_icb_cmd_wdata;
-				5'd16: #1  icb_reg16 <= i_icb_cmd_wdata;
-				5'd17: #1  icb_reg17 <= i_icb_cmd_wdata;
-				5'd18: #1  icb_reg18 <= i_icb_cmd_wdata;
-				5'd19: #1  icb_reg19 <= i_icb_cmd_wdata;
-				5'd20: #1  icb_reg20 <= i_icb_cmd_wdata;
-				5'd21: #1  icb_reg21 <= i_icb_cmd_wdata;
-				5'd22: #1  icb_reg22 <= i_icb_cmd_wdata;
-				5'd23: #1  icb_reg23 <= i_icb_cmd_wdata;
-				5'd24: #1  icb_reg24 <= i_icb_cmd_wdata;
-				5'd25: #1  icb_reg25 <= i_icb_cmd_wdata;
-				5'd26: #1  icb_reg26 <= i_icb_cmd_wdata;
-				5'd27: #1  icb_reg27 <= i_icb_cmd_wdata;
-				5'd28: #1  icb_reg28 <= i_icb_cmd_wdata;
-				5'd29: #1  icb_reg29 <= i_icb_cmd_wdata;
-				5'd30: #1  icb_reg30 <= i_icb_cmd_wdata;
-				5'd31: #1  icb_reg31 <= i_icb_cmd_wdata;
+				5'd0: begin   #1 icb_reg0 <= i_icb_cmd_wdata;end
+				5'd1: begin   #1 icb_reg1 <= i_icb_cmd_wdata;end
+				5'd2: begin   #1 icb_reg2 <= i_icb_cmd_wdata;end
+				5'd3: begin   #1 icb_reg3 <= i_icb_cmd_wdata;end
+				5'd4: begin   #1 icb_reg4 <= i_icb_cmd_wdata;end
+				5'd5: begin   #1 icb_reg5 <= i_icb_cmd_wdata;end
+				5'd6: begin   #1 icb_reg6 <= i_icb_cmd_wdata;end
+				5'd7: begin   #1 icb_reg7 <= i_icb_cmd_wdata;end
+				5'd8: begin   #1 icb_reg8 <= i_icb_cmd_wdata;end
+				5'd9: begin   #1 icb_reg9 <= i_icb_cmd_wdata;end
+				5'd10:begin  #1  icb_reg10 <= i_icb_cmd_wdata;end
+				5'd11:begin  #1  icb_reg11 <= i_icb_cmd_wdata;end
+				5'd12:begin  #1  icb_reg12 <= i_icb_cmd_wdata;end
+				5'd13:begin  #1  icb_reg13 <= i_icb_cmd_wdata;end
+				5'd14:begin  #1  icb_reg14 <= i_icb_cmd_wdata;end
+				5'd15:begin  #1  icb_reg15 <= i_icb_cmd_wdata;end
+				5'd16:begin  #1  icb_reg16 <= i_icb_cmd_wdata;end
+				5'd17:begin  #1  icb_reg17 <= i_icb_cmd_wdata;end
+				5'd18:begin  #1  icb_reg18 <= i_icb_cmd_wdata;end
+				5'd19:begin  #1  icb_reg19 <= i_icb_cmd_wdata;end
+				5'd20:begin  #1  icb_reg20 <= i_icb_cmd_wdata;end
+				5'd21:begin  #1  icb_reg21 <= i_icb_cmd_wdata;end
+				5'd22:begin  #1  icb_reg22 <= i_icb_cmd_wdata;end
+				5'd23:begin  #1  icb_reg23 <= i_icb_cmd_wdata;end
+				5'd24:begin  #1  icb_reg24 <= i_icb_cmd_wdata;end
+				5'd25:begin  #1  icb_reg25 <= i_icb_cmd_wdata;end
+				5'd26:begin  #1  icb_reg26 <= i_icb_cmd_wdata;end
+				5'd27:begin  #1  icb_reg27 <= i_icb_cmd_wdata;end
+				5'd28:begin  #1  icb_reg28 <= i_icb_cmd_wdata;end
+				5'd29:begin  #1  icb_reg29 <= i_icb_cmd_wdata;end
+				5'd30:begin  #1  icb_reg30 <= i_icb_cmd_wdata;end
+				5'd31:begin  #1  icb_reg31 <= i_icb_cmd_wdata;end
+				default: begin end 
 
 
 
@@ -173,39 +174,39 @@ always @ ( posedge clk or negedge rst_n ) begin
 			#1 icb_rsp_valid_reg <= 1'b1;
 
 			case(reg_mux)
-				5'd0:  #1 icb_rsp_rdata_reg <= icb_reg0;
-				5'd1:  #1 icb_rsp_rdata_reg <= icb_reg1;
-				5'd2:  #1 icb_rsp_rdata_reg <= icb_reg2;
-				5'd3:  #1 icb_rsp_rdata_reg <= icb_reg3;
-				5'd4:  #1 icb_rsp_rdata_reg <= icb_reg4;
-				5'd5:  #1 icb_rsp_rdata_reg <= icb_reg5;
-				5'd6:  #1 icb_rsp_rdata_reg <= icb_reg6;
-				5'd7:  #1 icb_rsp_rdata_reg <= icb_reg7;
-				5'd8:  #1 icb_rsp_rdata_reg <= icb_reg8;
-				5'd9:  #1 icb_rsp_rdata_reg <= icb_reg9;
-				5'd10: #1  icb_rsp_rdata_reg <= icb_reg10;
-				5'd11: #1  icb_rsp_rdata_reg <= icb_reg11;
-				5'd12: #1  icb_rsp_rdata_reg <= icb_reg12;
-				5'd13: #1  icb_rsp_rdata_reg <= icb_reg13;
-				5'd14: #1  icb_rsp_rdata_reg <= icb_reg14;
-				5'd15: #1  icb_rsp_rdata_reg <= icb_reg15;
-				5'd16: #1  icb_rsp_rdata_reg <= icb_reg16;
-				5'd17: #1  icb_rsp_rdata_reg <= icb_reg17;
-				5'd18: #1  icb_rsp_rdata_reg <= icb_reg18;
-				5'd19: #1  icb_rsp_rdata_reg <= icb_reg19;
-				5'd20: #1  icb_rsp_rdata_reg <= icb_reg20;
-				5'd21: #1  icb_rsp_rdata_reg <= icb_reg21;
-				5'd22: #1  icb_rsp_rdata_reg <= icb_reg22;
-				5'd23: #1  icb_rsp_rdata_reg <= icb_reg23;
-				5'd24: #1  icb_rsp_rdata_reg <= icb_reg24;
-				5'd25: #1  icb_rsp_rdata_reg <= icb_reg25;
-				5'd26: #1  icb_rsp_rdata_reg <= icb_reg26;
-				5'd27: #1  icb_rsp_rdata_reg <= icb_reg27;
-				5'd28: #1  icb_rsp_rdata_reg <= icb_reg28;
-				5'd29: #1  icb_rsp_rdata_reg <= icb_reg29;
-				5'd30: #1  icb_rsp_rdata_reg <= icb_reg30;
-				5'd31: #1  icb_rsp_rdata_reg <= icb_reg31;
-			default: #1 icb_rsp_rdata_reg <= 'd0;
+				5'd0:  begin  #1 icb_rsp_rdata_reg <= icb_reg0;end
+				5'd1:  begin  #1 icb_rsp_rdata_reg <= icb_reg1;end
+				5'd2:  begin  #1 icb_rsp_rdata_reg <= icb_reg2;end
+				5'd3:  begin  #1 icb_rsp_rdata_reg <= icb_reg3;end
+				5'd4:  begin  #1 icb_rsp_rdata_reg <= icb_reg4;end
+				5'd5:  begin  #1 icb_rsp_rdata_reg <= icb_reg5;end
+				5'd6:  begin  #1 icb_rsp_rdata_reg <= icb_reg6;end
+				5'd7:  begin  #1 icb_rsp_rdata_reg <= icb_reg7;end
+				5'd8:  begin  #1 icb_rsp_rdata_reg <= icb_reg8;end
+				5'd9:  begin  #1 icb_rsp_rdata_reg <= icb_reg9;end
+				5'd10: begin #1  icb_rsp_rdata_reg <= icb_reg10;end
+				5'd11: begin #1  icb_rsp_rdata_reg <= icb_reg11;end
+				5'd12: begin #1  icb_rsp_rdata_reg <= icb_reg12;end
+				5'd13: begin #1  icb_rsp_rdata_reg <= icb_reg13;end
+				5'd14: begin #1  icb_rsp_rdata_reg <= icb_reg14;end
+				5'd15: begin #1  icb_rsp_rdata_reg <= icb_reg15;end
+				5'd16: begin #1  icb_rsp_rdata_reg <= icb_reg16;end
+				5'd17: begin #1  icb_rsp_rdata_reg <= icb_reg17;end
+				5'd18: begin #1  icb_rsp_rdata_reg <= icb_reg18;end
+				5'd19: begin #1  icb_rsp_rdata_reg <= icb_reg19;end
+				5'd20: begin #1  icb_rsp_rdata_reg <= icb_reg20;end
+				5'd21: begin #1  icb_rsp_rdata_reg <= icb_reg21;end
+				5'd22: begin #1  icb_rsp_rdata_reg <= icb_reg22;end
+				5'd23: begin #1  icb_rsp_rdata_reg <= icb_reg23;end
+				5'd24: begin #1  icb_rsp_rdata_reg <= icb_reg24;end
+				5'd25: begin #1  icb_rsp_rdata_reg <= icb_reg25;end
+				5'd26: begin #1  icb_rsp_rdata_reg <= icb_reg26;end
+				5'd27: begin #1  icb_rsp_rdata_reg <= icb_reg27;end
+				5'd28: begin #1  icb_rsp_rdata_reg <= icb_reg28;end
+				5'd29: begin #1  icb_rsp_rdata_reg <= icb_reg29;end
+				5'd30: begin #1  icb_rsp_rdata_reg <= icb_reg30;end
+				5'd31: begin #1  icb_rsp_rdata_reg <= icb_reg31;end
+			default: #1 icb_rsp_rdata_reg <= 'd66;
 
 
 

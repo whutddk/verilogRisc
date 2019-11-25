@@ -67,28 +67,28 @@ initial begin
 # 100	
 
 	i_icb_cmd_valid = 1'b1;
-	i_icb_cmd_addr = 5'd0; 
+	i_icb_cmd_addr = 5'd8; 
 	i_icb_cmd_read = 'd0; 
 	i_icb_cmd_wdata = 32'd10;
 
 # 20 
 
 	i_icb_cmd_valid = 1'b1;
-	i_icb_cmd_addr = 5'd1; 
+	i_icb_cmd_addr = 5'd9; 
 	i_icb_cmd_read = 'd0; 
 	i_icb_cmd_wdata = 32'd12;
 
 # 20 
 
 	i_icb_cmd_valid = 1'b1;
-	i_icb_cmd_addr = 5'd2; 
+	i_icb_cmd_addr = 5'd10; 
 	i_icb_cmd_read = 'd0; 
 	i_icb_cmd_wdata = 32'd14;
 
 # 20 
 
 	i_icb_cmd_valid = 1'b0;
-	i_icb_cmd_addr = 5'd2; 
+	i_icb_cmd_addr = 5'd11; 
 	i_icb_cmd_read = 'd0; 
 	i_icb_cmd_wdata = 32'd14;
 
@@ -96,13 +96,13 @@ initial begin
 # 20 
 
 	i_icb_cmd_valid = 1'b1;
-	i_icb_cmd_addr = 5'd0; 
+	i_icb_cmd_addr = 5'd8; 
 	i_icb_cmd_read = 'd1; 
 
 # 20 
 
 	i_icb_cmd_valid = 1'b1;
-	i_icb_cmd_addr = 5'd3; 
+	i_icb_cmd_addr = 5'd9; 
 	i_icb_cmd_read = 'd1; 
 
 # 20 
