@@ -36,7 +36,24 @@ module system
   inout wire [3:0] qspi_dq,
                            
                            
-                           
+  output [5:0] powerENA,
+  output [5:0] thrusterDirectA,
+  output [5:0] powerENB,
+  output [5:0] thrusterDirectB,
+
+  input [3:0] petectIO,
+  output [5:0]  safetyPluseA,
+  output [5:0]  safetyPluseB,
+
+  output redLed,
+  output greenLed,
+
+  output BZ, 
+
+
+
+
+
 
   //gpio
   inout wire [31:0] gpio,//GPIO00~GPIO031
@@ -53,6 +70,12 @@ module system
   inout wire pmu_paden,  //PMU_VDDPADEN-U15
   inout wire pmu_padrst, //PMU_VADDPARST_V15
   inout wire mcu_wakeup  //MCU_WAKE-N15
+
+
+
+
+
+
 );
 
   wire clk_out1;
@@ -1010,6 +1033,26 @@ module system
 
     .lfextclk(CLK32768KHZ), 
     .lfxoscen(),
+
+
+
+.powerENA(powerENA),
+.thrusterDirectA(thrusterDirectA),
+.powerENB(powerENB),
+.thrusterDirectB(thrusterDirectB),
+
+.petectIO(petectIO),
+.safetyPluseA(safetyPluseA),
+.safetyPluseB(safetyPluseB),
+
+.redLed(redLed),
+.greenLed(greenLed),
+
+.BZ(BZ),
+
+
+
+
 
        // Note: this is the real SoC top AON domain slow clock
     .io_pads_jtag_TCK_i_ival(dut_io_pads_jtag_TCK_i_ival),

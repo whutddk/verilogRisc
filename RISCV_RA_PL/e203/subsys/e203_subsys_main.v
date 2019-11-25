@@ -434,6 +434,26 @@ module e203_subsys_main(
 
   input  test_mode,
 
+  output [5:0] powerENA,
+  output [5:0] thrusterDirectA,
+  output [5:0] powerENB,
+  output [5:0] thrusterDirectB,
+
+  input [3:0] petectIO,
+  output [5:0]  safetyPluseA,
+  output [5:0]  safetyPluseB,
+
+  output redLed,
+  output greenLed,
+
+  output BZ,
+
+
+
+
+
+
+
   input  corerst, // The original async reset
   input  hfclkrst, // The original async reset
   input  hfextclk,// The original clock from crystal
@@ -1620,6 +1640,22 @@ e203_subsys_clint u_e203_subsys_clint(
     .gpio_irq_29            (gpio_irq_29),
     .gpio_irq_30            (gpio_irq_30),
     .gpio_irq_31            (gpio_irq_31),
+
+
+.powerENA(powerENA),
+.thrusterDirectA(thrusterDirectA),
+.powerENB(powerENB),
+.thrusterDirectB(thrusterDirectB),
+
+.petectIO(petectIO),
+.safetyPluseA(safetyPluseA),
+.safetyPluseB(safetyPluseB),
+
+.redLed(redLed),
+.greenLed(greenLed),
+
+.BZ(BZ),
+
 
     .clk           (hfclk  ),
     .bus_rst_n     (bus_rst_n), 

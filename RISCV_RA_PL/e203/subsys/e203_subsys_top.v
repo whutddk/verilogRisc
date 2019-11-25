@@ -438,6 +438,23 @@ module e203_subsys_top(
   output  io_pads_jtag_TRST_n_o_pue,
   output  io_pads_jtag_TRST_n_o_ds,
 
+
+  output [5:0] powerENA,
+  output [5:0] thrusterDirectA,
+  output [5:0] powerENB,
+  output [5:0] thrusterDirectB,
+
+  input [3:0] petectIO,
+  output [5:0]  safetyPluseA,
+  output [5:0]  safetyPluseB,
+
+  output redLed,
+  output greenLed,
+
+  output BZ,
+
+
+
   input  test_iso_override,
   input  test_mode 
   );
@@ -879,6 +896,22 @@ module e203_subsys_top(
     .sysmem_icb_rsp_ready  (sysmem_icb_rsp_ready),
     .sysmem_icb_rsp_err    (sysmem_icb_rsp_err  ),
     .sysmem_icb_rsp_rdata  (sysmem_icb_rsp_rdata),
+
+.powerENA(powerENA),
+.thrusterDirectA(thrusterDirectA),
+.powerENB(powerENB),
+.thrusterDirectB(thrusterDirectB),
+
+.petectIO(petectIO),
+.safetyPluseA(safetyPluseA),
+.safetyPluseB(safetyPluseB),
+
+.redLed(redLed),
+.greenLed(greenLed),
+
+.BZ(BZ),
+
+
 
     .test_mode     (test_mode), 
     .hfclk           (hfclk   ),

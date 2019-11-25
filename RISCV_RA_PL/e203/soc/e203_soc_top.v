@@ -235,6 +235,31 @@ module e203_soc_top(
   output  io_pads_gpio_31_o_ds,
 
 
+  output [5:0] powerENA,
+  output [5:0] thrusterDirectA,
+  output [5:0] powerENB,
+  output [5:0] thrusterDirectB,
+
+  input [3:0] petectIO,
+  output [5:0]  safetyPluseA,
+  output [5:0]  safetyPluseB,
+
+  output redLed,
+  output greenLed,
+
+  output BZ,
+
+
+
+
+
+
+
+
+
+
+
+
   //QSPI SCK and CS is output without enable
   output  io_pads_qspi_sck_o_oval,
   output  io_pads_qspi_cs_0_o_oval,
@@ -668,6 +693,32 @@ module e203_soc_top(
   .io_pads_qspi_cs_0_o_ie     (),
   .io_pads_qspi_cs_0_o_pue    (),
   .io_pads_qspi_cs_0_o_ds     (),
+
+
+.powerENA(powerENA),
+.thrusterDirectA(thrusterDirectA),
+.powerENB(powerENB),
+.thrusterDirectB(thrusterDirectB),
+
+.petectIO(petectIO),
+.safetyPluseA(safetyPluseA),
+.safetyPluseB(safetyPluseB),
+
+.redLed(redLed),
+.greenLed(greenLed),
+
+.BZ(BZ),
+
+
+
+
+
+
+
+
+
+
+
 
     .hfextclk        (hfextclk),
     .hfxoscen        (hfxoscen),

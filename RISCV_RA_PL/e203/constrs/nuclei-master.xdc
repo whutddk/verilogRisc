@@ -137,6 +137,79 @@ set_property IOSTANDARD LVCMOS33 [get_ports {gpio[1]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {gpio[0]}]
 
 
+
+
+
+set_property -dict {PACKAGE_PIN J16 IOSTANDARD LVCMOS33} [get_ports {powerENA[0]}];
+set_property -dict {PACKAGE_PIN H13 IOSTANDARD LVCMOS33} [get_ports {powerENA[1]}];
+set_property -dict {PACKAGE_PIN G13 IOSTANDARD LVCMOS33} [get_ports {powerENA[2]}];
+set_property -dict {PACKAGE_PIN G15 IOSTANDARD LVCMOS33} [get_ports {powerENA[3]}];
+set_property -dict {PACKAGE_PIN G16 IOSTANDARD LVCMOS33} [get_ports {powerENA[4]}];
+set_property -dict {PACKAGE_PIN J14 IOSTANDARD LVCMOS33} [get_ports {powerENA[5]}];
+
+set_property -dict {PACKAGE_PIN H14 IOSTANDARD LVCMOS33} [get_ports {powerENB[0]}];
+set_property -dict {PACKAGE_PIN G17 IOSTANDARD LVCMOS33} [get_ports {powerENB[1]}];
+set_property -dict {PACKAGE_PIN G18 IOSTANDARD LVCMOS33} [get_ports {powerENB[2]}];
+set_property -dict {PACKAGE_PIN J15 IOSTANDARD LVCMOS33} [get_ports {powerENB[3]}];
+set_property -dict {PACKAGE_PIN H15 IOSTANDARD LVCMOS33} [get_ports {powerENB[4]}];
+set_property -dict {PACKAGE_PIN H17 IOSTANDARD LVCMOS33} [get_ports {powerENB[5]}];
+
+set_property -dict {PACKAGE_PIN H18 IOSTANDARD LVCMOS33} [get_ports {thrusterDirectA[0]}];
+set_property -dict {PACKAGE_PIN J22 IOSTANDARD LVCMOS33} [get_ports {thrusterDirectA[1]}];
+set_property -dict {PACKAGE_PIN H22 IOSTANDARD LVCMOS33} [get_ports {thrusterDirectA[2]}];
+set_property -dict {PACKAGE_PIN H20 IOSTANDARD LVCMOS33} [get_ports {thrusterDirectA[3]}];
+set_property -dict {PACKAGE_PIN G20 IOSTANDARD LVCMOS33} [get_ports {thrusterDirectA[4]}];
+set_property -dict {PACKAGE_PIN K21 IOSTANDARD LVCMOS33} [get_ports {thrusterDirectA[5]}];
+
+set_property -dict {PACKAGE_PIN K22 IOSTANDARD LVCMOS33} [get_ports {thrusterDirectB[0]}];
+set_property -dict {PACKAGE_PIN M21 IOSTANDARD LVCMOS33} [get_ports {thrusterDirectB[1]}];
+set_property -dict {PACKAGE_PIN L21 IOSTANDARD LVCMOS33} [get_ports {thrusterDirectB[2]}];
+set_property -dict {PACKAGE_PIN J20 IOSTANDARD LVCMOS33} [get_ports {thrusterDirectB[3]}];
+set_property -dict {PACKAGE_PIN J21 IOSTANDARD LVCMOS33} [get_ports {thrusterDirectB[4]}];
+set_property -dict {PACKAGE_PIN J19 IOSTANDARD LVCMOS33} [get_ports {thrusterDirectB[5]}];
+
+set_property -dict {PACKAGE_PIN H19 IOSTANDARD LVCMOS33} [get_ports {petectIO[0]}];
+set_property -dict {PACKAGE_PIN K18 IOSTANDARD LVCMOS33} [get_ports {petectIO[1]}];
+set_property -dict {PACKAGE_PIN K19 IOSTANDARD LVCMOS33} [get_ports {petectIO[2]}];
+set_property -dict {PACKAGE_PIN L19 IOSTANDARD LVCMOS33} [get_ports {petectIO[3]}];
+
+
+set_property -dict {PACKAGE_PIN L20 IOSTANDARD LVCMOS33} [get_ports {safetyPluseA[0]}];
+set_property -dict {PACKAGE_PIN N22 IOSTANDARD LVCMOS33} [get_ports {safetyPluseA[1]}];
+set_property -dict {PACKAGE_PIN M22 IOSTANDARD LVCMOS33} [get_ports {safetyPluseA[2]}];
+set_property -dict {PACKAGE_PIN M18 IOSTANDARD LVCMOS33} [get_ports {safetyPluseA[3]}];
+set_property -dict {PACKAGE_PIN L18 IOSTANDARD LVCMOS33} [get_ports {safetyPluseA[4]}];
+set_property -dict {PACKAGE_PIN N18 IOSTANDARD LVCMOS33} [get_ports {safetyPluseA[5]}];
+
+set_property -dict {PACKAGE_PIN N19 IOSTANDARD LVCMOS33} [get_ports {safetyPluseB[0]}];
+set_property -dict {PACKAGE_PIN N20 IOSTANDARD LVCMOS33} [get_ports {safetyPluseB[1]}];
+set_property -dict {PACKAGE_PIN M20 IOSTANDARD LVCMOS33} [get_ports {safetyPluseB[2]}];
+set_property -dict {PACKAGE_PIN K13 IOSTANDARD LVCMOS33} [get_ports {safetyPluseB[3]}];
+set_property -dict {PACKAGE_PIN K14 IOSTANDARD LVCMOS33} [get_ports {safetyPluseB[4]}];
+set_property -dict {PACKAGE_PIN M13 IOSTANDARD LVCMOS33} [get_ports {safetyPluseB[5]}];
+
+set_property -dict {PACKAGE_PIN L13 IOSTANDARD LVCMOS33} [get_ports {redLed}];
+set_property -dict {PACKAGE_PIN K17 IOSTANDARD LVCMOS33} [get_ports {greenLed}];
+set_property -dict {PACKAGE_PIN J17 IOSTANDARD LVCMOS33} [get_ports {BZ}];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #####         SPI Configurate Setting        #######
 set_property BITSTREAM.CONFIG.SPI_BUSWIDTH 4 [current_design] 
 set_property CONFIG_MODE SPIx4 [current_design] 
