@@ -284,8 +284,8 @@ assign stepperRST = icb_reg28[0];
 
 
 
-wire [ 11 : 0 ] thrusterPluseA,
-wire [ 11 : 0 ] thrusterPluseB,
+wire [ 11 : 0 ] thrusterPluseA;
+wire [ 11 : 0 ] thrusterPluseB;
 
 
 
