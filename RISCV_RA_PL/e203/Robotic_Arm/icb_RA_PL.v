@@ -17,6 +17,7 @@ module PRM_RA_PL (
     output greenLed,
 
     output BZ,
+    input CLK100MHZ,
 
 
 
@@ -292,7 +293,7 @@ wire [ 5 : 0 ] thrusterPluseB;
 
 stepper_package i_stepper_package0 
 (
-	.CLK(clk),
+	.CLK(CLK100MHZ),
 	.RST_n(stepperRST),
 	
 	.stepCnt(stepCnt[191:0]), //step n step ,int16_t
@@ -311,7 +312,7 @@ stepper_package i_stepper_package0
 
 stepper_package i_stepper_package1
 (
-	.CLK(clk),
+	.CLK(CLK100MHZ),
 	.RST_n(stepperRST),
 	
 	.stepCnt(stepCnt[383:192]), //step n step ,int16_t
@@ -332,7 +333,7 @@ stepper_package i_stepper_package1
 
 teleStop i_teleStop
 (
-	.CLK(clk),
+	.CLK(CLK100MHZ),
 	.RST_n(stepperRST),
 
 	.petectIO(petectIO),

@@ -329,7 +329,7 @@ module system
   // Clock & Reset
   wire clk_8388;
   wire clk_16M;
-  
+  wire CLK100;
 
 
   mmcm ip_mmcm
@@ -338,6 +338,7 @@ module system
     .clk_in1(CLK100MHZ),
     
     .clk_out2(clk_16M), // 16 MHz, this clock we set to 16MHz 
+    .clk_out3(CLK100),
     .locked(mmcm_locked)
   );
 
@@ -1026,7 +1027,7 @@ module system
   assign dut_io_pads_dbgmode2_n_i_ival = 1'b1;
   //
 
-  e203_soc_top dut
+e203_soc_top dut
   (
     .hfextclk(clk_16M),
     .hfxoscen(),
@@ -1050,7 +1051,7 @@ module system
 
 .BZ(BZ),
 
-
+.CLK100MHZ(CLK100),
 
 
 

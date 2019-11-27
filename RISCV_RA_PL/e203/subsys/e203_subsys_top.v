@@ -452,7 +452,7 @@ module e203_subsys_top(
   output greenLed,
 
   output BZ,
-
+input CLK100MHZ,
 
 
   input  test_iso_override,
@@ -911,7 +911,7 @@ module e203_subsys_top(
 
 .BZ(BZ),
 
-
+.CLK100MHZ(CLK100MHZ),
 
     .test_mode     (test_mode), 
     .hfclk           (hfclk   ),

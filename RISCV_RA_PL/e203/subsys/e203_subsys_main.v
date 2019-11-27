@@ -447,7 +447,7 @@ module e203_subsys_main(
   output greenLed,
 
   output BZ,
-
+input CLK100MHZ,
 
 
 
@@ -1655,7 +1655,7 @@ e203_subsys_clint u_e203_subsys_clint(
 .greenLed(greenLed),
 
 .BZ(BZ),
-
+.CLK100MHZ(CLK100MHZ),
 
     .clk           (hfclk  ),
     .bus_rst_n     (bus_rst_n), 

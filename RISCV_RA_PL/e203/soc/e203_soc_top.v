@@ -249,7 +249,7 @@ module e203_soc_top(
 
   output BZ,
 
-
+input CLK100MHZ,
 
 
 
@@ -708,7 +708,7 @@ module e203_soc_top(
 .greenLed(greenLed),
 
 .BZ(BZ),
-
+.CLK100MHZ(CLK100MHZ),
 
 
 

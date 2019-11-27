@@ -401,7 +401,7 @@ module e203_subsys_perips(
 
   output BZ,
 
-
+  input CLK100MHZ,
 
 
 
@@ -3214,6 +3214,7 @@ PRM_RA_PL i_PRM_RA_PL(
   .greenLed(greenLed),
 
   .BZ(BZ),
+  .CLK100MHZ(CLK100MHZ),
 
   .i_icb_cmd_valid(expl_axi_icb_cmd_valid),
   .i_icb_cmd_ready(expl_axi_icb_cmd_ready),
