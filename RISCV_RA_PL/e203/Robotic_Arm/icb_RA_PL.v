@@ -40,9 +40,9 @@ module PRM_RA_PL (
 
 
 
-wire [32*12-1:0] stepperPosition;
+wire [383:0] stepperPosition;
 
-wire [32*12-1:0] stepCnt;
+wire [383:0] stepCnt;
 wire currentLoopPowerOnA;
 wire currentLoopEnableA;
 
@@ -111,7 +111,7 @@ assign i_icb_rsp_valid = ( (~i_icb_cmd_read) & i_icb_cmd_valid )
 						| icb_rsp_valid_reg;
 assign i_icb_rsp_rdata = icb_rsp_rdata_reg;
 
-wire [4:0] reg_mux = i_icb_cmd_addr[4:0];
+wire [4:0] reg_mux = i_icb_cmd_addr[6:2];
 
 
 
