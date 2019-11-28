@@ -387,6 +387,28 @@ module e203_subsys_perips(
   output hfxoscen,
 
 
+  output [5:0] powerENA,
+  output [5:0] thrusterDirectA,
+  output [5:0] powerENB,
+  output [5:0] thrusterDirectB,
+
+  input [3:0] petectIO,
+  output [5:0]  safetyPluseA,
+  output [5:0]  safetyPluseB,
+
+  output redLed,
+  output greenLed,
+
+  output BZ,
+
+  input CLK100MHZ,
+
+
+
+
+
+
+
 
   input  clk,
   input  bus_rst_n,
@@ -1892,7 +1914,7 @@ module e203_subsys_perips(
     
     .o13_icb_rsp_valid  (expl_axi_icb_rsp_valid),
     .o13_icb_rsp_ready  (expl_axi_icb_rsp_ready),
-    .o13_icb_rsp_err    (expl_axi_icb_rsp_err),
+    .o13_icb_rsp_err    (1'b0),
     .o13_icb_rsp_excl_ok(1'b0  ),
     .o13_icb_rsp_rdata  (expl_axi_icb_rsp_rdata),
 
@@ -3177,111 +3199,48 @@ sirv_pwm16_top u_sirv_pwm2_top(
   wire expl_axi_bready;
   wire [1:0] expl_axi_bresp;
    
-sirv_gnrl_icb2axi # (
-  .AXI_FIFO_DP (2), // We just add ping-pong buffer here to avoid any potential timing loops
-                    //   User can change it to 0 if dont care
-  .AXI_FIFO_CUT_READY (1), // This is to cut the back-pressure signal if you set as 1
-  .AW   (32),
-  .FIFO_OUTS_NUM (1),// We only allow 1 oustandings at most for peripheral, user can configure it to any value
-  .FIFO_CUT_READY(1),
-  .DW   (`E203_XLEN) 
-) u_expl_axi_icb2axi(
-    .i_icb_cmd_valid (expl_axi_icb_cmd_valid),
-    .i_icb_cmd_ready (expl_axi_icb_cmd_ready),
-    .i_icb_cmd_addr  (expl_axi_icb_cmd_addr ),
-    .i_icb_cmd_read  (expl_axi_icb_cmd_read ),
-    .i_icb_cmd_wdata (expl_axi_icb_cmd_wdata),
-    .i_icb_cmd_wmask (expl_axi_icb_cmd_wmask),
-    .i_icb_cmd_size  (),
-    
-    .i_icb_rsp_valid (expl_axi_icb_rsp_valid),
-    .i_icb_rsp_ready (expl_axi_icb_rsp_ready),
-    .i_icb_rsp_rdata (expl_axi_icb_rsp_rdata),
-    .i_icb_rsp_err   (expl_axi_icb_rsp_err),
 
-    .o_axi_arvalid   (expl_axi_arvalid),
-    .o_axi_arready   (expl_axi_arready),
-    .o_axi_araddr    (expl_axi_araddr ),
-    .o_axi_arcache   (expl_axi_arcache),
-    .o_axi_arprot    (expl_axi_arprot ),
-    .o_axi_arlock    (expl_axi_arlock ),
-    .o_axi_arburst   (expl_axi_arburst),
-    .o_axi_arlen     (expl_axi_arlen  ),
-    .o_axi_arsize    (expl_axi_arsize ),
-                      
-    .o_axi_awvalid   (expl_axi_awvalid),
-    .o_axi_awready   (expl_axi_awready),
-    .o_axi_awaddr    (expl_axi_awaddr ),
-    .o_axi_awcache   (expl_axi_awcache),
-    .o_axi_awprot    (expl_axi_awprot ),
-    .o_axi_awlock    (expl_axi_awlock ),
-    .o_axi_awburst   (expl_axi_awburst),
-    .o_axi_awlen     (expl_axi_awlen  ),
-    .o_axi_awsize    (expl_axi_awsize ),
-                     
-    .o_axi_rvalid    (expl_axi_rvalid ),
-    .o_axi_rready    (expl_axi_rready ),
-    .o_axi_rdata     (expl_axi_rdata  ),
-    .o_axi_rresp     (expl_axi_rresp  ),
-    .o_axi_rlast     (expl_axi_rlast  ),
-                    
-    .o_axi_wvalid    (expl_axi_wvalid ),
-    .o_axi_wready    (expl_axi_wready ),
-    .o_axi_wdata     (expl_axi_wdata  ),
-    .o_axi_wstrb     (expl_axi_wstrb  ),
-    .o_axi_wlast     (expl_axi_wlast  ),
-                   
-    .o_axi_bvalid    (expl_axi_bvalid ),
-    .o_axi_bready    (expl_axi_bready ),
-    .o_axi_bresp     (expl_axi_bresp  ),
+PRM_RA_PL i_PRM_RA_PL(
+  .powerENA(powerENA),
+  .thrusterDirectA(thrusterDirectA),
+  .powerENB(powerENB),
+  .thrusterDirectB(thrusterDirectB),
 
-    .clk           (clk  ),
-    .rst_n         (bus_rst_n) 
-  );
+  .petectIO(petectIO),
+  .safetyPluseA(safetyPluseA),
+  .safetyPluseB(safetyPluseB),
 
-sirv_expl_axi_slv # (
-  .AW   (32),
-  .DW   (`E203_XLEN) 
-) u_perips_expl_axi_slv (
-    .axi_arvalid   (expl_axi_arvalid),
-    .axi_arready   (expl_axi_arready),
-    .axi_araddr    (expl_axi_araddr ),
-    .axi_arcache   (expl_axi_arcache),
-    .axi_arprot    (expl_axi_arprot ),
-    .axi_arlock    (expl_axi_arlock ),
-    .axi_arburst   (expl_axi_arburst),
-    .axi_arlen     (expl_axi_arlen  ),
-    .axi_arsize    (expl_axi_arsize ),
-     
-    .axi_awvalid   (expl_axi_awvalid),
-    .axi_awready   (expl_axi_awready),
-    .axi_awaddr    (expl_axi_awaddr ),
-    .axi_awcache   (expl_axi_awcache),
-    .axi_awprot    (expl_axi_awprot ),
-    .axi_awlock    (expl_axi_awlock ),
-    .axi_awburst   (expl_axi_awburst),
-    .axi_awlen     (expl_axi_awlen  ),
-    .axi_awsize    (expl_axi_awsize ),
-    
-    .axi_rvalid    (expl_axi_rvalid ),
-    .axi_rready    (expl_axi_rready ),
-    .axi_rdata     (expl_axi_rdata  ),
-    .axi_rresp     (expl_axi_rresp  ),
-    .axi_rlast     (expl_axi_rlast  ),
-   
-    .axi_wvalid    (expl_axi_wvalid ),
-    .axi_wready    (expl_axi_wready ),
-    .axi_wdata     (expl_axi_wdata  ),
-    .axi_wstrb     (expl_axi_wstrb  ),
-    .axi_wlast     (expl_axi_wlast  ),
+  .redLed(redLed),
+  .greenLed(greenLed),
+
+  .BZ(BZ),
+  .CLK100MHZ(CLK100MHZ),
+
+  .i_icb_cmd_valid(expl_axi_icb_cmd_valid),
+  .i_icb_cmd_ready(expl_axi_icb_cmd_ready),
+  .i_icb_cmd_addr(expl_axi_icb_cmd_addr), 
+  .i_icb_cmd_read(expl_axi_icb_cmd_read), 
+  .i_icb_cmd_wdata(expl_axi_icb_cmd_wdata),
   
-    .axi_bvalid    (expl_axi_bvalid ),
-    .axi_bready    (expl_axi_bready ),
-    .axi_bresp     (expl_axi_bresp  ),
+  .i_icb_rsp_valid(expl_axi_icb_rsp_valid),
+  .i_icb_rsp_ready(expl_axi_icb_rsp_ready),
+  .i_icb_rsp_rdata(expl_axi_icb_rsp_rdata),
 
-    .clk           (clk  ),
-    .rst_n         (rst_n) 
-  );
+  .clk(clk),
+  .rst_n(rst_n)
+);
+
+
+
+
+
+
+
+
+
+
+
+
 
 
       // * Here is an example APB Peripheral

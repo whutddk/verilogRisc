@@ -104,31 +104,6 @@ module e203_lsu_ctrl(
   output [`E203_XLEN-1:0]        eai_icb_rsp_rdata,
 
 
-
-  `ifdef E203_HAS_DCACHE //{
-  //////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////
-  // The ICB Interface to DCache
-  //
-  //    * Bus cmd channel
-  output                         dcache_icb_cmd_valid,
-  input                          dcache_icb_cmd_ready,
-  output [`E203_ADDR_SIZE-1:0]   dcache_icb_cmd_addr, 
-  output                         dcache_icb_cmd_read, 
-  output [`E203_XLEN-1:0]        dcache_icb_cmd_wdata,
-  output [`E203_XLEN/8-1:0]      dcache_icb_cmd_wmask,
-  output                         dcache_icb_cmd_lock,
-  output                         dcache_icb_cmd_excl,
-  output [1:0]                   dcache_icb_cmd_size,
-  //
-  //    * Bus RSP channel
-  input                          dcache_icb_rsp_valid,
-  output                         dcache_icb_rsp_ready,
-  input                          dcache_icb_rsp_err  ,
-  output                         dcache_icb_rsp_excl_ok,
-  input  [`E203_XLEN-1:0]        dcache_icb_rsp_rdata,
-  `endif//}
-
   `ifdef E203_HAS_DTCM //{
   //////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////
@@ -502,45 +477,16 @@ module e203_lsu_ctrl(
   `else//}{
   wire arbt_icb_cmd_dtcm = 1'b0;
   `endif//}
-  `ifdef E203_HAS_DCACHE //{
-  wire arbt_icb_cmd_dcache = (arbt_icb_cmd_addr[`E203_DCACHE_BASE_REGION] ==  dcache_region_indic[`E203_DCACHE_BASE_REGION]);
-  `else//}{
+
   wire arbt_icb_cmd_dcache = 1'b0;
-  `endif//}
+
 
   wire arbt_icb_cmd_biu    = (~arbt_icb_cmd_itcm) & (~arbt_icb_cmd_dtcm) & (~arbt_icb_cmd_dcache);
 
   wire splt_fifo_wen = arbt_icb_cmd_valid & arbt_icb_cmd_ready;
   wire splt_fifo_ren = arbt_icb_rsp_valid & arbt_icb_rsp_ready;
 
-  `ifdef E203_SUPPORT_AMO//{
-       // In E200 single core config, we always assume the store-condition is checked by the core itself
-       //    because no other core to race
-       
-  wire excl_flg_r;
-  wire [`E203_ADDR_SIZE-1:0] excl_addr_r;
-  wire icb_cmdaddr_eq_excladdr = (arbt_icb_cmd_addr == excl_addr_r);
-  // Set when the Excl-load instruction going
-  wire excl_flg_set = splt_fifo_wen & arbt_icb_cmd_usr[USR_PACK_EXCL] & arbt_icb_cmd_read & arbt_icb_cmd_excl;
-  // Clear when any going store hit the same address
-  //   also clear if there is any trap happened
-  wire excl_flg_clr = (splt_fifo_wen & (~arbt_icb_cmd_read) & icb_cmdaddr_eq_excladdr & excl_flg_r) 
-                    | commit_trap | commit_mret;
-  wire excl_flg_ena = excl_flg_set | excl_flg_clr;
-  wire excl_flg_nxt = excl_flg_set | (~excl_flg_clr);
-  sirv_gnrl_dfflr #(1) excl_flg_dffl (excl_flg_ena, excl_flg_nxt, excl_flg_r, clk, rst_n);
-  //
-  // The address is set when excl-load instruction going
-  wire excl_addr_ena = excl_flg_set;
-  wire [`E203_ADDR_SIZE-1:0] excl_addr_nxt = arbt_icb_cmd_addr;
-  sirv_gnrl_dfflr #(`E203_ADDR_SIZE) excl_addr_dffl (excl_addr_ena, excl_addr_nxt, excl_addr_r, clk, rst_n);
-
-  // For excl-store (scond) instruction, it will be true if the flag is true and the address is matching
-  wire arbt_icb_cmd_scond = arbt_icb_cmd_usr[USR_PACK_EXCL] & (~arbt_icb_cmd_read);
-  wire arbt_icb_cmd_scond_true = arbt_icb_cmd_scond & icb_cmdaddr_eq_excladdr & excl_flg_r;
-  `endif//E203_SUPPORT_AMO}
-
-  //
+   
 
   wire splt_fifo_i_ready;
   wire splt_fifo_i_valid = splt_fifo_wen;
@@ -555,16 +501,12 @@ module e203_lsu_ctrl(
   wire arbt_icb_rsp_itcm;
   wire arbt_icb_rsp_scond_true;
 
-  `ifdef E203_SUPPORT_AMO//{
-  localparam SPLT_FIFO_W = (USR_W+5);
-  wire [`E203_XLEN/8-1:0] arbt_icb_cmd_wmask_pos = 
-      (arbt_icb_cmd_scond & (~arbt_icb_cmd_scond_true)) ? {`E203_XLEN/8{1'b0}} : arbt_icb_cmd_wmask;
-  `endif//E203_SUPPORT_AMO}
+ 
 
-  `ifndef E203_SUPPORT_AMO//{
+ 
   localparam SPLT_FIFO_W = (USR_W+4);
   wire [`E203_XLEN/8-1:0] arbt_icb_cmd_wmask_pos = arbt_icb_cmd_wmask;
-  `endif
+
 
   wire [SPLT_FIFO_W-1:0] splt_fifo_wdat;
   wire [SPLT_FIFO_W-1:0] splt_fifo_rdat;
@@ -574,9 +516,7 @@ module e203_lsu_ctrl(
           arbt_icb_cmd_dcache,
           arbt_icb_cmd_dtcm,
           arbt_icb_cmd_itcm,
-  `ifdef E203_SUPPORT_AMO//{
-          arbt_icb_cmd_scond_true,
-  `endif//E203_SUPPORT_AMO}
+
           arbt_icb_cmd_usr 
           };
 
@@ -586,9 +526,6 @@ module e203_lsu_ctrl(
           arbt_icb_rsp_dcache,
           arbt_icb_rsp_dtcm,
           arbt_icb_rsp_itcm,
-  `ifdef E203_SUPPORT_AMO//{
-          arbt_icb_rsp_scond_true, 
-  `endif//E203_SUPPORT_AMO}
           arbt_icb_rsp_usr 
           } = splt_fifo_rdat & {SPLT_FIFO_W{splt_fifo_o_valid}};
           // The output signals will be used as 
@@ -660,16 +597,7 @@ module e203_lsu_ctrl(
   wire all_icb_cmd_ready_excp_dtcm;
   wire all_icb_cmd_ready_excp_itcm;
 
-  `ifdef E203_HAS_DCACHE //{
-  assign dcache_icb_cmd_valid = arbt_icb_cmd_valid_pos & arbt_icb_cmd_dcache & all_icb_cmd_ready_excp_dcach;
-  assign dcache_icb_cmd_addr  = arbt_icb_cmd_addr ; 
-  assign dcache_icb_cmd_read  = arbt_icb_cmd_read ; 
-  assign dcache_icb_cmd_wdata = arbt_icb_cmd_wdata;
-  assign dcache_icb_cmd_wmask = arbt_icb_cmd_wmask_pos;
-  assign dcache_icb_cmd_lock  = arbt_icb_cmd_lock ;
-  assign dcache_icb_cmd_excl  = arbt_icb_cmd_excl ;
-  assign dcache_icb_cmd_size  = arbt_icb_cmd_size ;
-  `endif//}
+
 
   `ifdef E203_HAS_DTCM //{
   assign dtcm_icb_cmd_valid = arbt_icb_cmd_valid_pos & arbt_icb_cmd_dtcm & all_icb_cmd_ready_excp_dtcm;
@@ -702,30 +630,9 @@ module e203_lsu_ctrl(
   assign biu_icb_cmd_excl  = arbt_icb_cmd_excl ;
   assign biu_icb_cmd_size  = arbt_icb_cmd_size ;
   
-  ////assign arbt_icb_cmd_ready_pos =  
-  ////          (arbt_icb_cmd_biu & biu_icb_cmd_ready ) 
-  ////           `ifdef E203_HAS_DCACHE //{
-  ////        | (arbt_icb_cmd_dcache & dcache_icb_cmd_ready) 
-  ////           `endif//}
-  ////           `ifdef E203_HAS_DTCM //{
-  ////        | (arbt_icb_cmd_dtcm & dtcm_icb_cmd_ready) 
-  ////           `endif//}
-  ////           `ifdef E203_HAS_ITCM //{
-  ////        | (arbt_icb_cmd_itcm & itcm_icb_cmd_ready) 
-  ////           `endif//}
-  ////           ;
-  // To cut the in2out path from addr to the cmd_ready signal
-  //   we just always use the simplified logic
-  //   to always ask for all of the downstream components
-  //   to be ready, this may impact performance a little
-  //   bit in corner case, but doesnt really hurt the common 
-  //   case
-  //
+
   assign all_icb_cmd_ready =  
             (biu_icb_cmd_ready ) 
-             `ifdef E203_HAS_DCACHE //{
-          & (dcache_icb_cmd_ready) 
-             `endif//}
              `ifdef E203_HAS_DTCM //{
           & (dtcm_icb_cmd_ready) 
              `endif//}
@@ -736,9 +643,6 @@ module e203_lsu_ctrl(
 
   assign all_icb_cmd_ready_excp_biu =  
             1'b1
-             `ifdef E203_HAS_DCACHE //{
-          & (dcache_icb_cmd_ready) 
-             `endif//}
              `ifdef E203_HAS_DTCM //{
           & (dtcm_icb_cmd_ready) 
              `endif//}
@@ -749,9 +653,6 @@ module e203_lsu_ctrl(
 
   assign all_icb_cmd_ready_excp_dcach =  
             (biu_icb_cmd_ready ) 
-             `ifdef E203_HAS_DCACHE //{
-          & 1'b1
-             `endif//}
              `ifdef E203_HAS_DTCM //{
           & (dtcm_icb_cmd_ready) 
              `endif//}
@@ -761,9 +662,6 @@ module e203_lsu_ctrl(
              ;
   assign all_icb_cmd_ready_excp_dtcm =  
             (biu_icb_cmd_ready ) 
-             `ifdef E203_HAS_DCACHE //{
-          & (dcache_icb_cmd_ready) 
-             `endif//}
              `ifdef E203_HAS_DTCM //{
           & 1'b1
              `endif//}
@@ -774,9 +672,6 @@ module e203_lsu_ctrl(
 
  assign all_icb_cmd_ready_excp_itcm =  
             (biu_icb_cmd_ready ) 
-             `ifdef E203_HAS_DCACHE //{
-          & (dcache_icb_cmd_ready) 
-             `endif//}
              `ifdef E203_HAS_DTCM //{
           & (dtcm_icb_cmd_ready) 
              `endif//}
@@ -800,15 +695,6 @@ module e203_lsu_ctrl(
                         , biu_icb_rsp_rdata 
                         }
             ) 
-             `ifdef E203_HAS_DCACHE //{
-          | ({`E203_XLEN+3{arbt_icb_rsp_dcache}} &
-                        { dcache_icb_rsp_valid 
-                        , dcache_icb_rsp_err 
-                        , dcache_icb_rsp_excl_ok 
-                        , dcache_icb_rsp_rdata 
-                        }
-            ) 
-             `endif//}
              `ifdef E203_HAS_DTCM //{
           | ({`E203_XLEN+3{arbt_icb_rsp_dtcm}} &
                         { dtcm_icb_rsp_valid 
@@ -830,9 +716,6 @@ module e203_lsu_ctrl(
              ;
 
   assign biu_icb_rsp_ready    = arbt_icb_rsp_biu    & arbt_icb_rsp_ready;
-             `ifdef E203_HAS_DCACHE //{
-  assign dcache_icb_rsp_ready = arbt_icb_rsp_dcache & arbt_icb_rsp_ready;
-             `endif//}
              `ifdef E203_HAS_DTCM //{
   assign dtcm_icb_rsp_ready   = arbt_icb_rsp_dtcm   & arbt_icb_rsp_ready;
              `endif//}
@@ -864,20 +747,11 @@ module e203_lsu_ctrl(
   wire rsp_lh  = (pre_agu_icb_rsp_size == 2'b01) & (pre_agu_icb_rsp_usign == 1'b0);
   wire rsp_lw  = (pre_agu_icb_rsp_size == 2'b10);
 
-  `ifdef E203_SUPPORT_AMO//{
-       // In E200 single core config, we always assume the store-condition is checked by the core itself
-       //    because no other core to race. So we dont use the returned excl-ok, but use the LSU tracked
-       //    scond_true
-  //wire [`E203_XLEN-1:0] sc_excl_wdata = pre_agu_icb_rsp_excl_ok ? `E203_XLEN'd0 : `E203_XLEN'd1; 
-  wire [`E203_XLEN-1:0] sc_excl_wdata = arbt_icb_rsp_scond_true ? `E203_XLEN'd0 : `E203_XLEN'd1; 
-                // If it is scond (excl-write), then need to update the regfile
-  assign lsu_o_wbck_wdat   = ((~pre_agu_icb_rsp_read) & pre_agu_icb_rsp_excl) ? sc_excl_wdata :
-  `endif//E203_SUPPORT_AMO}
-  `ifndef E203_SUPPORT_AMO//{
+
        // If not support the store-condition instructions, then we have no chance to issue excl transaction
            // no need to consider the store-condition result write-back
   assign lsu_o_wbck_wdat   = 
-  `endif
+
           ( ({`E203_XLEN{rsp_lbu}} & {{24{          1'b0}}, rdata_algn[ 7:0]})
           | ({`E203_XLEN{rsp_lb }} & {{24{rdata_algn[ 7]}}, rdata_algn[ 7:0]})
           | ({`E203_XLEN{rsp_lhu}} & {{16{          1'b0}}, rdata_algn[15:0]})

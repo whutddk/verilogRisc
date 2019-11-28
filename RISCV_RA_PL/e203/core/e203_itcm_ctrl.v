@@ -131,57 +131,78 @@ module e203_itcm_ctrl(
   wire lsu_icb_rsp_err;
   wire [`E203_ITCM_DATA_WIDTH-1:0] lsu_icb_rsp_rdata; 
 
-  sirv_gnrl_icb_n2w # (
-  .FIFO_OUTS_NUM   (`E203_ITCM_OUTS_NUM),
-  .FIFO_CUT_READY  (0),
-  .USR_W      (1),
-  .AW         (`E203_ITCM_ADDR_WIDTH),
-  .X_W        (32),
-  .Y_W        (`E203_ITCM_DATA_WIDTH) 
-  ) u_itcm_icb_lsu2itcm_n2w(
-  .i_icb_cmd_valid        (lsu2itcm_icb_cmd_valid ),  
-  .i_icb_cmd_ready        (lsu2itcm_icb_cmd_ready ),
-  .i_icb_cmd_read         (lsu2itcm_icb_cmd_read ) ,
-  .i_icb_cmd_addr         (lsu2itcm_icb_cmd_addr ) ,
-  .i_icb_cmd_wdata        (lsu2itcm_icb_cmd_wdata ),
-  .i_icb_cmd_wmask        (lsu2itcm_icb_cmd_wmask) ,
-  .i_icb_cmd_burst        (2'b0)                   ,
-  .i_icb_cmd_beat         (2'b0)                   ,
-  .i_icb_cmd_lock         (1'b0),
-  .i_icb_cmd_excl         (1'b0),
-  .i_icb_cmd_size         (2'b0),
-  .i_icb_cmd_usr          (1'b0),
+  // sirv_gnrl_icb_n2w # (
+  // .FIFO_OUTS_NUM   (`E203_ITCM_OUTS_NUM),
+  // .FIFO_CUT_READY  (0),
+  // .USR_W      (1),
+  // .AW         (`E203_ITCM_ADDR_WIDTH),
+  // .X_W        (32),
+  // .Y_W        (`E203_ITCM_DATA_WIDTH) 
+  // ) u_itcm_icb_lsu2itcm_n2w(
+  // .i_icb_cmd_valid        (lsu2itcm_icb_cmd_valid ),  
+  // .i_icb_cmd_ready        (lsu2itcm_icb_cmd_ready ),
+  // .i_icb_cmd_read         (lsu2itcm_icb_cmd_read ) ,
+  // .i_icb_cmd_addr         (lsu2itcm_icb_cmd_addr ) ,
+  // .i_icb_cmd_wdata        (lsu2itcm_icb_cmd_wdata ),
+  // .i_icb_cmd_wmask        (lsu2itcm_icb_cmd_wmask) ,
+  // .i_icb_cmd_burst        (2'b0)                   ,
+  // .i_icb_cmd_beat         (2'b0)                   ,
+  // .i_icb_cmd_lock         (1'b0),
+  // .i_icb_cmd_excl         (1'b0),
+  // .i_icb_cmd_size         (2'b0),
+  // .i_icb_cmd_usr          (1'b0),
    
-  .i_icb_rsp_valid        (lsu2itcm_icb_rsp_valid ),
-  .i_icb_rsp_ready        (lsu2itcm_icb_rsp_ready ),
-  .i_icb_rsp_err          (lsu2itcm_icb_rsp_err)   ,
-  .i_icb_rsp_excl_ok      ()   ,
-  .i_icb_rsp_rdata        (lsu2itcm_icb_rsp_rdata ),
-  .i_icb_rsp_usr          (),
+  // .i_icb_rsp_valid        (lsu2itcm_icb_rsp_valid ),
+  // .i_icb_rsp_ready        (lsu2itcm_icb_rsp_ready ),
+  // .i_icb_rsp_err          (lsu2itcm_icb_rsp_err)   ,
+  // .i_icb_rsp_excl_ok      ()   ,
+  // .i_icb_rsp_rdata        (lsu2itcm_icb_rsp_rdata ),
+  // .i_icb_rsp_usr          (),
                                                 
-  .o_icb_cmd_valid        (lsu_icb_cmd_valid ),  
-  .o_icb_cmd_ready        (lsu_icb_cmd_ready ),
-  .o_icb_cmd_read         (lsu_icb_cmd_read ) ,
-  .o_icb_cmd_addr         (lsu_icb_cmd_addr ) ,
-  .o_icb_cmd_wdata        (lsu_icb_cmd_wdata ),
-  .o_icb_cmd_wmask        (lsu_icb_cmd_wmask) ,
-  .o_icb_cmd_burst        ()                   ,
-  .o_icb_cmd_beat         ()                   ,
-  .o_icb_cmd_lock         (),
-  .o_icb_cmd_excl         (),
-  .o_icb_cmd_size         (),
-  .o_icb_cmd_usr          (),
+  // .o_icb_cmd_valid        (lsu_icb_cmd_valid ),  
+  // .o_icb_cmd_ready        (lsu_icb_cmd_ready ),
+  // .o_icb_cmd_read         (lsu_icb_cmd_read ) ,
+  // .o_icb_cmd_addr         (lsu_icb_cmd_addr ) ,
+  // .o_icb_cmd_wdata        (lsu_icb_cmd_wdata ),
+  // .o_icb_cmd_wmask        (lsu_icb_cmd_wmask) ,
+  // .o_icb_cmd_burst        ()                   ,
+  // .o_icb_cmd_beat         ()                   ,
+  // .o_icb_cmd_lock         (),
+  // .o_icb_cmd_excl         (),
+  // .o_icb_cmd_size         (),
+  // .o_icb_cmd_usr          (),
    
-  .o_icb_rsp_valid        (lsu_icb_rsp_valid ),
-  .o_icb_rsp_ready        (lsu_icb_rsp_ready ),
-  .o_icb_rsp_err          (lsu_icb_rsp_err)   ,
-  .o_icb_rsp_excl_ok      (1'b0)   ,
-  .o_icb_rsp_rdata        (lsu_icb_rsp_rdata ),
-  .o_icb_rsp_usr          (1'b0),
+  // .o_icb_rsp_valid        (lsu_icb_rsp_valid ),
+  // .o_icb_rsp_ready        (lsu_icb_rsp_ready ),
+  // .o_icb_rsp_err          (lsu_icb_rsp_err)   ,
+  // .o_icb_rsp_excl_ok      (1'b0)   ,
+  // .o_icb_rsp_rdata        (lsu_icb_rsp_rdata ),
+  // .o_icb_rsp_usr          (1'b0),
 
-  .clk                    (clk   )                  ,
-  .rst_n                  (rst_n )                 
-  );
+  // .clk                    (clk   )                  ,
+  // .rst_n                  (rst_n )                 
+  // );
+
+
+assign lsu_icb_cmd_valid = lsu2itcm_icb_cmd_valid; 
+assign lsu2itcm_icb_cmd_ready = lsu_icb_cmd_ready;
+assign lsu_icb_cmd_read = lsu2itcm_icb_cmd_read;
+assign lsu_icb_cmd_addr = lsu2itcm_icb_cmd_addr;
+assign lsu_icb_cmd_wdata = lsu2itcm_icb_cmd_wdata;
+assign lsu_icb_cmd_wmask = lsu2itcm_icb_cmd_wmask;
+assign lsu2itcm_icb_rsp_valid = lsu_icb_rsp_valid;
+assign lsu_icb_rsp_ready = lsu2itcm_icb_rsp_ready;
+assign lsu2itcm_icb_rsp_err = lsu_icb_rsp_err;
+assign lsu2itcm_icb_rsp_rdata = lsu_icb_rsp_rdata;
+
+
+
+
+
+
+
+
+
 
   `ifdef E203_HAS_ITCM_EXTITF //{
   //////////////////////////////////////////////////////////////
@@ -482,7 +503,7 @@ module e203_itcm_ctrl(
       .DW     (`E203_ITCM_DATA_WIDTH),
       .AW     (`E203_ITCM_ADDR_WIDTH),
       .MW     (`E203_ITCM_WMSK_WIDTH),
-      .AW_LSB (3),// ITCM is 64bits wide, so the LSB is 3
+      .AW_LSB (2),// ITCM is 32bits wide, so the LSB is 2
       .USR_W  (2) 
   ) u_sram_icb_ctrl(
      .sram_ctrl_active (itcm_sram_ctrl_active),
